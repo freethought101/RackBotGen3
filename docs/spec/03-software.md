@@ -181,7 +181,7 @@ From the tag pose: lateral offset `x`, distance `d`, bearing `θ`, tag yaw `ψ`.
 ### 6.3 Bay fine-alignment and caddy ID
 
 - After docking and moving Z to the nominal height, detect bay tag `n`. The vertical pixel error vs the calibrated reference row → Z correction (mm/px at the docked distance). Apply if ≤ 4 mm, otherwise FAULT (wrong bay or calibration lost).
-- Before `pull` from a rack bay (slot B empty): read the caddy tag and check it against the expected ID in inventory. A mismatch → FAULT.
+- Before `pull` from a rack bay (slot B empty): read the caddy tag (left of the handle face, seen through the tray window at ~23°) and check it against the expected ID in inventory. A mismatch → FAULT.
 - Pick from the spare station: read the caddy tag → becomes the "new caddy" ID for the job.
 
 ## 7. IIoT dashboard
@@ -211,7 +211,7 @@ Stretch: MQTT publish of rack/robot state (shows IIoT interoperability); Delta H
 ## 8. Motion firmware (ESP32-S3)
 
 - PlatformIO, Arduino-ESP32 framework. Libraries: **FastAccelStepper** (hardware step generation), **TMCStepper** (UART config: current, microsteps, StealthChop), ESP32Servo, INA226 (RobTillaart), Adafruit_NeoPixel.
-- Steps/mm: drive 38.2, Z 1600, Y 80 (see 01 §6). Constants in `config.h`, overridable via `CFG`.
+- Steps/mm: drive 12.73 (direct drive, Ø80 wheel), Z 1600, Y 80 (see 01 §6). Constants in `config.h`, overridable via `CFG`.
 - Differential kinematics: `DRIVE`/`TURN` → synchronized profiles on L/R. `VEL` → continuous speed with a 300 ms watchdog.
 - Safety: VMOT_SENSE < 9 V → abort all, disable drivers, `EVT ESTOP`, clear the homed flags. Limit switches are checked every step-planner tick. All interlocks from §3 are enforced in firmware, not only on the Pi.
 - Status LED: blue = idle, green = docked/charging, yellow = moving, red = fault, red blink = E-stop.

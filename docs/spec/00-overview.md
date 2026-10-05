@@ -30,7 +30,7 @@ Pitch angle (judging: Innovation, Technical Viability, Impact & Sustainability, 
 | # | Constraint | Design response |
 |---|---|---|
 | C1 | Built and tested by **10 Nov 2026** (about 5 weeks) | Off-the-shelf modules, 4 steppers with a single driver type, Python on the Pi, mechanical docking instead of precision navigation |
-| C2 | **≤ 500 USD** | Est. ≈ 495 USD (see 04). Delta PLC loaned or sponsored, with an ESP32 fallback |
+| C2 | **≤ 500 USD** | Est. ≈ 478 USD (see 04). Delta PLC loaned or sponsored, with an ESP32 fallback |
 | C3 | Manufacturable with a 400×400 mm FDM printer, grinder and drill press | 2020/2040 V-slot cut to length, printed plates/brackets; no machining beyond cutting and drilling |
 | C4 | **Carry-on, 7 kg per bag, 4 members** | Flat-pack rack, removable mast; ≈ 14 kg of hardware over 4 bags (≈ 50 % margin) |
 | C5 | Airline safety | Li-ion pack **≈ 50 Wh (< 100 Wh)**, in cabin, terminals protected; universal-input Delta PSU (Thailand 220 V / 50 Hz) |
@@ -44,11 +44,11 @@ Pitch angle (judging: Innovation, Technical Viability, Impact & Sustainability, 
 | Robot type | Differential-drive mobile base + Z lift + Y extractor | Proposal commitment; shows mobility |
 | Rack | 1 column × 4 bays + separate 2-slot spare station | Simplest geometry that still shows a full swap workflow |
 | Tray | **2 slots stacked vertically at bay pitch (45 mm)**, slot selected by the Z lift | Pulls the failed caddy and inserts the spare in one visit, with no extra actuator (replaces the lateral shuttle in the plan) |
-| Gripping | Side hook fingers (micro servo) engage a notch in the caddy handle block; one finger both pulls and pushes, and holds the caddy during driving | One mechanism, no clamping force needed |
+| Gripping | Fingers swing down (servo axis along the travel direction) into a side notch in the caddy handle block; one finger both pulls and pushes, and holds the caddy during driving | One mechanism, no clamping force; nothing passes the rack face |
 | Docking | Vision approach (AprilTag) + **mechanical V-funnel** + dock switch | Funnel gives ±2 mm repeatability without precise odometry |
 | Caddy | 3D-printed, own design, real 3.5" drive envelope | No latch to work, tags built in, no shipping risk |
 | Compute | Raspberry Pi 3B/3B+ (owned) + ESP32-S3 motion controller | Pi does vision, logic and web; ESP32 does real-time step generation |
-| Actuators | 4× NEMA17 on TMC2209 (2 drive, Z, Y) + 2 micro servos | One driver type, open-loop steps are repeatable, quiet |
+| Actuators | 4× NEMA17 on TMC2209 (2 direct-drive wheels, Z, Y) + 2 micro servos | One driver type, open-loop steps are repeatable, quiet; no belts on the drive |
 | Rack controller | Delta DVP-12SE PLC over Modbus TCP | Delta hardware; industrial pattern (PLC = I/O and safety, PC = planning) |
 
 ## 4. Coordinate system & naming
@@ -150,3 +150,4 @@ Weigh every bag in week 5 (see 04).
 | v0.1.1 | 2026-10-06 | Ownership recorded (single owner, peer review); CAD started for caddy, dummy drive, bay shelf |
 | v0.1.2 | 2026-10-06 | Rack + spare station CAD: dock stop moved in front of the rack (y = −30), approach tag on the right upright, real frame lengths and masses |
 | v0.1.3 | 2026-10-06 | Motion board v1 in KiCad (`pcb/motion-board`): buck modules off-board, hard-wired driver addresses, XT30 polarity, AUX input on GPIO38 |
+| v0.1.4 | 2026-10-06 | Robot CAD v0 + checks: direct drive (axle y −135), nose z 30–90, swing-down fingers, tray camera window, caddy tag moved left, E-stop on the mast top; mass 4.49 kg; budget ≈ 478 USD |

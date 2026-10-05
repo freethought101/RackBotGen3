@@ -18,10 +18,22 @@ Frame for all bay-side parts: x = across the bay (0 = centerline), y = into the 
 | rack.py | STEP/rack.step | Rack assembly: 2020 frame, 4 shelves, caddies, dock, tags, Delta PSU/PLC placeholders | — |
 | spare_station.py | STEP/spare_station.step | Spare station assembly: S1 GOOD / S2 RMA | — |
 
-2020 cut list: rack 2 × 220, 4 × 320, 2 × 180; spare station 2 × 220, 4 × 215, 2 × 180.
+| robot/*.py | STEP/robot/…, STL/robot/… | 13 printed robot parts: nose, deck, drive_bracket (×2, one mirrored), mast_collar, mast_top_plate, z_carriage, tray_stack, rail_bracket, y_carriage, finger (×2), electronics_tray, pi_tray, battery_box | PETG |
+| robot_assembly.py | STEP/robot_assembly.step | Robot at a travel pose (Z 210, extractor home) | — |
+| robot_docked.py | STEP/robot_docked.step | Rack + robot docked, extracting from bay 2 (Y = 175, finger B engaged) | — |
+
+Robot frame = rack frame with the robot docked (nose tip on the stop at y = −30). Dimensions:
+`lib/robot_dims.py`; assembly factory `lib/robot_build.py` (`robot_parts(Z, Y, fingers)`); purchased parts
+are envelope stand-ins in `lib/vendor.py` (NEMA17, MG90S, wheels, casters, Pi, battery, KP08…), and the motion
+board is the real KiCad STEP export. Robot nested scripts run as `PYTHONPATH=src python src/robot/<part>.py`.
+
+2020 cut list: rack 2 × 220, 4 × 320, 2 × 180; spare station 2 × 220, 4 × 215, 2 × 180;
+robot 2 × 300 (rails), 3 × 110 (cross members), 1 × 285 (Y rail); 2040 × 420 (mast).
 
 Build (from `cad/`): `PYTHONPATH=src python src/<model>.py` (with `python` = the cadgen uvx Python).
-Checks: `PYTHONPATH=src python checks/bay_fit_check.py` and `checks/station_check.py` (robot probe boxes: nose, base, tray sweep, caddy extraction path).
+Checks: `PYTHONPATH=src python checks/bay_fit_check.py`, `checks/station_check.py` (station vs robot probe boxes) and
+`checks/robot_check.py` (self-interference over 18 poses, lift sweep while docked, extract/insert at every bay and
+spare slot with finger-in-notch, carrying two caddies, camera sight lines and FOV, mass/CG/tip-over, packing, print bed).
 
 To verify on real hardware: 3.5" bottom hole positions (`HDD_HOLE_Y`, slotted ±3 mm),
 KW11-3Z switch hole pitch and actuation point (bracket slotted ±2 mm).

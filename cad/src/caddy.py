@@ -59,11 +59,12 @@ def caddy():
         box(HALF_W - NOTCH_DEPTH, HALF_W + 0.1,
             FRONT + NOTCH_FROM_FRONT - NOTCH_L / 2, FRONT + NOTCH_FROM_FRONT + NOTCH_L / 2,
             -0.1, CADDY_H + 0.1),
-        # Label recesses on the front face: QR left, AprilTag right.
-        box(-HALF_W + 5, -HALF_W + 5 + QR_SIZE, FRONT - 0.1, FRONT + LABEL_RECESS,
-            (CADDY_H - QR_SIZE) / 2, (CADDY_H + QR_SIZE) / 2),
-        box(HALF_W - 7 - TAG_SIZE, HALF_W - 7, FRONT - 0.1, FRONT + LABEL_RECESS,
+        # Label recesses on the front face: AprilTag left (in the robot camera's view through the
+        # tray window), QR right.
+        box(-HALF_W + 5, -HALF_W + 5 + TAG_SIZE, FRONT - 0.1, FRONT + LABEL_RECESS,
             (CADDY_H - TAG_SIZE) / 2, (CADDY_H + TAG_SIZE) / 2),
+        box(HALF_W - 14 - QR_SIZE, HALF_W - 14, FRONT - 0.1, FRONT + LABEL_RECESS,
+            (CADDY_H - QR_SIZE) / 2, (CADDY_H + QR_SIZE) / 2),
         # Rear bottom edge ramp so the caddy rides over the shelf/tray lips.
         prism_yz([(REAR + 0.1, -0.1), (REAR + 0.1, 1.5), (REAR - 1.5, -0.1)],
                  -HALF_W - CADDY_RAIL_W - 0.1, HALF_W + CADDY_RAIL_W + 0.1),

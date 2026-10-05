@@ -45,8 +45,9 @@ TRAY_HALF_W = 65.0
 TRAY_DEPTH = 180.0
 TRAY_BELOW = 4.0          # tray floor thickness below slot B floor (Z)
 TRAY_ABOVE = BAY_PITCH + CADDY_H + 5.0   # top of slot A walls above Z
-NOSE_L, NOSE_Z = 60.0, (30.0, 100.0)
-BASE_HALF_W, BASE_L, BASE_Z = 150.0, 300.0, (10.0, 100.0)
+NOSE_L = 60.0
+from lib.robot_dims import NOSE_Z   # noqa: E402  (30..90)
+BASE_HALF_W, BASE_L, BASE_Z = 150.0, 300.0, (0.0, 100.0)   # incl. wheels (front at y -95)
 
 for path, root, heights in (("STEP/rack.step", "rack", H_BAY), ("STEP/spare_station.step", "spare_station", H_SPARE)):
     print(f"\n== {root}")

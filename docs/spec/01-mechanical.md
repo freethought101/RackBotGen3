@@ -54,7 +54,7 @@ Software config (`03-software.md` §6) and CAD must use these numbers.
 | Side rails | 2 × 4 ribs along both bottom edges (width over rails 114), 1 mm chamfer at the rear end |
 | Handle block | Front 20 mm, full width and height, solid (≥ 6 walls) |
 | **Hook notch** | Right side face of handle block: **12 (y) × 8 deep (x) × full 30 height**, centered 10 from the handle front face. Edges 0.5 mm chamfered |
-| Front face labels | Left: QR code 22 × 22 (caddy serial, e.g. `RBG3-C01`). Right: **AprilTag tag36h11, 24 × 24, IDs 101–106** (caddy ID). Printed on matte paper/vinyl, recessed 0.5 mm |
+| Front face labels | Left: **AprilTag tag36h11, 24 × 24, IDs 101–106** (caddy ID, in the robot camera's view). Right: QR code 22 × 22 (caddy serial, e.g. `RBG3-C01`). Printed on matte paper/vinyl, recessed 0.5 mm |
 | Drive retention | 4 × M3 screws through the floor into the drive's bottom holes (real HDD, 6-32 also fits by hand), or press-fit for the dummy |
 | Rear | Flat, for actuating the bay switch |
 | Mass | ≈ 130–150 g (PETG). **Design load with drive: 1.0 kg** |
@@ -96,79 +96,77 @@ Print orientation: floor down, no supports. ≈ 6 h each.
 
 ## 6. Robot
 
-### 6.1 Overall
+Modeled in `cad/src/robot/` (parts) and `cad/src/lib/robot_build.py` (assembly, posed by Z / Y / finger
+state). Frame = rack frame with the robot docked: nose tip on the stop at y = −30, robot toward −y.
+All numbers live in `cad/src/lib/robot_dims.py`. `cad/checks/robot_check.py` verifies every item below.
 
-| Item | Spec |
+### 6.1 Overall (as modeled, v0.1.4)
+
+| Item | Value |
 |---|---|
-| Base footprint | 300 W × 300 L, plus the nose (200 W × 60 L) at the front |
-| Height | ≈ 480 at the mast top. The mast unit detaches for packing |
-| Mass target | **≤ 4.7 kg** without caddies (budget in 00 §8) |
+| Footprint | 300 W (wheels) × 360 L (incl. 60 mm nose); height ≈ 550 to the E-stop on the mast top |
+| Mass | **4.49 kg** without caddies (printed 0.82, purchased 2.07, extrusions + hardware 1.60) — target ≤ 4.7 |
+| CG | empty (−1, −235, 144); with 2 caddies at Z max (−1, −204, 191) mm |
+| Tip-over | CG ≥ 69 mm behind the drive axle (needs > 6 mm at 0.3 m/s² braking), ≥ 145 mm ahead of the rear casters, ≥ 64 mm sideways |
+| Packing | base unit 363 × 298 × 130, mast unit 486 × 341 × 217 → both fit a 56 × 36 × 23 cm carry-on |
 | Speeds | Drive 150 mm/s cruise, 50 mm/s final approach. Z 15 mm/s. Y 60 mm/s |
-| Stability | Tip-over check in CAD with 2 caddies (1.5 kg) at the highest Z, 0.3 m/s² decel. The mast and battery sit low and at the rear as counterweight |
 
 ### 6.2 Base & drive (X / turning)
 
-- Chassis: 2020 rectangle 300 × 260 + 5 mm printed deck plates (2–4 pieces, PETG). Deck top ≈ 90.
-- **Differential drive**: 2 × NEMA17 (≥ 0.4 N·m), **GT2 belt 20T → 60T (3 : 1)**, 8 mm steel shafts in 2 × KFL08 flange bearings per wheel.
-- Wheels Ø80: printed PETG hub + **TPU tire**, or bought rubber 80 mm wheels with an 8 mm bore. Track width ≈ 260 (CAD).
-- Wheel axle ≈ 100 behind the nose, under the tray load. **2 casters** (≈ 25 mm ball or swivel) at the rear corners.
-- Resolution: 200 × 16 µsteps × 3 / (π·80) ≈ **38 µsteps/mm**.
-- **Nose/bumper** (printed, 200 W × 60 L × 30–100 H): fits the dock funnel throat, tip lands on the stop at y = −30 with the tray front overhanging it by 5 mm, carries **2 copper pads 30 × 20** matching the dock contacts (80 apart, center height 60) and a front sacrificial TPU strip.
+- Chassis: 2020 side rails at x ±(55…75), z 42–62, y −390…−90; three 110 mm cross members (front, under the mast, rear).
+  Printed **deck** 246 × 300 × 5 at z 62–67 (one print).
+- **Differential drive, direct drive**: wheel hub on each NEMA17 shaft (no belt reduction: a 3 : 1 belt had no clean
+  place beside the rails). Axle at **y = −135, z = 40**; motor bodies x ±(79…119) under the deck, held by a printed
+  **drive bracket** (plate between motor face and wheel + two webs bolted to the rail). Torque ≈ 10 N per wheel,
+  ample for 6.5 kg on a table. Resolution 3200 µsteps / (π·80) ≈ **12.7 µsteps/mm**.
+- Wheels Ø80 × 24 at x ±(125…149), 5 mm bore hubs. Wheel fronts at y −95 stay 10 mm short of the dock funnel mouth.
+- Casters: 2 ball casters under the rear cross member (±65, −380); an **anti-tip ball caster under the nose** with a 3 mm gap.
+- **Nose/bumper** (printed, 200 W × 60 L, **z 30–90** so it stays under the tray): tip on the stop at y = −30, tray front
+  overhangs 5 mm. 2 copper pad recesses 30 × 20 at x ±40, z 60 (dock contacts); dock-detect KW11 lever at x = 20.
 
 ### 6.3 Z lift
 
-- Mast: **2040 V-slot × 450**, vertical, at the rear center, bolted to the base with 2 printed brackets and 4 × M5 thumb screws (removable).
-- Carriage: printed plate with 4 × V-wheels (eccentric spacers) on the 2040.
-- Drive: NEMA17 at the bottom + **Tr8×2 lead screw (lead 2 mm, self-locking)** 400 long, anti-backlash nut, flexible coupler, KP08 top bearing.
-  - Resolution 200 × 16 / 2 = **1600 µsteps/mm**. Speed 15 mm/s ≈ 450 rpm.
-- Home switch at the bottom (Z = 100). Optional top switch.
-- Load: tray stack + extractor (≈ 0.6 kg) + 2 caddies (≤ 2.0 kg design) cantilevered ≈ 150 from the mast.
-- Cable chain or loose spiral for the moving cables (Y motor, servos, slot switches, Y home, **camera CSI cable 500 mm**).
+- Mast: **2040 V-slot × 420** at x ±20, y −250…−230, standing on the deck in a printed **mast collar** (bolts into the
+  mast cross member). The mast unit lifts out for packing.
+- **Z carriage** plate x −70…70 (clear of the extractor arm) with V-wheel side arms; a tab at x 70–82 below the arm
+  takes the Y-rail bracket.
+- Drive: NEMA17 on the deck at **(−51, −265)** + coupler + **Tr8×2 lead screw** z 130–480, anti-backlash nut in a
+  side block on the carriage, KP08 under the printed **mast top plate**. 1600 µsteps/mm, 15 mm/s.
+- Lift range (slot B floor) **Z 102–295** (soft limits). Home switch at the bottom.
 
 ### 6.4 Tray stack (2 slots, vertical)
 
-```
-  SIDE VIEW (robot left side, rack to the right)
-
-             camera (left side, slot B level, 100 behind tray front)
-                 |
-   mast  carriage+-----------------------+  <- slot A (floor = Z + 45)
-    ||  =========|      slot A 180 deep   |-- y = −25 (tray front)
-    ||           +-----------------------+
-    ||           |      slot B           |  <- slot B (floor = Z)
-    ||           +-----------------------+
-    ||   extractor rail along right side, finger arm reaches to y = −10
-```
-
-- One printed part (or 2 halves) ≈ 130 W × 180 D × 110 H: **2 channels 116 wide**, floors at Z and Z + 45, 45° × 6 lead-in at the front (rack side), rear stops at the caddy-home position.
-- **Slot presence switch** in each floor (lever microswitch, flush), pressed when the caddy is fully home.
-- Right side open for the extractor finger. Left side has the camera mount.
+- One print (≈ 153 × 197 × 104): channels 116 wide, slot B floor at Z, slot A floor at Z + 45; left wall full height,
+  **right side open above a 6 mm lip** for the fingers; back plate bolts to the carriage (3 × 3 M5).
+- Handle stops at y = −200 (caddy handle front rests at −195); KW11 slot-presence switches in pockets behind the stops.
+- **Camera mount** on the left wall (lens at (−78, −115), Z + 15) and a **window in the left wall** (y −98…−38,
+  z 8–26 above slot B) so the camera sees the caddy tag.
 
 ### 6.5 Y extractor
 
-- 2020 rail ≈ 300 long along the **right side** of the tray stack, on the Z carriage.
-- Mini V-wheel plate, **GT2 belt + 20T pulley**, NEMA17 at the rear end, idler at the front. Resolution 200 × 16 / 40 = **80 µsteps/mm**.
-- **Finger arm**: printed vertical plate with **2 fingers** (heights of the slot A and slot B notches). Each finger is a 6 thick × 8 reach PETG tab on an **MG90S micro servo** that rotates 90° about a vertical axis: *parked* (parallel to the arm, outside the 114 caddy width) or *engaged* (into the notch).
-- Stroke: Y = 0 (finger at notch of a caddy fully on tray, y ≈ −185) → **Y = 175** (notch of a seated caddy, y = −10). Rail allows 185.
-- Y home switch at Y = 0.
-- **Pull** = extend with finger parked → engage → retract. **Push** = (finger already engaged) extend → release → retract.
-  The engaged finger holds the caddy on the tray while driving.
-- Force: pulling ≈ 3–5 N (friction + switch). Belt and servo hold this with large margin.
+- 2020 Y rail x 82–102, y −320…−35, z Z+15…Z+35, held **only at its rear end** by a printed rail bracket (beside the
+  rail, behind the carriage travel); NEMA17 + GT2 belt with the motor behind the rail end (x 82–125, y −362…−320).
+- **Y carriage** rides the rail's top and outer faces (mini V-wheels, no inner skirt); its arm hangs inside the rail.
+- **Fingers swing about an axis along y**: each MG90S has its output shaft pointing +y and sits *behind* its finger, so
+  nothing on the extractor passes the rack face (y ≤ −8 at full stroke). Parked = finger up; engaged = finger
+  pointing −x, tip at x = 50 inside the caddy notch (3 mm clearance, verified at every bay and spare slot).
+  Pivot heights Z + 15 (slot B) and Z + 60 (slot A).
+- Stroke: Y = 0 (pivot y = −185, caddy fully on the tray) → **Y = 175** (pivot y = −10, notch of a seated caddy).
+- **Pull** = extend parked → engage → retract. **Push** = (engaged) extend → park → retract. Engaged fingers hold
+  the caddies while driving.
 
-### 6.6 Camera
+### 6.6 Camera (verified sight lines)
 
-- **Raspberry Pi Camera Module 3 Wide** (≈ 102° H) on the Z carriage, left of the tray stack, lens at **slot B level (≈ Z + 15)**, ≈ 100 behind the tray front, looking straight ahead (+y).
-- Sight lines to check in CAD:
-  1. Rack tag 0 / spare tag 10 visible from 700 mm down to ≈ 250 mm at the approach Z pose.
-  2. Bay tags 1–4 visible at docked distance (≈ 100 mm) when slot B is aligned with that bay.
-  3. Caddy tag (front-right of handle block) visible when slot B is aligned and **slot B is empty** (pick-from-spare and pre-extract verification).
-- Seated-confirmation after insert uses the PLC bay switch, not the camera (the line of sight may be blocked by the caddy in slot B).
+- Raspberry Pi Camera Module 3 Wide (~102° × 67°), lens at (−78, −115, Z + 15), looking +y.
+- Bay tag strip (x −80): straight ahead (−0.9° H) at every bay. **Caddy tag (now on the left of the handle front)**:
+  23° H through the tray window, slot B empty. Approach tag (right fin): 28.6° at 250 mm, 13.9° at 700 mm back-off
+  with Z approach = 215.
 
 ### 6.7 Electronics mounting
 
-- Motion board, Pi 3 and buck converters on a printed electronics tray on the deck, behind the drive axle.
-- Battery box low at the rear (counterweight), with an XT60 and quick access for removal at the airport.
-- Robot E-stop mushroom on top at the rear, reachable from above. Main power switch and fuse beside it.
+- Motion board on the **electronics tray** at x 19–119, y −362…−262 (rear right); **Pi 3** on its tray rear left,
+  rotated (85 along x); **battery box** far rear left; **buck converters** on the deck under the tray (y −205…−185).
+- **Robot E-stop on the mast top plate** (highest, most reachable point); Y motor sits above the motion board with ≥ 14 mm clearance.
 
 ## 7. Print list (first pass)
 
@@ -179,15 +177,16 @@ Print orientation: floor down, no supports. ≈ 6 h each.
 | Bay shelf | 6 | PETG | 4 rack + 2 spare station |
 | Dock block (funnel + stop + contacts + switch bracket) | 1 + 1 | PETG | Rack + spare station, 298 × 95 × 90, ≈ 250 g |
 | Tag fin, tag strip (rack 4 tags / spare 2 tags) | 2 + 1 + 1 | PLA | |
-| Robot deck plates | 2–4 | PETG | |
-| Nose/bumper | 1 | PETG + TPU strip | |
-| Wheel hubs + tires | 2 + 2 | PETG + TPU | (if not bought) |
-| Drive motor mounts / belt tensioners | 2 | PETG | |
-| Mast brackets | 2 | PETG | |
-| Z carriage plate, lead nut holder | 1 | PETG | |
-| Tray stack | 1 (or 2) | PETG | Largest part, ≈ 130 × 180 × 110 |
-| Y carriage, finger arm, fingers | 1 + 1 + 2 | PETG | |
-| Camera mount, electronics tray, battery box | 1 + 1 + 1 | PETG | |
+| Robot deck | 1 | PETG | 246 × 300 × 5 |
+| Nose/bumper | 1 | PETG | + TPU strip |
+| Drive bracket | 2 | PETG | one mirrored |
+| Mast collar, mast top plate | 1 + 1 | PETG | |
+| Z carriage (plate, nut block, V-wheel arms) | 1 | PETG | |
+| Tray stack (incl. camera mount) | 1 | PETG | ≈ 153 × 197 × 104 |
+| Rail bracket (incl. Y motor plate) | 1 | PETG | |
+| Y carriage + finger arm | 1 | PETG | |
+| Fingers | 2 | PETG/nylon | |
+| Electronics tray, Pi tray, battery box | 1 + 1 + 1 | PETG | |
 
 Estimated filament: PETG ≈ 2.0 kg, PLA ≈ 0.8 kg, TPU ≈ 0.15 kg.
 
@@ -196,13 +195,13 @@ Estimated filament: PETG ≈ 2.0 kg, PLA ≈ 0.8 kg, TPU ≈ 0.15 kg.
 | Part | Qty |
 |---|---|
 | NEMA17 stepper 42×40, ≥ 0.4 N·m, 1.5–1.7 A | 4 |
-| 2020 V-slot (≈ 5.2 m total: rack 2.08, spare station 1.66, robot chassis 1.12, Y rail 0.3) | — |
-| 2040 V-slot × 450 | 1 |
+| 2020 V-slot (≈ 4.9 m total: rack 2.08, spare station 1.66, robot chassis 2 × 300 + 3 × 110, Y rail 285) | — |
+| 2040 V-slot × 420 | 1 |
 | Mini V-wheel kit (wheel + bearing + eccentric spacer) | 8 |
-| Tr8×2 lead screw 400 + anti-backlash nut + 5→8 coupler + KP08 | 1 set |
-| GT2 6 mm belt (≈ 2 m closed/open), 20T pulley 5 mm bore × 3 (2 drive motors + Y motor), 60T pulley 8 mm bore × 2 (wheel shafts), GT2 idler × 1 | set |
-| 8 mm steel shaft × 100, KFL08 × 4 | 2 / 4 |
-| Casters | 2 |
+| Tr8×2 lead screw 350 + anti-backlash nut + 5→8 coupler + KP08 | 1 set |
+| GT2 6 mm belt (≈ 0.8 m), 20T pulley 5 mm bore × 1, GT2 idler × 1 (Y axis only) | set |
+| Wheels Ø80 with 5 mm bore hubs (direct drive) | 2 |
+| Ball casters (2 rear, 1 front anti-tip) | 3 |
 | MG90S servos | 2 (+1 spare) |
 | Lever microswitches KW11-3Z | 12 |
 | M5 T-nuts/screws/inside corner brackets, M3 screws + heat-set inserts | kit |
