@@ -46,8 +46,10 @@ Wire: battery/VMOT 18 AWG, motors 22–24 AWG, signals 26 AWG. Connectors: XT60 
 
 ## 3. Motion board (KiCad PCB)
 
-Two-layer module carrier, **100 × 100 mm**, 1 oz copper (VMOT traces ≥ 2.5 mm or a pour), 4 × M3 holes at 93 × 93 pitch.
+Two-layer module carrier, **100 × 100 mm**, 1 oz copper, 4 × M3 holes at 93 × 93 pitch.
 Ordered from JLCPCB **by 14 Oct**. The same schematic can be built on perfboard as a fallback.
+**Implemented in `pcb/motion-board/`** (KiCad 10, ERC/DRC clean; see its README for the pre-order checklist).
+As built: VMOT/GND traces 1.0 mm + GND pours on both layers, motor traces 0.6 mm, supplies 0.5 mm, signals 0.25 mm.
 
 ### 3.1 ESP32-S3 pin map
 
@@ -72,7 +74,8 @@ Ordered from JLCPCB **by 14 Oct**. The same schematic can be built on perfboard 
 | 41 / 42 | I2C_SDA / I2C_SCL | i/o | INA226 @ 0x40, 4.7 k pull-ups |
 | 47 | STATUS_LED | out | WS2812 (external), 330 Ω series |
 | 48 | BUZZER | out | Via NPN (onboard RGB on some DevKit revisions also on 48/38: harmless) |
-| — | Avoid | — | 0, 3, 45, 46 (strapping); 19/20 (USB); 43/44 (UART0); 35–37 (PSRAM); 38 left free |
+| 38 | AUX_IN | in | Spare switch input J13 (onboard RGB LED on some DevKit revisions shares 38: harmless as an input) |
+| — | Avoid | — | 0, 3, 45, 46 (strapping); 19/20 (USB); 43/44 (UART0); 35–37 (PSRAM) |
 
 Switch inputs: internal pull-up + 10 k external pull-up to 3V3, 1 k series, 100 nF to GND (debounce/ESD).
 
@@ -80,11 +83,11 @@ Switch inputs: internal pull-up + 10 k external pull-up to 3V3, 1 k series, 100 
 
 | Ref | Type | Pins |
 |---|---|---|
-| J_VMOT | XT30 (male on board) | VMOT, GND (after E-stop) |
-| J_VBAT | 2-pin 5.08 screw terminal | VBAT logic (before E-stop) → 5 V buck footprint |
-| J_5V_OUT | 2-pin 5.08 screw terminal | 5.15 V, GND → Pi micro-USB pigtail |
+| J1 VMOT | XT30PW-M (horizontal) | **pad 1 = GND (−), pad 2 = VMOT (+)** (after E-stop) |
+| J2 5V_IN | 2-pin 5.08 screw terminal | +5 V, GND from the 5 V buck (which also feeds the Pi) |
+| J3 6V_SERVO_IN | 2-pin 5.08 screw terminal | +6 V, GND from the servo buck |
 | J_M1…J_M4 | JST-XH 4-pin | 2B, 2A, 1A, 1B (match the StepStick pinout) |
-| J_SW1…J_SW6 | JST-XH 3-pin | GND, SIG, 3V3 (Z_HOME, Y_HOME, NOSE, SLOT_A, SLOT_B, spare) |
+| J8…J13 | JST-XH 3-pin | GND, SIG, 3V3 (Z_HOME, Y_HOME, NOSE, SLOT_A, SLOT_B, AUX_IN on GPIO38) |
 | J_SERVO_A/B | 2.54 3-pin header | GND, 6 V, SIG |
 | J_I2C | JST-XH 4-pin | 3V3, GND, SDA, SCL |
 | J_LED | JST-XH 3-pin | 5 V, DIN, GND |
@@ -93,10 +96,13 @@ Switch inputs: internal pull-up + 10 k external pull-up to 3V3, 1 k series, 100 
 
 ### 3.3 On-board parts
 
-- 2 × 19-pin female headers for the ESP32-S3 DevKitC-1 (check the module's exact header width in KiCad).
-- 4 × StepStick sockets (2 × 8 female headers). MS1/MS2 tied by solder jumpers to set UART addresses 0–3.
+- 2 × 22-pin female headers for the ESP32-S3-DevKitC-1. The right row is drilled at both 22.86 mm and 25.4 mm
+  spacing; fit the header in the row that matches the measured module.
+- 4 × StepStick sockets (2 × 8 female headers). MS1/MS2 **hard-wired** per socket for UART addresses 0–3
+  (no jumpers to forget). UART on StepStick pin 4 (PDN_UART); CLK tied to GND (internal clock).
 - Per driver: 100 µF / 35 V electrolytic + 100 nF on VMOT. Bulk: 470 µF / 35 V at J_VMOT. **SMBJ24A TVS** on VMOT.
-- Footprints for buck modules: 5 V/5 A (e.g. XL4015 or MP1584-class 5 A module) and 6 V/3 A servo buck from VMOT.
+- Buck modules are **off-board** (vendor footprints vary): the 5 V/5 A buck feeds the Pi and J2 (5 V in), the
+  6 V/3 A servo buck (from VMOT, after the E-stop) feeds J3. The board has no on-board regulators.
 - WS2812 level: driven from 3V3 through 330 Ω (works for short leads). Optional 74AHCT1G125 footprint.
 - Silkscreen: every connector labeled, polarity marks, board name `RBG3-MOTION v1`.
 

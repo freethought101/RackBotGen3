@@ -149,3 +149,4 @@ Weigh every bag in week 5 (see 04).
 | v0.1 | 2026-10-05 | Initial spec: concept, mechanical, electrical, software, plan/budget/risk |
 | v0.1.1 | 2026-10-06 | Ownership recorded (single owner, peer review); CAD started for caddy, dummy drive, bay shelf |
 | v0.1.2 | 2026-10-06 | Rack + spare station CAD: dock stop moved in front of the rack (y = −30), approach tag on the right upright, real frame lengths and masses |
+| v0.1.3 | 2026-10-06 | Motion board v1 in KiCad (`pcb/motion-board`): buck modules off-board, hard-wired driver addresses, XT30 polarity, AUX input on GPIO38 |

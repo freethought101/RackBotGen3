@@ -8,3 +8,10 @@ cad/STL/
 cad/GLB/
 cad/3MF/
 cad/tmp/
+pcb/**/build/
+pcb/**/fab/gerbers/
+pcb/**/.mcp-backups/
+pcb/**/*-backups/
+pcb/**/fp-info-cache
+pcb/**/*.kicad_prl
+pcb/**/*.lck
