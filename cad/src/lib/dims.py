@@ -38,3 +38,21 @@ UPRIGHT_Y = (20.0, 135.0)      # upright centers along y
 M5_CLEAR = 5.3
 M3_CLEAR = 3.4
 M3_INSERT_D = 4.0              # heat-set insert pilot
+
+# Docking (station frame: z = 0 on the table)
+NOSE_W = 200.0                 # robot nose width
+DOCK_STOP_Y = -30.0            # stop face; robot nose tip lands here
+TRAY_FRONT_DOCKED_Y = -25.0    # tray overhangs the nose by 5 mm
+
+# Tags (tag36h11)
+TAG_APPROACH = 50.0            # IDs 0 (rack) and 10 (spare station)
+TAG_BAY = 16.0                 # IDs 1-4 (rack bays), 11-12 (spare slots)
+TAG_APPROACH_Z = 230.0         # approach tag centre height above the table
+TAG_FACE_Y = 7.0               # front face of tag strips and fins
+
+# Station frames (2020): base cross members on the table, uprights on top, top cross members.
+EXT = 20.0
+BASE_HALF_L = 110.0            # base cross members span x -110..110 (feet)
+TOP_HALF_L = 90.0              # top cross members span the uprights
+RACK_TOP_Z = 360.0
+SPARE_TOP_Z = 255.0

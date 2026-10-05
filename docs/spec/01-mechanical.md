@@ -26,7 +26,8 @@ Software config (`03-software.md` §6) and CAD must use these numbers.
 | `Z_EXTRACT_OFFSET` | −1 | Tray floor 1 below shelf floor when pulling a caddy out |
 | `Y` (extractor coordinate) | finger travel from home | 0 = home (caddy fully on tray), **175 = finger at notch of a seated caddy**, max 185 |
 | Rack face plane | y = 0 | Front edge of shelves |
-| Tray front when docked | y = −25 | 5 mm clearance to protruding handle blocks (y = −20) |
+| Dock stop face | y = −30 | Robot nose tip lands here, in front of the rack (the 200 mm nose cannot pass between the uprights) |
+| Tray front when docked | y = −25 | Tray overhangs the nose by 5 mm; 5 mm clearance to protruding handle blocks (y = −20) |
 | Caddy envelope | 170 L × 110 W × 30 H | 150 body + 20 handle block |
 | Bay channel | 116 W × 34 H clear, 150 deep | 45° × 6 lead-in at mouth |
 
@@ -72,25 +73,26 @@ Print orientation: floor down, no supports. ≈ 6 h each.
 
 | Item | Spec |
 |---|---|
-| Footprint / height | ≈ 220 W × 260 D (incl. dock funnel) × 360 H, plus the tag fin |
-| Frame | 2020 V-slot: base 2 × 260 (side) + 2 × 180 (cross), 4 uprights × 340, top 2 × 180. Inside corner brackets. ≈ 2.6 m total |
+| Footprint / height | 220 W (base feet) × ≈ 335 D (dock mouth y = −85 to rear electronics y ≈ 250) × 360 H, plus tower light |
+| Frame | 2020 V-slot: **2 base cross members × 220** (y 10–30 and 125–145, on the table), **4 uprights × 320** (centres x ±80, y 20 / 135), **2 top cross members × 180**. Inside corner brackets. **2.08 m total**. The shelves brace the frame front-to-back |
 | Bay shelves (×4, identical part, also used ×2 on the spare station) | Printed: 4 mm floor, side channel walls (116 clear), front lead-in 45° × 6, back stop at y = 150, top of floor at `H_BAY[n]`. Bolted to uprights (2 × M5 each side) |
 | Bay switch | Lever microswitch (KW11-3Z) at back stop. Pressed by the caddy rear in the last 3 mm of travel. Wired to PLC (see 02) |
-| Approach tag | **tag36h11 ID 0, 50 × 50**, on a printed fin on the front-left upright, center height ≈ 230 **(CAD)**. Must be visible to the robot camera at the approach Z pose |
-| Bay tags | **IDs 1–4, 16 × 16**, on a printed strip on the front-left upright beside each bay, at bay floor + 15. Used for Z fine-alignment |
-| Dock funnel | Printed V-rails on the base, 0–40 high. Mouth 380 wide, throat **202** (robot nose 200 + 2), 150 long. Places the robot to **±2 mm in X** and square to the rack |
-| Dock stop & switch | Hard stop at the throat end. Robot nose tip lands at y = +35, which puts the tray front at y = −25. Lever microswitch for dock detect |
+| Approach tag | **tag36h11 ID 0, 50 × 50**, on a printed fin (`tag_fin`) on the outer face of the **front-right** upright, centre x ≈ 125, z = 230. On the right so it does not clash with the bay-tag strip on the left |
+| Bay tags | **IDs 1–4, 16 × 16**, on a printed strip (`tag_strip_rack`) on the front face of the front-left upright, at bay floor + 15. Used for Z fine-alignment |
+| Dock block (printed, `dock_block`) | Bolted (2 × M5) to the front face of the front base cross member. V-funnel 0–40 high: mouth 282 wide at y = −85, then a **10 mm parallel throat 202 wide** (nose 200 + 2) ending at the stop. Holds the nose to **±1 mm in X**. Funnel is shorter than the 60 mm nose so the robot body never enters it |
+| Dock stop & switch | Stop face at **y = −30**, 220 wide, **90 high** (stays below the tray at the lowest Z). KW11-3Z dock-detect switch behind a slot at z 70–85 |
 | Dock contacts | 2 × spring contacts (brass leaf or 10 mm pogo, CAD), 80 apart, center height 60, on the dock stop face. **+24 V on the right, GND on the left** (viewed from the robot) |
 | Rear | DIN rail 35 mm (≈ 250) between rear uprights: Delta PSU, Delta PLC, terminal blocks, 24→5 V buck for the router. Mushroom E-stop and mini 3-color tower light on top |
 | Flat-pack | Uprights unbolt from base/top (8 × M5 + brackets). Shelves stay on uprights in pairs. Max piece ≤ 400 long |
-| Mass | ≈ 1.6 kg frame + shelves, ≈ 1.0 kg electronics |
+| Mass | ≈ 1.7 kg (frame 1.04, shelves 0.25, dock 0.25, tags, fasteners), ≈ 1.0 kg electronics |
 
 ## 5. Spare station
 
 - Same dock funnel, stop and switch as the rack, but **no dock contacts**.
 - Two shelves (same printed part as the rack): **S1 GOOD** at 150, **S2 RMA** at 195, each with a lever switch (to PLC, see 02; fallback is vision-only).
 - Approach tag **ID 10** (50 mm) on the left fin. Slot tags **IDs 11 (S1), 12 (S2)** at 16 mm on the left strip.
-- Printed side frames (2–3 parts) + 2020 base (2 × 260 + 2 × 180), or fully printed if it stays ≤ 0.6 kg.
+- Same 2020 frame layout as the rack but **uprights × 215** (top at 255): 2 × 220 + 4 × 215 + 2 × 180 = 1.66 m. Mass ≈ 1.3 kg.
+- Approach tag fin and tag strip (`tag_strip_spare`, IDs 11–12) in the same places as on the rack, so the robot uses the same approach pose.
 
 ## 6. Robot
 
@@ -111,7 +113,7 @@ Print orientation: floor down, no supports. ≈ 6 h each.
 - Wheels Ø80: printed PETG hub + **TPU tire**, or bought rubber 80 mm wheels with an 8 mm bore. Track width ≈ 260 (CAD).
 - Wheel axle ≈ 100 behind the nose, under the tray load. **2 casters** (≈ 25 mm ball or swivel) at the rear corners.
 - Resolution: 200 × 16 µsteps × 3 / (π·80) ≈ **38 µsteps/mm**.
-- **Nose/bumper** (printed, 200 W × 60 L × 30–100 H): fits the dock funnel throat, carries **2 copper pads 30 × 20** matching the dock contacts (80 apart, center height 60) and a front sacrificial TPU strip.
+- **Nose/bumper** (printed, 200 W × 60 L × 30–100 H): fits the dock funnel throat, tip lands on the stop at y = −30 with the tray front overhanging it by 5 mm, carries **2 copper pads 30 × 20** matching the dock contacts (80 apart, center height 60) and a front sacrificial TPU strip.
 
 ### 6.3 Z lift
 
@@ -175,10 +177,8 @@ Print orientation: floor down, no supports. ≈ 6 h each.
 | Caddy | 6 | PETG | 4 rack + 1 spare + 1 extra |
 | Dummy drive shell + lid | 6 | PLA | + ballast |
 | Bay shelf | 6 | PETG | 4 rack + 2 spare station |
-| Dock funnel rails (L/R) | 2 + 2 | PETG | Rack + spare station |
-| Dock stop with contact holder | 1 + 1 | PETG | |
-| Tag fins & strips | 2 + 2 | PLA | |
-| Spare station side frames | 2–3 | PETG | |
+| Dock block (funnel + stop + contacts + switch bracket) | 1 + 1 | PETG | Rack + spare station, 298 × 95 × 90, ≈ 250 g |
+| Tag fin, tag strip (rack 4 tags / spare 2 tags) | 2 + 1 + 1 | PLA | |
 | Robot deck plates | 2–4 | PETG | |
 | Nose/bumper | 1 | PETG + TPU strip | |
 | Wheel hubs + tires | 2 + 2 | PETG + TPU | (if not bought) |
@@ -196,7 +196,7 @@ Estimated filament: PETG ≈ 2.0 kg, PLA ≈ 0.8 kg, TPU ≈ 0.15 kg.
 | Part | Qty |
 |---|---|
 | NEMA17 stepper 42×40, ≥ 0.4 N·m, 1.5–1.7 A | 4 |
-| 2020 V-slot (≈ 3.6 m total incl. robot chassis and Y rail) | — |
+| 2020 V-slot (≈ 5.2 m total: rack 2.08, spare station 1.66, robot chassis 1.12, Y rail 0.3) | — |
 | 2040 V-slot × 450 | 1 |
 | Mini V-wheel kit (wheel + bearing + eccentric spacer) | 8 |
 | Tr8×2 lead screw 400 + anti-backlash nut + 5→8 coupler + KP08 | 1 set |

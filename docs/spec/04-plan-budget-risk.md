@@ -13,7 +13,7 @@ Prices are typical AliExpress / local-store prices and **must be checked when or
 | Item | Qty | USD |
 |---|---|---|
 | NEMA17 42×40, ≥ 0.4 N·m | 4 | 36 |
-| 2020 V-slot ≈ 3.6 m + 2040 V-slot 0.45 m (robot + rack + spare station) | — | 25 |
+| 2020 V-slot ≈ 5.2 m + 2040 V-slot 0.45 m (robot + rack + spare station) | — | 30 |
 | Mini V-wheel kits | 8 | 12 |
 | Tr8×2 lead screw 400 + anti-backlash nut + coupler + KP08 | 1 | 12 |
 | GT2 belt, 20T ×3, 60T ×2, idler | set | 15 |
@@ -23,7 +23,7 @@ Prices are typical AliExpress / local-store prices and **must be checked when or
 | MG90S servo | 3 | 8 |
 | Lever microswitches KW11-3Z | 12 | 6 |
 | Fastener kit (M5 T-nuts/screws, corner brackets, M3 + heat-set inserts) | — | 20 |
-| **Subtotal** | | **159** |
+| **Subtotal** | | **164** |
 
 ### 1.2 Robot — electronics
 
@@ -72,11 +72,11 @@ Prices are typical AliExpress / local-store prices and **must be checked when or
 
 | | USD |
 |---|---|
-| Robot mechanical | 159 |
+| Robot mechanical | 164 |
 | Robot electronics | 180 |
 | Rack electrical | 74 |
 | Printing & demo | 77 |
-| **Total** | **≈ 490** (of 500) |
+| **Total** | **≈ 495** (of 500) |
 
 The margin is thin. **Savings options** (use them if prices come in higher, or a router must be bought):
 TPU-printed wheels instead of bought (−10) · wide-angle OV5647 camera instead of Module 3 Wide (−20, more distortion) ·

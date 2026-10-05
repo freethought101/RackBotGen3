@@ -30,7 +30,7 @@ Pitch angle (judging: Innovation, Technical Viability, Impact & Sustainability, 
 | # | Constraint | Design response |
 |---|---|---|
 | C1 | Built and tested by **10 Nov 2026** (about 5 weeks) | Off-the-shelf modules, 4 steppers with a single driver type, Python on the Pi, mechanical docking instead of precision navigation |
-| C2 | **≤ 500 USD** | Est. ≈ 490 USD (see 04). Delta PLC loaned or sponsored, with an ESP32 fallback |
+| C2 | **≤ 500 USD** | Est. ≈ 495 USD (see 04). Delta PLC loaned or sponsored, with an ESP32 fallback |
 | C3 | Manufacturable with a 400×400 mm FDM printer, grinder and drill press | 2020/2040 V-slot cut to length, printed plates/brackets; no machining beyond cutting and drilling |
 | C4 | **Carry-on, 7 kg per bag, 4 members** | Flat-pack rack, removable mast; ≈ 14 kg of hardware over 4 bags (≈ 50 % margin) |
 | C5 | Airline safety | Li-ion pack **≈ 50 Wh (< 100 Wh)**, in cabin, terminals protected; universal-input Delta PSU (Thailand 220 V / 50 Hz) |
@@ -123,15 +123,15 @@ Per-person carry-on limit is 7 kg (bag size ≈ 56 × 36 × 23 cm). The hardware
 | Mast + Z lift + Y extractor + tray + camera (removable unit) | 1.6 | 1 piece, ≈ 450 × 200 × 120 mm |
 | Robot electronics (motion board, Pi, wiring) | 0.4 | Mounted on base |
 | Battery pack 4S ≈ 50 Wh (**cabin, own pouch**) | 0.35 | LiPo bag |
-| Rack frame (flat-packed) + printed bay shelves | 1.6 | Uprights ≤ 400 mm |
+| Rack frame (flat-packed) + printed shelves + dock block | 1.7 | Uprights 320 mm |
 | Rack electronics (Delta PSU, PLC, DIN rail, tower light, E-stop, router) | 1.0 | Padded box |
-| Spare station (printed) | 0.5 | 1 piece |
+| Spare station (2020 frame + 2 shelves + dock block) | 1.3 | Uprights 215 mm |
 | Caddies + dummy drives × 6 (≈ 0.75 each) | 4.5 | 1–2 per bag |
 | Table mat, tools (carry-on legal), spares, cables | 2.0 | Split |
-| **Total** | **≈ 14.3** | vs 28 kg allowance → ≈ 50 % margin |
+| **Total** | **≈ 15.2** | vs 28 kg allowance → ≈ 45 % margin |
 
 Suggested split: Bag 1 robot base + electronics + battery (≈ 3.1 kg) · Bag 2 mast unit + 2 caddies (≈ 3.1 kg) ·
-Bag 3 rack frame + rack electronics + 1 caddy (≈ 3.4 kg) · Bag 4 spare station + 3 caddies + mat/tools (≈ 4.8 kg).
+Bag 3 rack frame + rack electronics + 1 caddy (≈ 3.5 kg) · Bag 4 spare station + 3 caddies + mat/tools (≈ 5.6 kg; move tools to bag 1 if personal items need room).
 Weigh every bag in week 5 (see 04).
 
 ## 9. Open questions
@@ -148,3 +148,4 @@ Weigh every bag in week 5 (see 04).
 |---|---|---|
 | v0.1 | 2026-10-05 | Initial spec: concept, mechanical, electrical, software, plan/budget/risk |
 | v0.1.1 | 2026-10-06 | Ownership recorded (single owner, peer review); CAD started for caddy, dummy drive, bay shelf |
+| v0.1.2 | 2026-10-06 | Rack + spare station CAD: dock stop moved in front of the rack (y = −30), approach tag on the right upright, real frame lengths and masses |
