@@ -1,7 +1,7 @@
 # RackBotGen3 — System Overview
 
 Delta Cup 2026 · Automation track · Regional Final, Thailand, 14 Nov 2026
-Status: **Draft v0.1 (6 Oct 2026)** — for team review before CAD / PCB work starts.
+Status: **Draft v0.1 (6 Oct 2026)** — single owner for all subsystems; peers review and give feedback.
 
 | Doc | Content |
 |---|---|
@@ -134,10 +134,17 @@ Suggested split: Bag 1 robot base + electronics + battery (≈ 3.1 kg) · Bag 2 
 Bag 3 rack frame + rack electronics + 1 caddy (≈ 3.4 kg) · Bag 4 spare station + 3 caddies + mat/tools (≈ 4.8 kg).
 Weigh every bag in week 5 (see 04).
 
-## 9. Open questions for the team
+## 9. Open questions
 
-1. Who owns each subsystem (mech / electrical / software / PLC + pitch)?
+1. ~~Subsystem owners~~ — resolved: one owner for all subsystems; peers act as reviewers.
 2. Can Delta Thailand lend a DVP-12SE (or similar SE/SS2 with Ethernet)? Ask this week. If not, use the ESP32 rack fallback.
 3. Do we have broken 3.5" HDDs (IT department, repair shop, e-waste)? Use 1–2 for the show, dummies for the rest.
 4. Team-owned parts to reuse (Pi 3, steppers, filament, router, fasteners) — this frees budget.
 5. Will the final demo be on a table or the floor? This affects the mat and edge safety.
+
+## 10. Revision history
+
+| Version | Date | Change |
+|---|---|---|
+| v0.1 | 2026-10-05 | Initial spec: concept, mechanical, electrical, software, plan/budget/risk |
+| v0.1.1 | 2026-10-06 | Ownership recorded (single owner, peer review); CAD started for caddy, dummy drive, bay shelf |

@@ -3,3 +3,8 @@
 __pycache__/
 *.pyc
 .claude/settings.local.json
+cad/STEP/
+cad/STL/
+cad/GLB/
+cad/3MF/
+cad/tmp/
