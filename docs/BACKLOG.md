@@ -1,7 +1,7 @@
 # RackBotGen3 — Backlog
 
 Open checks and to-dos collected from the spec, the CAD and PCB work, and review notes.
-Tick items off as they are done; add the result (measured value, part number) inline.
+**Live version: Notion "RackBotGen3 Backlog" database** (inside the Delta Cup 2026 hub page). This file is a snapshot.
 
 ## Now (this week)
 

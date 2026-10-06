@@ -6,7 +6,8 @@ Status: Draft v0.1. Today: **Mon 5 Oct 2026**. Build/test deadline **Tue 10 Nov*
 
 ## 1. Budget (USD, estimates)
 
-Prices are typical AliExpress / local-store prices and **must be checked when ordering**. Shipping is assumed free or small (AliExpress Choice / local).
+Prices are typical AliExpress / local-store prices and **must be checked when ordering**.
+The live, per-part order list is the Notion **Parts & Order List** database, mirrored in `docs/parts.csv` (IDs P01…); this section keeps the category totals. Shipping is assumed free or small (AliExpress Choice / local).
 
 ### 1.1 Robot — mechanical
 
