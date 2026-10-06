@@ -150,4 +150,5 @@ Weigh every bag in week 5 (see 04).
 | v0.1.1 | 2026-10-06 | Ownership recorded (single owner, peer review); CAD started for caddy, dummy drive, bay shelf |
 | v0.1.2 | 2026-10-06 | Rack + spare station CAD: dock stop moved in front of the rack (y = −30), approach tag on the right upright, real frame lengths and masses |
 | v0.1.3 | 2026-10-06 | Motion board v1 in KiCad (`pcb/motion-board`): buck modules off-board, hard-wired driver addresses, XT30 polarity, AUX input on GPIO38 |
+| v0.1.5 | 2026-10-06 | Y belt drive modeled: motor shaft-down behind the rail end, 20T pulley, idler fork, carriage belt clamp; robot 4.52 kg |
 | v0.1.4 | 2026-10-06 | Robot CAD v0 + checks: direct drive (axle y −135), nose z 30–90, swing-down fingers, tray camera window, caddy tag moved left, E-stop on the mast top; mass 4.49 kg; budget ≈ 478 USD |

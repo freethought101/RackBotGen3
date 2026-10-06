@@ -18,7 +18,7 @@ Frame for all bay-side parts: x = across the bay (0 = centerline), y = into the 
 | rack.py | STEP/rack.step | Rack assembly: 2020 frame, 4 shelves, caddies, dock, tags, Delta PSU/PLC placeholders | — |
 | spare_station.py | STEP/spare_station.step | Spare station assembly: S1 GOOD / S2 RMA | — |
 
-| robot/*.py | STEP/robot/…, STL/robot/… | 13 printed robot parts: nose, deck, drive_bracket (×2, one mirrored), mast_collar, mast_top_plate, z_carriage, tray_stack, rail_bracket, y_carriage, finger (×2), electronics_tray, pi_tray, battery_box | PETG |
+| robot/*.py | STEP/robot/…, STL/robot/… | 14 printed robot parts: nose, deck, drive_bracket (×2, one mirrored), mast_collar, mast_top_plate, z_carriage, tray_stack, rail_bracket, y_idler_bracket, y_carriage (with belt clamp), finger (×2), electronics_tray, pi_tray, battery_box | PETG |
 | robot_assembly.py | STEP/robot_assembly.step | Robot at a travel pose (Z 210, extractor home) | — |
 | robot_docked.py | STEP/robot_docked.step | Rack + robot docked, extracting from bay 2 (Y = 175, finger B engaged) | — |
 

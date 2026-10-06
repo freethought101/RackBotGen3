@@ -40,7 +40,16 @@ def nema17_z(x, y, z_bottom, label, length=40.0, shaft_up=True):
     body = box(x - 21.15, x + 21.15, y - 21.15, y + 21.15, z_bottom, z_bottom + length)
     if shaft_up:
         body += cyl_z(5.0, x, y, z_bottom + length, z_bottom + length + 22.0)
+    else:
+        body += cyl_z(5.0, x, y, z_bottom - 22.0, z_bottom)
     return _tag(body, label, BLACK)
+
+
+def gt2_wheel(x, y, z0, z1, core_d, flange_d, label, bore=5.0):
+    """GT2 pulley or idler: toothed core across the belt band [z0, z1], flanges just outside it."""
+    w = cyl_z(core_d, x, y, z0, z1) + cyl_z(flange_d, x, y, z0 - 1.0, z0) + cyl_z(flange_d, x, y, z1, z1 + 1.0)
+    w -= cyl_z(bore, x, y, z0 - 1.1, z1 + 1.1)
+    return _tag(w, label, STEEL)
 
 
 def nema17_y(x, y_face, z, direction, label, length=40.0):

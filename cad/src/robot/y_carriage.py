@@ -10,14 +10,16 @@ from cadgen import step, stl
 
 from lib.dims import M3_CLEAR
 from lib.prims import box, cyl_z
-from lib.robot_dims import (ARM_DY, ARM_X, FINGER_DZ, FINGER_X, SERVO, SERVO_FACE_DY, YCARRIAGE_DY,
-                            YRAIL_DZ, YRAIL_X)
+from lib.robot_dims import (ARM_DY, ARM_X, BELT_DZ, BELT_STRAND_X, FINGER_DZ, FINGER_X, SERVO, SERVO_FACE_DY,
+                            YCARRIAGE_DY, YRAIL_DZ, YRAIL_X)
 
 TOP_T = 6.0
 SKIRT_T = 4.0
 LEDGE_X0 = 61.5
 LEDGE_DEPTH = 5.0           # along +y, in front of the servo tabs
 LEDGE_H = 4.5
+CLAMP_DY = (-80.0, -56.0)   # belt clamp y span relative to the finger pivot
+CLAMP_JAW = 3.0
 
 
 def ledge_spans(f):
@@ -42,6 +44,13 @@ def y_carriage():
             part += box(LEDGE_X0, ARM_X[0], tab_y, tab_y + LEDGE_DEPTH, z0, z1)
             part -= bd.Pos(FINGER_X, tab_y - 0.1, (z0 + z1) / 2) * bd.Rot(-90, 0, 0) * bd.Cylinder(
                 1.0, LEDGE_DEPTH + 0.2, align=(bd.Align.CENTER,) * 2 + (bd.Align.MIN,))   # M2 pilot
+    # Belt clamp on the skirt's outer face: the inner belt strand runs through the slot and is pinched
+    # by a screw through the jaw (teeth face the jaw's printed GT2 profile).
+    skirt_out = YRAIL_X[1] + 1.0 + SKIRT_T
+    sx0, sx1 = BELT_STRAND_X[0]
+    clamp = box(skirt_out, sx1 + 0.4 + CLAMP_JAW, *CLAMP_DY, BELT_DZ[0] - 1.5, BELT_DZ[1] + 1.5)
+    clamp -= box(sx0 - 0.4, sx1 + 0.4, CLAMP_DY[0] - 0.1, CLAMP_DY[1] + 0.1, BELT_DZ[0] - 0.5, BELT_DZ[1] + 0.5)
+    part += clamp
     # V-wheel axle holes: two on the top plate (riding the rail top groove), two on the skirt.
     yc = [YCARRIAGE_DY[0] + 10.0, YCARRIAGE_DY[1] - 10.0]
     for y in yc:

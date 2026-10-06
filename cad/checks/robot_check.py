@@ -19,12 +19,13 @@ from rack import rack
 from spare_station import spare_station
 
 failures = []
-EXPECTED_CONTACT = {frozenset(p) for p in [("kp08", "leadscrew_tr8x2"), ("nema17:z", "coupler")]}
+EXPECTED_CONTACT = {frozenset(p) for p in [("kp08", "leadscrew_tr8x2"), ("nema17:z", "coupler"),
+                                            ("nema17:y", "gt2_pulley_20t")]}   # shafts inside hubs
 PRINTED_DENSITY = 1.27e-3 * 0.5          # PETG, ~50 % effective fill
 EXTRUSION_G_PER_MM = {"2020": 0.5, "2040": 0.9}
 VENDOR_G = {"nema17": 280, "mg90s": 14, "wheel": 60, "caster": 35, "kp08": 40, "leadscrew": 130, "coupler": 15,
             "motion_board": 130, "raspberry_pi_3": 45, "battery_4s1p": 220, "estop_box": 45, "estop_button": 15,
-            "buck": 25, "camera_module_3_wide": 5}
+            "buck": 25, "camera_module_3_wide": 5, "gt2_pulley": 10, "gt2_idler": 8, "gt2_belt": 5}
 CADDY_G = 750.0
 BAG = sorted((560.0, 360.0, 230.0))
 
@@ -282,7 +283,7 @@ for name, c in (("empty", cg), ("2 caddies, Z max", cg_l)):
 
 # 8. Packing (carry-on 56 x 36 x 23 cm): base unit vs removable mast unit (mast, carriage, tray, Y axis).
 mast_keys = ("mast_2040", "mast_top_plate", "leadscrew", "kp08", "z_carriage", "tray_stack", "rail_bracket",
-             "y_rail", "nema17:y", "camera", "y_carriage", "mg90s", "finger", "estop")
+             "y_rail", "nema17:y", "camera", "y_carriage", "mg90s", "finger", "estop", "gt2", "y_idler")
 z = Z_MIN
 everything = base + flatten(lift_parts(z) + extractor_parts(z, 0.0, {}))
 for unit, members in (("base unit", [b for b in everything if not b[0].startswith(mast_keys)]),

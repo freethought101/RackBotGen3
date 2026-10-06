@@ -65,7 +65,7 @@ TRAY_TOP_DZ = SLOT_A_DZ + CADDY_H + 5.0   # 80
 YRAIL_X = (82.0, 102.0)
 YRAIL_DZ = (15.0, 35.0)              # relative to Z
 YRAIL_Y = (-320.0, -35.0)
-YBRACKET_Y = (-366.0, -228.0)        # rail is held only at its rear end (behind the carriage travel)
+YBRACKET_Y = (-368.0, -228.0)        # rail is held only at its rear end (behind the carriage travel)
 YBRACKET_X = (76.0, 82.0)
 YBRACKET_DZ = (15.0, 33.0)
 ARM_X = (74.5, 80.5)
@@ -91,5 +91,16 @@ PI_XY = (-123.0, -346.0)             # Pi 3 corner (85 along x, 56 along y)
 BATTERY = (-118.0, -38.0, -387.5, -352.0, DECK_Z[1], DECK_Z[1] + 50.0)
 ESTOP_XY = (-22.0, -255.0)           # on the mast top plate: highest, easiest point to hit
 BUCKS = [(-50.0, -205.0), (7.0, -205.0)]      # 43 x 20 modules (x0, y0) on the deck under the tray
-YMOTOR_X = (82.5, 124.8)             # behind the rail end, keeps the mast unit <= 230 wide
-YMOTOR_Y = (-362.0, -320.0)
+# Y drive: GT2 6 mm belt loop in a horizontal plane beside the rail's outer face. 20T pulley behind the
+# rail end on the Y motor (shaft pointing down, body above the belt), idler on a fork bracket at the rail's
+# front end, carriage clamps the inner strand. 200 x 16 / (20 x 2 mm) = 80 usteps/mm.
+BELT_X = 115.0                       # pulley / idler axis x
+PULLEY_Y, IDLER_Y = -345.0, -44.0
+BELT_DZ = (19.0, 25.0)               # belt width band relative to Z
+PULLEY_CORE_D, PULLEY_FLANGE_D = 12.0, 16.0
+BELT_T = 1.1
+BELT_STRAND_X = [(BELT_X - PULLEY_CORE_D / 2 - BELT_T, BELT_X - PULLEY_CORE_D / 2),
+                 (BELT_X + PULLEY_CORE_D / 2, BELT_X + PULLEY_CORE_D / 2 + BELT_T)]   # inner, outer strand
+YMOTOR_PLATE_DZ = (28.0, 32.0)       # horizontal motor plate; motor body sits on top
+YMOTOR_DZ = (YMOTOR_PLATE_DZ[1], YMOTOR_PLATE_DZ[1] + 40.0)
+IDLER_BRACKET_Y = (-50.0, -35.0)     # fork on the rail's outer face, ahead of the carriage at Y max (-52)

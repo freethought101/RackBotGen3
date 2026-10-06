@@ -105,10 +105,10 @@ All numbers live in `cad/src/lib/robot_dims.py`. `cad/checks/robot_check.py` ver
 | Item | Value |
 |---|---|
 | Footprint | 300 W (wheels) × 360 L (incl. 60 mm nose); height ≈ 550 to the E-stop on the mast top |
-| Mass | **4.49 kg** without caddies (printed 0.82, purchased 2.07, extrusions + hardware 1.60) — target ≤ 4.7 |
+| Mass | **4.52 kg** without caddies (printed 0.82, purchased 2.10, extrusions + hardware 1.60) — target ≤ 4.7 |
 | CG | empty (−1, −235, 144); with 2 caddies at Z max (−1, −204, 191) mm |
 | Tip-over | CG ≥ 69 mm behind the drive axle (needs > 6 mm at 0.3 m/s² braking), ≥ 145 mm ahead of the rear casters, ≥ 64 mm sideways |
-| Packing | base unit 363 × 298 × 130, mast unit 486 × 341 × 217 → both fit a 56 × 36 × 23 cm carry-on |
+| Packing | base unit 363 × 298 × 130, mast unit 486 × 343 × 229 → both fit a 56 × 36 × 23 cm carry-on (mast unit depth has 1 mm margin) |
 | Speeds | Drive 150 mm/s cruise, 50 mm/s final approach. Z 15 mm/s. Y 60 mm/s |
 
 ### 6.2 Base & drive (X / turning)
@@ -145,7 +145,12 @@ All numbers live in `cad/src/lib/robot_dims.py`. `cad/checks/robot_check.py` ver
 ### 6.5 Y extractor
 
 - 2020 Y rail x 82–102, y −320…−35, z Z+15…Z+35, held **only at its rear end** by a printed rail bracket (beside the
-  rail, behind the carriage travel); NEMA17 + GT2 belt with the motor behind the rail end (x 82–125, y −362…−320).
+  rail, behind the carriage travel).
+- **Belt drive**: GT2 6 mm belt loop in a horizontal plane beside the rail's outer face (z Z+19…Z+25, strands at
+  x ≈ 108 and 122). **20T pulley** at (115, −345) behind the rail end on the Y NEMA17, which sits on a horizontal
+  plate of the rail bracket with its **shaft pointing down** (body above the belt, clear of the motion board).
+  **Idler** at (115, −44) in a printed **fork bracket** on the rail's outer face (slotted ±3 mm for tension), ahead of
+  the carriage at full stroke. A **clamp on the carriage skirt** grips the inner strand. 200 × 16 / (20 × 2) = 80 µsteps/mm.
 - **Y carriage** rides the rail's top and outer faces (mini V-wheels, no inner skirt); its arm hangs inside the rail.
 - **Fingers swing about an axis along y**: each MG90S has its output shaft pointing +y and sits *behind* its finger, so
   nothing on the extractor passes the rack face (y ≤ −8 at full stroke). Parked = finger up; engaged = finger
@@ -183,8 +188,9 @@ All numbers live in `cad/src/lib/robot_dims.py`. `cad/checks/robot_check.py` ver
 | Mast collar, mast top plate | 1 + 1 | PETG | |
 | Z carriage (plate, nut block, V-wheel arms) | 1 | PETG | |
 | Tray stack (incl. camera mount) | 1 | PETG | ≈ 153 × 197 × 104 |
-| Rail bracket (incl. Y motor plate) | 1 | PETG | |
-| Y carriage + finger arm | 1 | PETG | |
+| Rail bracket (incl. horizontal Y motor plate) | 1 | PETG | |
+| Y idler bracket (fork) | 1 | PETG | |
+| Y carriage + finger arm + belt clamp | 1 | PETG | |
 | Fingers | 2 | PETG/nylon | |
 | Electronics tray, Pi tray, battery box | 1 + 1 + 1 | PETG | |
 
