@@ -16,7 +16,8 @@ Open checks and to-dos collected from the spec, the CAD and PCB work, and review
 - [ ] **TMC2209 module pinout**: check the module silkscreen against the Pololu layout used (EN, MS1, MS2, PDN_UART, PDN_UART2, CLK, STEP, DIR / VM, GND, 2B, 2A, 1A, 1B, VDD, GND), especially UART on pin 4 vs 5.
 - [ ] **XT30 polarity**: pad 2 = +, pad 1 = −; confirm against the connector you bought and the battery lead.
 - [ ] DevKit onboard RGB LED pin (GPIO38 or 48 depending on revision): confirm it does not conflict with AUX_IN (GPIO38) / BUZZER (GPIO48).
-- [ ] Optional: tidy the 13 silkscreen-only DRC items in the KiCad PCB editor.
+- [ ] StepStick pin 6 (CLK, tied to GND on the board) on the bought modules — some modules wire pins 5/6 differently.
+- [ ] Optional: tidy the 15 silkscreen-only DRC items in the KiCad PCB editor.
 - [ ] Upload `fab/rbg3-motion-gerbers.zip` to JLCPCB and check their viewer (2 layers, 1.6 mm, 1 oz).
 
 ## Before printing the full set
@@ -30,19 +31,38 @@ Open checks and to-dos collected from the spec, the CAD and PCB work, and review
 ## Verify against purchased hardware (then update the CAD stand-ins)
 
 - [x] Y axis belt drive modeled (motor shaft-down behind the rail end, 20T pulley, idler fork, carriage clamp); robot checks pass.
-- [ ] Y belt parts vs real hardware: 20T pulley (5 mm bore, flange Ø ≈ 16), GT2 idler on an M5 axle, belt length (≈ 0.65 m open belt), clamp slot fits the belt; tension range of the idler slot (±3 mm).
-- [ ] Mast unit packs at 229 mm deep vs the 230 mm bag limit (1 mm margin): check with the real bag, or pack the Y motor separately.
+- [ ] Y belt parts vs real hardware: 20T pulley (5 mm bore, flange Ø ≈ 16), GT2 idler on an M5 axle, belt length (≈ 0.65 m open belt), clamp slot fits the belt (real GT2 6 mm ≈ 1.38 mm thick; CAD 1.1); tension range of the idler slot (±3 mm).
+- [ ] Mast unit packs at 228 mm deep **with the Y motor removed** (230 with it fitted) vs the 230 mm bag limit: check with the real bag.
 - [ ] NEMA17 (42 × 42 × 40, 5 mm shaft, 31 mm hole pitch) and the direct-drive wheel hub fit (wheel x 125–149 on a 22 mm shaft).
 - [ ] MG90S dimensions (22.8 × 12.2 × 28.5, shaft 5.9 mm from the end, tab size) vs the y_carriage ledges.
-- [ ] V-wheels / eccentric spacers on the 2040 mast and the 2020 Y rail (not modeled; carriage arms have 1 mm gaps).
-- [ ] Ball caster heights: rear 42 mm (table to rail bottom), front anti-tip 27 mm (3 mm gap).
-- [ ] KP08, Tr8×2 nut and coupler dimensions vs the mast top plate and nut block.
-- [ ] DevKit plugged-in height (~8.5 mm sockets) clears the RC parts underneath; Y motor ≥ 14 mm above the motion board components.
+- [ ] Mini V-wheels / eccentric spacers (modeled Ø15.2 × 8.8, rim 1.6 mm in the groove, spacer Ø10): measure the real wheel and spacer; adjust `ZWHEEL_X` / `YWHEEL_DZ`.
+- [ ] Ball caster heights: rear 42 mm (table to rail bottom), front anti-tip 23.5 mm (6.5 mm gap, clears the dock floor plate).
+- [ ] KFL08 (48 × 27, 37 mm pitch), Tr8×2 nut (flange Ø22) and 5→8 coupler (Ø19 × 25) vs `KFL08`, `NUT_BLOCK_DZ`, `COUPLER_Z`.
+- [ ] DevKit plugged-in height (~8.5 mm sockets) clears the RC parts underneath; Y motor clears the motion board components.
 - [ ] Camera Module 3 Wide: works on Pi 3 with libcamera/Picamera2; CSI cable length (≈ 500 mm) and routing on the moving carriage.
 - [ ] Rack electronics placeholders (Delta PSU, DVP-12SE, relay, router, tower light, E-stop) vs real sizes on the DIN rail.
 - [ ] Delta 24 V DIN PSU: pick the exact part number from distributor stock (75–100 W, universal input).
 - [ ] Detail bolt patterns on the robot printed parts once the hardware is in hand (current parts are v0 for fit).
 - [ ] Cable routing: drag chain or spiral for the Z carriage (Y motor, servos, switches, camera).
+
+## From the independent review (v0.1.6)
+
+Fixed in the design: see 00 revision history v0.1.6. Still to verify on hardware or by test:
+
+- [ ] Charger module: measure IN− ↔ OUT− (low-side shunt?) before wiring; dock − only to the charger IN−; charge current ≤ 1.5 A on the INA226; glue the trim pots.
+- [ ] INA226 module has the 10 mΩ (R010) shunt.
+- [ ] Robot E-stop DC rating ≥ 5 A at 24 V.
+- [ ] Dock sense (J18) wired to the pad side, before the SS54; firmware: docked = NOSE and DOCK_V > 20 V.
+- [ ] Home switches wired NC (COM → GND, NC → SIG).
+- [ ] 90° USB-C cable with the cable exiting away from the board (J10/J11 are ≈ 13 mm from the port).
+- [ ] WS2812 works with 3.3 V data (else SK6812 / WS2812B-V5).
+- [ ] Finger/servo pull test: Y current set so a jam stalls at ≈ 15 N; 20 jammed pulls without the horn slipping (else add a carriage back-stop).
+- [ ] Tray floor deflection with 1 kg at the front-right of each slot ≤ 0.5 mm.
+- [ ] NEMA17 radial load rating vs ≈ 20 N per wheel (direct drive).
+- [ ] Rack and spare station don't slide when docking (≈ 17 N push); add a yaw criterion to T6.
+- [ ] Battery pack + BMS fit the 80 × 38.5 × 47.5 box (2 × 2 cells along x).
+- [ ] Buck/charger modules fit 56 × 27 × 20.
+- [ ] Tray slot switch lever triggers within ≥ 4 mm past the stop face.
 
 ## Rack / PLC bring-up
 

@@ -1,15 +1,17 @@
-"""Tray stack (PETG, one print ~122 x 197 x 104), modeled at Z = 0.
+"""Tray stack (PETG, one print 122 x 197 x 90), modeled at Z = 0. Print it standing on the back plate
+(slot floors vertical) so neither floor needs support.
 
 Two caddy slots stacked at the bay pitch: slot B floor at z = Z, slot A floor at z = Z + 45.
 Left wall full height; right side open above a 6 mm lip so the extractor fingers can reach the
 caddy notch. Rear stops hold the caddy handle 5 mm short of the back plate; KW11-3Z slot-presence
-switches sit in pockets behind the stops. The camera mount is on the left wall.
+switches sit in pockets behind the stops. The camera mount is on the left wall. The back plate takes M5
+heat-set inserts for the screws that come through the Z carriage plate from behind.
 """
 
 from cadgen import build123d as bd
 from cadgen import step, stl
 
-from lib.dims import CADDY_H, M5_CLEAR
+from lib.dims import CADDY_H
 from lib.prims import box, prism_yz
 from lib.robot_dims import (CAM_DZ, CAM_LENS, SLOT_A_DZ, TRAY_CHANNEL_W, TRAY_FLOOR_T, TRAY_FRONT_Y,
                             TRAY_REAR_Y, TRAY_RIGHT_LIP_H, TRAY_STOP_Y, TRAY_TOP_DZ, TRAY_WALL_T, TRAY_BOLTS, ZPLATE_DZ)
@@ -23,6 +25,7 @@ SWITCH_POCKET = (-12.0, 2.0)                  # x span of the KW11 pocket in the
 SWITCH_SLOT = (-10.0, -2.0)
 CAM_BLOCK = (-92.0, -61.0, -128.0, -100.0)    # x0, x1, y0, y1
 CAM_WINDOW = (-98.0, -38.0, 8.0, 26.0)        # y0, y1, z0, z1 in the left wall (slot B level)
+M5_INSERT_D, M5_INSERT_DEPTH = 6.4, 12.0       # heat-set insert pilot, from the back face
 
 
 def _y_hole(d, x, z, y0, y1):
@@ -51,9 +54,9 @@ def tray_stack():
     for z0 in (0.0, SLOT_A_DZ):
         part -= box(*SWITCH_POCKET, BACK_Y[0] + 3.0, BACK_Y[1] + 0.1, z0 + 2.0, z0 + 28.0)
         part -= box(*SWITCH_SLOT, BACK_Y[1] - 0.1, TRAY_STOP_Y + 0.1, z0 + 8.0, z0 + 22.0)
-    # Bolts to the Z carriage plate (pattern matches z_carriage.py).
+    # Inserts for the Z carriage plate screws (pattern matches z_carriage.py).
     for x, z in TRAY_BOLTS:
-        part -= _y_hole(M5_CLEAR, x, z, BACK_Y[0] - 0.1, BACK_Y[1] + 0.1)
+        part -= _y_hole(M5_INSERT_D, x, z, BACK_Y[0] - 0.1, BACK_Y[0] + M5_INSERT_DEPTH)
     # Camera mount on the left wall, lens looking +y at slot B level.
     cx0, cx1, cy0, cy1 = CAM_BLOCK
     lx, ly = CAM_LENS

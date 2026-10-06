@@ -21,7 +21,7 @@ def electronics_tray():
     part -= box(x + 15, x + 85, y + 15, y + 85, z0 - 0.1, z0 + T + 0.1)          # wiring window
     for hx in (x + HOLE_INSET, x + 100 - HOLE_INSET):
         for hy in (y + HOLE_INSET, y + 100 - HOLE_INSET):
-            part += cyl_z(7.0, hx, hy, z0, PCB_Z)
+            part += cyl_z(9.0, hx, hy, z0, PCB_Z)           # 2.5 mm wall around the insert
             part -= cyl_z(M3_INSERT_D, hx, hy, PCB_Z - 5.0, PCB_Z + 0.1)
     for hx in (x - MARGIN + 6, x + 100 + MARGIN - 6):
         part -= cyl_z(M3_CLEAR, hx, y + 50, z0 - 0.1, z0 + T + 0.1)               # to the deck

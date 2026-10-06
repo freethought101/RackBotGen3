@@ -28,18 +28,20 @@ PLACEMENT = {
     "J4": (112.0, 104.5, 0, "F"), "J5": (126.5, 104.5, 0, "F"),
     "J6": (141.0, 104.5, 0, "F"), "J7": (155.5, 104.5, 0, "F"),
     # Power and switch connectors along the bottom edge.
-    "J1": (117.0, 194.0, 0, "F"), "J2": (125.0, 194.5, 0, "F"), "J3": (136.5, 194.5, 0, "F"),
+    # J1 XT30 rotated so its mating face sits 1.7 mm past the bottom edge (plug enters from outside).
+    "J1": (111.9, 188.5, 180, "F"), "J2": (125.0, 194.5, 0, "F"), "J3": (136.5, 194.5, 0, "F"),
     "J8": (149.0, 195.5, 0, "F"), "J9": (160.0, 195.5, 0, "F"), "J10": (171.0, 195.5, 0, "F"),
     "J11": (182.0, 195.5, 0, "F"),
-    # Two more switch connectors one row up, below the DevKit module.
-    "J12": (172.0, 186.0, 0, "F"), "J13": (183.0, 186.0, 0, "F"),
+    # Two more switch connectors left of the DevKit USB end (a USB plug occupies y 179.5-191 under
+    # the module, so nothing tall goes there).
+    "J12": (155.0, 175.5, 0, "F"), "J13": (155.0, 183.5, 0, "F"),
     # Small connectors along the left edge.
     "J16": (104.5, 112.0, 270, "F"), "J17": (104.5, 129.0, 270, "F"), "J18": (104.5, 142.0, 270, "F"),
     "J19": (104.5, 152.0, 270, "F"),
     # Servo headers next to the 6 V input terminal J3.
     "J14": (127.0, 184.0, 90, "F"), "J15": (137.0, 184.0, 90, "F"),
-    # Power input protection near J1.
-    "C9": (116.0, 175.0, 0, "F"), "D1": (145.0, 175.0, 90, "F"),
+    # Power input protection: TVS right next to J1 (a reversed harness clamps into the fuse), bulk cap above.
+    "C9": (116.0, 175.0, 0, "F"), "D1": (108.5, 181.0, 90, "F"),
     # Sense dividers.
     "R1": (150.0, 172.0, 0, "F"), "R2": (150.0, 175.0, 0, "F"), "C10": (150.0, 178.0, 0, "F"),
     "R3": (110.0, 142.0, 90, "F"), "R4": (110.0, 146.0, 90, "F"), "C11": (110.0, 136.5, 90, "F"),

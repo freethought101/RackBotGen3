@@ -5,6 +5,7 @@ Run from cad/:  PYTHONPATH=src python checks/bay_fit_check.py
 
 from itertools import combinations
 
+from cadgen import build123d as bd
 from cadgen import read_scene, read_step
 from cadgen.geometry import closest_points, overlap_volume
 
@@ -94,9 +95,11 @@ expect("drive top below caddy top", sb.max.Z <= cb.max.Z, f"drive top z={sb.max.
 expect("handle block protrudes 20 mm from rack face", abs(cb.min.Y + 20.0) < 1e-6, f"caddy min y={cb.min.Y:.2f}")
 expect("caddy rear at back stop (y=150)", abs(cb.max.Y - 150.0) < 1e-6, f"caddy max y={cb.max.Y:.2f}")
 
-# Lateral clearance: caddy rails (|x| 57) vs shelf guide walls (|x| 58) -> 1 mm per side.
-lat = 58.0 - cb.max.X
-expect("lateral clearance per side 0.8-1.5 mm", 0.8 <= lat <= 1.5, f"{lat:.2f} mm")
+# Lateral clearance, measured: lift the caddy 3 mm off the floor and back it 3 mm off the stop, so the
+# nearest shelf feature is a guide wall (as long as that clearance is under 3 mm).
+lifted = caddy.moved(bd.Location((0.0, -3.0, 3.0)))
+lat = closest_points(lifted, shelf_lo).distance
+expect("lateral clearance per side 0.8-1.5 mm (measured)", 0.8 <= lat <= 1.5, f"{lat:.2f} mm")
 
 if failures:
     raise SystemExit(f"\n{len(failures)} check(s) failed: {failures}")

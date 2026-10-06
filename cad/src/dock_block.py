@@ -42,7 +42,7 @@ CONTACT_SCREW_DZ = 8.0
 # Dock-detect KW11-3Z: same mounting scheme as the bay shelf.
 SWITCH_SLOT = (-4.0, 4.0, 70.0, 85.0)  # x0, x1, z0, z1
 BRACKET_X = (4.0, 7.0)
-SWITCH_HOLE_D = 2.0
+SWITCH_HOLE_D = 1.7            # M2 self-tapping pilot
 SWITCH_HOLE_Z = (69.75, 79.25)
 SWITCH_ADJUST = 2.0
 

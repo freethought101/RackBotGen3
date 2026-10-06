@@ -14,16 +14,16 @@ The live, per-part order list is the Notion **Parts & Order List** database, mir
 | Item | Qty | USD |
 |---|---|---|
 | NEMA17 42×40, ≥ 0.4 N·m | 4 | 36 |
-| 2020 V-slot ≈ 5.2 m + 2040 V-slot 0.45 m (robot + rack + spare station) | — | 30 |
+| 2020 V-slot 6 × 1 m (4.96 m of cuts + kerf) + 2040 V-slot 0.42 m (robot + rack + spare station) | — | 35 |
 | Mini V-wheel kits | 8 | 12 |
-| Tr8×2 lead screw 400 + anti-backlash nut + coupler + KP08 | 1 | 12 |
+| Tr8×2 lead screw 350 + anti-backlash nut + coupler + KFL08 flange bearing | 1 | 12 |
 | GT2 belt (Y axis), 20T, idler | set | 6 |
 | Wheels 80 mm, 5 mm bore hub (direct drive) | 2 | 10 |
 | Ball casters (2 rear + 1 anti-tip) | 3 | 7 |
 | MG90S servo | 3 | 8 |
-| Lever microswitches KW11-3Z | 12 | 6 |
-| Fastener kit (M5 T-nuts/screws, corner brackets, M3 + heat-set inserts) | — | 20 |
-| **Subtotal** | | **147** |
+| Lever microswitches KW11-3Z (13 + 2 spare) | 15 | 6 |
+| Fastener kit (~120 M5 T-nuts, screws, ~48 corner brackets, M3 + heat-set inserts) | — | 25 |
+| **Subtotal** | | **157** |
 
 ### 1.2 Robot — electronics
 
@@ -36,12 +36,13 @@ The live, per-part order list is the Notion **Parts & Order List** database, mir
 | ESP32-S3-DevKitC-1 | 1 | 10 |
 | TMC2209 StepStick | 4 | 16 |
 | Buck 5 V/5 A + buck 6 V/3 A + CC/CV charger module | 3 | 12 |
-| INA226 module | 1 | 4 |
+| INA226 module (**10 mΩ / R010** shunt version) | 1 | 4 |
 | 18650 3.5 Ah × 4 + 4S BMS + holder/nickel strip | set | 30 |
 | XT60/XT30, fuse holder, rocker switch, robot E-stop, silicone wire, JST-XH kit | set | 25 |
 | Motion PCB, JLCPCB 5 pcs + shipping | 1 | 25 |
 | Passives, headers, StepStick sockets, TVS, caps, WS2812, buzzer | set | 12 |
-| **Subtotal** | | **180** |
+| USB-A to USB-C cable, 90° C plug (Pi → DevKit) | 1 | 3 |
+| **Subtotal** | | **183** |
 
 ### 1.3 Rack & spare station — electrical
 
@@ -72,13 +73,13 @@ The live, per-part order list is the Notion **Parts & Order List** database, mir
 
 | | USD |
 |---|---|
-| Robot mechanical | 147 |
-| Robot electronics | 180 |
+| Robot mechanical | 157 |
+| Robot electronics | 183 |
 | Rack electrical | 74 |
 | Printing & demo | 77 |
-| **Total** | **≈ 478** (of 500) |
+| **Total** | **≈ 491** (of 500) |
 
-The margin is thin. **Savings options** (use them if prices come in higher, or a router must be bought):
+The margin is thin (≈ 9 USD after the v0.1.6 review fixes). **Savings options** (use them if prices come in higher, or a router must be bought):
 TPU-printed wheels instead of bought (−10) · wide-angle OV5647 camera instead of Module 3 Wide (−20, more distortion) ·
 3 panel LEDs instead of the tower light (−7) · team-owned filament or fasteners (−20 to −50) · drop the 3rd servo and spare switches (−5).
 **PLC**: request a loan from Delta Thailand this week. If none, use the ESP32 fallback rack controller (≈ +20 USD, see 02 §4.4).

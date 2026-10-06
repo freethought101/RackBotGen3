@@ -369,7 +369,7 @@
         "pattern": "/+5V"
       },
       {
-        "netclass": "Supply",
+        "netclass": "Power",
         "pattern": "/+6V_SERVO"
       },
       {

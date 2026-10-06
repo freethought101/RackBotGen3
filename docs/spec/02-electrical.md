@@ -10,21 +10,22 @@ Status: Draft v0.1. The motion board (§3) is the KiCad deliverable. Everything 
 |---|---|
 | Battery | **4S1P 18650**, 3.5 Ah cells (e.g. Samsung 35E / LG MJ1), 14.4 V nominal, 16.8 V full, 12.0 V cutoff → **50.4 Wh** (airline < 100 Wh) |
 | BMS | 4S, ≥ 15 A, common port (charge and discharge on the same P+/P−), balancing |
-| Main fuse / switch | 10 A blade fuse + 10 A rocker switch at the battery box |
-| E-stop | Robot mushroom (NC, ≥ 10 A) cuts **VMOT only** (steppers and servos). Logic stays alive to report the E-stop. The Z lead screw is self-locking, so the load cannot drop |
-| Energy meter | **INA226** module (10 mΩ shunt, ±8 A) between battery+ and the main bus. **+ current = discharge, − = charging** |
-| Charging | Dock pads → Schottky (SS54) → **CC/CV buck (XL4015-type) set 16.8 V / 1.5 A** → main bus (feeds loads + charges through the BMS). Full charge ≈ 2.5 h; the dock also tops up between demo runs |
-| Dock sense | Dock pad voltage divider → ESP32 ADC (`DOCK_V`). Charger present = docked and PLC enabled dock power |
+| Main fuse / switch | 10 A blade fuse **first, at the battery P+** (so everything after it, INA226 included, is fused) + 10 A rocker switch at the battery box |
+| E-stop | Robot mushroom (NC) cuts **VMOT only** (steppers and servos). Contact must be rated **≥ 5 A DC at 24 V** ("10 A" ratings are usually AC). Logic stays alive to report the E-stop. The Z lead screw is self-locking (dry/POM nut; marginal if greased), so the load cannot drop. Cutting VMOT resets the TMC2209 registers; firmware re-configures them before re-enabling (03 §8) |
+| Energy meter | **INA226** module (**10 mΩ / R010** shunt, ±8 A; many modules ship with R100) between the fuse and the main bus. **+ current = discharge, − = charging** |
+| Charging | Dock pads → Schottky (SS54) → **CC/CV buck (XL4015-type) set 16.8 V / 1.5 A** → main bus (feeds loads + charges through the BMS). Full charge ≈ 2.5 h; the dock also tops up between demo runs. **Charger grounding:** most XL4015 CC/CV boards sense current with a shunt between IN− and OUT−. Dock − connects **only** to the charger IN−, never to robot GND, or the current limit is bypassed (measure IN−↔OUT− on the bought module first). Lock the CV/CC trim pots with glue after setting and re-check before the event. The Pi turns dock power off (Modbus M0) once charge current tapers below 0.2 A |
+| Dock sense | Dock **pad side, before the SS54** (so the charger cannot backfeed it) → divider → ESP32 ADC (`DOCK_V`, J18). Divider low side on robot GND (≈ 75 mV error from the charger shunt, negligible). **Docked = DOCK_V > 20 V** and PLC enabled dock power |
 
 ```mermaid
 flowchart LR
-  BAT["4S Li-ion 50 Wh\n+ BMS"] --> INA["INA226\nshunt"] --> F["Fuse 10 A\n+ main switch"] --> BUS["VBAT bus\n12-16.8 V"]
+  BAT["4S Li-ion 50 Wh\n+ BMS"] --> F["Fuse 10 A\n+ main switch"] --> INA["INA226\nshunt"] --> BUS["VBAT bus\n12-16.8 V"]
   DOCK["Dock pads 24 V"] --> D["SS54"] --> CHG["CC/CV 16.8 V 1.5 A"] --> BUS
+  DOCK -. "DOCK_V (pad side)" .-> ESP
   BUS --> ES["E-stop (NC)"] --> VMOT["VMOT"]
   VMOT --> TMC["4x TMC2209"]
   VMOT --> B6["Buck 6 V 3 A"] --> SERVO["2x MG90S"]
   BUS --> B5["Buck 5.15 V 5 A"] --> PI["Raspberry Pi 3\n(micro-USB pigtail)"]
-  PI -- USB --> ESP["ESP32-S3 DevKitC-1\n(powered over USB)"]
+  PI -- "USB (90° C plug)" --> ESP["ESP32-S3 DevKitC-1\n(powered over USB)"]
 ```
 
 Power estimate: idle ≈ 4 W (Pi + logic), moving ≈ 12–20 W. **≈ 0.6–1.0 Wh per 3-min swap**, so a full battery lasts ≈ 2.5 h of continuous cycling.
@@ -34,22 +35,22 @@ Wire: battery/VMOT 18 AWG, motors 22–24 AWG, signals 26 AWG. Connectors: XT60 
 ## 2. Compute & motion control
 
 - **Raspberry Pi 3B/3B+**: Raspberry Pi OS Lite 64-bit, headless. Camera Module 3 Wide on CSI (500 mm flex). USB to the ESP32 (serial). Wi-Fi client on the rack network.
-- **ESP32-S3-DevKitC-1** (N8 or N16, no octal PSRAM required) plugged into the motion board. **Powered over USB from the Pi.** The DevKit 5V pin is *not* connected to the board 5 V (prevents backfeed).
+- **ESP32-S3-DevKitC-1** (N8 or N16R8; **not** the -V 1.8 V variants, which put GPIO47/48 at 1.8 V) plugged into the motion board. **Powered over USB from the Pi** with a USB-A → USB-C cable whose C plug is **right-angled, cable exiting away from the board** (a straight plug reaches the switch connectors J10/J11 on the bottom edge). The DevKit 5V pin is *not* connected to the board 5 V (prevents backfeed).
 - **4 × TMC2209 StepStick** (e.g. BTT v1.3), one shared single-wire UART, VIO from ESP32 3V3 (drivers disabled if the ESP32 is unpowered).
 
 | Driver | UART addr (MS1/MS2) | Motor | Run current (rms) | Microsteps |
 |---|---|---|---|---|
-| U1 | 0 | Drive left | 1.0 A | 16 (interpolated) |
-| U2 | 1 | Drive right | 1.0 A | 16 |
-| U3 | 2 | Z lift | 0.9 A (hold 0.5 A) | 16 |
-| U4 | 3 | Y extractor | 0.6 A | 16 |
+| U2 | 0 | Drive left | 1.0 A | 16 (interpolated) |
+| U3 | 1 | Drive right | 1.0 A | 16 |
+| U4 | 2 | Z lift | 0.9 A (hold 0.5 A) | 16 |
+| U5 | 3 | Y extractor | 0.6 A | 16 |
 
 ## 3. Motion board (KiCad PCB)
 
 Two-layer module carrier, **100 × 100 mm**, 1 oz copper, 4 × M3 holes at 93 × 93 pitch.
 Ordered from JLCPCB **by 14 Oct**. The same schematic can be built on perfboard as a fallback.
 **Implemented in `pcb/motion-board/`** (KiCad 10, ERC/DRC clean; see its README for the pre-order checklist).
-As built: VMOT/GND traces 1.0 mm + GND pours on both layers, motor traces 0.6 mm, supplies 0.5 mm, signals 0.25 mm.
+As built: VMOT/GND traces 1.0 mm + GND pours on both layers, motor traces 0.6 mm, +6 V servo 1.0 mm, other supplies 0.5 mm, signals 0.25 mm.
 
 ### 3.1 ESP32-S3 pin map
 
@@ -62,11 +63,11 @@ As built: VMOT/GND traces 1.0 mm + GND pours on both layers, motor traces 0.6 mm
 | 8 | STEPPER_EN_N | out | Shared, active low, 10 k pull-up to 3V3 (disabled at boot) |
 | 9 | TMC_UART_TX | out | Through 1 k to the single-wire PDN_UART bus |
 | 10 | TMC_UART_RX | in | Direct to the bus |
-| 1 | VMOT_SENSE | ADC | 100 k / 22 k divider (16.8 V → 3.03 V). Below 9 V means E-stop pressed or VMOT off |
+| 1 | VMOT_SENSE | ADC | 100 k / 18 k divider (16.8 V → 2.56 V, readable to ≈ 20 V). Below 9 V means E-stop pressed or VMOT off |
 | 2 | DOCK_V_SENSE | ADC | 100 k / 10 k divider (24 V → 2.18 V) |
-| 11 | Z_HOME | in | Switch to GND, active low |
-| 12 | Y_HOME | in | " |
-| 13 | NOSE | in | Nose dock switch (both stations) |
+| 11 | Z_HOME | in | **NC** contact to GND: closed (low) = not at home; open (high) = at home **or broken wire** (fail-safe) |
+| 12 | Y_HOME | in | " (NC, fail-safe) |
+| 13 | NOSE | in | Nose dock switch (both stations), NO to GND, active low |
 | 14 | SLOT_A | in | Tray slot A presence |
 | 21 | SLOT_B | in | Tray slot B presence |
 | 39 | SERVO_A | out | Finger A, 330 Ω series |
@@ -84,15 +85,15 @@ Switch inputs: internal pull-up + 10 k external pull-up to 3V3, 1 k series, 100 
 | Ref | Type | Pins |
 |---|---|---|
 | J1 VMOT | XT30PW-M (horizontal) | **pad 1 = GND (−), pad 2 = VMOT (+)** (after E-stop) |
-| J2 5V_IN | 2-pin 5.08 screw terminal | +5 V, GND from the 5 V buck (which also feeds the Pi) |
-| J3 6V_SERVO_IN | 2-pin 5.08 screw terminal | +6 V, GND from the servo buck |
-| J_M1…J_M4 | JST-XH 4-pin | 2B, 2A, 1A, 1B (match the StepStick pinout) |
-| J8…J13 | JST-XH 3-pin | GND, SIG, 3V3 (Z_HOME, Y_HOME, NOSE, SLOT_A, SLOT_B, AUX_IN on GPIO38) |
-| J_SERVO_A/B | 2.54 3-pin header | GND, 6 V, SIG |
-| J_I2C | JST-XH 4-pin | 3V3, GND, SDA, SCL |
-| J_LED | JST-XH 3-pin | 5 V, DIN, GND |
-| J_DOCK | JST-XH 2-pin | DOCK_V, GND |
-| J_BUZ | 2-pin | Buzzer |
+| J2 5V_IN | 2-pin 5.08 screw terminal | +5 V, GND from the 5 V buck (which also feeds the Pi). Not reverse-protected: polarity on the silkscreen |
+| J3 6V_SERVO_IN | 2-pin 5.08 screw terminal | +6 V, GND from the servo buck. Not reverse-protected: polarity on the silkscreen |
+| J4…J7 (MOTOR_L/R/Z/Y) | JST-XH 4-pin | 2B, 2A, 1A, 1B (match the StepStick pinout) |
+| J8…J13 | JST-XH 3-pin | GND, SIG, 3V3 (Z_HOME, Y_HOME, NOSE, SLOT_A, SLOT_B, AUX_IN on GPIO38). KW11 COM → GND, NC (home switches) or NO (others) → SIG; the 3V3 pin is spare |
+| J14 / J15 (SERVO_A/B) | 2.54 3-pin male header | GND, 6 V, SIG |
+| J16 (I2C) | JST-XH 4-pin | 3V3, GND, SDA, SCL |
+| J17 (WS2812) | JST-XH 3-pin | 5 V, DIN, GND |
+| J18 (DOCK_V) | JST-XH 2-pin | DOCK_V (from the dock pads, before the SS54), GND |
+| J19 (BUZZER) | JST-XH 2-pin | 5 V, low side (NPN) |
 
 ### 3.3 On-board parts
 
@@ -100,10 +101,10 @@ Switch inputs: internal pull-up + 10 k external pull-up to 3V3, 1 k series, 100 
   spacing; fit the header in the row that matches the measured module.
 - 4 × StepStick sockets (2 × 8 female headers). MS1/MS2 **hard-wired** per socket for UART addresses 0–3
   (no jumpers to forget). UART on StepStick pin 4 (PDN_UART); CLK tied to GND (internal clock).
-- Per driver: 100 µF / 35 V electrolytic + 100 nF on VMOT. Bulk: 470 µF / 35 V at J_VMOT. **SMBJ24A TVS** on VMOT.
+- Per driver: 100 µF / 35 V electrolytic + 100 nF on VMOT. Bulk: 470 µF / 35 V at J1. **SMBJ18A TVS** (unidirectional: standoff 18 V > 16.8 V, breakdown 20–22 V, clamp 29.2 V ≤ TMC2209 VS max) right at J1: clamps switch/E-stop ringing and, with a reversed harness, conducts and blows the 10 A fuse.
 - Buck modules are **off-board** (vendor footprints vary): the 5 V/5 A buck feeds the Pi and J2 (5 V in), the
   6 V/3 A servo buck (from VMOT, after the E-stop) feeds J3. The board has no on-board regulators.
-- WS2812 level: driven from 3V3 through 330 Ω (works for short leads). Optional 74AHCT1G125 footprint.
+- WS2812 level: driven from 3V3 through 330 Ω. Strictly out of spec (VIH = 0.7 × 5 V = 3.5 V) but it works with most parts on a short lead; it is a status light only. If it is unreliable, use a WS2812B-V5/SK6812 variant with a 3.3 V-compatible input. There is no buffer footprint on v1.
 - Silkscreen: every connector labeled, polarity marks, board name `RBG3-MOTION v1`.
 
 ### 3.4 KiCad deliverables

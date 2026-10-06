@@ -16,7 +16,7 @@ GREEN = srgb("#1F7A4D")
 RUBBER = srgb("#1F2328")
 
 MASS_G = {"nema17": 280, "mg90s": 14, "kfl08": 45, "ball_caster": 35, "pi3": 45, "camera": 5,
-          "leadscrew_350": 130, "coupler": 15, "kp08": 40, "v_wheel": 12, "wheel_80": 60,
+          "leadscrew_350": 130, "coupler": 15, "kfl08": 45, "v_wheel": 12, "wheel_80": 60,
           "shaft_8x100": 40, "pulley_60t": 25, "pulley_20t": 8, "battery_4s": 200, "bms": 20,
           "motion_board": 130, "estop": 60, "buck": 25}
 
@@ -99,3 +99,30 @@ def rod_z(d, x, y, z0, z1, label):
 
 def rod_x(d, x0, x1, y, z, label):
     return _tag(cyl_x(d, x0, x1, y, z), label, STEEL)
+
+
+def vwheel(center, axis, wheel, spacer_to=None, label="vwheel"):
+    """Mini V-wheel on an axle along `axis` ("x" or "y"); optional eccentric spacer from the wheel face to the
+    plate coordinate `spacer_to` (same axis)."""
+    d, w, sd = wheel["d"], wheel["w"], wheel["spacer_d"]
+    cx, cy, cz = center
+    lo, hi = (cx, cy)[axis == "y"] - w / 2, (cx, cy)[axis == "y"] + w / 2
+    if axis == "x":
+        body = cyl_x(d, lo, hi, cy, cz)
+    else:
+        body = bd.Pos(cx, lo, cz) * bd.Rot(-90, 0, 0) * bd.Cylinder(d / 2, w, align=(bd.Align.CENTER,) * 2 + (bd.Align.MIN,))
+    if spacer_to is not None:
+        a, b = sorted((spacer_to, hi if spacer_to > hi else lo))
+        if axis == "x":
+            body += cyl_x(sd, a, b, cy, cz)
+        else:
+            body += bd.Pos(cx, a, cz) * bd.Rot(-90, 0, 0) * bd.Cylinder(sd / 2, b - a, align=(bd.Align.CENTER,) * 2 + (bd.Align.MIN,))
+    return _tag(body, label, STEEL)
+
+
+def kfl08_z(x, y, z_top, kfl, label="kfl08"):
+    """2-bolt flange bearing hanging under a plate at z_top, bore vertical, long side along y."""
+    body = box(x - kfl["w"] / 2, x + kfl["w"] / 2, y - kfl["l"] / 2, y + kfl["l"] / 2, z_top - kfl["flange_t"], z_top)
+    body += cyl_z(kfl["boss_d"], x, y, z_top - kfl["h"], z_top - kfl["flange_t"])
+    body -= cyl_z(8.2, x, y, z_top - kfl["h"] - 0.1, z_top + 0.1)
+    return _tag(body, label, STEEL)

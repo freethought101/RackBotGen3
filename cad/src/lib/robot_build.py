@@ -12,11 +12,12 @@ from cadgen import read_step, srgb
 from lib import vendor
 from lib.extrusion import vslot
 from lib.prims import box, cyl_z
-from lib.robot_dims import (AXLE_Y, AXLE_Z, BASE_FRONT_Y, BASE_REAR_Y, BATTERY, CAM_DZ, CAM_LENS,
-                            BUCKS, CASTER_FRONT, CASTER_FRONT_GAP, CASTER_REAR, CROSS_Y, DECK_Z, DRIVE_MOTOR_X,
-                            ESTOP_XY, FINGER_DZ, FINGER_X, MAST_X, MAST_Y, MAST_Z, NOSE_Z, PCB_XY, PCB_Z,
-                            PI_XY, RAIL_X, RAIL_Z, SCREW_XY, SCREW_Z, SERVO, SERVO_FACE_DY, WHEEL_D,
-                            WHEEL_X, Y_NOTCH_HOME, YRAIL_DZ, YRAIL_X, YRAIL_Y, ZMOTOR_Z,
+from lib.robot_dims import (AXLE_Y, AXLE_Z, BASE_FRONT_Y, BASE_REAR_Y, BATTERY, BUCK_SIZE, BUCKS, CAM_DZ,
+                            CAM_LENS, CASTER_FRONT, CASTER_FRONT_GAP, CASTER_REAR, COUPLER_Z, CROSS_Y, DECK_Z,
+                            DRIVE_MOTOR_X, ESTOP_XY, FINGER_DZ, FINGER_X, KFL08, MAST_X, MAST_Y, MAST_Z, NOSE_Z,
+                            PCB_XY, PCB_Z, PI_XY, RAIL_X, RAIL_Z, SCREW_XY, SCREW_Z, SERVO, SERVO_FACE_DY, VWHEEL,
+                            WHEEL_D, WHEEL_X, Y_NOTCH_HOME, YPLATE_X, YRAIL_DZ, YRAIL_X, YRAIL_Y, YWHEEL_DY,
+                            YWHEEL_DZ, ZMOTOR_Z, ZPLATE_Y, ZWHEEL_DZ, ZWHEEL_X,
                             BELT_DZ, BELT_STRAND_X, BELT_X, IDLER_Y, PULLEY_CORE_D, PULLEY_FLANGE_D, PULLEY_Y,
                             YMOTOR_DZ)
 from robot.battery_box import battery_box
@@ -33,6 +34,7 @@ from robot.tray_stack import tray_stack
 from robot.y_carriage import y_carriage
 from robot.y_idler_bracket import y_idler_bracket
 from robot.z_carriage import z_carriage
+from robot.z_motor_mount import z_motor_mount
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 PCB_STEP = os.path.join(HERE, "..", "..", "..", "pcb", "motion-board", "fab", "rbg3-motion.step")
@@ -77,9 +79,10 @@ def base_parts():
     parts.append(_p(mast_top_plate(), "mast_top_plate"))
     sx, sy = SCREW_XY
     parts.append(vendor.nema17_z(sx, sy, ZMOTOR_Z[0], "nema17:z"))
-    parts.append(vendor.rod_z(19.0, sx, sy, ZMOTOR_Z[1] + 2.0, SCREW_Z[0], "coupler"))
+    parts.append(_p(z_motor_mount(), "z_motor_mount"))
+    parts.append(vendor.rod_z(19.0, sx, sy, *COUPLER_Z, "coupler"))
     parts.append(vendor.rod_z(8.0, sx, sy, SCREW_Z[0], SCREW_Z[1], "leadscrew_tr8x2"))
-    parts.append(vendor.board(sx - 6.5, sy - 27.5, MAST_Z[1] - 28.0, 13.0, 55.0, 28.0, "kp08", vendor.STEEL))
+    parts.append(vendor.kfl08_z(sx, sy, MAST_Z[1], KFL08))
     # Electronics and power.
     parts.append(_p(electronics_tray(), "electronics_tray"))
     pcb = read_step(PCB_STEP)
@@ -95,8 +98,9 @@ def base_parts():
     zt = MAST_Z[1] + 6.0                         # on the mast top plate
     parts.append(vendor.board(ex - 20, ey - 20, zt, 40.0, 40.0, 40.0, "estop_box", srgb("#FACC15")))
     parts.append(_p(cyl_z(40.0, ex, ey, zt + 40.0, zt + 60.0), "estop_button", srgb("#DC2626")))
-    for (x, y), name in zip(BUCKS, ("5v", "6v")):
-        parts.append(vendor.board(x, y, DECK_Z[1], 43.0, 20.0, 14.0, f"buck:{name}", srgb("#7C3AED")))
+    bw, bl, bh = BUCK_SIZE
+    for name, (x, y) in BUCKS.items():
+        parts.append(vendor.board(x, y, DECK_Z[1], bw, bl, bh, f"buck:{name}", srgb("#7C3AED")))
     return parts
 
 
@@ -104,6 +108,11 @@ def lift_parts(Z):
     at = bd.Pos(0, 0, Z)
     parts = [_p(at * z_carriage(), "z_carriage"), _p(at * tray_stack(), "tray_stack", ACCENT),
              _p(at * rail_bracket(), "rail_bracket")]
+    yc = (MAST_Y[0] + MAST_Y[1]) / 2                         # mast side groove centre
+    for s in (-1, 1):
+        for dz in ZWHEEL_DZ:
+            parts.append(vendor.vwheel((s * ZWHEEL_X, yc, Z + dz), "y", VWHEEL, spacer_to=ZPLATE_Y[0],
+                                       label=f"vwheel:z{'LR'[s > 0]}{dz:.0f}"))
     parts.append(vslot(*YRAIL_X, *YRAIL_Y, Z + YRAIL_DZ[0], Z + YRAIL_DZ[1], "y_rail_2020"))
     # Y belt drive: motor (shaft down) + 20T pulley behind the rail end, idler on the front bracket, belt loop.
     parts.append(vendor.nema17_z(BELT_X, PULLEY_Y, Z + YMOTOR_DZ[0], "nema17:y", shaft_up=False))
@@ -126,6 +135,11 @@ def lift_parts(Z):
 def extractor_parts(Z, Y, fingers):
     pivot_y = Y_NOTCH_HOME + Y
     parts = [_p(bd.Pos(0, pivot_y, Z) * y_carriage(), "y_carriage")]
+    xc = (YRAIL_X[0] + YRAIL_X[1]) / 2                       # rail top/bottom groove centre
+    for dy in YWHEEL_DY:
+        for dz in YWHEEL_DZ:
+            parts.append(vendor.vwheel((xc, pivot_y + dy, Z + dz), "x", VWHEEL, spacer_to=YPLATE_X[0],
+                                       label=f"vwheel:y{dy:.0f}{dz:.0f}"))
     for slot, dz in FINGER_DZ.items():
         pz = Z + dz
         parts.append(vendor.mg90s_y(FINGER_X, pivot_y + SERVO_FACE_DY, pz, f"mg90s:{slot}", SERVO))

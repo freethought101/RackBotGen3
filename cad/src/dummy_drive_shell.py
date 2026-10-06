@@ -16,6 +16,7 @@ LID_T = 2.0
 LID_STEP = 1.0             # rebate the lid drops into, so the top stays flush
 BOSS_D = 8.0
 INSERT_DEPTH = 5.0
+M3_SELF_TAP_D = 2.5
 
 HALF_W = HDD_W / 2
 LID_SCREWS = [(sx * (HALF_W - WALL - 3.0), y) for sx in (-1, 1) for y in (WALL + 6.0, HDD_L - WALL - 6.0)]
@@ -36,11 +37,12 @@ def dummy_drive_shell():
         shell += cyl_z(BOSS_D, x, y, FLOOR, top_z)
         shell -= cyl_z(M3_INSERT_D, x, y, top_z - INSERT_DEPTH, top_z + 0.1)
 
-    # Bottom mounting holes (heat-set inserts from below), in the side walls.
+    # Bottom mounting holes in the side walls: the standard hole line is only 3.2 mm from the outer face, too
+    # close for a heat-set insert, so these are pilots for M3 self-tapping screws (1.9 mm wall).
     for x in (-HDD_HOLE_SPAN_X / 2, HDD_HOLE_SPAN_X / 2):
         for y in HDD_HOLE_Y:
             shell += cyl_z(BOSS_D, x, y, 0, INSERT_DEPTH + 3.0)
-            shell -= cyl_z(M3_INSERT_D, x, y, -0.1, INSERT_DEPTH)
+            shell -= cyl_z(M3_SELF_TAP_D, x, y, -0.1, INSERT_DEPTH + 1.0)
 
     # Bosses near the walls can poke outside the envelope: trim back to it.
     shell &= box(-HALF_W, HALF_W, 0, HDD_L, 0, HDD_H)

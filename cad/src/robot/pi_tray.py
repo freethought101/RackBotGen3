@@ -18,7 +18,7 @@ M25_PILOT = 2.2
 def pi_tray():
     x, y = PI_XY
     z0 = DECK_Z[1]
-    part = box(x - 3, x + PI_W + 3, y - 3, y + PI_L + 3, z0, z0 + T)
+    part = box(x - 3, x + PI_W + 3, y - 0.5, y + PI_L + 0.5, z0, z0 + T)     # tight in y: battery box behind, Z motor ahead
     part -= box(x + 12, x + PI_W - 20, y + 10, y + PI_L - 10, z0 - 0.1, z0 + T + 0.1)
     for hx in (x + 3.5, x + 3.5 + HOLES_X):
         for hy in (y + 3.5, y + 3.5 + HOLES_Y):

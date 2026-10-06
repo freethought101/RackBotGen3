@@ -62,11 +62,11 @@ USB CDC, 115200 8N1, ASCII lines terminated by `\n`.
 | Command | Args | Behavior |
 |---|---|---|
 | `PING` | — | `OK RBG3-FW <version>` |
-| `ENABLE` | `0\|1` | Driver enable. Required after power-up or E-stop |
+| `ENABLE` | `0\|1` | Driver enable. Required after power-up or E-stop. Rejected (`E_ESTOP`) until the drivers have been re-configured over UART after VMOT returned |
 | `HOME` | `Y\|Z` | Y must be homed before Z. Approach the switch at 10 mm/s, back off 3 mm, re-approach at 2 mm/s |
 | `Z` | `<mm> [mm/s]` | Absolute Z (slot B floor height). **Interlock: Y ≤ 2 mm** |
-| `Y` | `<mm> [mm/s]` | Absolute Y. **Interlock: NOSE pressed** (docked), unless `CFG bench 1` |
-| `FINGER` | `A\|B ENGAGE\|PARK` | Servo move, `DONE` after 300 ms |
+| `Y` | `<mm> [mm/s]` | Absolute Y, 0…`Y_MAX`. **Interlock: NOSE pressed** (docked), unless `CFG bench 1`. Run current limited (`CFG ycur`) so a jam stalls the motor below the finger's strength |
+| `FINGER` | `A\|B\|both ENGAGE\|PARK` | Servo move, `DONE` after 300 ms. **Interlock: Y ≤ 2 mm or Y at Y_PULL/Y_PUSH** (no swinging mid-stroke) |
 | `DRIVE` | `<mm> [mm/s]` | Straight, trapezoidal profile. **Interlock: Y ≤ 2, Z ≤ Z_DRIVE_MAX** |
 | `TURN` | `<deg> [deg/s]` | In place, + = counter-clockwise. Same interlock |
 | `VEL` | `<mm/s> <deg/s>` | Continuous velocity for visual servoing. Stops if no new `VEL` within 300 ms |
@@ -77,7 +77,7 @@ USB CDC, 115200 8N1, ASCII lines terminated by `\n`.
 
 Error codes: `E_ARG`, `E_BUSY`, `E_NOT_HOMED`, `E_INTERLOCK`, `E_LIMIT`, `E_ESTOP`, `E_NODOCK`, `E_TIMEOUT`.
 
-`sw` bitmask: bit0 Z_HOME, bit1 Y_HOME, bit2 NOSE, bit3 SLOT_A, bit4 SLOT_B (1 = pressed).
+`sw` bitmask: bit0 Z_HOME, bit1 Y_HOME, bit2 NOSE, bit3 SLOT_A, bit4 SLOT_B (1 = pressed). Z_HOME/Y_HOME are NC switches: the firmware reports pressed = input high, so a broken wire looks like "at home" and homing stops instead of driving into the end.
 
 ## 4. Rack Modbus TCP register map
 
@@ -112,13 +112,14 @@ The Pi polls D0–D3 at 5 Hz. Bay presence from D0 is the **authoritative seated
 
 ```
 z_for(slot, shelf_h, op) = shelf_h + (+1 if op == INSERT else -1) - (45 if slot == "A" else 0)
-Y_HOME = 0, Y_NOTCH = 175, Z_DRIVE = 110, Z_DRIVE_MAX = 220, Z_APPROACH = <calibrated, camera level with tag 0>
+Y_HOME = 0, Y_PULL = 177 (finger centred in a seated caddy's notch), Y_PUSH = 178.5 (seats the caddy against the bay back stop through the ±1 mm finger play, 0.5 mm preload), Y_MAX = 180 (soft limit; hard stop ≈ 187), Z_DRIVE = 110, Z_DRIVE_MAX = 220, Z_APPROACH = <calibrated, camera level with tag 0>
 shelves: rack bay n -> H_BAY[n] = 150, 195, 240, 285;  spare S1 = 150 (GOOD), S2 = 195 (RMA)
 ```
 
 Primitives (each verifies its result, with up to 2 retries before FAULT):
-- `pull(slot, shelf_h)`: `Z z_for(slot,h,EXTRACT)` → (vision: verify caddy tag if slot B empty) → `FINGER slot PARK` → `Y 175` → `FINGER slot ENGAGE` → `Y 0` → check `SLOT_<slot>` pressed (and the PLC bay bit cleared, if it is a rack bay).
-- `push(slot, shelf_h)`: `Z z_for(slot,h,INSERT)` → `Y 175` → `FINGER slot PARK` → `Y 0` → check `SLOT_<slot>` released (and the PLC bay bit set, if it is a rack bay).
+Both fingers ride on the **same Y carriage**, so a Y stroke moves whatever the *other* finger holds. Rule: **only the working finger may be engaged during a Y stroke.** The idle finger is parked before the stroke and re-engaged after `Y 0` (the tray does not move while docked, so its caddy stays put; the finger re-centres it within the notch play).
+- `pull(slot, shelf_h)`: `Z z_for(slot,h,EXTRACT)` → (vision: verify caddy tag if slot B empty) → `FINGER both PARK` → `Y Y_PULL` → `FINGER slot ENGAGE` → `Y 0` → re-engage the other finger if its slot is loaded → check `SLOT_<slot>` pressed (and the PLC bay bit cleared, if it is a rack bay).
+- `push(slot, shelf_h)`: `Z z_for(slot,h,INSERT)` → park the other finger → `Y Y_PUSH` (working finger engaged) → `FINGER slot PARK` → `Y 0` → re-engage the other finger if its slot is loaded → check `SLOT_<slot>` released (and the PLC bay bit set, if it is a rack bay).
 - `goto_station(tag_id)`: `Z Z_APPROACH` → undock (`DRIVE −250`) → `TURN 180` → visual approach (§6.2) → `DOCK 300 50` → `Z Z_DRIVE`.
 
 ### 5.2 Swap sequence
@@ -147,9 +148,9 @@ stateDiagram-v2
 
 - **PICK_GOOD** = `pull(A, S1)`. **EXTRACT_FAILED** = `pull(B, H_BAY[N])` with a caddy-ID check against inventory.
   **INSERT_GOOD** = `push(A, H_BAY[N])`. **PLACE_RMA** = `push(B, S2)`.
-- Before leaving the rack: M0 (dock power) off. On return: M0 on and check charging current < 0 from the INA226.
-- Fingers stay ENGAGED on loaded slots while driving.
-- E-stop at any time → mission paused in `FAULT(E_ESTOP)`. After release: `ENABLE 1`, re-home Y, then Z, then the operator chooses resume or abort.
+- Before leaving the rack: M0 (dock power) off. On return: M0 on and check charging current < 0 from the INA226. Docked = NOSE pressed **and** DOCK_V > 20 V. Charging ends (M0 off) when the charge current tapers below 0.2 A.
+- Fingers stay ENGAGED on loaded slots while driving and during Z moves; only the working finger is engaged during a Y stroke (§5.1).
+- E-stop at any time → mission paused in `FAULT(E_ESTOP)`. After release: firmware re-configures the drivers, then `ENABLE 1`, re-home Y, then Z, then the operator chooses resume or abort.
 - Every state transition is logged with a timestamp (cycle-time breakdown for the pitch).
 
 ## 6. Vision
@@ -213,7 +214,7 @@ Stretch: MQTT publish of rack/robot state (shows IIoT interoperability); Delta H
 - PlatformIO, Arduino-ESP32 framework. Libraries: **FastAccelStepper** (hardware step generation), **TMCStepper** (UART config: current, microsteps, StealthChop), ESP32Servo, INA226 (RobTillaart), Adafruit_NeoPixel.
 - Steps/mm: drive 12.73 (direct drive, Ø80 wheel), Z 1600, Y 80 (see 01 §6). Constants in `config.h`, overridable via `CFG`.
 - Differential kinematics: `DRIVE`/`TURN` → synchronized profiles on L/R. `VEL` → continuous speed with a 300 ms watchdog.
-- Safety: VMOT_SENSE < 9 V → abort all, disable drivers, `EVT ESTOP`, clear the homed flags. Limit switches are checked every step-planner tick. All interlocks from §3 are enforced in firmware, not only on the Pi.
+- Safety: VMOT_SENSE < 9 V → abort all, disable drivers, `EVT ESTOP`, clear the homed flags. **When VMOT returns** the TMC2209s have reset (their logic runs from VS): until reconfigured the MS1/MS2 address straps set the microstepping (addr 0 → 8, 1 → 32, 2 → 64, 3 → 16) and the current falls back to the VREF pot. So the firmware polls `GSTAT.reset` / `IFCNT`, re-sends every register (current, microsteps, StealthChop) to all four drivers and only then accepts `ENABLE 1`. Set all VREF pots to a safe low current at assembly. Limit switches are checked every step-planner tick. All interlocks from §3 are enforced in firmware, not only on the Pi.
 - Status LED: blue = idle, green = docked/charging, yellow = moving, red = fault, red blink = E-stop.
 - Bench mode (`CFG bench 1`): lifts the docked interlock for axis testing on the bench.
 

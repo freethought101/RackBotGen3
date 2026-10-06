@@ -143,8 +143,11 @@ def main():
     open(BOARD, "w").write(board)
 
     lib = open(FP_LIB).read()
-    lib, lib_ok = replace_courtyard(lib, 0, len(lib))
-    open(FP_LIB, "w").write(lib)
+    have = re.findall(r'\(fp_rect \(start ([-\d.]+) ([-\d.]+)\) \(end ([-\d.]+) ([-\d.]+)\)[^\n]*"F\.CrtYd"', lib)
+    lib_ok = sorted(tuple(float(v) for v in r) for r in have) == sorted(U1_COURTYARD)
+    if not lib_ok:   # rewrite only when needed, so rebuilds don't churn the library file
+        lib, lib_ok = replace_courtyard(lib, 0, len(lib))
+        open(FP_LIB, "w").write(lib)
     print(f"stripped {stripped} zones/tracks; prefixed {n} net refs; named {nc} unconnected pads; U1 courtyard replaced on board={bool(m)} library={lib_ok}")
 
 
