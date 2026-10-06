@@ -10,6 +10,7 @@ Frame for all bay-side parts: x = across the bay (0 = centerline), y = into the 
 | dummy_drive_shell.py | STEP/…, STL/dummy_drive_shell.stl | Ballast shell, 3.5" envelope, heat-set inserts | PLA ×6, floor down |
 | dummy_drive_lid.py | STEP/…, STL/dummy_drive_lid.stl | Screw-on lid with label recess | PLA ×6, flat |
 | bay_shelf.py | STEP/bay_shelf.step, STL/bay_shelf.stl | Bay shelf: guide walls, lead-in, back stop, switch bracket, M5 flanges | PETG ×6 (4 rack + 2 spare), floor down |
+| fit_coupons.py | STEP/fit/…, STL/fit/{shelf_slice,caddy_slice,hole_coupon}.stl | Fit test 1 coupons: 40 mm shelf and caddy slices (channel clearance) and a hole-size coupon — see docs/fit-test-01.md | PETG, < 1 h each |
 | bay_fit.py | STEP/bay_fit.step | Fit check: 2 shelves + caddy + dummy + 2020 stubs | — |
 | dock_block.py | STEP/…, STL/dock_block.stl | Dock: V-funnel + 10 mm throat, stop at y = −30, charging-contact recesses, dock switch bracket | PETG ×2, floor down |
 | tag_fin.py | STEP/…, STL/tag_fin.stl | 50 mm approach tag (ID 0 rack / ID 10 spare) on the front-right upright | PLA ×2 |

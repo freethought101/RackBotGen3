@@ -223,7 +223,7 @@ All numbers live in `cad/src/lib/robot_dims.py`. `cad/checks/robot_check.py` ver
 | Robot deck | 1 | PETG | 246 × 300 × 5 |
 | Nose/bumper | 1 | PETG | + TPU strip |
 | Drive bracket | 2 | PETG | one mirrored |
-| Mast collar (socket + flange + rear gusset), mast top plate | 1 + 1 | PETG | |
+| Mast collar (socket + flange + rear gusset), mast top plate (tab: 2 × M5 into both front slots; 2 × M3 inserts for the E-stop box) | 1 + 1 | PETG | |
 | Z-motor mount | 1 | PETG | |
 | Z carriage (plate + nut block; V-wheels on axles through the plate) | 1 | PETG | |
 | Tray stack (incl. camera mount) | 1 | PETG | 122 × 197 × 90, print standing on the back plate; 10 × M5 heat-set inserts |

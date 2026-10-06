@@ -22,8 +22,8 @@ The live, per-part order list is the Notion **Parts & Order List** database, mir
 | Ball casters (2 rear + 1 anti-tip) | 3 | 7 |
 | MG90S servo | 3 | 8 |
 | Lever microswitches KW11-3Z (13 + 2 spare) | 15 | 6 |
-| Fastener kit (~120 M5 T-nuts, screws, ~48 corner brackets, M3 + heat-set inserts) | — | 25 |
-| **Subtotal** | | **157** |
+| Fastener kit (~120 M5 T-nuts, screws incl. 7 × M5×16 + 3 × M5×25 for the tray, ~48 corner brackets, M3 + ~60 M3 / ~15 M5 heat-set inserts) | — | 28 |
+| **Subtotal** | | **160** |
 
 ### 1.2 Robot — electronics
 
@@ -73,13 +73,13 @@ The live, per-part order list is the Notion **Parts & Order List** database, mir
 
 | | USD |
 |---|---|
-| Robot mechanical | 157 |
+| Robot mechanical | 160 |
 | Robot electronics | 183 |
 | Rack electrical | 74 |
 | Printing & demo | 77 |
-| **Total** | **≈ 491** (of 500) |
+| **Total** | **≈ 494** (of 500) |
 
-The margin is thin (≈ 9 USD after the v0.1.6 review fixes). **Savings options** (use them if prices come in higher, or a router must be bought):
+The margin is thin (≈ 6 USD after the v0.1.7 fastener additions). **Savings options** (use them if prices come in higher, or a router must be bought):
 TPU-printed wheels instead of bought (−10) · wide-angle OV5647 camera instead of Module 3 Wide (−20, more distortion) ·
 3 panel LEDs instead of the tower light (−7) · team-owned filament or fasteners (−20 to −50) · drop the 3rd servo and spare switches (−5).
 **PLC**: request a loan from Delta Thailand this week. If none, use the ESP32 fallback rack controller (≈ +20 USD, see 02 §4.4).

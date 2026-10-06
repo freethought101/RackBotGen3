@@ -9,7 +9,7 @@ P07,Wheel 80 mm with 5 mm hub,Robot mechanical,2,10,"Ø80 x ~24 mm rubber wheel,
 P08,Ball caster,Robot mechanical,3,7,"Metal ball caster; rear total height 42 mm (x2), front anti-tip 27 mm (x1); spacers OK","Robot base",AliExpress,To order,2026-10-08,,v0.1.5
 P09,MG90S metal-gear micro servo,Robot mechanical,3,8,"22.8x12.2x28.5 mm, 2 + 1 spare","Extractor fingers A/B",AliExpress,To order,2026-10-08,,v0.1.5
 P10,KW11-3Z lever microswitch,Robot mechanical,15,6,"20x10x6.4 mm, 3-pin (COM/NO/NC), lever; 13 + 2 spare","4 bays, 2 spare slots, rack dock, spare-station dock, robot nose, tray slots A/B, Z/Y home (13) + 2 spare",AliExpress,To order,2026-10-08,,v0.1.6
-P11,Fastener kit,Robot mechanical,1,25,"M5 T-nuts (~120), M5x8/10/12 button head, 2020 inside corner brackets (~48), M3 screws + nuts assorted, M3 heat-set inserts (~60), M2 self-tapping","Everything",Local store,To order,2026-10-08,,v0.1.6
+P11,Fastener kit,Robot mechanical,1,28,"M5 T-nuts (~120), M5x8/10/12 button head, M5x16 (7) + M5x25 (3) for the Z carriage to tray, 2020 inside corner brackets (~48), M3 screws + nuts assorted, M3 heat-set inserts (~60), M5 heat-set inserts (~15, tray back plate), M2 + M3 self-tapping","Everything",Local store,To order,2026-10-08,,v0.1.7
 P12,Raspberry Pi 3B/3B+,Robot electronics,1,0,"Team-owned; ~35 USD if bought","Robot compute",Owned / borrow,Owned,,,v0.1.5
 P13,Raspberry Pi Camera Module 3 Wide,Robot electronics,1,35,"~102° H FOV, autofocus","Robot vision",AliExpress,To order,2026-10-08,,v0.1.5
 P14,microSD 32 GB A1,Robot electronics,1,8,"","Pi OS",Local store,To order,2026-10-08,,v0.1.5

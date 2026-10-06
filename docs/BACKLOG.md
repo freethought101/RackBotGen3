@@ -22,7 +22,7 @@ Open checks and to-dos collected from the spec, the CAD and PCB work, and review
 
 ## Before printing the full set
 
-- [ ] **Test T1**: print 1 caddy + 1 bay shelf; caddy slides in/out by hand with ≤ 5 N, no binding. Adjust `BAY_CHANNEL_W` / caddy rails in `cad/src/lib/dims.py` if the 1 mm/side clearance is wrong for your printer.
+- [ ] **Test T1** (checklist: `docs/fit-test-01.md`): print the fit coupons, then 1 caddy + 1 bay shelf; caddy slides in/out by hand with ≤ 5 N, no binding. Adjust `BAY_CHANNEL_W` / caddy rails in `cad/src/lib/dims.py` if the 1 mm/side clearance is wrong for your printer.
 - [ ] **3.5" HDD bottom screw holes** (`HDD_HOLE_Y`, slotted ±3 mm in the caddy): check against a real drive.
 - [ ] **KW11-3Z switch**: hole pitch (9.5 mm assumed) and lever actuation point vs the bracket slots (±2 mm) on the shelf, dock block, nose and tray.
 - [ ] Dummy drive mass 600 ± 30 g with ballast (test T2).
@@ -38,6 +38,8 @@ Open checks and to-dos collected from the spec, the CAD and PCB work, and review
 - [ ] Mini V-wheels / eccentric spacers (modeled Ø15.2 × 8.8, rim 1.6 mm in the groove, spacer Ø10): measure the real wheel and spacer; adjust `ZWHEEL_X` / `YWHEEL_DZ`.
 - [ ] Ball caster heights: rear 42 mm (table to rail bottom), front anti-tip 23.5 mm (6.5 mm gap, clears the dock floor plate).
 - [ ] KFL08 (48 × 27, 37 mm pitch), Tr8×2 nut (flange Ø22) and 5→8 coupler (Ø19 × 25) vs `KFL08`, `NUT_BLOCK_DZ`, `COUPLER_Z`.
+- [ ] **Tr8 nut flange hole pattern**: count the flange holes (CAD assumes 3 × M3 on a 16 mm circle; many Tr8 nuts have 4) and measure the circle Ø and the hole Ø. Then update the nut block in `cad/src/robot/z_carriage.py`, possibly with M3 heat-set inserts instead of nuts underneath.
+- [ ] E-stop box base: the hole spacing (CAD assumes 2 × M3, 26 mm apart, into inserts in the mast top plate) and the contact block's DC rating.
 - [ ] DevKit plugged-in height (~8.5 mm sockets) clears the RC parts underneath; Y motor clears the motion board components.
 - [ ] Camera Module 3 Wide: works on Pi 3 with libcamera/Picamera2; CSI cable length (≈ 500 mm) and routing on the moving carriage.
 - [ ] Rack electronics placeholders (Delta PSU, DVP-12SE, relay, router, tower light, E-stop) vs real sizes on the DIN rail.
