@@ -129,12 +129,36 @@ def assign_unconnected(board):
     return board, count
 
 
+def strip_jumper_courtyards(text):
+    count = 0
+    for m in list(re.finditer(r'\(footprint "Jumper:SolderJumper-2_', text))[::-1]:
+        start, end = m.start(), block_end(text, m.start())
+        fp = text[start:end]
+        pos, pieces = 0, []
+        for g in re.finditer(r"\((fp_rect|fp_line)\b", fp):
+            if g.start() < pos:
+                continue
+            e = block_end(fp, g.start())
+            if '"F.CrtYd"' in fp[g.start():e]:
+                line_start = fp.rfind("\n", 0, g.start()) + 1
+                pieces.append(fp[pos:line_start])
+                pos = e + 1 if fp[e:e + 1] == "\n" else e
+                count += 1
+        pieces.append(fp[pos:])
+        fp = "".join(pieces)
+        if "allow_missing_courtyard" not in fp:
+            fp = re.sub(r"\(attr ([^)]*)\)", r"(attr \1 allow_missing_courtyard)", fp, count=1)
+        text = text[:start] + fp + text[end:]
+    return text, count
+
+
 def main():
     board = open(BOARD).read()
     board, n = re.subn(r'\(net "(?!/|unconnected-)([^"]+)"\)', r'(net "/\1")', board)
     board = board.replace('(net "/unconnected-', '(net "unconnected-')
     board, stripped = strip_top_level(board, ("zone", "segment", "via", "arc"))
     board, nc = assign_unconnected(board)
+    board, _ = strip_jumper_courtyards(board)
 
     m = re.search(r'\(footprint "rbg3:ESP32-S3-DevKitC-1_Socket"', board)
     if m:

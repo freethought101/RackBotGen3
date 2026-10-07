@@ -94,7 +94,7 @@ Switch inputs: internal pull-up + 10 k external pull-up to 3V3, 1 k series, 100 
 | J14 / J15 (SERVO_A/B) | 2.54 3-pin male header | GND, 6 V, SIG |
 | J16 (I2C) | JST-XH 4-pin | 3V3, GND, SDA, SCL |
 | J17 (WS2812) | JST-XH 3-pin | 5 V, DIN, GND |
-| J18 (DOCK_V) | JST-XH 2-pin | DOCK_V (from the dock pads, before the SS54), GND |
+| J18 (DOCK_V) | JST-XH 2-pin | 1 = DOCK_V+ (from the dock + pad, before the SS54); **2 = not connected**. The divider is referenced to robot GND on the board, so only one wire is needed. There is deliberately no GND pin, because wiring dock − to robot GND would bypass the charger's current sense (§1) |
 | J19 (BUZZER) | JST-XH 2-pin | 5 V, low side (NPN) |
 
 ### 3.3 On-board parts
@@ -103,11 +103,25 @@ Switch inputs: internal pull-up + 10 k external pull-up to 3V3, 1 k series, 100 
   spacing; fit the header in the row that matches the measured module.
 - 4 × StepStick sockets (2 × 8 female headers). MS1/MS2 **hard-wired** per socket for UART addresses 0–3
   (no jumpers to forget). UART on StepStick pin 4 (PDN_UART); CLK tied to GND (internal clock).
-- Per driver: 100 µF / 35 V electrolytic + 100 nF on VMOT. Bulk: 470 µF / 35 V at J1. **SMBJ18A TVS** (unidirectional: standoff 18 V > 16.8 V, breakdown 20–22 V, clamp 29.2 V ≤ TMC2209 VS max) right at J1: clamps switch/E-stop ringing and, with a reversed harness, conducts and blows the 10 A fuse.
+  Each socket also has an **open solder jumper (JP1–JP4)** from pin 5 to the UART bus, for modules that bring
+  PDN_UART out on pin 5 instead. Leave it open unless the module's silkscreen shows UART on pin 5. It sits between
+  the socket rows, so it can only be soldered with the module unplugged.
+- Per driver: 100 µF / 35 V electrolytic + 100 nF on VMOT. Bulk: 470 µF / 35 V at J1. **SMBJ18A TVS** right at J1
+  (unidirectional; standoff 18 V > 16.8 V, breakdown 20–22 V). It clamps switch and E-stop ringing at about
+  21–23 V, because those currents are small. The datasheet clamp of 29.2 V applies only at the full rated pulse
+  current and is right at the TMC2209's 29 V VS limit. An SMBJ17A (27.6 V clamp) is the drop-in if more margin is wanted.
+- Reverse polarity: the XT30 is keyed, so a reversed VMOT harness needs a mis-crimped pigtail. If that happens,
+  the TVS conducts and the 10 A fuse blows, but until it does the fault current also returns through board GND,
+  the 5 V buck wiring and the Pi↔ESP32 USB ground. Nothing on the board actively blocks reverse polarity
+  (a series P-FET is a v2 option).
 - Buck modules are **off-board** (vendor footprints vary): the 5 V/5 A buck feeds the Pi and J2 (5 V in), the
   6 V/3 A servo buck (from VMOT, after the E-stop) feeds J3. The board has no on-board regulators.
 - WS2812 level: driven from 3V3 through 330 Ω. Strictly out of spec (VIH = 0.7 × 5 V = 3.5 V) but it works with most parts on a short lead; it is a status light only. If it is unreliable, use a WS2812B-V5/SK6812 variant with a 3.3 V-compatible input. There is no buffer footprint on v1.
-- Silkscreen: every connector labeled, polarity marks, board name `RBG3-MOTION v1`.
+- Silkscreen (`pcb/motion-board/scripts/silk.py`): board name `RBG3-MOTION v1`, function and pin order at every
+  connector (+5V/GND and +6V/GND at J2/J3, 2B 2A 1A 1B at J4–J7, G S 3V3 at J8–J13, G + S at J14/J15, and so on).
+  Each StepStick socket has its module pin names at the corners (**EN / VM** at the top, **DIR / GND** at the
+  bottom). A module plugged in rotated 180° puts VMOT on the EN line and destroys the driver and the ESP32.
+  The DevKit socket is marked ANTENNA END / USB END.
 
 ### 3.4 KiCad deliverables
 

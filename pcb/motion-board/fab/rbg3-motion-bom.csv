@@ -21,7 +21,7 @@
 "J15","SERVO_B (GND,6V,SIG)","Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical","1",""
 "J16","I2C INA226 (3V3,GND,SDA,SCL)","Connector_JST:JST_XH_B4B-XH-A_1x04_P2.50mm_Vertical","1",""
 "J17","WS2812 (5V,DIN,GND)","Connector_JST:JST_XH_B3B-XH-A_1x03_P2.50mm_Vertical","1",""
-"J18","DOCK_V (dock pads, before SS54)","Connector_JST:JST_XH_B2B-XH-A_1x02_P2.50mm_Vertical","1",""
+"J18","DOCK_V+ (dock + pad, before SS54; pin 2 NC)","Connector_JST:JST_XH_B2B-XH-A_1x02_P2.50mm_Vertical","1",""
 "J19","BUZZER (5V, low-side)","Connector_JST:JST_XH_B2B-XH-A_1x02_P2.50mm_Vertical","1",""
 "Q1","MMBT3904","Package_TO_SOT_SMD:SOT-23","1",""
 "R1,R3","100k","Resistor_SMD:R_0805_2012Metric","2",""
