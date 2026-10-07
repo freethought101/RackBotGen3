@@ -83,3 +83,7 @@ Fixed in the design: see 00 revision history v0.1.6. Still to verify on hardware
 
 - [ ] Check each member's airline carry-on rules (7 kg, 56 × 36 × 23 cm), battery (50.4 Wh, cabin only, labeled), tools.
 - [ ] Device description + Delta invitation letter printed; national flag packed.
+
+## Later (before the pitch)
+
+- [ ] **3D digital-twin view** in the dashboard: three.js, driven by the `/ws` state (pose, Z, Y, fingers, slots, bays) so it mirrors both `--sim` and the real robot; GLB meshes from the CAD (`robot_build` poses). ~1 day. Demo asset, not a test tool (the sim has no physics). Interim option for approach debugging: 2D top-down path plot.
