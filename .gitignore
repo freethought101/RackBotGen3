@@ -16,3 +16,5 @@ pcb/**/fp-info-cache
 pcb/**/*.kicad_prl
 pcb/**/*.lck
 pcb/**/.history/
+rackbot/*.db
+.pytest_cache/
