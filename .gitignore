@@ -18,3 +18,5 @@ pcb/**/*.lck
 pcb/**/.history/
 rackbot/*.db
 .pytest_cache/
+firmware/motion/.pio/
+firmware/motion/sim/build/

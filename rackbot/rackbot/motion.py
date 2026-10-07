@@ -225,7 +225,7 @@ class MockMotion(MotionBase):
     """Simulated ESP32 firmware. Enforces the §3 interlocks and moves caddies in the SimWorld."""
 
     Z_HOME_POS = 100.0
-    TRACK_MM = 250.0
+    TRACK_MM = 274.0  # wheel centre distance, same as the firmware
     FINGER_S = 0.3
     TEL_HZ = 10.0
     RECONFIG_S = 0.3

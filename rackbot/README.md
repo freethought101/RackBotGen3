@@ -42,9 +42,12 @@ On the Pi (no `--sim`): `SerialMotion` on `/dev/ttyACM0`, `ModbusRack` at `192.1
   Otherwise the job is `rejected`.
 - **Approach**: besides "tag lost > 0.5 s", the robot also backs off when it gets closer than `abort_d` (200 mm)
   without meeting the hand-off criteria; otherwise it would creep into the station misaligned.
-- **Spec gaps to settle with the firmware:**
-  - §3 lists no error code for a motion cancelled by `STOP`; the mock answers `FAIL E_STOPPED`.
-  - `STATUS` is answered with `OK` and the next `TEL` line is taken as the status.
-  - `TEL busy=` letters used by the mock: `Z`, `Y`, `D` (drive/turn/dock), `F` (finger), `V` (velocity mode).
+- **Protocol details fixed by the firmware** (`firmware/motion`, recorded in 03 §3 since spec v0.1.9):
+  - A motion cancelled by `STOP` (or `ENABLE 0`) answers `FAIL E_STOPPED`.
+  - `STATUS` answers `OK` followed by one `TEL` line.
+  - `TEL busy=` letters: `Z`, `Y`, `D` (drive/turn/dock), `F` (finger), `V` (velocity mode).
+  - Extra events: `EVT BOOT RBG3-FW <ver>`, `EVT DRIVER_RESET`, `EVT SLOT_A|SLOT_B 0|1`, `EVT BADLINE`.
   - When the battery is full there is no charge current, so RETURN accepts `vbat ≥ 16.6 V` instead of `ibat < 0`.
+- `tests/test_firmware_link.py` runs `SerialMotion` against the firmware core (host simulator on a pty);
+  build it first with `make -C ../firmware/motion/sim`, otherwise the test is skipped.
 - Camera stream (`/video.mjpg`) returns 503 for now; the real camera pipeline and calibration tools (`tools/`) are next.

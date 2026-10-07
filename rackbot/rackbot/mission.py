@@ -175,6 +175,9 @@ class Mission:
             self.estop = True
             self.events("error", "robot", "E-stop pressed")
             self._wake.set()
+        elif name == "DRIVER_RESET":
+            self.events("error", "robot", "stepper drivers lost their configuration (VS brown-out): re-homing needed")
+            self._wake.set()
         elif name == "ESTOP_CLEAR":
             self.estop = False
             self.events("info", "robot", "E-stop released: resume or abort")
