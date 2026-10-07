@@ -1,7 +1,7 @@
 # RackBotGen3 — System Overview
 
 Delta Cup 2026 · Automation track · Regional Final, Thailand, 14 Nov 2026
-Status: **Draft v0.1.8 (6 Oct 2026)** — single owner for all subsystems; peers review and give feedback.
+Status: **Draft v0.1.9 (7 Oct 2026)** — single owner for all subsystems; peers review and give feedback.
 
 | Doc | Content |
 |---|---|
@@ -154,4 +154,5 @@ Weigh every bag in week 5 (see 04).
 | v0.1.6 | 2026-10-06 | Independent review fixes. **Mech:** idle finger parked during Y strokes; 10 mm fingers (±1 mm play), Y pull/seat/push 177/178/178.5, hard stop 187; gantry V-wheel carriages (Z in mast side grooves, Y above/below the rail); rail bracket clamped by 3 tray screws; tray screws from behind into inserts; mast on its cross member + collar socket/gusset; KFL08 (not KP08); Z-motor mount; battery box 2 × 2 cells; 3 module spaces; caster gap 6.5; stricter checks (≥ 1 mm running clearance, full strokes). **Elec:** XT30 J1 turned to the board edge, SMBJ18A TVS at J1, J12/J13 out of the USB plug path, R2 18 k, +6 V trace 1.0 mm, separate PTH/NPTH drill files, dock sense before SS54, fuse first, charger IN−-only grounding, NC home switches, TMC re-init after E-stop. **Parts:** 6 m of 2020, KFL08, fastener counts, 90° USB-C cable (P37), INA226 R010; budget ≈ 491 USD; robot 4.45 kg |
 | v0.1.7 | 2026-10-06 | Mast top plate tab bolts into both front slots of the 2040 (2 × M5 at x = ±10; the single bolt at x = 0 missed the slots), E-stop box on 2 × M3 inserts. Parts: M5 heat-set inserts (~15) and M5×16/×25 tray bolts added to P11 (25 → 28 USD); budget ≈ 494 USD. Fit-test coupons (`docs/fit-test-01.md`) |
 | v0.1.8 | 2026-10-06 | Robot E-stop drives a 12 V automotive relay (coil through the NC button, contact cuts VMOT) instead of breaking motor current in the button; fail-safe on a broken wire. New P38 (3 USD); budget ≈ 497 USD |
+| v0.1.9 | 2026-10-07 | Software started: Pi application (`rackbot/`, sim mode) and motion firmware (`firmware/motion/`). 03 §3 completed from the implementation: `E_STOPPED`, `STATUS` reply, `busy` letters, extra events (`BOOT`, `DRIVER_RESET`, `SLOT_A/B`, `BADLINE`), `CFG` keys, busy/homed rules; §8 homing, E-stop recovery timing, LED. No parts change |
 | v0.1.4 | 2026-10-06 | Robot CAD v0 + checks: direct drive (axle y −135), nose z 30–90, swing-down fingers, tray camera window, caddy tag moved left, E-stop on the mast top; mass 4.49 kg; budget ≈ 478 USD |

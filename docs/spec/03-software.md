@@ -11,6 +11,9 @@ docs/spec/                    this specification
 cad/                          text-to-cad sources: caddy, dummy_drive, shelf, rack, spare_station, robot/*
 pcb/motion-board/             KiCad project (RBG3-MOTION v1)
 firmware/motion/              PlatformIO project, ESP32-S3 motion controller
+  lib/rbg3core/               hardware-independent core: protocol, interlocks, homing, E-stop (host unit tests)
+  src/                        ESP32 HAL (steppers, TMC UART, servos, INA226, LED) + pin map
+  sim/                        host simulator: the core on a pseudo-terminal, for Pi-side protocol tests
 firmware/rack-fallback/       ESP32 Modbus TCP rack controller (only if no PLC)
 plc/                          ISPSoft project + exported ladder listing
 rackbot/                      Raspberry Pi application (Python 3.11)
@@ -56,8 +59,8 @@ USB CDC, 115200 8N1, ASCII lines terminated by `\n`.
 - Request: `<seq> <CMD> [args…]` (seq = 1–65535 from the Pi)
 - Immediate reply: `<seq> OK [data]` or `<seq> ERR <code> [msg]`
 - Motion completion: `<seq> DONE` or `<seq> FAIL <code>`
-- Asynchronous: `EVT <name> [data]` (e.g. `EVT ESTOP`, `EVT ESTOP_CLEAR`, `EVT NOSE 1`, `EVT LIMIT Z_HOME`)
-- Telemetry at 10 Hz: `TEL t=<ms> z=<mm> y=<mm> l=<mm> r=<mm> en=<0|1> busy=<axes> sw=<hex> vbat=<V> ibat=<A> vmot=<V> dock=<V> fa=<E|P> fb=<E|P> homed=<ZY>`
+- Asynchronous: `EVT <name> [data]`: `EVT BOOT RBG3-FW <version>`, `EVT ESTOP`, `EVT ESTOP_CLEAR` (drivers re-configured, `ENABLE 1` accepted again), `EVT DRIVER_RESET` (a driver reported GSTAT.reset without a VMOT dip: same recovery as an E-stop), `EVT NOSE 0|1`, `EVT SLOT_A 0|1`, `EVT SLOT_B 0|1`, `EVT LIMIT Z_HOME|Y_HOME` (home switch hit outside homing), `EVT BADLINE` (unparsable request, no seq to answer)
+- Telemetry at 10 Hz: `TEL t=<ms> z=<mm> y=<mm> l=<mm> r=<mm> en=<0|1> busy=<axes> sw=<hex> vbat=<V> ibat=<A> vmot=<V> dock=<V> fa=<E|P> fb=<E|P> homed=<ZY>`. `busy` letters: `Z`, `Y`, `D` (wheels: DRIVE/TURN/DOCK/VEL), `F` (finger move), `V` (velocity mode). Unknown keys must be ignored by the Pi
 
 | Command | Args | Behavior |
 |---|---|---|
@@ -72,10 +75,11 @@ USB CDC, 115200 8N1, ASCII lines terminated by `\n`.
 | `VEL` | `<mm/s> <deg/s>` | Continuous velocity for visual servoing. Stops if no new `VEL` within 300 ms |
 | `DOCK` | `<max_mm> [mm/s]` | Drive forward until NOSE pressed. `FAIL E_NODOCK` if not reached within max_mm |
 | `STOP` | — | Decelerate all axes, cancel the current command |
-| `STATUS` | — | `OK` + one TEL line |
-| `CFG` | `<key> <value>` | Runtime settings (currents, speeds, accel, `bench`) |
+| `STATUS` | — | `OK`, followed immediately by one TEL line |
+| `CFG` | `<key> <value>` | Runtime settings, RAM only (§8): `bench`, `lcur rcur zcur ycur` (mA), `v_drive a_drive v_turn v_z a_z v_y a_y v_dock`, `home_fast home_slow`, `track`, `z_home y_pull y_push y_max`, `fa_park fa_engage fb_park fb_engage` (servo °) |
 
-Error codes: `E_ARG`, `E_BUSY`, `E_NOT_HOMED`, `E_INTERLOCK`, `E_LIMIT`, `E_ESTOP`, `E_NODOCK`, `E_TIMEOUT`.
+Error codes: `E_ARG`, `E_BUSY`, `E_NOT_HOMED`, `E_INTERLOCK`, `E_LIMIT`, `E_ESTOP`, `E_NODOCK`, `E_TIMEOUT`, `E_STOPPED` (motion cancelled by `STOP` or `ENABLE 0`).
+Only one motion command runs at a time; any other motion command (and `VEL` while one runs) gets `E_BUSY`. While `VEL` is active, motion commands get `E_BUSY` until the wheels stop. DRIVE/TURN/DOCK/VEL also need both axes homed (`E_NOT_HOMED`). `ENABLE 0` clears the homed flags (axes can be moved by hand while unpowered).
 
 `sw` bitmask: bit0 Z_HOME, bit1 Y_HOME, bit2 NOSE, bit3 SLOT_A, bit4 SLOT_B (1 = pressed). Z_HOME/Y_HOME are NC switches: the firmware reports pressed = input high, so a broken wire looks like "at home" and homing stops instead of driving into the end.
 
@@ -212,10 +216,12 @@ Stretch: MQTT publish of rack/robot state (shows IIoT interoperability); Delta H
 ## 8. Motion firmware (ESP32-S3)
 
 - PlatformIO, Arduino-ESP32 framework. Libraries: **FastAccelStepper** (hardware step generation), **TMCStepper** (UART config: current, microsteps, StealthChop), ESP32Servo, INA226 (RobTillaart), Adafruit_NeoPixel.
-- Steps/mm: drive 12.73 (direct drive, Ø80 wheel), Z 1600, Y 80 (see 01 §6). Constants in `config.h`, overridable via `CFG`.
+- Steps/mm: drive 12.73 (direct drive, Ø80 wheel), Z 1600, Y 80 (see 01 §6). Constants in `lib/rbg3core/src/settings.h`, overridable via `CFG`; wiring constants (dividers, R_sense 0.11 Ω, INA226 shunt, motor directions) in `src/pins.h`. Wheel track 274 mm.
 - Differential kinematics: `DRIVE`/`TURN` → synchronized profiles on L/R. `VEL` → continuous speed with a 300 ms watchdog.
 - Safety: VMOT_SENSE < 9 V → abort all, disable drivers, `EVT ESTOP`, clear the homed flags. **When VMOT returns** the TMC2209s have reset (their logic runs from VS): until reconfigured the MS1/MS2 address straps set the microstepping (addr 0 → 8, 1 → 32, 2 → 64, 3 → 16) and the current falls back to the VREF pot. So the firmware polls `GSTAT.reset` / `IFCNT`, re-sends every register (current, microsteps, StealthChop) to all four drivers and only then accepts `ENABLE 1`. Set all VREF pots to a safe low current at assembly. Limit switches are checked every step-planner tick. All interlocks from §3 are enforced in firmware, not only on the Pi.
-- Status LED: blue = idle, green = docked/charging, yellow = moving, red = fault, red blink = E-stop.
+- Homing: seek at 10 mm/s, back off 3 mm, re-seek at 2 mm/s; Y = 0, Z = `z_home` (100, confirm on the robot). If an NC switch still reads pressed after backing off (stuck or broken wire), `FAIL E_LIMIT` instead of driving into the end stop; no switch within the axis travel → `FAIL E_LIMIT`.
+- E-stop recovery: VMOT > 10.5 V for 200 ms → re-configure all drivers (verified by IFCNT), retried every 500 ms until they answer, then `EVT ESTOP_CLEAR`.
+- Status LED: blue = idle, green = docked (DOCK_V > 20 V), amber = moving, red = last command failed, red blink = E-stop (plus a short buzzer chirp every 10 s).
 - Bench mode (`CFG bench 1`): lifts the docked interlock for axis testing on the bench.
 
 ## 9. Software test plan (summary — full protocol in 04)
