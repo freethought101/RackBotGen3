@@ -65,7 +65,7 @@ As built: VMOT/GND traces 1.0 mm + GND pours on both layers, motor traces 0.6 mm
 | 8 | STEPPER_EN_N | out | Shared, active low, 10 k pull-up to 3V3 (disabled at boot) |
 | 9 | TMC_UART_TX | out | Through 1 k to the single-wire PDN_UART bus |
 | 10 | TMC_UART_RX | in | Direct to the bus |
-| 1 | VMOT_SENSE | ADC | 100 k / 18 k divider (16.8 V → 2.56 V, readable to ≈ 20 V). Below 9 V means E-stop pressed or VMOT off |
+| 1 | VMOT_SENSE | ADC | 100 k / 18 k divider (16.8 V → 2.56 V, readable to ≈ 19 V: the calibrated ADC range at 12 dB is 0–2.9 V). Below 9 V means E-stop pressed or VMOT off |
 | 2 | DOCK_V_SENSE | ADC | 100 k / 10 k divider (24 V → 2.18 V) |
 | 11 | Z_HOME | in | **NC** contact to GND: closed (low) = not at home; open (high) = at home **or broken wire** (fail-safe) |
 | 12 | Y_HOME | in | " (NC, fail-safe) |
@@ -78,7 +78,7 @@ As built: VMOT/GND traces 1.0 mm + GND pours on both layers, motor traces 0.6 mm
 | 47 | STATUS_LED | out | WS2812 (external), 330 Ω series |
 | 48 | BUZZER | out | Via NPN (onboard RGB on some DevKit revisions also on 48/38: harmless) |
 | 38 | AUX_IN | in | Spare switch input J13 (onboard RGB LED on some DevKit revisions shares 38: harmless as an input) |
-| — | Avoid | — | 0, 3, 45, 46 (strapping); 19/20 (USB); 43/44 (UART0); 35–37 (PSRAM) |
+| — | Avoid | — | 0, 3, 45, 46 (strapping); 19/20 (USB); 43/44 (UART0); 33–37 (octal flash/PSRAM on R8/R16 modules) |
 
 Switch inputs: internal pull-up + 10 k external pull-up to 3V3, 1 k series, 100 nF to GND (debounce/ESD).
 
@@ -105,11 +105,12 @@ Switch inputs: internal pull-up + 10 k external pull-up to 3V3, 1 k series, 100 
   (no jumpers to forget). UART on StepStick pin 4 (PDN_UART); CLK tied to GND (internal clock).
   Each socket also has an **open solder jumper (JP1–JP4)** from pin 5 to the UART bus, for modules that bring
   PDN_UART out on pin 5 instead. Leave it open unless the module's silkscreen shows UART on pin 5. It sits between
-  the socket rows, so it can only be soldered with the module unplugged.
+  the socket rows, so it can only be soldered with the module unplugged. **The MKS TMC2209 V2.0 (P17) has PDN/UART
+  on pin 5** (pin 4 carries UART only if its optional R8 is fitted), so **close JP1–JP4** for those modules.
 - Per driver: 100 µF / 35 V electrolytic + 100 nF on VMOT. Bulk: 470 µF / 35 V at J1. **SMBJ18A TVS** right at J1
   (unidirectional; standoff 18 V > 16.8 V, breakdown 20–22 V). It clamps switch and E-stop ringing at about
   21–23 V, because those currents are small. The datasheet clamp of 29.2 V applies only at the full rated pulse
-  current and is right at the TMC2209's 29 V VS limit. An SMBJ17A (27.6 V clamp) is the drop-in if more margin is wanted.
+  current and is right at the TMC2209's 29 V operating limit (32 V absolute max). An SMBJ17A (27.6 V clamp) is the drop-in if more margin is wanted.
 - Reverse polarity: the XT30 is keyed, so a reversed VMOT harness needs a mis-crimped pigtail. If that happens,
   the TVS conducts and the 10 A fuse blows, but until it does the fault current also returns through board GND,
   the 5 V buck wiring and the Pi↔ESP32 USB ground. Nothing on the board actively blocks reverse polarity
@@ -160,8 +161,9 @@ Power budget: PLC ≈ 5 W, light 3 W, router 3 W, robot charger ≈ 28 W → **�
 | Y2 | Tower YELLOW | Swap in progress / degraded bay |
 | Y3 | Tower RED | Fault / E-stop / Pi watchdog lost |
 
-Input wiring: switches connect +24 V to Xn with S/S tied to 0 V (verify the sink/source naming against the DVP-SE manual before wiring).
-Output wiring: lamp/relay coil between +24 V and Yn (NPN sinking). Flyback diode on the relay coil if the module has none.
+Input wiring: switches connect +24 V to Xn with S/S tied to 0 V (the DVP-SE inputs accept sink or source wiring through S/S; on above 15 V, 5 mA).
+Output wiring: lamp/relay coil between +24 V and Yn (NPN sinking). The 12SE11T transistor outputs need their own supply:
+**UP = +24 V, ZP = 0 V**. Ratings are 0.5 A per point and lamps ≤ 2.5 W per point. Flyback diode on the relay coil if the module has none.
 
 The Modbus register map is in [03-software.md §4](03-software.md#4-rack-modbus-tcp-register-map).
 

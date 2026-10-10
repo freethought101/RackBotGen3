@@ -1,7 +1,7 @@
 # RackBotGen3 — System Overview
 
 Delta Cup 2026 · Automation track · Regional Final, Thailand, 14 Nov 2026
-Status: **Draft v0.1.14 (10 Oct 2026)** — single owner for all subsystems; peers review and give feedback.
+Status: **Draft v0.1.15 (10 Oct 2026)** — single owner for all subsystems; peers review and give feedback.
 
 | Doc | Content |
 |---|---|
@@ -160,4 +160,5 @@ Weigh every bag in week 5 (see 04).
 | v0.1.12 | 2026-10-10 | Local suppliers to avoid Indonesian import tax: NEMA17 ×4 (P01, 36 → 42), TMC2209 ×4 (P17, 16 → 12), ESP32-S3-DevKitC-1 (P16, 10 → 6), MG90S ×3 (P09, 8 → 4) from Tokopedia; budget ≈ 493 USD |
 | v0.1.13 | 2026-10-10 | All remaining parts except the motion PCB (JLCPCB) moved to Tokopedia: P04–P06, P08, P10, P15, P18, P19, P21, P23, P27–P29, P37, P38. Drive wheels (P07) are now a printed PETG hub + TPU 95A tire (P07 not needed). Local INA226 modules carry R100, so P19 adds a 2512 R010 shunt swap. Casters set to height with printed spacers. Budget ≈ 440 USD |
 | v0.1.14 | 2026-10-10 | Motion board components (P23) itemised on Tokopedia (12 → 5 USD); drive hub web cut into 5 spokes and rim thinned to 3 mm (hub 39 → 27 cm³). Budget ≈ 433 USD |
+| v0.1.15 | 2026-10-10 | Datasheet cross-check (`docs/datasheets/CROSSCHECK.md`): MKS TMC2209 V2.0 has UART on pin 5, so close JP1–JP4 (P17); ESP32-S3 octal flash/PSRAM pins are 33–37; VMOT sense readable to ≈ 19 V; TMC2209 29 V operating / 32 V abs max; drive tractive force ≈ 6 N per wheel at 1.0 A (was ≈ 10 N) + shaft radial-load note; DVP-12SE11T outputs need UP/ZP wired. No cost change |
 | v0.1.4 | 2026-10-06 | Robot CAD v0 + checks: direct drive (axle y −135), nose z 30–90, swing-down fingers, tray camera window, caddy tag moved left, E-stop on the mast top; mass 4.49 kg; budget ≈ 478 USD |
