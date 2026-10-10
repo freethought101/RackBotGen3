@@ -30,7 +30,7 @@ The live, per-part order list is the Notion **Parts & Order List** database, mir
 | Item | Qty | USD |
 |---|---|---|
 | Raspberry Pi 3B/3B+ | 1 | 0 (team-owned) |
-| Raspberry Pi Camera Module 3 **Wide** | 1 | 35 |
+| IMX708 120° camera board (Camera Module 3 **Wide** class, Tokopedia) | 1 | 37 |
 | microSD 32 GB A1 | 1 | 8 |
 | CSI flex cable 500 mm | 1 | 3 |
 | ESP32-S3-DevKitC-1 | 1 | 10 |
@@ -43,7 +43,7 @@ The live, per-part order list is the Notion **Parts & Order List** database, mir
 | Passives, headers, StepStick sockets, TVS, caps, WS2812, buzzer | set | 12 |
 | USB-A to USB-C cable, 90° C plug (Pi → DevKit) | 1 | 3 |
 | VMOT relay for the E-stop (12 V automotive, 30/40 A) + flyback diode | 1 | 3 |
-| **Subtotal** | | **186** |
+| **Subtotal** | | **188** |
 
 ### 1.3 Rack & spare station — electrical
 
@@ -75,14 +75,14 @@ The live, per-part order list is the Notion **Parts & Order List** database, mir
 | | USD |
 |---|---|
 | Robot mechanical | 160 |
-| Robot electronics | 186 |
+| Robot electronics | 188 |
 | Rack electrical | 74 |
 | Printing & demo | 77 |
-| **Total** | **≈ 497** (of 500) |
+| **Total** | **≈ 499** (of 500) |
 
-The margin is thin (≈ 3 USD after the v0.1.7 fastener additions and the v0.1.8 E-stop relay). **Savings options** (use them if prices come in higher, or a router must be bought):
-TPU-printed wheels instead of bought (−10) · wide-angle OV5647 camera instead of Module 3 Wide (−20, more distortion) ·
-3 panel LEDs instead of the tower light (−7) · team-owned filament or fasteners (−20 to −50) · drop the 3rd servo and spare switches (−5).
+The margin is thin (≈ 1 USD after the v0.1.7 fastener additions, the v0.1.8 E-stop relay and the v0.1.11 camera price). **Savings options** (use them if prices come in higher, or a router must be bought):
+TPU-printed wheels instead of bought (−10) · wide-angle OV5647 camera instead of the IMX708 board (−29, more distortion) ·
+3 panel LEDs instead of the tower light (−7) · team-owned filament or fasteners (−20 to −50) · drop the 3rd servo and spare switches (−5). Priced backup options and local (Tokopedia) sources: `docs/sourcing-options.md`.
 **PLC**: request a loan from Delta Thailand this week. If none, use the ESP32 fallback rack controller (≈ +20 USD, see 02 §4.4).
 
 ## 2. Schedule

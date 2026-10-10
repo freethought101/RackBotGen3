@@ -186,7 +186,8 @@ All numbers live in `cad/src/lib/robot_dims.py`. `cad/checks/robot_check.py` ver
 
 ### 6.6 Camera (verified sight lines)
 
-- Raspberry Pi Camera Module 3 Wide (~102° × 67°), lens at (−78, −115, Z + 15), looking +y.
+- IMX708 120° camera board (Camera Module 3 Wide class, ~102° × 67°), lens at (−78, −115, Z + 15), looking +y.
+  Third-party board: check its outline, hole pattern and lens height against the tray mount and window on arrival.
 - Bay tag strip (x −80): straight ahead (−0.9° H) at every bay. **Caddy tag (now on the left of the handle front)**:
   23° H through the tray window, slot B empty. Approach tag (right fin): 28.6° at 250 mm, 13.9° at 700 mm back-off
   with Z approach = 215.

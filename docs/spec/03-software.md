@@ -161,7 +161,7 @@ stateDiagram-v2
 
 ### 6.1 Pipeline
 
-- Picamera2 → 640×480 YUV420, Y plane only (grayscale). Camera Module 3 Wide, autofocus in continuous mode (or fixed lens position calibrated at ~150 mm).
+- Picamera2 → 640×480 YUV420, Y plane only (grayscale). IMX708 120° board (Camera Module 3 Wide class): continuous autofocus if the board has it, otherwise a fixed lens position calibrated at ~150 mm.
 - One-time **camera calibration** (checkerboard, OpenCV) → intrinsics in `config.yaml`.
 - `pupil-apriltags`, family **tag36h11**, `quad_decimate=2.0`, `nthreads=4`, pose estimation with known tag sizes:
 

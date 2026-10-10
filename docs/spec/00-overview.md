@@ -1,7 +1,7 @@
 # RackBotGen3 — System Overview
 
 Delta Cup 2026 · Automation track · Regional Final, Thailand, 14 Nov 2026
-Status: **Draft v0.1.9 (7 Oct 2026)** — single owner for all subsystems; peers review and give feedback.
+Status: **Draft v0.1.11 (10 Oct 2026)** — single owner for all subsystems; peers review and give feedback.
 
 | Doc | Content |
 |---|---|
@@ -101,7 +101,7 @@ flowchart LR
   end
   subgraph ROBOT["Robot (mobile)"]
     BAT["4S Li-ion ~50 Wh\n+ BMS + INA226"] --> MB["Motion board\nESP32-S3 + 4x TMC2209"]
-    BAT --> PI["Raspberry Pi 3\n+ Camera Module 3 Wide"]
+    BAT --> PI["Raspberry Pi 3\n+ IMX708 120° camera"]
     PI <-- USB serial --> MB
     MB --> MOT["Drive L/R, Z lift, Y extractor\n(NEMA17)"]
     MB --> SRV["Finger servos A/B"]
@@ -156,4 +156,5 @@ Weigh every bag in week 5 (see 04).
 | v0.1.8 | 2026-10-06 | Robot E-stop drives a 12 V automotive relay (coil through the NC button, contact cuts VMOT) instead of breaking motor current in the button; fail-safe on a broken wire. New P38 (3 USD); budget ≈ 497 USD |
 | v0.1.9 | 2026-10-07 | Software started: Pi application (`rackbot/`, sim mode) and motion firmware (`firmware/motion/`). 03 §3 completed from the implementation: `E_STOPPED`, `STATUS` reply, `busy` letters, extra events (`BOOT`, `DRIVER_RESET`, `SLOT_A/B`, `BADLINE`), `CFG` keys, busy/homed rules; §8 homing, E-stop recovery timing, LED. No parts change |
 | v0.1.10 | 2026-10-07 | Motion board review fixes (02 §3): full silkscreen (connector functions, pin order, polarity, StepStick EN/VM/DIR/GND corner marks, DevKit orientation); open solder jumpers JP1–JP4 for StepStick modules with PDN_UART on pin 5; J18 pin 2 not connected (no GND next to the dock sense); TVS clamp and reverse-polarity wording corrected. No parts change |
+| v0.1.11 | 2026-10-10 | Sourcing for Indonesia: P13 camera → IMX708 120° board (Camera Module 3 Wide class) from Tokopedia, 37 USD (genuine Module 3 Wide ≈ 46 USD landed from AliExpress after import tax, ≈ 76 USD locally); budget ≈ 499 USD. Backup cost-cutting options and local sources in `docs/sourcing-options.md` |
 | v0.1.4 | 2026-10-06 | Robot CAD v0 + checks: direct drive (axle y −135), nose z 30–90, swing-down fingers, tray camera window, caddy tag moved left, E-stop on the mast top; mass 4.49 kg; budget ≈ 478 USD |
