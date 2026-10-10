@@ -1,5 +1,7 @@
 # Datasheets
 
+Spec values checked against these files: [CROSSCHECK.md](CROSSCHECK.md).
+
 | File | Part | Source |
 |---|---|---|
 | P09_mg90s.pdf | P09 MG90S servo | electronicoscaldas.com mirror (TowerPro) |
@@ -13,7 +15,7 @@
 | PCB_1n4148w.pdf | D2 1N4148W | diodes.com |
 | PCB_1n4007.pdf | P38 flyback diode 1N4007 | diodes.com |
 | PCB_ws2812b.pdf | WS2812B | adafruit mirror |
-| P18_xl4015.pdf | P18 XL4015 buck chip (charger/buck modules) | chipdip.ru mirror |
+| P18_xl4015.pdf | P18 XL4015E1 buck chip (5 A / 36 V, charger) | LCSC (found via browser) |
 | P24_delta-drp024v060w1az.pdf | P24 Delta CliQ DRP-024V060W1AZ (example model; PSU not yet chosen) | deltapsu.com |
 | P25_delta-dvp-se_instruction-sheet.pdf | P25 Delta DVP-SE series PLC instruction sheet | deltaacdrives.com |
 | PCB_xt30pw-m.pdf | J1 XT30PW-M | AMASS via szlcsc.com |
