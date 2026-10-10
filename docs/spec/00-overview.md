@@ -1,7 +1,7 @@
 # RackBotGen3 — System Overview
 
 Delta Cup 2026 · Automation track · Regional Final, Thailand, 14 Nov 2026
-Status: **Draft v0.1.12 (10 Oct 2026)** — single owner for all subsystems; peers review and give feedback.
+Status: **Draft v0.1.13 (10 Oct 2026)** — single owner for all subsystems; peers review and give feedback.
 
 | Doc | Content |
 |---|---|
@@ -158,4 +158,5 @@ Weigh every bag in week 5 (see 04).
 | v0.1.10 | 2026-10-07 | Motion board review fixes (02 §3): full silkscreen (connector functions, pin order, polarity, StepStick EN/VM/DIR/GND corner marks, DevKit orientation); open solder jumpers JP1–JP4 for StepStick modules with PDN_UART on pin 5; J18 pin 2 not connected (no GND next to the dock sense); TVS clamp and reverse-polarity wording corrected. No parts change |
 | v0.1.11 | 2026-10-10 | Sourcing for Indonesia: P13 camera → IMX708 120° board (Camera Module 3 Wide class) from Tokopedia, 37 USD (genuine Module 3 Wide ≈ 46 USD landed from AliExpress after import tax, ≈ 76 USD locally); budget ≈ 499 USD. Backup cost-cutting options and local sources in `docs/sourcing-options.md` |
 | v0.1.12 | 2026-10-10 | Local suppliers to avoid Indonesian import tax: NEMA17 ×4 (P01, 36 → 42), TMC2209 ×4 (P17, 16 → 12), ESP32-S3-DevKitC-1 (P16, 10 → 6), MG90S ×3 (P09, 8 → 4) from Tokopedia; budget ≈ 493 USD |
+| v0.1.13 | 2026-10-10 | All remaining parts except the motion PCB (JLCPCB) moved to Tokopedia: P04–P06, P08, P10, P15, P18, P19, P21, P23, P27–P29, P37, P38. Drive wheels (P07) are now a printed PETG hub + TPU 95A tire (P07 not needed). Local INA226 modules carry R100, so P19 adds a 2512 R010 shunt swap. Casters set to height with printed spacers. Budget ≈ 440 USD |
 | v0.1.4 | 2026-10-06 | Robot CAD v0 + checks: direct drive (axle y −135), nose z 30–90, swing-down fingers, tray camera window, caddy tag moved left, E-stop on the mast top; mass 4.49 kg; budget ≈ 478 USD |

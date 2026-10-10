@@ -1,13 +1,13 @@
 # Sourcing options & backup cost-cutting (Indonesia)
 
-Backup options found while sourcing for spec v0.1.11. **None of these are in `docs/parts.csv` unless stated.**
+Local sources and backup options for the parts list. Since v0.1.13 every part except the motion PCB (P22, JLCPCB) is bought locally; §3 lists the listings chosen. Shipping is to Kuta, Badung (Bali).
 Prices are Tokopedia search prices checked on **2026-10-10** (≈ Rp16,000 per USD) and change often, so re-check before ordering.
 
 ## 1. Where to order
 
 | Option | Delivery | Customs / tax | Use for |
 |---|---|---|---|
-| Tokopedia / Shopee (local) | Same day in the same city, 1–3 days within Java, ~3–7 days outside Java | None | Almost everything |
+| Tokopedia / Shopee (local) | Java sellers to Kuta, Bali: ~3–6 days (a Bandung seller quoted 13–16 Oct for an order on 10 Oct); Bali sellers faster | None | Everything except the PCB |
 | AliExpress Choice | ~7–15 days (non-Choice 15–30+) | Parcels over USD 3: 7.5 % duty + 11 % VAT + 10 % PPh (20 % without NPWP), so ≈ +30–40 %; under USD 3: VAT only | Only parts that are much dearer locally. Group them into one order |
 | JLCPCB + DHL Express | 2–3 days build + 3–5 days shipping | DHL clears customs and bills the tax | Motion PCB (P22) |
 | JLCPCB Global Standard Direct | Build + ~8–15 days, sometimes ~30 | Clearance can take 5–7 working days without tracking updates | Only if time allows |
@@ -41,7 +41,25 @@ Requirements: ≥ ~65° H FOV (the approach tag is 28.6° off-axis, 01 §6.6), f
 
 Not suitable: the standard OV5647 (54° H) and standard IMX219 v2 (62° H) are too narrow for the approach tag.
 
-## 3. Candidates for the generic parts
+## 3. Chosen local sources (v0.1.13)
+
+| ID | Listing(s) | ≈ Price | Notes |
+|---|---|---|---|
+| P04 | [mini V-wheel 105zz](https://www.tokopedia.com/search?q=OpenBuilds%20V-Wheel%20Mini%20105zz%20rajawali3d) (rajawali3d) + [M5 eccentric spacers](https://www.tokopedia.com/hwkits/openbuilds-spacer-eccentric-10hex-m5-for-v-wheel) | Rp13k × 8 + Rp7k × 4 | Check that the spacer fits the mini wheel bore |
+| P05 | [T8-2-D8 350](https://www.tokopedia.com/indomakers/3d-printer-lead-screw-t8-2-d8-350mm-leadscrew-no-nut) + [anti-backlash nut, lead 2](https://www.tokopedia.com/lajarusteknik/t8-nut-block-lead-screw-anti-backlash-pitch-2mm-lead-2mm-1start) + [KFL08](https://www.tokopedia.com/lajarusteknik/pillow-block-bearing-kfl08-8mm-promo) + [5×8 coupler](https://www.tokopedia.com/lajarusteknik/flexible-coupling-5-x-8mm-d20-p25-coupler-aluminium-5mm-x-8mm) | ≈ Rp89k | Lajarus Teknik also sells the 2020 extrusion |
+| P06 | [GT2 6 mm belt /m](https://www.tokopedia.com/centi-store/timing-belt-gt2-6mm-untuk-3d-printer-meteran-open-loop) + [20T 5 mm pulley](https://www.tokopedia.com/rajawali3d/gt2-timing-pulley-20-teeth-bore-5mm-belt-6mm) + [toothless idler 5 mm](https://www.tokopedia.com/3dinjakarta/gearless-idler-pulley-2gt-gt2-6mm-20t-20-bore-3mm-4mm-5mm-1736902733684836117) | ≈ Rp40k | |
+| P08 | [metal ball caster](https://www.tokopedia.com/bustan/universal-ball-caster-metal-free-wheel-mata-sapi-for-smart-car-arduino) × 3 | Rp15k each | Must be < 27 mm tall (ask the seller); printed spacers to 42/27 mm |
+| P10 | [KW11-3Z lever](https://www.tokopedia.com/best-ay/micro-limit-switch-kw11-3z-5a-250v-3-pin-saklar-terminal-gagang-no-nc) × 15 | Rp1.4k each | |
+| P15 | [Pi camera FFC 50 cm](https://www.tokopedia.com/rajacell/kabel-camera-ffc-cable-untuk-kamera-raspberry-pi-3b-4b-15cm-30cm-50cm-15cm) | Rp10k | Pick the 50 cm variant |
+| P19 | [INA226 module](https://www.tokopedia.com/solarperfect/ina226-i2c-bi-directional-dc-current-sensor-arus) + [2512 R010 shunt](https://www.tokopedia.com/wkh-elektronik/smd-2512-alloy-resistor-r010-0-010-ohm-10mr-accuracy-1-rshunt-10milir) | Rp22k + Rp3k | Product photos show **R100**: swap the shunt (hot air or two irons) |
+| P21 | [XT30/XT60](https://www.tokopedia.com/teknoza/konektor-amass-xt30-xt60-xt90-male-female-xt30-27300), [JST-XH 230 pcs](https://www.tokopedia.com/easy-go-512/isi-230pcs-kit-housing-soket-kabel-listrik-jst-xh-2-54mm-konektor-kabel-2-pin-3-pin-4-pin-5-pin-terminal-1733880946592416840), [robot E-stop 1NC twist release](https://www.tokopedia.com/rnpstore/emergency-stop-push-lock-turn-to-release-22mm-1nc-xb2-es542) | — | Fuse holder, rocker switch, SS54, silicone wire: any local electronics shop |
+| P37 | [USB-A → C 90° L-shape data cable](https://www.tokopedia.com/njatech/vivan-kabel-data-gaming-90-derajat-l-style-usb-a-to-c-fast-charging-15w-3a-casan-1734418008877597777) | Rp29k | 1 m (spec 0.3 m); check the plug exits up/away from J10/J11 |
+| P38 | [Bosch 12 V 4-pin relay + ceramic socket](https://www.tokopedia.com/putrajayamotor-1/relay-bosch-original-kaki-4-12v-soket-relay-keramik-kaki-4) | Rp23k | + 1N4007 |
+| P18, P27, P28, P29 | see the table below | | |
+
+P23 (PCB components) is still to be itemised from `pcb/motion-board/fab/rbg3-motion-bom.csv`. P07 (bought wheels) is replaced by printed PETG hubs + TPU tires.
+
+## 4. Candidates for the generic parts (first search)
 
 | ID | Candidate | Price | Notes |
 |---|---|---|---|
@@ -57,6 +75,6 @@ Not suitable: the standard OV5647 (54° H) and standard IMX219 v2 (62° H) are t
 | P08 | [Metal ball caster](https://www.tokopedia.com/bustan/universal-ball-caster-metal-free-wheel-mata-sapi-for-smart-car-arduino) | Rp15k each | Set the height with spacers |
 | P30 | [High-current pogo pins](https://www.tokopedia.com/acempoll33/2x-high-current-spring-loaded-pogo-pin-connector-1a-1-5a-2a-5a-high-power-heavy-current-battery-connector-pogopin-header-charge-1731002443373053951) | — | Brass strip from a hardware store is simpler |
 
-## 4. Savings options (from 04 §1.5)
+## 5. Savings options (from 04 §1.5)
 
-TPU-printed wheels instead of bought (−10) · OV5647 wide camera instead of the IMX708 board (−29) · 3 panel LEDs instead of the tower light (−7) · team-owned filament or fasteners (−20 to −50) · drop the 3rd servo and spare switches (−5) · buy locally instead of importing (avoids ≈ 30–40 % import tax).
+OV5647 wide camera instead of the IMX708 board (−29) · 3 panel LEDs instead of the tower light (−7) · team-owned filament or fasteners (−20 to −50) · drop the 3rd servo and spare switches (−5) · buy locally instead of importing (avoids ≈ 30–40 % import tax).

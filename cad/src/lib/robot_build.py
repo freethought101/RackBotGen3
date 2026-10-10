@@ -16,13 +16,14 @@ from lib.robot_dims import (AXLE_Y, AXLE_Z, BASE_FRONT_Y, BASE_REAR_Y, BATTERY, 
                             CAM_LENS, CASTER_FRONT, CASTER_FRONT_GAP, CASTER_REAR, COUPLER_Z, CROSS_Y, DECK_Z,
                             DRIVE_MOTOR_X, ESTOP_XY, FINGER_DZ, FINGER_X, KFL08, MAST_X, MAST_Y, MAST_Z, NOSE_Z,
                             PCB_XY, PCB_Z, PI_XY, RAIL_X, RAIL_Z, SCREW_XY, SCREW_Z, SERVO, SERVO_FACE_DY, VWHEEL,
-                            WHEEL_D, WHEEL_X, Y_NOTCH_HOME, YPLATE_X, YRAIL_DZ, YRAIL_X, YRAIL_Y, YWHEEL_DY,
+                            Y_NOTCH_HOME, YPLATE_X, YRAIL_DZ, YRAIL_X, YRAIL_Y, YWHEEL_DY,
                             YWHEEL_DZ, ZMOTOR_Z, ZPLATE_Y, ZWHEEL_DZ, ZWHEEL_X,
                             BELT_DZ, BELT_STRAND_X, BELT_X, IDLER_Y, PULLEY_CORE_D, PULLEY_FLANGE_D, PULLEY_Y,
                             YMOTOR_DZ)
 from robot.battery_box import battery_box
 from robot.deck import deck
 from robot.drive_bracket import drive_bracket
+from robot.drive_wheel import drive_hub, drive_tire
 from robot.electronics_tray import electronics_tray
 from robot.finger import finger
 from robot.mast_collar import mast_collar
@@ -65,10 +66,13 @@ def base_parts():
     right = drive_bracket()
     parts.append(_p(right, "drive_bracket:right"))
     parts.append(_p(right.mirror(bd.Plane.YZ), "drive_bracket:left"))
+    hub, tire = drive_hub(), drive_tire()
+    parts.append(_p(hub, "drive_hub:right"))
+    parts.append(_p(hub.mirror(bd.Plane.YZ), "drive_hub:left"))
+    parts.append(_p(tire, "drive_tire:right", vendor.RUBBER))
+    parts.append(_p(tire.mirror(bd.Plane.YZ), "drive_tire:left", vendor.RUBBER))
     for s, side in ((-1, "left"), (1, "right")):
         parts.append(vendor.nema17_x(s * DRIVE_MOTOR_X[1], AXLE_Y, AXLE_Z, s, f"nema17:drive_{side}"))
-        w0, w1 = sorted((s * WHEEL_X[0], s * WHEEL_X[1]))
-        parts.append(vendor.wheel_x(w0, w1, AXLE_Y, AXLE_Z, WHEEL_D, f"wheel:{side}"))
     for i, (x, y) in enumerate(CASTER_REAR):
         parts.append(vendor.ball_caster(x, y, 0.0, RAIL_Z[0], f"caster:rear_{i}"))
     cx, cy = CASTER_FRONT

@@ -23,7 +23,8 @@ failures = []
 # Designed contacts (label prefixes): shafts in hubs, V-wheel rims in their grooves, the belt in its clamp.
 EXPECTED = [("kfl08", "leadscrew_tr8x2"), ("nema17:z", "coupler"), ("nema17:y", "gt2_pulley_20t"),
             ("vwheel:z", "mast_2040"), ("vwheel:y", "y_rail_2020"), ("y_carriage", "gt2_belt:inner"),
-            ("leadscrew_tr8x2", "mast_top_plate"), ("coupler", "leadscrew_tr8x2")]
+            ("leadscrew_tr8x2", "mast_top_plate"), ("coupler", "leadscrew_tr8x2"),
+            ("nema17:drive", "drive_hub"), ("drive_hub", "drive_tire")]   # D-flat on the round shaft model; tire stretch fit
 PRINTED_DENSITY = 1.27e-3 * 0.5          # PETG, ~50 % effective fill
 EXTRUSION_G_PER_MM = {"2020": 0.5, "2040": 0.9}
 VENDOR_G = {"nema17": 280, "mg90s": 14, "wheel": 60, "caster": 35, "kfl08": 45, "vwheel": 12, "leadscrew": 130,

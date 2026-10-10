@@ -130,7 +130,8 @@ All numbers live in `cad/src/lib/robot_dims.py`. `cad/checks/robot_check.py` ver
   webs bolted to the rail (M5; the head goes in through the bore from the plate side before the wheel is fitted).
   The deck screws into **M3 × 4 heat-set inserts in the web tops** at x ±105 (clear of the motor). Torque ≈ 10 N
   per wheel. Resolution 3200 µsteps / (π·80) ≈ **12.7 µsteps/mm**.
-- Wheels Ø80 × 24 at x ±(125…149), 5 mm bore hubs. Wheel fronts at y −95 stay 10 mm short of the dock funnel mouth.
+- Wheels Ø80 × 24 at x ±(125…149), **printed**: PETG hub on the 5 mm D-shaft (M3 set screw into a heat-set insert,
+  onto the flat) + TPU 95A tire stretched over the rim. Wheel fronts at y −95 stay 10 mm short of the dock funnel mouth.
 - Casters: 2 ball casters under the rear cross member (±65, −380); an **anti-tip ball caster under the nose** with a
   **6.5 mm** gap (3.5 mm above the dock floor plate when docked).
 - **Nose/bumper** (printed, 200 W × 60 L, **z 30–90** so it stays under the tray): tip on the stop at y = −30, tray front
@@ -224,6 +225,8 @@ All numbers live in `cad/src/lib/robot_dims.py`. `cad/checks/robot_check.py` ver
 | Robot deck | 1 | PETG | 246 × 300 × 5 |
 | Nose/bumper | 1 | PETG | + TPU strip |
 | Drive bracket | 2 | PETG | one mirrored |
+| Wheel hub + tire | 2 + 2 | PETG + TPU 95A | Ø80 × 24 assembled; tire printed slowly on a direct-drive extruder (or a local print service) |
+| Caster spacers | 3 | PETG | rear to 42 mm total, front to 27 mm; size after measuring the bought casters |
 | Mast collar (socket + flange + rear gusset), mast top plate (tab: 2 × M5 into both front slots; 2 × M3 inserts for the E-stop box) | 1 + 1 | PETG | |
 | Z-motor mount | 1 | PETG | |
 | Z carriage (plate + nut block; V-wheels on axles through the plate) | 1 | PETG | |
@@ -246,7 +249,6 @@ Estimated filament: PETG ≈ 2.0 kg, PLA ≈ 0.8 kg, TPU ≈ 0.15 kg.
 | Mini V-wheel kit (wheel + bearing + eccentric spacer) | 8 |
 | Tr8×2 lead screw 350 + anti-backlash nut + 5→8 coupler + **KFL08** 2-bolt flange bearing | 1 set |
 | GT2 6 mm belt (≈ 0.8 m), 20T pulley 5 mm bore × 1, GT2 idler × 1 (Y axis only) | set |
-| Wheels Ø80 with 5 mm bore hubs (direct drive) | 2 |
 | Ball casters (2 rear, 1 front anti-tip) | 3 |
 | MG90S servos | 2 (+1 spare) |
 | Lever microswitches KW11-3Z (13 used + 2 spare) | 15 |

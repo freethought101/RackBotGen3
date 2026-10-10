@@ -19,13 +19,13 @@ Frame for all bay-side parts: x = across the bay (0 = centerline), y = into the 
 | rack.py | STEP/rack.step | Rack assembly: 2020 frame, 4 shelves, caddies, dock, tags, Delta PSU/PLC placeholders | — |
 | spare_station.py | STEP/spare_station.step | Spare station assembly: S1 GOOD / S2 RMA | — |
 
-| robot/*.py | STEP/robot/…, STL/robot/… | 15 printed robot parts: nose, deck, drive_bracket (×2, one mirrored), mast_collar (socket + flange + rear gusset), mast_top_plate (KFL08), z_motor_mount, z_carriage, tray_stack (print on its back plate), rail_bracket, y_idler_bracket, y_carriage (gantry plate, frame, arm, belt clamp), finger (×2, 10 mm), electronics_tray, pi_tray, battery_box | PETG |
+| robot/*.py | STEP/robot/…, STL/robot/… | 17 printed robot parts: nose, deck, drive_bracket (×2, one mirrored), drive_hub (×2, PETG, outboard face down) + drive_tire (×2, TPU 95A), mast_collar (socket + flange + rear gusset), mast_top_plate (KFL08), z_motor_mount, z_carriage, tray_stack (print on its back plate), rail_bracket, y_idler_bracket, y_carriage (gantry plate, frame, arm, belt clamp), finger (×2, 10 mm), electronics_tray, pi_tray, battery_box | PETG |
 | robot_assembly.py | STEP/robot_assembly.step | Robot at a travel pose (Z 210, extractor home) | — |
 | robot_docked.py | STEP/robot_docked.step | Rack + robot docked, extracting from bay 2 (Y = Y_PULL = 177, finger B engaged) | — |
 
 Robot frame = rack frame with the robot docked (nose tip on the stop at y = −30). Dimensions:
 `lib/robot_dims.py`; assembly factory `lib/robot_build.py` (`robot_parts(Z, Y, fingers)`); purchased parts
-are envelope stand-ins in `lib/vendor.py` (NEMA17, MG90S, wheels, casters, mini V-wheels, KFL08, Pi, battery…), and the motion
+are envelope stand-ins in `lib/vendor.py` (NEMA17, MG90S, casters, mini V-wheels, KFL08, Pi, battery…), and the motion
 board is the real KiCad STEP export. Robot nested scripts run as `PYTHONPATH=src python src/robot/<part>.py`.
 
 2020 cut list: rack 2 × 220, 4 × 320, 2 × 180; spare station 2 × 220, 4 × 215, 2 × 180;

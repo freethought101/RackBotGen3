@@ -15,15 +15,15 @@ The live, per-part order list is the Notion **Parts & Order List** database, mir
 |---|---|---|
 | NEMA17 42×40, ≥ 0.4 N·m (Tokopedia) | 4 | 42 |
 | 2020 V-slot 6 × 1 m (4.96 m of cuts + kerf) + 2040 V-slot 0.42 m (robot + rack + spare station) | — | 35 |
-| Mini V-wheel kits | 8 | 12 |
-| Tr8×2 lead screw 350 + anti-backlash nut + coupler + KFL08 flange bearing | 1 | 12 |
-| GT2 belt (Y axis), 20T, idler | set | 6 |
-| Wheels 80 mm, 5 mm bore hub (direct drive) | 2 | 10 |
-| Ball casters (2 rear + 1 anti-tip) | 3 | 7 |
+| Mini V-wheel kits | 8 | 8 |
+| Tr8×2 lead screw 350 + anti-backlash nut + coupler + KFL08 flange bearing | 1 | 6 |
+| GT2 belt (Y axis), 20T, idler | set | 3 |
+| Wheels 80 × 24 mm: printed PETG hub + TPU 95A tire (filament in §1.4) | 2 | 0 |
+| Ball casters (2 rear + 1 anti-tip), printed spacers | 3 | 3 |
 | MG90S servo (Tokopedia) | 3 | 4 |
-| Lever microswitches KW11-3Z (13 + 2 spare) | 15 | 6 |
+| Lever microswitches KW11-3Z (13 + 2 spare) | 15 | 2 |
 | Fastener kit (~120 M5 T-nuts, screws incl. 7 × M5×16 + 3 × M5×25 for the tray, ~48 corner brackets, M3 + ~60 M3 / ~15 M5 heat-set inserts) | — | 28 |
-| **Subtotal** | | **162** |
+| **Subtotal** | | **131** |
 
 ### 1.2 Robot — electronics
 
@@ -32,18 +32,18 @@ The live, per-part order list is the Notion **Parts & Order List** database, mir
 | Raspberry Pi 3B/3B+ | 1 | 0 (team-owned) |
 | IMX708 120° camera board (Camera Module 3 **Wide** class, Tokopedia) | 1 | 37 |
 | microSD 32 GB A1 | 1 | 8 |
-| CSI flex cable 500 mm | 1 | 3 |
+| CSI flex cable 500 mm | 1 | 1 |
 | ESP32-S3-DevKitC-1 (Tokopedia) | 1 | 6 |
 | TMC2209 StepStick (Tokopedia) | 4 | 12 |
-| Buck 5 V/5 A + buck 6 V/3 A + CC/CV charger module | 3 | 12 |
-| INA226 module (**10 mΩ / R010** shunt version) | 1 | 4 |
+| Buck 5 V/5 A + buck 6 V/3 A + CC/CV charger module | 3 | 4 |
+| INA226 module + **10 mΩ / R010** 2512 shunt (local modules ship R100: swap it) | 1 | 2 |
 | 18650 3.5 Ah × 4 + 4S BMS + holder/nickel strip | set | 30 |
 | XT60/XT30, fuse holder, rocker switch, robot E-stop, silicone wire, JST-XH kit | set | 25 |
 | Motion PCB, JLCPCB 5 pcs + shipping | 1 | 25 |
 | Passives, headers, StepStick sockets, TVS, caps, WS2812, buzzer | set | 12 |
-| USB-A to USB-C cable, 90° C plug (Pi → DevKit) | 1 | 3 |
-| VMOT relay for the E-stop (12 V automotive, 30/40 A) + flyback diode | 1 | 3 |
-| **Subtotal** | | **180** |
+| USB-A to USB-C cable, 90° C plug (Pi → DevKit) | 1 | 2 |
+| VMOT relay for the E-stop (12 V automotive, 30/40 A) + flyback diode | 1 | 2 |
+| **Subtotal** | | **166** |
 
 ### 1.3 Rack & spare station — electrical
 
@@ -51,13 +51,13 @@ The live, per-part order list is the Notion **Parts & Order List** database, mir
 |---|---|---|
 | **Delta 24 V DIN-rail PSU, 75–100 W** | 1 | 35 |
 | DIN rail, terminal blocks, 24 V relay module, polyfuse | set | 10 |
-| 24 V mini tower light R/Y/G | 1 | 10 |
-| Rack E-stop (2 NC contacts) | 1 | 8 |
-| 24 → 5 V USB buck (router) | 1 | 3 |
+| 24 V mini tower light R/Y/G | 1 | 8 |
+| Rack E-stop (2 NC contacts) | 1 | 3 |
+| 24 → 5 V USB buck (router) | 1 | 2 |
 | Dock contacts (pogo/brass), copper sheet, spare-station cable | set | 8 |
 | Travel router | 1 | 0 (borrow/owned; ≈ 25 if bought) |
 | **Delta DVP-12SE11T PLC** | 1 | **not in budget, loan/sponsor** (≈ 150–250) |
-| **Subtotal** | | **74** |
+| **Subtotal** | | **66** |
 
 ### 1.4 Printing & demo materials
 
@@ -74,14 +74,14 @@ The live, per-part order list is the Notion **Parts & Order List** database, mir
 
 | | USD |
 |---|---|
-| Robot mechanical | 162 |
-| Robot electronics | 180 |
-| Rack electrical | 74 |
+| Robot mechanical | 131 |
+| Robot electronics | 166 |
+| Rack electrical | 66 |
 | Printing & demo | 77 |
-| **Total** | **≈ 493** (of 500) |
+| **Total** | **≈ 440** (of 500) |
 
-The margin is thin (≈ 7 USD after the v0.1.7 fastener additions, the v0.1.8 E-stop relay, the v0.1.11 camera price and the v0.1.12 move to local suppliers). **Savings options** (use them if prices come in higher, or a router must be bought):
-TPU-printed wheels instead of bought (−10) · wide-angle OV5647 camera instead of the IMX708 board (−29, more distortion) ·
+The margin is ≈ 60 USD after the v0.1.12–v0.1.13 move to local (Tokopedia) suppliers; only the motion PCB (JLCPCB) is imported. **Savings options** (use them if prices come in higher, or a router must be bought):
+wide-angle OV5647 camera instead of the IMX708 board (−29, more distortion) ·
 3 panel LEDs instead of the tower light (−7) · team-owned filament or fasteners (−20 to −50) · drop the 3rd servo and spare switches (−5). Priced backup options and local (Tokopedia) sources: `docs/sourcing-options.md`.
 **PLC**: request a loan from Delta Thailand this week. If none, use the ESP32 fallback rack controller (≈ +20 USD, see 02 §4.4).
 
