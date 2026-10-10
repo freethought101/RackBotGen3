@@ -40,10 +40,10 @@ The live, per-part order list is the Notion **Parts & Order List** database, mir
 | 18650 3.5 Ah × 4 + 4S BMS + holder/nickel strip | set | 30 |
 | XT60/XT30, fuse holder, rocker switch, robot E-stop, silicone wire, JST-XH kit | set | 25 |
 | Motion PCB, JLCPCB 5 pcs + shipping | 1 | 25 |
-| Passives, headers, StepStick sockets, TVS, caps, WS2812, buzzer | set | 12 |
+| Passives, headers, StepStick sockets, TVS, caps, WS2812, buzzer (itemised, Tokopedia) | set | 5 |
 | USB-A to USB-C cable, 90° C plug (Pi → DevKit) | 1 | 2 |
 | VMOT relay for the E-stop (12 V automotive, 30/40 A) + flyback diode | 1 | 2 |
-| **Subtotal** | | **166** |
+| **Subtotal** | | **159** |
 
 ### 1.3 Rack & spare station — electrical
 
@@ -75,12 +75,12 @@ The live, per-part order list is the Notion **Parts & Order List** database, mir
 | | USD |
 |---|---|
 | Robot mechanical | 131 |
-| Robot electronics | 166 |
+| Robot electronics | 159 |
 | Rack electrical | 66 |
 | Printing & demo | 77 |
-| **Total** | **≈ 440** (of 500) |
+| **Total** | **≈ 433** (of 500) |
 
-The margin is ≈ 60 USD after the v0.1.12–v0.1.13 move to local (Tokopedia) suppliers; only the motion PCB (JLCPCB) is imported. **Savings options** (use them if prices come in higher, or a router must be bought):
+The margin is ≈ 67 USD after the v0.1.12–v0.1.14 move to local (Tokopedia) suppliers; only the motion PCB (JLCPCB) is imported. **Savings options** (use them if prices come in higher, or a router must be bought):
 wide-angle OV5647 camera instead of the IMX708 board (−29, more distortion) ·
 3 panel LEDs instead of the tower light (−7) · team-owned filament or fasteners (−20 to −50) · drop the 3rd servo and spare switches (−5). Priced backup options and local (Tokopedia) sources: `docs/sourcing-options.md`.
 **PLC**: request a loan from Delta Thailand this week. If none, use the ESP32 fallback rack controller (≈ +20 USD, see 02 §4.4).

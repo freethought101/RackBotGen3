@@ -57,7 +57,33 @@ Not suitable: the standard OV5647 (54° H) and standard IMX219 v2 (62° H) are t
 | P38 | [Bosch 12 V 4-pin relay + ceramic socket](https://www.tokopedia.com/putrajayamotor-1/relay-bosch-original-kaki-4-12v-soket-relay-keramik-kaki-4) | Rp23k | + 1N4007 |
 | P18, P27, P28, P29 | see the table below | | |
 
-P23 (PCB components) is still to be itemised from `pcb/motion-board/fab/rbg3-motion-bom.csv`. P07 (bought wheels) is replaced by printed PETG hubs + TPU tires.
+P23 is itemised in §3.1. P07 (bought wheels) is replaced by printed PETG hubs + TPU tires.
+
+### 3.1 P23 motion board components
+
+From `pcb/motion-board/fab/rbg3-motion-bom.csv` (plus the sockets and headers the BOM leaves implicit). Order most of it
+from **Putra Niaga Bandung** (putraniagabdg) to share one shipping fee. The electrolytics are **through-hole** on the board,
+so don't pick the SMD "elco SMD" listings.
+
+| BOM line | Qty (buy) | Listing | ≈ Price |
+|---|---|---|---|
+| 0805 resistors 100k ×2, 18k ×1, 10k ×8, 1k ×8, 330 ×3, 4.7k ×2 | packs of 10 | Putra Niaga, e.g. [10k](https://www.tokopedia.com/putraniagabdg/10pcs-resistor-smd-0805-10k-tahanan-10-000-ohm-10-k-marking-103-1729816378253083944) (same listing style for each value) | ≈ Rp1k per pack |
+| 100 nF 0805 (C2, C4, C6, C8, C10–C17) | 12 (20) | [Putra Niaga 10 pcs](https://www.tokopedia.com/putraniagabdg/10pcs-kapasitor-smd-0805-100nf-0-1uf-100n-0-1uf-104-50v-100nf-10pcs) | Rp2.4k × 2 |
+| 100 µF 35 V THT (C1, C3, C5, C7; Ø8 footprint, legs bent to 3.5 mm if Ø6.3) | 4 (5) | [Putra Niaga](https://www.tokopedia.com/putraniagabdg/elco-100uf-35v-kapasitor-electrolit-polar-100-uf-35-volt-105) | Rp0.5k each |
+| 470 µF 35 V THT (C9, Ø10 P5) | 1 (2) | [Tektron, Nippon Chemi-con LXZ](https://www.tokopedia.com/tektron/nippon-chemi-con-470uf-35v-lxz-series-capacitor-elko-kapasitor) | Rp1.5k each |
+| SMBJ18A (D1) | 1 (2) | [Putra Niaga](https://www.tokopedia.com/putraniagabdg/dioda-tvs-smbj18a-18v-600w-smb-do-214aa-supresor-diode-smbj18-marking-lt-1737854510245053736) (in stock; others are pre-order) | Rp2.4k each |
+| 1N4148W SOD-123 (D2) | 1 (5) | [Elektro Bar](https://www.tokopedia.com/elektrobar/1n4148w-t4-sod-123-switching-diode-smd-sod123) | Rp0.2k each |
+| MMBT3904 SOT-23 (Q1) | 1 (5) | [Putra Niaga](https://www.tokopedia.com/putraniagabdg/transistor-smd-mmbt3904-npn-sot-23-2n3904-tr-3904-sot23-marking-1am) | Rp0.3k each |
+| XT30PW-M right-angle (J1) | 1 | [alladinshop](https://www.tokopedia.com/alladinshop/konektor-xt30pw-connector-xt30-male-baterai-battery-lipo-rc-tanam-pcb) or [MRI Electronics](https://www.tokopedia.com/mri-electronics/xt30pw-plug-connector-female-male-socket-1731063458330739934) | Rp9k |
+| 5.08 mm 2-pin screw terminal (J2, J3) | 2 | [Putra Niaga](https://www.tokopedia.com/putraniagabdg/konektor-pcb-2p-biru-terminal-block-2pin-biru-5-08mm-2-pin-5-08) | Rp1k each |
+| JST-XH board headers: 4-pin ×5, 3-pin ×7, 2-pin ×2 (+ housings, crimps) | — | P21 JST-XH 230 pcs kit (10 per size; confirm it includes the straight PCB headers), else Putra Niaga sells header + housing sets | — |
+| Female header 1×40 (8 × 8-pin StepStick sockets, 2 × 22-pin DevKit sockets; a cut loses one pin) | 5 strips | [kyware](https://www.tokopedia.com/kyware/header-female-40-pin-straight-lurus-singel-row-1x40-pitch-2-54mm-warna-hitam-black) or CNC Store Bandung | Rp1.2k each |
+| Male header 1×40 (servo J14, J15) | 1 | [CNC Store Bandung](https://www.tokopedia.com/cncstorebandung/pin-header-female-male-1x40-2-54mm-strip-konektor-single-row-warna-untuk-arduino-pcb-proyek-elektronika-diy-1732354605701301822) | ≈ Rp1.5k |
+| WS2812B 1-LED module (on J17) | 1 (2) | [i2c-parts](https://www.tokopedia.com/i2c-parts/ws2812b-5050-rgb-led-pcb-board-1-led-module-pixel-light-5v-hitam) | Rp2.4k each |
+| Active buzzer 5 V, 12 × 9.5 mm (on J19) | 1 | [CNC Store Bandung](https://www.tokopedia.com/cncstorebandung/buzzer-speaker-active-3v-5v-12x9-5mm-modul-alarm-suara-mini-for-arduino-esp32-uno-mega-nano-diy-elektronik-project-1733103146066150974) | ≈ Rp5k |
+
+Total ≈ Rp55k (≈ 4 USD) before shipping; budgeted at 5 USD. King Wijaya Elektronik (Denpasar) also sells elcos and is
+the fastest option from Bali for anything missing.
 
 ## 4. Candidates for the generic parts (first search)
 
