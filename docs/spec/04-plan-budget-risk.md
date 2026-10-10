@@ -14,16 +14,16 @@ The live, per-part order list is the Notion **Parts & Order List** database, mir
 | Item | Qty | USD |
 |---|---|---|
 | NEMA17 42×40, ≥ 0.4 N·m (Tokopedia) | 4 | 42 |
-| 2020 V-slot 6 × 1 m (4.96 m of cuts + kerf) + 2040 V-slot 0.42 m (robot + rack + spare station) | — | 35 |
+| 2020 V-slot 6 × 1 m (4.96 m of cuts + kerf) + 2040 V-slot 0.42 m (robot + rack + spare station), Lajarus Teknik | — | 23 |
 | Mini V-wheel kits | 8 | 8 |
-| Tr8×2 lead screw 350 + anti-backlash nut + coupler + KFL08 flange bearing | 1 | 6 |
+| Tr8×2 lead screw 350 + anti-backlash nut + coupler + KFL08 flange bearing | 1 | 7 |
 | GT2 belt (Y axis), 20T, idler | set | 3 |
 | Wheels 80 × 24 mm: printed PETG hub + TPU 95A tire (filament in §1.4) | 2 | 0 |
 | Ball casters (2 rear + 1 anti-tip), printed spacers | 3 | 3 |
 | MG90S servo (Tokopedia) | 3 | 4 |
-| Lever microswitches KW11-3Z (13 + 2 spare) | 15 | 2 |
+| Lever microswitches KW11-3Z (13 + 2 spare) | 15 | 3 |
 | Fastener kit (~120 M5 T-nuts, screws incl. 7 × M5×16 + 3 × M5×25 for the tray, ~48 corner brackets, M3 + ~60 M3 / ~15 M5 heat-set inserts) | — | 28 |
-| **Subtotal** | | **131** |
+| **Subtotal** | | **121** |
 
 ### 1.2 Robot — electronics
 
@@ -33,7 +33,7 @@ The live, per-part order list is the Notion **Parts & Order List** database, mir
 | IMX708 120° camera board (Camera Module 3 **Wide** class, Tokopedia) | 1 | 37 |
 | microSD 32 GB A1 | 1 | 8 |
 | CSI flex cable 500 mm | 1 | 1 |
-| ESP32-S3-DevKitC-1 (Tokopedia) | 1 | 6 |
+| ESP32-S3-DevKitC-1 (Tokopedia) | 1 | 7 |
 | TMC2209 StepStick (Tokopedia) | 4 | 12 |
 | Buck 5 V/5 A + buck 6 V/3 A + CC/CV charger module | 3 | 4 |
 | INA226 module + **10 mΩ / R010** 2512 shunt (local modules ship R100: swap it) | 1 | 2 |
@@ -43,7 +43,7 @@ The live, per-part order list is the Notion **Parts & Order List** database, mir
 | Passives, headers, StepStick sockets, TVS, caps, WS2812, buzzer (itemised, Tokopedia) | set | 5 |
 | USB-A to USB-C cable, 90° C plug (Pi → DevKit) | 1 | 2 |
 | VMOT relay for the E-stop (12 V automotive, 30/40 A) + flyback diode | 1 | 2 |
-| **Subtotal** | | **159** |
+| **Subtotal** | | **160** |
 
 ### 1.3 Rack & spare station — electrical
 
@@ -55,9 +55,9 @@ The live, per-part order list is the Notion **Parts & Order List** database, mir
 | Rack E-stop (2 NC contacts) | 1 | 3 |
 | 24 → 5 V USB buck (router) | 1 | 2 |
 | Dock contacts (pogo/brass), copper sheet, spare-station cable | set | 8 |
-| Travel router | 1 | 0 (borrow/owned; ≈ 25 if bought) |
+| Travel router GL.iNet GL-MT300N-V2 (not owned; Tokopedia) | 1 | 38 |
 | **Delta DVP-12SE11T PLC** | 1 | **not in budget, loan/sponsor** (≈ 150–250) |
-| **Subtotal** | | **66** |
+| **Subtotal** | | **104** |
 
 ### 1.4 Printing & demo materials
 
@@ -74,16 +74,16 @@ The live, per-part order list is the Notion **Parts & Order List** database, mir
 
 | | USD |
 |---|---|
-| Robot mechanical | 131 |
-| Robot electronics | 159 |
-| Rack electrical | 66 |
+| Robot mechanical | 121 |
+| Robot electronics | 160 |
+| Rack electrical | 104 |
 | Printing & demo | 77 |
-| **Total** | **≈ 433** (of 500) |
+| **Total** | **≈ 462** (of 500) |
 
-The margin is ≈ 67 USD after the v0.1.12–v0.1.14 move to local (Tokopedia) suppliers; only the motion PCB (JLCPCB) is imported. **Savings options** (use them if prices come in higher, or a router must be bought):
+The margin is ≈ 38 USD after the v0.1.12–v0.1.16 move to local (Tokopedia) suppliers and buying the travel router (v0.1.16); only the motion PCB (JLCPCB) is imported. **Savings options** (use them if prices come in higher, or a router must be bought):
 wide-angle OV5647 camera instead of the IMX708 board (−29, more distortion) ·
 3 panel LEDs instead of the tower light (−7) · team-owned filament or fasteners (−20 to −50) · drop the 3rd servo and spare switches (−5). Priced backup options and local (Tokopedia) sources: `docs/sourcing-options.md`.
-**PLC**: request a loan from Delta Thailand this week. If none, use the ESP32 fallback rack controller (≈ +20 USD, see 02 §4.4).
+**PLC**: request a loan from Delta Thailand this week. If none, buying a DVP12SE11T costs ≈ Rp2.6–3.3M (≈ 165–210 USD) on Tokopedia, which does not fit the budget, so use the ESP32 fallback rack controller (≈ +20 USD, see 02 §4.4) unless a sponsor covers it. **Pi 3**: team-owned; a replacement 3B+ is ≈ Rp1.1M (≈ 70 USD).
 
 ## 2. Schedule
 
