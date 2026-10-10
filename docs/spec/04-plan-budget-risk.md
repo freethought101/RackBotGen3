@@ -37,27 +37,27 @@ The live, per-part order list is the Notion **Parts & Order List** database, mir
 | TMC2209 StepStick (Tokopedia) | 4 | 12 |
 | Buck 5 V/5 A + buck 6 V/3 A + CC/CV charger module | 3 | 4 |
 | INA226 module + **10 mΩ / R010** 2512 shunt (local modules ship R100: swap it) | 1 | 2 |
-| 18650 3.5 Ah × 4 + 4S BMS + holder/nickel strip | set | 30 |
+| 18650 3.5 Ah × 4 + 4S BMS + holder/nickel strip | set | 33 |
 | XT60/XT30, fuse holder, rocker switch, robot E-stop, silicone wire, JST-XH kit | set | 25 |
 | Motion PCB, JLCPCB 5 pcs + shipping | 1 | 25 |
 | Passives, headers, StepStick sockets, TVS, caps, WS2812, buzzer (itemised, Tokopedia) | set | 5 |
 | USB-A to USB-C cable, 90° C plug (Pi → DevKit) | 1 | 2 |
 | VMOT relay for the E-stop (12 V automotive, 30/40 A) + flyback diode | 1 | 2 |
-| **Subtotal** | | **160** |
+| **Subtotal** | | **163** |
 
 ### 1.3 Rack & spare station — electrical
 
 | Item | Qty | USD |
 |---|---|---|
 | **Delta 24 V DIN-rail PSU, 75–100 W** | 1 | 35 |
-| DIN rail, terminal blocks, 24 V relay module, polyfuse | set | 10 |
+| DIN rail, terminal blocks, 24 V relay module, polyfuse (CNC Store Bandung) | set | 5 |
 | 24 V mini tower light R/Y/G | 1 | 8 |
 | Rack E-stop (2 NC contacts) | 1 | 3 |
 | 24 → 5 V USB buck (router) | 1 | 2 |
 | Dock contacts (pogo/brass), copper sheet, spare-station cable | set | 8 |
 | Travel router GL.iNet GL-MT300N-V2 (not owned; Tokopedia) | 1 | 38 |
 | **Delta DVP-12SE11T PLC** | 1 | **not in budget, loan/sponsor** (≈ 150–250) |
-| **Subtotal** | | **104** |
+| **Subtotal** | | **99** |
 
 ### 1.4 Printing & demo materials
 
@@ -75,12 +75,12 @@ The live, per-part order list is the Notion **Parts & Order List** database, mir
 | | USD |
 |---|---|
 | Robot mechanical | 121 |
-| Robot electronics | 160 |
-| Rack electrical | 104 |
+| Robot electronics | 163 |
+| Rack electrical | 99 |
 | Printing & demo | 77 |
-| **Total** | **≈ 462** (of 500) |
+| **Total** | **≈ 460** (of 500) |
 
-The margin is ≈ 38 USD after the v0.1.12–v0.1.16 move to local (Tokopedia) suppliers and buying the travel router (v0.1.16); only the motion PCB (JLCPCB) is imported. **Savings options** (use them if prices come in higher, or a router must be bought):
+The margin is ≈ 40 USD after the v0.1.12–v0.1.17 move to local (Tokopedia) suppliers and buying the travel router (v0.1.16); only the motion PCB (JLCPCB) is imported. **Savings options** (use them if prices come in higher, or a router must be bought):
 wide-angle OV5647 camera instead of the IMX708 board (−29, more distortion) ·
 3 panel LEDs instead of the tower light (−7) · team-owned filament or fasteners (−20 to −50) · drop the 3rd servo and spare switches (−5). Priced backup options and local (Tokopedia) sources: `docs/sourcing-options.md`.
 **PLC**: request a loan from Delta Thailand this week. If none, buying a DVP12SE11T costs ≈ Rp2.6–3.3M (≈ 165–210 USD) on Tokopedia, which does not fit the budget, so use the ESP32 fallback rack controller (≈ +20 USD, see 02 §4.4) unless a sponsor covers it. **Pi 3**: team-owned; a replacement 3B+ is ≈ Rp1.1M (≈ 70 USD).
