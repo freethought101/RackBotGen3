@@ -22,7 +22,7 @@ PLACEMENT = {
     "U3": (141.5, 118.0, 0, "F"), "C3": (160.4, 121.0, 0, "F"), "C4": (164.0, 114.0, 0, "F"),
     "U4": (113.5, 150.0, 0, "F"), "C5": (132.6, 153.0, 0, "F"), "C6": (137.5, 146.0, 0, "F"),
     "U5": (141.5, 150.0, 0, "F"), "C7": (160.4, 153.0, 0, "F"), "C8": (164.0, 146.0, 0, "F"),
-    # PDN_UART pin-5 solder jumpers between each socket's rows, pad 2 toward pin 5 (open by default;
+    # PDN_UART pin-5 solder jumpers between each socket's rows, pad 2 toward pin 5 (bridged by default;
     # reachable with the module unplugged).
     "JP1": (117.0, 128.16, 180, "F"), "JP2": (145.0, 128.16, 180, "F"),
     "JP3": (117.0, 160.16, 180, "F"), "JP4": (145.0, 160.16, 180, "F"),

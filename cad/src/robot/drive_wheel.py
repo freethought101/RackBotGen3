@@ -1,6 +1,8 @@
 """Drive wheel, right side: printed PETG hub + TPU 95A tire (print 2 of each; the left wheel is the same part).
 
-Ø80 x 24 assembled, direct on the NEMA17 D-shaft (22 mm, ends at x 141). The hub clamps the shaft flat with an
+Ø80 x 24 assembled, direct on the NEMA17 D-shaft (24 ± 1 mm, ends at x 142-144). The blind bore clears the longest
+shaft, so the hub's position is set at assembly, not by the shaft end: fit it with a 2 mm shim against the bracket plate
+(wheel centre 18 mm from the motor flange, under the 28 N radial-load rating at 20 mm). The hub clamps the shaft flat with an
 M3 set screw in a radial M3 x 4 heat-set insert; an Ø8 window in the rim gives the iron and the hex key a straight
 path (the tire has an Ø4 hole that is lined up with it after fitting). The web (5 spokes) is on the outboard face
 so the hub prints outboard face down without supports. The tire is 0.5 mm undersize on the rim seat and is held
@@ -15,7 +17,7 @@ from lib.prims import box, cyl_x, cyl_z
 from lib.robot_dims import AXLE_Y, AXLE_Z, WHEEL_D, WHEEL_X
 
 X0, X1 = WHEEL_X                  # 125 .. 149 (inboard .. outboard)
-SHAFT_END_X = 141.0               # 22 mm shaft from the motor face at x 119
+SHAFT_END_X = 144.0               # longest shaft: 24 + 1 mm from the motor face at x 119
 LIP_W, LIP_D = 1.5, 75.0
 SEAT_D = 72.0                     # rim seat under the tire
 RIM_ID = 66.0                     # 3 mm rim wall under the tire seat

@@ -3269,7 +3269,7 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Jumper:SolderJumper_2_Open"
+		(symbol "Jumper:SolderJumper_2_Bridged"
 			(pin_numbers
 				(hide yes)
 			)
@@ -3292,7 +3292,7 @@
 					)
 				)
 			)
-			(property "Value" "SolderJumper_2_Open"
+			(property "Value" "SolderJumper_2_Bridged"
 				(at 0 -2.54 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -3314,7 +3314,7 @@
 				)
 			)
 			(property "Datasheet" ""
-				(at 0 -7.62 0)
+				(at 0 -6.35 0)
 				(show_name no)
 				(do_not_autoplace no)
 				(hide yes)
@@ -3324,7 +3324,7 @@
 					)
 				)
 			)
-			(property "Description" "Solder Jumper, 2-pole, open"
+			(property "Description" "Solder Jumper, 2-pole, closed/bridged"
 				(at 0 -5.08 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -3346,7 +3346,7 @@
 					)
 				)
 			)
-			(property "ki_fp_filters" "SolderJumper*Open*"
+			(property "ki_fp_filters" "SolderJumper*Bridged*"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -3357,7 +3357,18 @@
 					)
 				)
 			)
-			(symbol "SolderJumper_2_Open_0_1"
+			(symbol "SolderJumper_2_Bridged_0_1"
+				(rectangle
+					(start -0.508 0.508)
+					(end 0.508 -0.508)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
 				(polyline
 					(pts
 						(xy -0.254 1.016) (xy -0.254 -1.016)
@@ -3407,7 +3418,7 @@
 					)
 				)
 			)
-			(symbol "SolderJumper_2_Open_1_1"
+			(symbol "SolderJumper_2_Bridged_1_1"
 				(pin passive line
 					(at -5.08 0 0)
 					(length 3.81)
@@ -12200,7 +12211,7 @@
 		(uuid "67d6c21f-4eae-4f14-9ab5-8d7e883922de")
 	)
 	(symbol
-		(lib_id "Jumper:SolderJumper_2_Open")
+		(lib_id "Jumper:SolderJumper_2_Bridged")
 		(at 40.64 63.5 0)
 		(unit 1)
 		(body_style 1)
@@ -12220,7 +12231,7 @@
 				)
 			)
 		)
-		(property "Value" "UART_PIN5 (open)"
+		(property "Value" "UART_PIN5 (bridged)"
 			(at 40.64 67.31 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12230,7 +12241,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Jumper:SolderJumper-2_P1.3mm_Open_RoundedPad1.0x1.5mm"
+		(property "Footprint" "Jumper:SolderJumper-2_P1.3mm_Bridged_RoundedPad1.0x1.5mm"
 			(at 40.64 63.5 0)
 			(hide yes)
 			(show_name no)
@@ -12252,7 +12263,7 @@
 				)
 			)
 		)
-		(property "Description" "Close only if the TMC2209 module brings PDN_UART out on pin 5 instead of pin 4"
+		(property "Description" "Bridged by default (MKS TMC2209 V2.0 has PDN_UART on pin 5); cut the strip only for a module with another signal on pin 5"
 			(at 40.64 63.5 0)
 			(hide yes)
 			(show_name no)
@@ -12309,7 +12320,7 @@
 		(uuid "c53e9b89-6f74-4c51-aa61-67422a6aa28b")
 	)
 	(symbol
-		(lib_id "Jumper:SolderJumper_2_Open")
+		(lib_id "Jumper:SolderJumper_2_Bridged")
 		(at 40.64 114.3 0)
 		(unit 1)
 		(body_style 1)
@@ -12329,7 +12340,7 @@
 				)
 			)
 		)
-		(property "Value" "UART_PIN5 (open)"
+		(property "Value" "UART_PIN5 (bridged)"
 			(at 40.64 118.11 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12339,7 +12350,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Jumper:SolderJumper-2_P1.3mm_Open_RoundedPad1.0x1.5mm"
+		(property "Footprint" "Jumper:SolderJumper-2_P1.3mm_Bridged_RoundedPad1.0x1.5mm"
 			(at 40.64 114.3 0)
 			(hide yes)
 			(show_name no)
@@ -12361,7 +12372,7 @@
 				)
 			)
 		)
-		(property "Description" "Close only if the TMC2209 module brings PDN_UART out on pin 5 instead of pin 4"
+		(property "Description" "Bridged by default (MKS TMC2209 V2.0 has PDN_UART on pin 5); cut the strip only for a module with another signal on pin 5"
 			(at 40.64 114.3 0)
 			(hide yes)
 			(show_name no)
@@ -12418,7 +12429,7 @@
 		(uuid "7cc01a40-5b86-43a7-bd54-f13187ad48c4")
 	)
 	(symbol
-		(lib_id "Jumper:SolderJumper_2_Open")
+		(lib_id "Jumper:SolderJumper_2_Bridged")
 		(at 40.64 165.1 0)
 		(unit 1)
 		(body_style 1)
@@ -12438,7 +12449,7 @@
 				)
 			)
 		)
-		(property "Value" "UART_PIN5 (open)"
+		(property "Value" "UART_PIN5 (bridged)"
 			(at 40.64 168.91 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12448,7 +12459,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Jumper:SolderJumper-2_P1.3mm_Open_RoundedPad1.0x1.5mm"
+		(property "Footprint" "Jumper:SolderJumper-2_P1.3mm_Bridged_RoundedPad1.0x1.5mm"
 			(at 40.64 165.1 0)
 			(hide yes)
 			(show_name no)
@@ -12470,7 +12481,7 @@
 				)
 			)
 		)
-		(property "Description" "Close only if the TMC2209 module brings PDN_UART out on pin 5 instead of pin 4"
+		(property "Description" "Bridged by default (MKS TMC2209 V2.0 has PDN_UART on pin 5); cut the strip only for a module with another signal on pin 5"
 			(at 40.64 165.1 0)
 			(hide yes)
 			(show_name no)
@@ -12527,7 +12538,7 @@
 		(uuid "19ce9d8d-223f-4a4d-a113-49beceb56996")
 	)
 	(symbol
-		(lib_id "Jumper:SolderJumper_2_Open")
+		(lib_id "Jumper:SolderJumper_2_Bridged")
 		(at 40.64 215.9 0)
 		(unit 1)
 		(body_style 1)
@@ -12547,7 +12558,7 @@
 				)
 			)
 		)
-		(property "Value" "UART_PIN5 (open)"
+		(property "Value" "UART_PIN5 (bridged)"
 			(at 40.64 219.71 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12557,7 +12568,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Jumper:SolderJumper-2_P1.3mm_Open_RoundedPad1.0x1.5mm"
+		(property "Footprint" "Jumper:SolderJumper-2_P1.3mm_Bridged_RoundedPad1.0x1.5mm"
 			(at 40.64 215.9 0)
 			(hide yes)
 			(show_name no)
@@ -12579,7 +12590,7 @@
 				)
 			)
 		)
-		(property "Description" "Close only if the TMC2209 module brings PDN_UART out on pin 5 instead of pin 4"
+		(property "Description" "Bridged by default (MKS TMC2209 V2.0 has PDN_UART on pin 5); cut the strip only for a module with another signal on pin 5"
 			(at 40.64 215.9 0)
 			(hide yes)
 			(show_name no)

@@ -10,7 +10,7 @@ Status: Draft v0.1. The motion board (§3) is the KiCad deliverable. Everything 
 |---|---|
 | Battery | **4S1P 18650**, 3.5 Ah cells (e.g. Samsung 35E / LG MJ1), 14.4 V nominal, 16.8 V full, 12.0 V cutoff → **50.4 Wh** (airline < 100 Wh) |
 | BMS | 4S, ≥ 15 A, common port (charge and discharge on the same P+/P−), balancing |
-| Main fuse / switch | 10 A blade fuse **first, at the battery P+** (so everything after it, INA226 included, is fused) + 10 A rocker switch at the battery box |
+| Main fuse / switch | **7.5 A** blade fuse **first, at the battery P+** (so everything after it, INA226 included, is fused) + 10 A rocker switch at the battery box. 7.5 A sits under the Samsung 35E's 8 A max discharge (MJ1: 10 A); normal draw is < 2 A |
 | E-stop | Robot mushroom (NC, twist release) in series with the coil of a **12 V automotive relay (SPST-NO, 30/40 A)** whose contact cuts **VMOT only** (steppers and servos). The button carries only the coil current (≈ 0.1–0.2 A), so its weak DC breaking rating does not matter ("10 A" on button listings is thermal current). Fail-safe: a pressed button, broken wire or loose connector drops the relay. 1N4007 flyback diode across the coil. The coil draws ≈ 1.5–3 W continuously (a few % of the battery per hour). The relay sits in the harness between the bus and J1 (no PCB change). Logic stays alive to report the E-stop. The Z lead screw is self-locking (dry/POM nut; marginal if greased), so the load cannot drop. Cutting VMOT resets the TMC2209 registers; firmware re-configures them before re-enabling (03 §8) |
 | Energy meter | **INA226** module (**10 mΩ / R010** shunt, ±8 A; local modules ship with R100, so replace it with a 2512 R010 1 % shunt) between the fuse and the main bus. **+ current = discharge, − = charging** |
 | Charging | Dock pads → Schottky (SS54) → **CC/CV buck (XL4015-type) set 16.8 V / 1.5 A** → main bus (feeds loads + charges through the BMS). Full charge ≈ 2.5 h; the dock also tops up between demo runs. **Charger grounding:** most XL4015 CC/CV boards sense current with a shunt between IN− and OUT−. Dock − connects **only** to the charger IN−, never to robot GND, or the current limit is bypassed (measure IN−↔OUT− on the bought module first). Lock the CV/CC trim pots with glue after setting and re-check before the event. The Pi turns dock power off (Modbus M0) once charge current tapers below 0.2 A |
@@ -18,7 +18,7 @@ Status: Draft v0.1. The motion board (§3) is the KiCad deliverable. Everything 
 
 ```mermaid
 flowchart LR
-  BAT["4S Li-ion 50 Wh\n+ BMS"] --> F["Fuse 10 A\n+ main switch"] --> INA["INA226\nshunt"] --> BUS["VBAT bus\n12-16.8 V"]
+  BAT["4S Li-ion 50 Wh\n+ BMS"] --> F["Fuse 7.5 A\n+ main switch"] --> INA["INA226\nshunt"] --> BUS["VBAT bus\n12-16.8 V"]
   DOCK["Dock pads 24 V"] --> D["SS54"] --> CHG["CC/CV 16.8 V 1.5 A"] --> BUS
   DOCK -. "DOCK_V (pad side)" .-> ESP
   BUS --> ES["E-stop (NC)"] --> K["Relay coil 12 V\n(+ 1N4007)"]
@@ -103,16 +103,17 @@ Switch inputs: internal pull-up + 10 k external pull-up to 3V3, 1 k series, 100 
   spacing; fit the header in the row that matches the measured module.
 - 4 × StepStick sockets (2 × 8 female headers). MS1/MS2 **hard-wired** per socket for UART addresses 0–3
   (no jumpers to forget). UART on StepStick pin 4 (PDN_UART); CLK tied to GND (internal clock).
-  Each socket also has an **open solder jumper (JP1–JP4)** from pin 5 to the UART bus, for modules that bring
-  PDN_UART out on pin 5 instead. Leave it open unless the module's silkscreen shows UART on pin 5. It sits between
-  the socket rows, so it can only be soldered with the module unplugged. **The MKS TMC2209 V2.0 (P17) has PDN/UART
-  on pin 5** (pin 4 carries UART only if its optional R8 is fitted), so **close JP1–JP4** for those modules.
+  Each socket also has a **normally bridged solder jumper (JP1–JP4, copper strip)** from pin 5 to the UART bus,
+  because **the MKS TMC2209 V2.0 (P17) has PDN/UART on pin 5** (pin 4 carries UART only if its optional R8 is
+  fitted). With the jumper bridged, pin 4 and pin 5 both reach the bus, which also suits modules with UART on
+  pin 4 and pin 5 not connected. Cut the strip only for a module that has another signal on pin 5. It sits between
+  the socket rows, so it can only be reached with the module unplugged (labelled `JPn P5 CUT`).
 - Per driver: 100 µF / 35 V electrolytic + 100 nF on VMOT. Bulk: 470 µF / 35 V at J1. **SMBJ18A TVS** right at J1
   (unidirectional; standoff 18 V > 16.8 V, breakdown 20–22 V). It clamps switch and E-stop ringing at about
   21–23 V, because those currents are small. The datasheet clamp of 29.2 V applies only at the full rated pulse
   current and is right at the TMC2209's 29 V operating limit (32 V absolute max). An SMBJ17A (27.6 V clamp) is the drop-in if more margin is wanted.
 - Reverse polarity: the XT30 is keyed, so a reversed VMOT harness needs a mis-crimped pigtail. If that happens,
-  the TVS conducts and the 10 A fuse blows, but until it does the fault current also returns through board GND,
+  the TVS conducts and the 7.5 A fuse blows, but until it does the fault current also returns through board GND,
   the 5 V buck wiring and the Pi↔ESP32 USB ground. Nothing on the board actively blocks reverse polarity
   (a series P-FET is a v2 option).
 - Buck modules are **off-board** (vendor footprints vary): the 5 V/5 A buck feeds the Pi and J2 (5 V in), the
@@ -135,7 +136,7 @@ Schematic, PCB layout, DRC/ERC clean, Gerbers + drill + BOM + position file (JLC
 
 | Item | Spec |
 |---|---|
-| **Delta 24 V DIN-rail PSU** | 24 V, **75–100 W**, universal 100–240 VAC input (Thailand 220 V / 50 Hz). Delta CliQ or Lyte series, exact part from distributor stock |
+| **Delta 24 V DIN-rail PSU** | 24 V, **≥ 75 W**, universal 100–240 VAC input (Thailand 220 V / 50 Hz). Chosen: **Delta LYTE II DRL-24V120W1EN** (24 V / 5 A, 120 W, 123.6 × 30 × 116.8 mm) |
 | **Delta DVP-12SE11T PLC** | 8 DI / 4 DO (NPN transistor), 24 VDC, built-in Ethernet, **Modbus TCP server**. Programmed with ISPSoft/WPLSoft |
 | Dock power relay | 24 V relay module (≥ 5 A contact) driven by PLC Y0, + 3 A polyfuse on the dock + line |
 | Tower light | Mini 3-color 24 VDC LED (R/Y/G), common + |
@@ -143,7 +144,7 @@ Schematic, PCB layout, DRC/ERC clean, Gerbers + drill + BOM + position file (JLC
 | Router | Travel router (e.g. GL.iNet GL-MT300N-V2) powered from 24 → 5 V USB buck; LAN to PLC, Wi-Fi AP `RACKBOT` |
 | Terminal blocks | DIN rail terminal blocks for 24 V / 0 V distribution |
 
-Power budget: PLC ≈ 5 W, light 3 W, router 3 W, robot charger ≈ 28 W → **≈ 40 W**, so a 75–100 W PSU gives margin.
+Power budget: PLC ≈ 5 W, light 3 W, router 3 W, robot charger ≈ 28 W → **≈ 40 W**, so the 120 W PSU runs at about a third of its rating.
 
 ### 4.2 PLC I/O map
 

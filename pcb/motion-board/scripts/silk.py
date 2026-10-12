@@ -32,10 +32,10 @@ TEXTS = [
     *[t for x, y in ((113.5, 150.0), (141.5, 150.0)) for t in (
         ("EN", x, y - 3.4, 0, S), ("VM", x + 12.7, y - 3.4, 0, S),
         ("DIR", x - 3.6, y + 17.78, 0, S), ("GND", x + 16.0, y + 17.78, 0, S))],
-    # Socket names between the rows (visible with the module out), pin-5 UART jumper label.
+    # Socket names between the rows (visible with the module out), pin-5 UART jumper label (bridged; cut to open).
     *[t for x, y, name, jp in ((113.5, 118.0, "DRIVE L", "JP1"), (141.5, 118.0, "DRIVE R", "JP2"),
                                (113.5, 150.0, "Z", "JP3"), (141.5, 150.0, "Y", "JP4")) for t in (
-        (name, x + 6.35, y + 4.0, 0, S), (f"{jp} UART P5", x + 6.35, y + 12.0, 0, S))],
+        (name, x + 6.35, y + 4.0, 0, S), (f"{jp} P5 CUT", x + 6.35, y + 12.0, 0, S))],
 
     # ESP32-S3-DevKitC-1 socket orientation.
     ("ANTENNA END", 181.0, 119.5, 0, S), ("ESP32-S3-DevKitC-1", 181.0, 121.5, 0, S),

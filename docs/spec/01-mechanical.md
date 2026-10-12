@@ -130,7 +130,10 @@ All numbers live in `cad/src/lib/robot_dims.py`. `cad/checks/robot_check.py` ver
   webs bolted to the rail (M5; the head goes in through the bore from the plate side before the wheel is fitted).
   The deck screws into **M3 × 4 heat-set inserts in the web tops** at x ±105 (clear of the motor). Tractive force
   ≈ 6 N per wheel at the 1.0 A run current (≈ 0.25 N·m of the 0.41 N·m rated at 1.7 A). The motor allows 28 N radial
-  load at 20 mm from the flange; the wheel centre is ≈ 18 mm out and carries ≈ 21 N with two loaded caddies. Resolution 3200 µsteps / (π·80) ≈ **12.7 µsteps/mm**.
+  load at 20 mm from the flange; the wheel centre is ≈ 18 mm out and carries ≈ 21 N with two loaded caddies. To keep
+  the load that close, the hub's blind bore clears the full 24 ± 1 mm shaft (the shaft end does not locate the hub):
+  **fit each hub with a 2 mm shim against the bracket plate** before tightening the set screw (gap ≤ 2 mm). If a
+  shaft shows play after testing, add an outboard bearing. Resolution 3200 µsteps / (π·80) ≈ **12.7 µsteps/mm**.
 - Wheels Ø80 × 24 at x ±(125…149), **printed**: PETG hub on the 5 mm D-shaft (M3 set screw into a heat-set insert,
   onto the flat) + TPU 95A tire stretched over the rim. Wheel fronts at y −95 stay 10 mm short of the dock funnel mouth.
 - Casters: 2 ball casters under the rear cross member (±65, −380); an **anti-tip ball caster under the nose** with a

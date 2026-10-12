@@ -25,7 +25,7 @@ The Tokopedia part is 22 shops (it was 33). The first 5 carry most of the order.
 - [ ] P20 4S 30 A battery protection board (BMS) ×1, Rp27k
 
 ### 3. CNC Store Bandung: power modules, E-stop, DIN parts, ≈ Rp185k
-- [ ] P18 MP2482/SY8205 5 A buck (set to 6 V for the servos) ×1, Rp19k
+- [ ] P18 MP2482/SY8205 5 A buck (set to 5.8 V for the servos) ×1, Rp19k
 - [ ] P18 XL4015 5 A CC/CV (battery charger) ×1, Rp23k
 - [ ] P26 relay module 24 V, optocoupled ×1, Rp27k
 - [ ] P21 robot E-stop LA38-11ZS 22 mm, self-locking ×1, Rp14k. Wire its NC contact.
@@ -56,7 +56,7 @@ The Tokopedia part is 22 shops (it was 33). The first 5 carry most of the order.
 ## One- or two-item orders (Tokopedia)
 These shops had no better match in the big shops above.
 
-6. [ ] **xyz garage:** P17 MKS TMC2209 V2.0 ×5, Rp245k. Close JP1–JP4 (UART on pin 5, see `docs/datasheets/CROSSCHECK.md`).
+6. [ ] **xyz garage:** P17 MKS TMC2209 V2.0 ×5, Rp245k. UART on pin 5: JP1–JP4 are bridged on the board, nothing to solder.
 7. [ ] **wirogix:** P13 IMX708 12 MP 120° camera board ×1, Rp595k. Ask about autofocus and board size.
 8. [ ] **EasyWare Electro:** XY-3606 5 V / 5 A buck ×2 (P18 Pi + board, P29 router), Rp45k
 9. [ ] **WKH Elektronik:** P19 2512 **R010** shunt ×2 (Rp6k) and P21 XT30 male + female pair (Rp11k)
@@ -78,7 +78,7 @@ These shops had no better match in the big shops above.
 
 ## Local shops (Bali)
 - [ ] **Electronics shop** (King Wijaya Elektronik, Denpasar, also on Tokopedia):
-  - P21: 10 A blade fuse + inline blade holder, SS54, and 22/26 AWG wire if alladinshop has none
+  - P21: 7.5 A blade fuse (+ spares) + inline blade holder, SS54, and 22/26 AWG wire if alladinshop has none
   - P38: 1N4007 through-hole
   - P14: microSD 32 GB A1. Buy SanDisk Ultra or Samsung from a known shop; avoid unbranded cards.
 - [ ] **Battery shop:** P20 genuine 18650 3.5 Ah ×4 (Samsung 35E or LG MJ1, ≈ Rp100–140k each; avoid the Rp45k fakes). Ask them to **spot-weld** the 4S pack with the nickel strip and BMS from shops 2 and 3. Don't solder directly to the cells.

@@ -44,17 +44,17 @@ Open checks and to-dos collected from the spec, the CAD and PCB work, and review
 - [ ] DevKit plugged-in height (~8.5 mm sockets) clears the RC parts underneath; Y motor clears the motion board components.
 - [ ] Camera Module 3 Wide: works on Pi 3 with libcamera/Picamera2; CSI cable length (≈ 500 mm) and routing on the moving carriage.
 - [ ] Rack electronics placeholders (Delta PSU, DVP-12SE, relay, router, tower light, E-stop) vs real sizes on the DIN rail.
-- [ ] Delta 24 V DIN PSU: pick the exact part number from distributor stock (75–100 W, universal input).
+- [x] Delta 24 V DIN PSU: picked DRL-24V120W1EN (LYTE II, 120 W, universal input) — v0.1.19.
 - [ ] Detail bolt patterns on the robot printed parts once the hardware is in hand (current parts are v0 for fit).
 - [ ] Cable routing: drag chain or spiral for the Z carriage (Y motor, servos, switches, camera).
 
 ## From the datasheet cross-check (v0.1.15, `docs/datasheets/CROSSCHECK.md`)
 
-- [ ] **Close JP1–JP4** on the motion board for the MKS TMC2209 V2.0 modules (UART on pin 5); check whether R8 is fitted.
+- [x] JP1–JP4 for the MKS TMC2209 V2.0 (UART on pin 5): bridged by default on the board since v0.1.19 (cut to open). Still check whether R8 is fitted.
 - [x] Replace `docs/datasheets/P18_xl4015.pdf` (was the XL7015 sheet); XL4015E1 8–36 V in, 5 A: fits 24 V → 16.8 V / 1.5 A. The CC limit is set by the module, so check it on the board.
 - [x] Servo buck set point: **5.8 V** (MG90S 4.8–6.0 V). Set it with a meter before connecting the servos.
-- [ ] Drive shafts: ≈ 21 N static per wheel vs the 28 N radial limit at 20 mm. Keep the wheel tight to the bracket plate and check for shaft play after testing.
-- [ ] Fuse vs cells: 35E max discharge is 8 A (fuse 10 A); use a 7.5 A fuse with 35E cells, or keep 10 A with MJ1.
+- [ ] Drive shafts: ≈ 21 N static per wheel vs the 28 N radial limit at 20 mm. Fit each hub with a 2 mm shim against the bracket plate (v0.1.19) and check for shaft play after testing.
+- [x] Fuse vs cells: main fuse is 7.5 A (35E max discharge 8 A) — v0.1.19.
 - [ ] Airline label: use the bought cell's Wh (35E 4S = 49.7 Wh, MJ1 4S = 50.9 Wh).
 - [ ] XT30PW-M pad polarity: the datasheet doesn't number the pads; check the footprint (pad 1 = GND) against the real part.
 
@@ -71,7 +71,7 @@ Fixed in the design: see 00 revision history v0.1.6. Still to verify on hardware
 - [ ] WS2812 works with 3.3 V data (else SK6812 / WS2812B-V5).
 - [ ] Finger/servo pull test: Y current set so a jam stalls at ≈ 15 N; 20 jammed pulls without the horn slipping (else add a carriage back-stop).
 - [ ] Tray floor deflection with 1 kg at the front-right of each slot ≤ 0.5 mm.
-- [ ] NEMA17 radial load rating vs ≈ 20 N per wheel (direct drive).
+- [x] NEMA17 radial load rating vs ≈ 20 N per wheel (direct drive): 28 N at 20 mm per the datasheet; hub bore fixed in v0.1.19.
 - [ ] Rack and spare station don't slide when docking (≈ 17 N push); add a yaw criterion to T6.
 - [ ] Battery pack + BMS fit the 80 × 38.5 × 47.5 box (2 × 2 cells along x).
 - [ ] Buck/charger modules fit 56 × 27 × 20.

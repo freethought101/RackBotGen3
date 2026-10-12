@@ -23,14 +23,14 @@ Rebuild: `scripts/build.sh` (needs KiCad 10 at `/Applications/KiCad`, Java 21+, 
   corner, mating face 1.7 mm past the board edge so the plug goes in from outside,
   J2 **5 V** from the off-board 5 V/5 A buck, J3 **6 V servo** from the off-board 6 V/3 A buck.
   Bulk 470 µF + **SMBJ18A** unidirectional TVS right at J1 (cathode on VMOT: clamps ringing, and a reversed harness
-  conducts and blows the 10 A fuse); 100 µF + 100 nF at every driver.
+  conducts and blows the 7.5 A fuse); 100 µF + 100 nF at every driver.
 - **ESP32**: powered over USB from the Pi; its 5V pin is **not** connected. 3V3 from the DevKit feeds logic.
   Use a **90° USB-C plug** whose cable exits away from the board: the area under the USB end (y 179.5–191) is kept
   free of connectors (J12/J13 sit left of it), but J10/J11 on the bottom edge are ≈ 13 mm from the port.
 - **Drivers**: UART addresses hard-wired with MS1/MS2: U2 drive-L = 0, U3 drive-R = 1, U4 Z = 2, U5 Y = 3.
   Single-wire UART on StepStick pin 4 (PDN_UART): ESP TX (GPIO9) via 1 k, RX (GPIO10) direct. CLK tied to GND.
-  **JP1–JP4** (open solder jumpers between the socket rows, labelled `JPn UART P5`) join pin 5 to the bus. Bridge one
-  only if that module brings PDN_UART out on pin 5; this has to be done with the module unplugged.
+  **JP1–JP4** (normally bridged solder jumpers between the socket rows, labelled `JPn P5 CUT`) join pin 5 to the bus,
+  as the MKS TMC2209 V2.0 needs. Cut the copper strip only for a module with another signal on pin 5 (module unplugged).
 - **Inputs** (J8–J13, JST-XH GND/SIG/3V3): Z_HOME, Y_HOME, NOSE, SLOT_A, SLOT_B, AUX — 10 k pull-up, 1 k series, 100 nF.
 - **Outputs**: servos J14/J15 (GND, 6V, SIG, 330 Ω), WS2812 J17, buzzer J19 (low-side NPN), I2C J16 (INA226).
 - **Sense**: VMOT 100 k/18 k → GPIO1 (16.8 V → 2.56 V), dock 100 k/10 k → GPIO2 (J18 pin 1; wire it to the dock + pad
@@ -51,7 +51,7 @@ Rebuild: `scripts/build.sh` (needs KiCad 10 at `/Applications/KiCad`, Java 21+, 
    against Espressif's ESP32-S3-DevKitC-1 pin layout for your board revision.
 3. **StepStick pinout.** Left column EN, MS1, MS2, PDN_UART, PDN_UART2, CLK, STEP, DIR; right column VM, GND,
    2B, 2A, 1A, 1B, VDD, GND (Pololu layout). Check your TMC2209 module's silkscreen, especially pin 4 vs 5 for UART.
-   If the module has UART on pin 5, bridge that socket's JP. Insert each module so its EN pin matches the `EN` mark.
+   JP1–JP4 come bridged (UART on pin 4 and 5); cut one only if that module uses pin 5 for something else. Insert each module so its EN pin matches the `EN` mark.
 4. **Motor connector order** is 2B, 2A, 1A, 1B. If a motor runs backwards or stutters, swap one coil pair in the cable.
 5. **Mounting holes**: M3 at 93 × 93 mm pitch (3.5 mm from each edge).
 
@@ -64,7 +64,7 @@ multimeter, current-limited bench supply.
 
 - [ ] 0805 resistors and capacitors (values in `fab/rbg3-motion-bom.csv`).
 - [ ] Q1 MMBT3904 (SOT-23), D2 1N4148W (SOD-123, band as on the silkscreen), D1 SMBJ18A (SMB, **band toward VMOT**).
-- [ ] JP1–JP4: **bridge** them for the MKS TMC2209 V2.0 (UART on pin 5); leave open for modules with UART on pin 4.
+- [ ] JP1–JP4: check with a meter that each joins pin 5 to the UART bus (bridged on the board; nothing to solder for the MKS TMC2209 V2.0).
       Easiest before the sockets go on; always with the module unplugged.
 - [ ] Through-hole, low to tall: J14/J15 servo headers → JST-XH (J4–J13, J16–J19) → StepStick sockets (8 rows) →
       DevKit female headers (**matching row only**, 22.86 or 25.4 mm) → J2/J3 terminals → J1 XT30 →
@@ -75,7 +75,7 @@ multimeter, current-limited bench supply.
 
 - [ ] Nothing plugged in: no short from VMOT, +5V, +6V_SERVO or +3V3 to GND.
 - [ ] Bench supply 16.8 V, limit 0.2 A, into J1 (pad 2 = +): idle current near zero, VMOT on all four VM pins,
-      nothing warm. Don't test reverse polarity (by design it blows the 10 A fuse through D1).
+      nothing warm. Don't test reverse polarity (by design it blows the 7.5 A fuse through D1).
 - [ ] Set and check the 5.0 V and 5.8 V (servo, "6V" rail) bucks off-board before wiring them to J2/J3.
 - [ ] ESP32 in, powered over USB (its 5V pin is not used): GPIO1 reads ≈ 2.56 V at 16.8 V; each input J8–J13 toggles
       (home switches are NC, so they read active until pressed).

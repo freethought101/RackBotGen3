@@ -1,7 +1,7 @@
 # RackBotGen3 — System Overview
 
 Delta Cup 2026 · Automation track · Regional Final, Thailand, 14 Nov 2026
-Status: **Draft v0.1.18 (11 Oct 2026)** — single owner for all subsystems; peers review and give feedback.
+Status: **Draft v0.1.19 (12 Oct 2026)** — single owner for all subsystems; peers review and give feedback.
 
 | Doc | Content |
 |---|---|
@@ -30,7 +30,7 @@ Pitch angle (judging: Innovation, Technical Viability, Impact & Sustainability, 
 | # | Constraint | Design response |
 |---|---|---|
 | C1 | Built and tested by **10 Nov 2026** (about 5 weeks) | Off-the-shelf modules, 4 steppers with a single driver type, Python on the Pi, mechanical docking instead of precision navigation |
-| C2 | **≤ 500 USD** | Est. ≈ 497 USD (see 04). Delta PLC loaned or sponsored, with an ESP32 fallback |
+| C2 | **≤ 500 USD** | Est. ≈ 464 USD (see 04). Delta PLC loaned or sponsored, with an ESP32 fallback |
 | C3 | Manufacturable with a 400×400 mm FDM printer, grinder and drill press | 2020/2040 V-slot cut to length, printed plates/brackets; no machining beyond cutting and drilling |
 | C4 | **Carry-on, 7 kg per bag, 4 members** | Flat-pack rack, removable mast; ≈ 14 kg of hardware over 4 bags (≈ 50 % margin) |
 | C5 | Airline safety | Li-ion pack **≈ 50 Wh (< 100 Wh)**, in cabin, terminals protected; universal-input Delta PSU (Thailand 220 V / 50 Hz) |
@@ -164,4 +164,5 @@ Weigh every bag in week 5 (see 04).
 | v0.1.16 | 2026-10-10 | Orders consolidated into fewer Tokopedia shops (`docs/shopping-list.md`): extrusion, lead screw, belt and idler from Lajarus Teknik; V-wheels, spacers and pulley from Rajawali3D; ESP32, casters and switches with the motors at Rajacell; robot E-stop at CNC Store Bandung; headers and 470 µF at Putra Niaga. Travel router (P31) is not owned: GL.iNet GL-MT300N-V2 bought (38 USD). Backup prices for the Pi 3 (P12) and the Delta PLC (P25) recorded. Budget ≈ 462 USD |
 | v0.1.17 | 2026-10-10 | Last generic parts sourced: 4S 30 A BMS (Rajacell), nickel strip, rocker switch, DIN rail and UK5N terminal blocks (CNC Store Bandung), silicone wire (alladinshop), brass sheet, microSD brand. Datasheets added for the Delta DRL-24V120W1EN PSU, the Songle SRD relay and the Amass XT60H. No local polyfuse ≥ 30 V found: proposed UK5-HESI fuse terminal + 3.15 A fuse (pending). Budget ≈ 460 USD |
 | v0.1.18 | 2026-10-11 | Servo buck (P18) set to 5.8 V instead of 6 V: the MG90S is rated 4.8–6.0 V. The rail keeps its "6V" name; no PCB or cost change |
+| v0.1.19 | 2026-10-12 | Cross-check open items closed: main fuse **7.5 A** (35E cells max 8 A); motion board JP1–JP4 now **normally bridged** (MKS TMC2209 V2.0 has UART on pin 5; cut to open), fab files regenerated; drive hub bore deepened for the 24 ± 1 mm shaft and hub fitted with a 2 mm shim against the bracket plate (keeps the radial load at ≈ 18 mm from the flange); PSU spec ≥ 75 W, chosen DRL-24V120W1EN (120 W), P24 35 → 39 USD (Rp622k). Budget ≈ 464 USD |
 | v0.1.4 | 2026-10-06 | Robot CAD v0 + checks: direct drive (axle y −135), nose z 30–90, swing-down fingers, tray camera window, caddy tag moved left, E-stop on the mast top; mass 4.49 kg; budget ≈ 478 USD |
