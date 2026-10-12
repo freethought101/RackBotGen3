@@ -11,6 +11,7 @@ Spec: [`docs/spec/02-electrical.md`](../../docs/spec/02-electrical.md) §3.
 | `scripts/build.sh` | Rebuilds the layout from scratch: text fix-ups → placement → silkscreen (`silk.py`) → GND pour → Freerouting → stitching vias → pours → DRC |
 | `fab/rbg3-motion-gerbers.zip` | Gerbers + Excellon drill (separate PTH / NPTH files) for JLCPCB (2 layers, 1.6 mm, 1 oz, HASL is fine) |
 | `fab/rbg3-motion-bom.csv`, `fab/rbg3-motion-pos.csv` | BOM and placement file (hand assembly expected: 0805 / SOT-23 / SOD-123 / SMB + through-hole) |
+| `fab/rbg3-motion-jlc-bom.csv`, `fab/rbg3-motion-jlc-cpl.csv` | Optional JLCPCB **Economic** assembly of the 39 SMD parts only (LCSC numbers in `scripts/jlc_pcba.py`; all basic or preferred, so no extended-part fees). Check Q1, D1 and D2 orientation in the placement preview |
 | `fab/rbg3-motion-schematic.pdf`, `fab/rbg3-motion.step` | Schematic print and 3D board for the robot CAD |
 
 Rebuild: `scripts/build.sh` (needs KiCad 10 at `/Applications/KiCad`, Java 21+, Freerouting jar at
@@ -53,6 +54,34 @@ Rebuild: `scripts/build.sh` (needs KiCad 10 at `/Applications/KiCad`, Java 21+, 
    If the module has UART on pin 5, bridge that socket's JP. Insert each module so its EN pin matches the `EN` mark.
 4. **Motor connector order** is 2B, 2A, 1A, 1B. If a motor runs backwards or stutters, swap one coil pair in the cable.
 5. **Mounting holes**: M3 at 93 × 93 mm pitch (3.5 mm from each edge).
+
+## Assembly and bring-up checklist
+
+Hand assembly (JLCPCB makes the bare board only). Tools: fine-tip iron, flux, 0.5–0.8 mm solder, tweezers,
+multimeter, current-limited bench supply.
+
+**Solder, low parts first so the board sits flat**
+
+- [ ] 0805 resistors and capacitors (values in `fab/rbg3-motion-bom.csv`).
+- [ ] Q1 MMBT3904 (SOT-23), D2 1N4148W (SOD-123, band as on the silkscreen), D1 SMBJ18A (SMB, **band toward VMOT**).
+- [ ] JP1–JP4: **bridge** them for the MKS TMC2209 V2.0 (UART on pin 5); leave open for modules with UART on pin 4.
+      Easiest before the sockets go on; always with the module unplugged.
+- [ ] Through-hole, low to tall: J14/J15 servo headers → JST-XH (J4–J13, J16–J19) → StepStick sockets (8 rows) →
+      DevKit female headers (**matching row only**, 22.86 or 25.4 mm) → J2/J3 terminals → J1 XT30 →
+      electrolytics C1/C3/C5/C7/C9 last (**long leg to the + pad**).
+- [ ] Clean the flux and look for bridges, especially at Q1, the socket rows and the DevKit rows.
+
+**Bring-up, stop at the first failure**
+
+- [ ] Nothing plugged in: no short from VMOT, +5V, +6V_SERVO or +3V3 to GND.
+- [ ] Bench supply 16.8 V, limit 0.2 A, into J1 (pad 2 = +): idle current near zero, VMOT on all four VM pins,
+      nothing warm. Don't test reverse polarity (by design it blows the 10 A fuse through D1).
+- [ ] Set and check the 5.0 V and 5.8 V (servo, "6V" rail) bucks off-board before wiring them to J2/J3.
+- [ ] ESP32 in, powered over USB (its 5V pin is not used): GPIO1 reads ≈ 2.56 V at 16.8 V; each input J8–J13 toggles
+      (home switches are NC, so they read active until pressed).
+- [ ] **VMOT off**, then fit the TMC2209s (EN pin at the `EN` mark) and connect the motors. Never plug or unplug a
+      driver or a motor with VMOT on. Power up; the firmware sets motor current over UART. Check that addresses 0–3
+      answer, then jog each axis slowly (motor wrong way or stuttering: swap one coil pair in its cable).
 
 ## Known cosmetic items
 

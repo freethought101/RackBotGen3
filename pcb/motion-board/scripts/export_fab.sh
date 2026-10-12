@@ -10,5 +10,6 @@ $CLI pcb export drill --format excellon --excellon-separate-th -o fab/gerbers/ r
 $CLI pcb export pos --format csv --units mm --side front -o fab/rbg3-motion-pos.csv rbg3-motion.kicad_pcb
 $CLI sch export bom -o fab/rbg3-motion-bom.csv --fields 'Reference,Value,Footprint,${QUANTITY},${DNP}' \
   --group-by Value,Footprint rbg3-motion.kicad_sch
+python3 scripts/jlc_pcba.py
 $CLI sch export pdf -o fab/rbg3-motion-schematic.pdf rbg3-motion.kicad_sch
 $CLI pcb export step --subst-models -f -o fab/rbg3-motion.step rbg3-motion.kicad_pcb
