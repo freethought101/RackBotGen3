@@ -91,7 +91,7 @@ the fastest option from Bali for anything missing.
 |---|---|---|---|
 | P24 | [Delta DRL-24V120W1EN, Lyte II 120 W](https://www.tokopedia.com/mitra-otomasi/din-rail-power-supply-delta-drl-24v120w1en-lyte-ii-series-din-rail-120w-24v-input-1ph) | Rp622k ≈ 39 USD | DRC-24V100W1AZ (CliQ) is obsolete; its replacement is DRC-24V100W1RZ |
 | P18 | [XY-3606 5 V 5 A](https://www.tokopedia.com/easyware-id/xy-3606-power-module-step-down-dc-to-dc-5a-24v-12v-to-5v-power-supply) | Rp22k | Pi + board |
-| P18 | [MP2482/SY8205 5 A](https://www.tokopedia.com/cncstorebandung/dc-dc-mp2482-sy8205-5a-dc-step-down-module-7v-24v-to-5v-servo-power) | Rp19k | Servo rail. Must be adjustable to 6 V |
+| P18 | [MP2482/SY8205 5 A](https://www.tokopedia.com/cncstorebandung/dc-dc-mp2482-sy8205-5a-dc-step-down-module-7v-24v-to-5v-servo-power) | Rp19k | Servo rail. Must be adjustable to 5.8 V |
 | P18 | [XL4015 5 A CC/CV](https://www.tokopedia.com/cncstorebandung/xl4015-5a-dc-dc-5v-32v-to-0-8v-30v-max-5a-step-down-cc-cv-lithium-charger-adjustable-power-supply-1731127932566144574) | Rp23k | Charger. Do the IN− to OUT− shunt check |
 | P29 | [6–24 V → 5 V USB 3 A](https://www.tokopedia.com/cncstorebandung/step-down-dc-to-dc-usb-converter-6v-24v-to-5v-3a-module-usb-charger) | Rp12k | 24 V is its maximum input, so no margin. An XY-3606 + USB socket is the safer choice |
 | P26 | [24 V relay module, optocoupled](https://www.tokopedia.com/cncstorebandung/module-relay-24v-high-low-trigger-with-optocoupler-1730885751716415117) | Rp27k | |

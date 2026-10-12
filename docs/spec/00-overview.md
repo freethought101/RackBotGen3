@@ -1,7 +1,7 @@
 # RackBotGen3 — System Overview
 
 Delta Cup 2026 · Automation track · Regional Final, Thailand, 14 Nov 2026
-Status: **Draft v0.1.17 (10 Oct 2026)** — single owner for all subsystems; peers review and give feedback.
+Status: **Draft v0.1.18 (11 Oct 2026)** — single owner for all subsystems; peers review and give feedback.
 
 | Doc | Content |
 |---|---|
@@ -163,4 +163,5 @@ Weigh every bag in week 5 (see 04).
 | v0.1.15 | 2026-10-10 | Datasheet cross-check (`docs/datasheets/CROSSCHECK.md`): MKS TMC2209 V2.0 has UART on pin 5, so close JP1–JP4 (P17); ESP32-S3 octal flash/PSRAM pins are 33–37; VMOT sense readable to ≈ 19 V; TMC2209 29 V operating / 32 V abs max; drive tractive force ≈ 6 N per wheel at 1.0 A (was ≈ 10 N) + shaft radial-load note; DVP-12SE11T outputs need UP/ZP wired. No cost change |
 | v0.1.16 | 2026-10-10 | Orders consolidated into fewer Tokopedia shops (`docs/shopping-list.md`): extrusion, lead screw, belt and idler from Lajarus Teknik; V-wheels, spacers and pulley from Rajawali3D; ESP32, casters and switches with the motors at Rajacell; robot E-stop at CNC Store Bandung; headers and 470 µF at Putra Niaga. Travel router (P31) is not owned: GL.iNet GL-MT300N-V2 bought (38 USD). Backup prices for the Pi 3 (P12) and the Delta PLC (P25) recorded. Budget ≈ 462 USD |
 | v0.1.17 | 2026-10-10 | Last generic parts sourced: 4S 30 A BMS (Rajacell), nickel strip, rocker switch, DIN rail and UK5N terminal blocks (CNC Store Bandung), silicone wire (alladinshop), brass sheet, microSD brand. Datasheets added for the Delta DRL-24V120W1EN PSU, the Songle SRD relay and the Amass XT60H. No local polyfuse ≥ 30 V found: proposed UK5-HESI fuse terminal + 3.15 A fuse (pending). Budget ≈ 460 USD |
+| v0.1.18 | 2026-10-11 | Servo buck (P18) set to 5.8 V instead of 6 V: the MG90S is rated 4.8–6.0 V. The rail keeps its "6V" name; no PCB or cost change |
 | v0.1.4 | 2026-10-06 | Robot CAD v0 + checks: direct drive (axle y −135), nose z 30–90, swing-down fingers, tray camera window, caddy tag moved left, E-stop on the mast top; mass 4.49 kg; budget ≈ 478 USD |

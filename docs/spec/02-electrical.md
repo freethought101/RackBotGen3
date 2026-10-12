@@ -25,7 +25,7 @@ flowchart LR
   BUS --> KC["Relay contact (NO)\n30/40 A"] --> VMOT["VMOT"]
   K -. "closes" .-> KC
   VMOT --> TMC["4x TMC2209"]
-  VMOT --> B6["Buck 6 V 3 A"] --> SERVO["2x MG90S"]
+  VMOT --> B6["Buck 5.8 V 3 A"] --> SERVO["2x MG90S"]
   BUS --> B5["Buck 5.15 V 5 A"] --> PI["Raspberry Pi 3\n(micro-USB pigtail)"]
   PI -- "USB (90° C plug)" --> ESP["ESP32-S3 DevKitC-1\n(powered over USB)"]
 ```
@@ -88,7 +88,7 @@ Switch inputs: internal pull-up + 10 k external pull-up to 3V3, 1 k series, 100 
 |---|---|---|
 | J1 VMOT | XT30PW-M (horizontal) | **pad 1 = GND (−), pad 2 = VMOT (+)** (after E-stop) |
 | J2 5V_IN | 2-pin 5.08 screw terminal | +5 V, GND from the 5 V buck (which also feeds the Pi). Not reverse-protected: polarity on the silkscreen |
-| J3 6V_SERVO_IN | 2-pin 5.08 screw terminal | +6 V, GND from the servo buck. Not reverse-protected: polarity on the silkscreen |
+| J3 6V_SERVO_IN | 2-pin 5.08 screw terminal | +6 V rail (buck set to **5.8 V**), GND from the servo buck. Not reverse-protected: polarity on the silkscreen |
 | J4…J7 (MOTOR_L/R/Z/Y) | JST-XH 4-pin | 2B, 2A, 1A, 1B (match the StepStick pinout) |
 | J8…J13 | JST-XH 3-pin | GND, SIG, 3V3 (Z_HOME, Y_HOME, NOSE, SLOT_A, SLOT_B, AUX_IN on GPIO38). KW11 COM → GND, NC (home switches) or NO (others) → SIG; the 3V3 pin is spare |
 | J14 / J15 (SERVO_A/B) | 2.54 3-pin male header | GND, 6 V, SIG |
@@ -116,7 +116,8 @@ Switch inputs: internal pull-up + 10 k external pull-up to 3V3, 1 k series, 100 
   the 5 V buck wiring and the Pi↔ESP32 USB ground. Nothing on the board actively blocks reverse polarity
   (a series P-FET is a v2 option).
 - Buck modules are **off-board** (vendor footprints vary): the 5 V/5 A buck feeds the Pi and J2 (5 V in), the
-  6 V/3 A servo buck (from VMOT, after the E-stop) feeds J3. The board has no on-board regulators.
+  servo buck (3 A, from VMOT, after the E-stop) feeds J3. It is **set to 5.8 V**: the MG90S is rated 4.8–6.0 V, so
+  5.8 V leaves margin for trim drift and ripple. The rail keeps its "6V" name on the board. The board has no on-board regulators.
 - WS2812 level: driven from 3V3 through 330 Ω. Strictly out of spec (VIH = 0.7 × 5 V = 3.5 V) but it works with most parts on a short lead; it is a status light only. If it is unreliable, use a WS2812B-V5/SK6812 variant with a 3.3 V-compatible input. There is no buffer footprint on v1.
 - Silkscreen (`pcb/motion-board/scripts/silk.py`): board name `RBG3-MOTION v1`, function and pin order at every
   connector (+5V/GND and +6V/GND at J2/J3, 2B 2A 1A 1B at J4–J7, G S 3V3 at J8–J13, G + S at J14/J15, and so on).

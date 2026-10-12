@@ -52,7 +52,7 @@ Open checks and to-dos collected from the spec, the CAD and PCB work, and review
 
 - [ ] **Close JP1–JP4** on the motion board for the MKS TMC2209 V2.0 modules (UART on pin 5); check whether R8 is fitted.
 - [x] Replace `docs/datasheets/P18_xl4015.pdf` (was the XL7015 sheet); XL4015E1 8–36 V in, 5 A: fits 24 V → 16.8 V / 1.5 A. The CC limit is set by the module, so check it on the board.
-- [ ] Decide the servo buck set point: 6.0 V is the MG90S maximum (4.8–6.0 V); 5.5–5.8 V gives margin.
+- [x] Servo buck set point: **5.8 V** (MG90S 4.8–6.0 V). Set it with a meter before connecting the servos.
 - [ ] Drive shafts: ≈ 21 N static per wheel vs the 28 N radial limit at 20 mm. Keep the wheel tight to the bracket plate and check for shaft play after testing.
 - [ ] Fuse vs cells: 35E max discharge is 8 A (fuse 10 A); use a 7.5 A fuse with 35E cells, or keep 10 A with MJ1.
 - [ ] Airline label: use the bought cell's Wh (35E 4S = 49.7 Wh, MJ1 4S = 50.9 Wh).

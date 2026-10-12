@@ -21,7 +21,7 @@ Spec, CAD and firmware values checked against the files in this folder. Page num
 | Cutting VMOT resets the registers (02 §1, 03 §8) | §17: cycling VS resets the chip | ✓ |
 | VIO from ESP32 3V3 | VCC_IO 3.00–5.25 V | ✓ |
 | UART on StepStick pin 4; JP1–JP4 open (02 §3.3) | **MKS TMC2209 V2.0 (P17): PDN/UART on pin 5**; pin 4 only if the optional R8 is fitted (P17 size-pin drawing) | ✗ → close JP1–JP4 for MKS V2.0 modules |
-| MG90S 6 V supply (02 §1, P18) | Operating 4.8–6.0 V (P09 p. 1) | ⚠ the 6 V buck sits at the max; see open decisions |
+| MG90S supply (02 §3.3, P18) | Operating 4.8–6.0 V (P09 p. 1) | ✓ buck set to 5.8 V (v0.1.18) |
 | MG90S 22.8 × 12.2 × 28.5, 14 g (`robot_dims.py` SERVO) | 22.5 × 12 × 35.5 (height probably includes the output spline), 13.4 g (P09 p. 1) | ⚠ measure (already in the backlog) |
 | MG90S stall current vs the 3 A servo buck | Not given | ⚠ no source |
 
@@ -87,6 +87,6 @@ KW11-3Z, V-wheels, KFL08, Tr8×2 nut and coupler, GT2 pulley/idler, ball casters
 CSI cable (only a 200 mm drawing exists). Estimates with no source: robot power 4 / 12–20 W, rack budget, MASS_G masses.
 
 ## Open decisions (not changed in the spec)
-1. **Servo supply**: the 6.0 V set point is the MG90S's maximum. Setting the buck to 5.5–5.8 V gives margin for trim drift and ripple, at slightly lower torque.
+1. ~~**Servo supply**~~: decided in v0.1.18, buck set to 5.8 V.
 2. **Drive shaft radial load**: ≈ 21 N static vs the 28 N limit. Keep the wheel tight to the bracket plate (load closer to the flange), or add an outboard bearing if the shafts show play.
 3. **Fuse vs cell rating**: with 35E cells, a 7.5 A fuse matches the 8 A cell limit better than 10 A. MJ1 cells (10 A) make the 10 A fuse fine.

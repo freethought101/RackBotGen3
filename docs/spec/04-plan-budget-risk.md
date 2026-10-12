@@ -35,7 +35,7 @@ The live, per-part order list is the Notion **Parts & Order List** database, mir
 | CSI flex cable 500 mm | 1 | 1 |
 | ESP32-S3-DevKitC-1 (Tokopedia) | 1 | 7 |
 | TMC2209 StepStick (Tokopedia) | 4 | 12 |
-| Buck 5 V/5 A + buck 6 V/3 A + CC/CV charger module | 3 | 4 |
+| Buck 5 V/5 A + buck 5.8 V/3 A + CC/CV charger module | 3 | 4 |
 | INA226 module + **10 mΩ / R010** 2512 shunt (local modules ship R100: swap it) | 1 | 2 |
 | 18650 3.5 Ah × 4 + 4S BMS + holder/nickel strip | set | 33 |
 | XT60/XT30, fuse holder, rocker switch, robot E-stop, silicone wire, JST-XH kit | set | 25 |
