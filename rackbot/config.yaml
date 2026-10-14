@@ -1,0 +1,108 @@
+# RackBotGen3 Pi application configuration.
+# Geometry values come from docs/spec/01-mechanical.md §1 (single source of truth) and 03-software.md §5.1.
+
+geometry:
+  bay_pitch: 45              # slot A floor = slot B floor + 45
+  h_bay: [150, 195, 240, 285]  # rack bay 1..4 shelf floor height
+  h_spare: {S1: 150, S2: 195}  # spare station GOOD / RMA shelf floor height
+  z_insert_offset: 1
+  z_extract_offset: -1
+  z_soft_min: 102
+  z_soft_max: 295
+  y_home: 0
+  y_pull: 177                # finger centred in a seated caddy's notch
+  y_push: 178.5              # seats the caddy with 0.5 mm preload
+  y_max: 180
+  y_safe: 2                  # "Y ≤ 2 mm" interlock threshold
+  z_drive: 110
+  z_drive_max: 220
+  z_approach: 200            # calibrated: camera level with tag 0 (placeholder until calibration)
+
+motion:
+  port: /dev/ttyACM0
+  baud: 115200
+  command_timeout_s: 2.0
+  motion_timeout_s: 60.0
+  speeds: {z: 15, y: 50, drive: 150, turn: 60}   # mm/s, deg/s (defaults when no speed arg is sent)
+
+rack:
+  host: 192.168.8.10
+  port: 502
+  unit_id: 1
+  poll_hz: 5
+  heartbeat_s: 0.5
+
+stations:
+  rack: {approach_tag: 0, shelf_tags: {1: 1, 2: 2, 3: 3, 4: 4}}
+  spare: {approach_tag: 10, shelf_tags: {S1: 11, S2: 12}}
+
+tags:
+  family: tag36h11
+  sizes_mm: {0: 50, 1: 16, 2: 16, 3: 16, 4: 16, 10: 50, 11: 16, 12: 16,
+             101: 24, 102: 24, 103: 24, 104: 24, 105: 24, 106: 24}
+  caddy_ids: [101, 102, 103, 104, 105, 106]
+
+vision:
+  width: 640
+  height: 480
+  quad_decimate: 2.0
+  threads: 4
+  fps: 10
+  camera_matrix: null        # filled by tools/calibrate_camera.py
+  bay_align_max_mm: 4
+
+approach:                    # 03 §6.2
+  k_theta: 1.5               # 1/s  (w in deg/s from θ in deg)
+  k_psi: 0.8
+  k_d: 0.5                   # 1/s
+  d_target: 250
+  v_min: 30
+  v_max: 150
+  handoff_d: 260
+  handoff_x: 10
+  handoff_psi: 3
+  abort_d: 200               # closer than this without hand-off → back off and retry
+  lost_s: 0.5
+  backoff_mm: 100
+  max_retries: 3
+  dock_max_mm: 300
+  dock_speed: 50
+  undock_mm: 250
+
+mission:
+  retries: 2                 # per primitive, before FAULT
+  dock_v_min: 20
+  charge_taper_a: 0.2
+  charge_restart_v: 15.6
+
+health:
+  warn_realloc: 10
+  fail_realloc: 50
+  fault_ramp_s: 10
+
+energy:
+  sample_s: 1.0
+
+web:
+  host: 0.0.0.0
+  port: 8000
+  ws_hz: 5
+
+store:
+  path: rackbot.db
+
+# Initial inventory (first start only; afterwards the SQLite store is authoritative).
+inventory:
+  bay1: 101
+  bay2: 102
+  bay3: 103
+  bay4: 104
+  S1: 105
+
+sim:
+  time_scale: 1.0            # real seconds per simulated second (0.25 = 4x faster)
+  station_distance_mm: 1500  # rack tag 0 to spare tag 10, stations facing each other
+  dock_d_mm: 40              # camera-to-tag distance when docked
+  turn_error_deg: 3          # TURN overshoot, so the approach controller has work to do
+  battery_wh: 50.4
+  battery_soc: 0.9

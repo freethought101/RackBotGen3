@@ -1,0 +1,63 @@
+"""Y carriage with finger arm (PETG, one print), modeled at Z = 0 with the finger pivot at y = 0.
+
+Gantry-style: a plate on the rail's outer face carries four mini V-wheels on axles along x, two above and
+two below the rail (one of each pair on an eccentric spacer), so the carriage is captured in z, x and yaw.
+A frame over the top wheels joins the plate to the arm on the rail's inner side. The arm carries the two
+MG90S servos (output shafts along +y; their tabs screw into ledges on the arm). The belt clamp sits on the
+plate's outer face and pinches the belt's inner strand.
+"""
+
+from cadgen import build123d as bd
+from cadgen import step, stl
+
+from lib.dims import M5_CLEAR
+from lib.prims import box, cyl_x
+from lib.robot_dims import (ARM_DY, ARM_X, BELT_DZ, BELT_STRAND_X, FINGER_DZ, FINGER_X, SERVO, SERVO_FACE_DY,
+                            YCARRIAGE_DY, YFRAME_DZ, YPLATE_X, YWHEEL_DY, YWHEEL_DZ)
+
+LEDGE_X0 = FINGER_X - SERVO["wid"] / 2      # flush with the servo's side, 2.4 mm from the tray lip
+LEDGE_DEPTH = 5.0           # along +y, in front of the servo tabs
+CLAMP_DY = (-80.0, -62.0)   # belt clamp y span relative to the finger pivot (between the wheel axle bolts)
+CLAMP_JAW = 3.0
+M2_PILOT = 1.7              # self-tapping M2 into PETG
+
+
+def ledge_spans(f):
+    """z spans of the tab ledges below and above a servo whose pivot is at height f."""
+    off, ln, tab = SERVO["shaft_from_end"], SERVO["len"], SERVO["tab"]
+    lo, hi = f - off, f - off + ln
+    return [(lo - tab, lo), (hi, hi + tab)]
+
+
+@step(out="../../STEP/robot/y_carriage.step")
+@stl(out="../../STL/robot/y_carriage.stl")
+def y_carriage():
+    px0, px1 = YPLATE_X
+    fz0, fz1 = YFRAME_DZ
+    part = box(px0, px1, *YCARRIAGE_DY, 0.0, fz1)                                   # outer wheel plate
+    part += box(ARM_X[0], px1, YCARRIAGE_DY[0], ARM_DY[0], fz0, fz1)                # frame over the top wheels
+    z_lo = min(z0 for f in FINGER_DZ.values() for z0, _ in ledge_spans(f))
+    z_hi = max(z1 for f in FINGER_DZ.values() for _, z1 in ledge_spans(f))
+    part += box(*ARM_X, ARM_DY[0], ARM_DY[1], z_lo, max(z_hi, fz1))                 # arm
+    tab_y = SERVO_FACE_DY - 9.5                                                     # front face of the tabs
+    for f in FINGER_DZ.values():
+        for z0, z1 in ledge_spans(f):
+            part += box(LEDGE_X0, ARM_X[0], tab_y, tab_y + LEDGE_DEPTH, z0, z1)
+            part -= bd.Pos(FINGER_X, tab_y - 0.1, (z0 + z1) / 2) * bd.Rot(-90, 0, 0) * bd.Cylinder(
+                M2_PILOT / 2, LEDGE_DEPTH + 0.2, align=(bd.Align.CENTER,) * 2 + (bd.Align.MIN,))
+    # V-wheel axles (M5) through the outer plate, above and below the rail.
+    for y in YWHEEL_DY:
+        for z in YWHEEL_DZ:
+            part -= cyl_x(M5_CLEAR, px0 - 0.1, px1 + 0.1, y, z)
+    # Belt clamp on the plate's outer face: the inner strand runs through the slot and is pinched by a screw
+    # through the jaw (teeth face the jaw's printed GT2 profile).
+    sx0, sx1 = BELT_STRAND_X[0]
+    clamp = box(px1, sx1 + 0.4 + CLAMP_JAW, *CLAMP_DY, BELT_DZ[0] - 1.5, BELT_DZ[1] + 1.5)
+    clamp -= box(sx0 - 0.4, sx1 + 0.4, CLAMP_DY[0] - 0.1, CLAMP_DY[1] + 0.1, BELT_DZ[0] - 0.5, BELT_DZ[1] + 0.5)
+    part += clamp
+    part.label = "y_carriage"
+    return part
+
+
+if __name__ == "__main__":
+    y_carriage()
