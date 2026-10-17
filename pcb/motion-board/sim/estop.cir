@@ -1,0 +1,76 @@
+* RBG3-MOTION: E-stop relay opens VMOT while the drivers are enabled and carrying current
+*
+* Questions: (1) how far does VMOT rise when the motor coil currents are pushed back into the VMOT
+* capacitors through the H-bridge body diodes, and does the TVS conduct? (2) how long until the firmware
+* sees VMOT_SENSE < 9 V (EVT ESTOP, spec 03)?
+*
+* Model:
+* - The pack (16.8 V, full: worst case) feeds VMOT through the relay contact until it opens at 10 us.
+* - Worst case for the rise: at that instant every driver stops driving and all coil current flows
+*   GND -> low-side body diode -> coil -> high-side body diode -> VMOT (fast decay into the caps).
+*   Each coil: JK42HS40 2.3 mH, 1.5 Ohm (P01 catalog p. 32). Both coils at the rms run current
+*   (1.0 / 1.0 / 0.9 / 0.6 A, spec 02 §2), so each motor stores L * Irms^2, the same as one coil at peak.
+* - Back-EMF ignored: at 150 mm/s cruise (Ø80 wheel, 36 rpm) it is ≈ 1 V, far below VMOT, so a coasting
+*   robot cannot pump the bus. Rotor kinetic energy is added by hand in README.md.
+* - Capacitors: C9 470 uF + 4 x 100 uF, all at -20 % tolerance (less C = more rise). The ceramics are left
+*   out (irrelevant at ms scale).
+* - RLOAD: what keeps drawing from VMOT after the relay opens (TMC2209 supply, VMOT divider, servo buck).
+*   Swept in run.py: 16 Ohm ≈ 1 A (drivers holding), 84 Ohm ≈ 0.2 A, 840 Ohm ≈ 20 mA (drivers disabled).
+
+.param RLOAD=84 CTOL=0.8
+
+VBAT bat 0 DC 16.8
+RB bat k 0.05
+S1 k vm ctl 0 SWOPEN
+VCTL ctl 0 PWL(0 1 10u 1 10.1u 0)
+.model SWOPEN SW(VT=0.5 VH=0.1 RON=5m ROFF=100Meg)
+
+D1 0 tvs DTVS
+VID1 vm tvs DC 0
+.model DTVS D(IS=1e-12 N=1.5 RS=0.35 BV=22.1 IBV=1m)
+
+R9 vm c9 0.15
+C9 c9 0 {470u*CTOL} ic=16.8
+RE vm ce 0.075
+CE ce 0 {400u*CTOL} ic=16.8
+RL vm 0 {RLOAD}
+
+* body diodes of the TMC2209 output FETs
+.model DBODY D(IS=1e-9 N=1.3 RS=20m CJO=300p)
+* the switches stop driving at 10 us; before that the coil current is held by an ideal current loop
+.subckt COIL vm ctl i0=1
+* GND -> Dlo -> a -> coil -> b -> Dhi -> VMOT
+DLO 0 a DBODY
+L1 a r 2.3m ic={i0}
+R1 r b 1.5
+DHI b vm DBODY
+* drive switch: shorts a-b while driving (current circulates), opens at 10 us
+SDRV a b ctl 0 SWOPEN
+* bleeders: keep the nodes defined once the coil current has died (output FETs' off-state leakage)
+RA a 0 100k
+RB2 b vm 100k
+.ends
+XL1 vm ctl COIL i0=1.0
+XL2 vm ctl COIL i0=1.0
+XR1 vm ctl COIL i0=1.0
+XR2 vm ctl COIL i0=1.0
+XZ1 vm ctl COIL i0=0.9
+XZ2 vm ctl COIL i0=0.9
+XY1 vm ctl COIL i0=0.6
+XY2 vm ctl COIL i0=0.6
+
+* VMOT_SENSE divider R1/R2 + C10 (what the ESP32 ADC sees)
+RS1 vm sense 100k
+RS2 sense 0 18k
+CS sense 0 100n ic=2.563
+
+.options method=gear
+.tran 1u 400m 0 50u uic
+
+.control
+set wr_singlescale
+set wr_vecnames
+run
+wrdata OUTFILE.txt v(vm) v(sense) i(vid1)
+.endc
+.end
