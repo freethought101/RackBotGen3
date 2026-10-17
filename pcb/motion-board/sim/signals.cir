@@ -1,0 +1,42 @@
+* RBG3-MOTION: ADC dividers and the single-wire TMC2209 UART
+*
+* Part 1 (.dc): VMOT_SENSE (R1 100 k / R2 18 k) and DOCK_V (R3 100 k / R4 10 k) against the ESP32-S3
+* calibrated ADC range of 0-2.9 V at 12 dB attenuation (P16 datasheet Table 5-6).
+* Part 2 (.tran): TMC_UART at 115200 baud. ESP32 TX (GPIO9) through R6 1 k to the bus, ESP32 RX (GPIO10) direct.
+* Bus load assumed: 20 pF of trace + 4 x 10 pF (socket, JP, module trace, TMC2209 PDN_UART pin) + 5 pF RX pin.
+* ESP32 output ≈ 25 Ohm. A replying TMC2209 is modelled as a push-pull output of 100 Ohm (assumed, not in the
+* datasheet) fighting the idle-high TX through the 1 k. Pattern: ESP sends 0x05 (sync nibble) LSB-first with
+* start/stop bits, then the TMC answers 0x05.
+
+VIN in 0 DC 0
+R1 in vmsense 100k
+R2 vmsense 0 18k
+R3 in docksense 100k
+R4 docksense 0 10k
+
+* --- UART ---
+.param TB=8.68u
+* ESP TX: idle 1, start 0, bits 1 0 1 0 0 0 0 0, stop 1  (0x05 LSB first), then idle
+VTX tx0 0 PWL(0 3.3 {1*TB} 3.3 {1*TB+5n} 0 {2*TB} 0 {2*TB+5n} 3.3 {3*TB} 3.3 {3*TB+5n} 0
++ {4*TB} 0 {4*TB+5n} 3.3 {5*TB} 3.3 {5*TB+5n} 0 {10*TB} 0 {10*TB+5n} 3.3)
+RTX tx0 txp 25
+R6 txp bus 1k
+CBUS bus 0 65p
+* TMC reply, starting after 14 bit times: same frame, push-pull 100 Ohm, high-Z otherwise
+VTMC tmc0 0 PWL(0 3.3 {15*TB} 3.3 {15*TB+5n} 0 {16*TB} 0 {16*TB+5n} 3.3 {17*TB} 3.3 {17*TB+5n} 0
++ {18*TB} 0 {18*TB+5n} 3.3 {19*TB} 3.3 {19*TB+5n} 0 {24*TB} 0 {24*TB+5n} 3.3)
+* output enable: on between 14 and 26 bit times
+VOE oe 0 PWL(0 0 {14*TB} 0 {14*TB+5n} 1 {26*TB} 1 {26*TB+5n} 0)
+STMC tmc0r bus oe 0 SWOE
+RTMC tmc0 tmc0r 100
+.model SWOE SW(VT=0.5 VH=0.1 RON=1m ROFF=1G)
+
+.control
+set wr_singlescale
+set wr_vecnames
+dc VIN 0 32 0.1
+wrdata OUTFILE.dc.txt v(vmsense) v(docksense)
+tran 2n 260u
+wrdata OUTFILE.tran.txt v(txp) v(bus)
+.endc
+.end

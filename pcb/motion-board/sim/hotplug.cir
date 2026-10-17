@@ -1,0 +1,69 @@
+* RBG3-MOTION: battery hot-plug onto VMOT (XT30 plug-in, main switch or E-stop relay closing)
+*
+* Question: does VMOT ring above the TMC2209 limits (29 V operating, 32 V abs max) when a charged
+* pack (16.8 V) is switched onto the empty board capacitors? How big is the inrush current?
+*
+* Model (values from rbg3-motion.kicad_sch, spec 02 §1 and the datasheets in docs/datasheets):
+* - Pack: 16.8 V behind RSRC = cells (4 x ~20-30 mOhm) + BMS FETs + 7.5 A fuse + INA226 R010 + switch
+*   + relay contact + 18 AWG wire. Swept in run.py; 50 mOhm is the low (worst for ringing) end.
+* - LH: loop inductance of the battery-to-J1 harness (~1 uH/m of loop), swept 0.3-2 uH.
+* - Switch closes at 10 us with no bounce.
+* - D1 SMBJ18A at J1, cathode on VMOT. Worst-case (highest) clamp: VBR 22.1 V at 1 mA,
+*   RS 0.35 Ohm so that V = 29.2 V at IPP = 20.5 A (Vishay table).
+* - C9 470 uF electrolytic at J1; per driver C1/C3/C5/C7 100 uF electrolytic + C2/C4/C6/C8 100 nF
+*   ceramic, 60 nH / 5 mOhm of 1.0 mm trace from J1. ESRs swept (generic vs low-ESR parts).
+* - Each MKS TMC2209 V2.0 module: 2 x 100 nF on VM (MKS schematic), 5 nH of header pin.
+* - No load: worst case, the drivers draw nothing until they are enabled.
+
+.param RSRC=0.05 LH=1u ESR470=0.15 ESR100=0.30 LTR=60n
+
+VBAT bat 0 DC 16.8
+RSRC bat a {RSRC}
+LH a b {LH}
+S1 b j1 ctl 0 SWCLOSE
+VCTL ctl 0 PULSE(0 1 10u 10n 10n 1 2)
+.model SWCLOSE SW(VT=0.5 VH=0.1 RON=5m ROFF=100Meg)
+* ammeter: current into the board
+VIJ1 j1 vm DC 0
+
+* TVS D1 at J1 (anode GND, cathode VMOT)
+VID1 vm tvs DC 0
+D1 0 tvs DTVS
+.model DTVS D(IS=1e-12 N=1.5 RS=0.35 BV=22.1 IBV=1m)
+
+* C9 470 uF bulk at J1
+R9 vm c9a {ESR470}
+L9 c9a c9b 15n
+C9 c9b 0 470u
+
+* four driver positions
+.subckt DRV vm ltr=60n esr=0.3
+RT vm d 5m
+LT d dd {ltr}
+* 100 uF electrolytic
+RE dd e1 {esr}
+LE e1 e2 10n
+CE e2 0 100u
+* 100 nF 0805 ceramic
+RC dd c1 10m
+LC c1 c2 1n
+CC c2 0 100n
+* module: header pin + 2 x 100 nF on VM
+LP dd m 5n
+RM m m1 10m
+CM m1 0 200n
+.ends
+X1 vm DRV ltr={LTR} esr={ESR100}
+X2 vm DRV ltr={LTR} esr={ESR100}
+X3 vm DRV ltr={LTR} esr={ESR100}
+X4 vm DRV ltr={LTR} esr={ESR100}
+
+.tran 5n 1m 0 5n uic
+
+.control
+set wr_singlescale
+set wr_vecnames
+run
+wrdata OUTFILE.txt v(vm) v(x1.m) i(vij1) i(vid1)
+.endc
+.end

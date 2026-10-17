@@ -18,6 +18,7 @@ Open checks and to-dos collected from the spec, the CAD and PCB work, and review
 - [ ] DevKit onboard RGB LED pin (GPIO38 or 48 depending on revision): confirm it does not conflict with AUX_IN (GPIO38) / BUZZER (GPIO48).
 - [ ] StepStick pin 6 (CLK, tied to GND on the board) on the bought modules — some modules wire pins 5/6 differently.
 - [ ] Optional: tidy the 15 silkscreen-only DRC items in the KiCad PCB editor.
+- [ ] **EE review** of the motion board and robot power path before the JLCPCB order: send `docs/review/electrical-review.md` (questions 1–12). Optional ~30 min ME review: `docs/review/mechanical-review.md`.
 - [ ] Upload `fab/rbg3-motion-gerbers.zip` to JLCPCB and check their viewer (2 layers, 1.6 mm, 1 oz).
 
 ## Before printing the full set
