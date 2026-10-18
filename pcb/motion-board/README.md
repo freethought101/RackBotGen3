@@ -11,7 +11,7 @@ Spec: [`docs/spec/02-electrical.md`](../../docs/spec/02-electrical.md) §3.
 | `scripts/build.sh` | Rebuilds the layout from scratch: text fix-ups → placement → silkscreen (`silk.py`) → GND pour → Freerouting → stitching vias → pours → DRC |
 | `fab/rbg3-motion-gerbers.zip` | Gerbers + Excellon drill (separate PTH / NPTH files) for JLCPCB (2 layers, 1.6 mm, 1 oz, HASL is fine) |
 | `fab/rbg3-motion-bom.csv`, `fab/rbg3-motion-pos.csv` | BOM and placement file (hand assembly expected: 0805 / SOT-23 / SOD-123 / SMB + through-hole) |
-| `fab/rbg3-motion-jlc-bom.csv`, `fab/rbg3-motion-jlc-cpl.csv` | Optional JLCPCB **Economic** assembly of the 39 SMD parts only (LCSC numbers in `scripts/jlc_pcba.py`; all basic or preferred, so no extended-part fees). Check Q1, D1 and D2 orientation in the placement preview |
+| `fab/rbg3-motion-jlc-bom.csv`, `fab/rbg3-motion-jlc-cpl.csv` | JLCPCB **Economic** assembly of the 39 SMD parts on 2 of the 5 boards (the plan since spec v0.1.20) (LCSC numbers in `scripts/jlc_pcba.py`; all basic or preferred, so no extended-part fees). Check Q1, D1 and D2 orientation in the placement preview |
 | `fab/rbg3-motion-schematic.pdf`, `fab/rbg3-motion.step` | Schematic print and 3D board for the robot CAD |
 
 Rebuild: `scripts/build.sh` (needs KiCad 10 at `/Applications/KiCad`, Java 21+, Freerouting jar at
@@ -61,6 +61,9 @@ Hand assembly (JLCPCB makes the bare board only). Tools: fine-tip iron, flux, 0.
 multimeter, current-limited bench supply.
 
 **Solder, low parts first so the board sits flat**
+
+*JLCPCB-assembled boards: the first two items are already done; check them by eye and start at JP1–JP4.
+Only the 3 bare spares need them.*
 
 - [ ] 0805 resistors and capacitors (values in `fab/rbg3-motion-bom.csv`).
 - [ ] Q1 MMBT3904 (SOT-23), D2 1N4148W (SOD-123, band as on the silkscreen), D1 SMBJ18A (SMB, **band toward VMOT**).

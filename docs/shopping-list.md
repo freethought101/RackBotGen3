@@ -38,12 +38,12 @@ The Tokopedia part is 22 shops (it was 33). The first 5 carry most of the order.
 - [ ] *(optional)* P09 MG90S ×3. Only if it costs ≤ Rp25k each; otherwise use shop 13.
 
 ### 4. Putra Niaga Bandung (putraniagabdg): motion board parts, ≈ Rp35k
-- [ ] 0805 resistors, packs of 10: 100k, 18k, 10k, 1k, 330, 4.7k (6 packs), ≈ Rp6k
-- [ ] 100 nF 0805, 10 pcs ×2, Rp5k
+- [ ] *(optional, only to build a bare spare board: JLCPCB assembles the SMD parts, v0.1.20)* 0805 resistors, packs of 10: 100k, 18k, 10k, 1k, 330, 4.7k (6 packs), ≈ Rp6k
+- [ ] *(optional, only to build a bare spare board: JLCPCB assembles the SMD parts, v0.1.20)* 100 nF 0805, 10 pcs ×2, Rp5k
 - [ ] Elco 100 µF 35 V **through-hole** ×5, Rp2.5k
 - [ ] Elco 470 µF 35 V **through-hole** ×2, Rp3.5k
-- [ ] SMBJ18A TVS ×2, Rp5k
-- [ ] MMBT3904 SOT-23 ×5, Rp1.5k
+- [ ] *(optional, only to build a bare spare board: JLCPCB assembles the SMD parts, v0.1.20)* SMBJ18A TVS ×2, Rp5k
+- [ ] *(optional, only to build a bare spare board: JLCPCB assembles the SMD parts, v0.1.20)* MMBT3904 SOT-23 ×5, Rp1.5k
 - [ ] 5.08 mm 2-pin screw terminal ×2, Rp2k
 - [ ] Female header 1×40 ×5, Rp10k
 - [ ] Male header 1×40 ×1, Rp1k
@@ -68,7 +68,7 @@ These shops had no better match in the big shops above.
 15. [ ] **njatech:** P37 USB-A to USB-C 90° L-shape data cable ×1, Rp29k
 16. [ ] **alladinshop:** P23 XT30PW-M right-angle PCB connector ×1 (Rp9k) + P21 18 AWG silicone wire, red + black 1 m each (Rp15k). Ask for 22 and 26 AWG too.
 17. [ ] **i2c-parts:** P23 WS2812B 1-LED module ×2, Rp5k
-18. [ ] **Elektro Bar:** P23 1N4148W SOD-123 ×5, Rp1k. Or try King Wijaya, Denpasar (local).
+18. [ ] *(optional, only to build a bare spare board: JLCPCB assembles the SMD parts, v0.1.20)* **Elektro Bar:** P23 1N4148W SOD-123 ×5, Rp1k. Or try King Wijaya, Denpasar (local).
 
 ### Rack
 19. [ ] **Mitra Otomasi:** P24 Delta DRL-24V120W1EN (Lyte II, 24 V 5 A) ×1, Rp622k. Or buy via the Delta distributor.

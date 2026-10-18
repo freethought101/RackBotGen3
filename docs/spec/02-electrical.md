@@ -50,7 +50,7 @@ Wire: battery/VMOT 18 AWG, motors 22–24 AWG, signals 26 AWG. Connectors: XT60 
 ## 3. Motion board (KiCad PCB)
 
 Two-layer module carrier, **100 × 100 mm**, 1 oz copper, 4 × M3 holes at 93 × 93 pitch.
-Ordered from JLCPCB **by 14 Oct**. The same schematic can be built on perfboard as a fallback.
+Ordered from JLCPCB **by 14 Oct**, with **Economic assembly of the 39 SMD parts on 2 of the 5 boards** (`fab/rbg3-motion-jlc-bom.csv` + `-jlc-cpl.csv`); the through-hole parts are hand-soldered. The same schematic can be built on perfboard as a fallback.
 **Implemented in `pcb/motion-board/`** (KiCad 10, ERC/DRC clean; see its README for the pre-order checklist).
 As built: VMOT/GND traces 1.0 mm + GND pours on both layers, motor traces 0.6 mm, +6 V servo 1.0 mm, other supplies 0.5 mm, signals 0.25 mm.
 

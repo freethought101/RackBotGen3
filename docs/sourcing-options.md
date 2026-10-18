@@ -63,7 +63,8 @@ P23 is itemised in §3.1. P07 (bought wheels) is replaced by printed PETG hubs +
 
 From `pcb/motion-board/fab/rbg3-motion-bom.csv` (plus the sockets and headers the BOM leaves implicit). Order most of it
 from **Putra Niaga Bandung** (putraniagabdg) to share one shipping fee. The electrolytics are **through-hole** on the board,
-so don't pick the SMD "elco SMD" listings.
+so don't pick the SMD "elco SMD" listings. Since v0.1.20 JLCPCB assembles the SMD parts (0805 R/C, SMBJ18A, MMBT3904,
+1N4148W) on 2 boards, so those rows are optional: buy them only to build one of the 3 bare spare boards.
 
 | BOM line | Qty (buy) | Listing | ≈ Price |
 |---|---|---|---|

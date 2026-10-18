@@ -1,7 +1,7 @@
 # RackBotGen3 — System Overview
 
 Delta Cup 2026 · Automation track · Regional Final, Thailand, 14 Nov 2026
-Status: **Draft v0.1.19 (12 Oct 2026)** — single owner for all subsystems; peers review and give feedback.
+Status: **Draft v0.1.21 (18 Oct 2026)** — single owner for all subsystems; peers review and give feedback.
 
 | Doc | Content |
 |---|---|
@@ -165,4 +165,6 @@ Weigh every bag in week 5 (see 04).
 | v0.1.17 | 2026-10-10 | Last generic parts sourced: 4S 30 A BMS (Rajacell), nickel strip, rocker switch, DIN rail and UK5N terminal blocks (CNC Store Bandung), silicone wire (alladinshop), brass sheet, microSD brand. Datasheets added for the Delta DRL-24V120W1EN PSU, the Songle SRD relay and the Amass XT60H. No local polyfuse ≥ 30 V found: proposed UK5-HESI fuse terminal + 3.15 A fuse (pending). Budget ≈ 460 USD |
 | v0.1.18 | 2026-10-11 | Servo buck (P18) set to 5.8 V instead of 6 V: the MG90S is rated 4.8–6.0 V. The rail keeps its "6V" name; no PCB or cost change |
 | v0.1.19 | 2026-10-12 | Cross-check open items closed: main fuse **7.5 A** (35E cells max 8 A); motion board JP1–JP4 now **normally bridged** (MKS TMC2209 V2.0 has UART on pin 5; cut to open), fab files regenerated; drive hub bore deepened for the 24 ± 1 mm shaft and hub fitted with a 2 mm shim against the bracket plate (keeps the radial load at ≈ 18 mm from the flange); PSU spec ≥ 75 W, chosen DRL-24V120W1EN (120 W), P24 35 → 39 USD (Rp622k). Budget ≈ 464 USD |
+| v0.1.20 | 2026-10-14 | Motion PCB: JLCPCB **Economic assembly** of the 39 SMD parts on 2 of the 5 boards (`fab/rbg3-motion-jlc-bom.csv` + `-jlc-cpl.csv`); through-hole parts still hand-soldered. P22 25 → 40 USD; P23 keeps only the through-hole parts (SMD parts only for a bare spare). Budget ≈ 479 USD |
+| v0.1.21 | 2026-10-18 | Print-service tolerances: caddy drive-screw slots 3.4 → **3.7 mm** (real HDDs use 6-32 UNC); mast collar socket 0.1 → **0.3 mm** per side on the 2040; drive hub bore 5.15 → **5.3 mm**. Print rule: ≥ 4 walls + ≥ 20 % gyroid/cubic (service runs 5 walls + 20 %), 100 % scale, no hole compensation (insert pilots stay tight). No parts or cost change |
 | v0.1.4 | 2026-10-06 | Robot CAD v0 + checks: direct drive (axle y −135), nose z 30–90, swing-down fingers, tray camera window, caddy tag moved left, E-stop on the mast top; mass 4.49 kg; budget ≈ 478 USD |

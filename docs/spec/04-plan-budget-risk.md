@@ -39,11 +39,11 @@ The live, per-part order list is the Notion **Parts & Order List** database, mir
 | INA226 module + **10 mΩ / R010** 2512 shunt (local modules ship R100: swap it) | 1 | 2 |
 | 18650 3.5 Ah × 4 + 4S BMS + holder/nickel strip | set | 33 |
 | XT60/XT30, fuse holder, rocker switch, robot E-stop, silicone wire, JST-XH kit | set | 25 |
-| Motion PCB, JLCPCB 5 pcs + shipping | 1 | 25 |
+| Motion PCB, JLCPCB 5 pcs + Economic SMD assembly of 2 + shipping | 1 | 40 |
 | Passives, headers, StepStick sockets, TVS, caps, WS2812, buzzer (itemised, Tokopedia) | set | 5 |
 | USB-A to USB-C cable, 90° C plug (Pi → DevKit) | 1 | 2 |
 | VMOT relay for the E-stop (12 V automotive, 30/40 A) + flyback diode | 1 | 2 |
-| **Subtotal** | | **163** |
+| **Subtotal** | | **178** |
 
 ### 1.3 Rack & spare station — electrical
 
@@ -75,12 +75,12 @@ The live, per-part order list is the Notion **Parts & Order List** database, mir
 | | USD |
 |---|---|
 | Robot mechanical | 121 |
-| Robot electronics | 163 |
+| Robot electronics | 178 |
 | Rack electrical | 103 |
 | Printing & demo | 77 |
-| **Total** | **≈ 464** (of 500) |
+| **Total** | **≈ 479** (of 500) |
 
-The margin is ≈ 36 USD after the v0.1.12–v0.1.17 move to local (Tokopedia) suppliers and buying the travel router (v0.1.16); only the motion PCB (JLCPCB) is imported. **Savings options** (use them if prices come in higher, or a router must be bought):
+The margin is ≈ 21 USD after the v0.1.12–v0.1.17 move to local (Tokopedia) suppliers, buying the travel router (v0.1.16) and JLCPCB SMD assembly of the motion board (v0.1.20); only the motion PCB (JLCPCB) is imported. **Savings options** (use them if prices come in higher, or a router must be bought):
 wide-angle OV5647 camera instead of the IMX708 board (−29, more distortion) ·
 3 panel LEDs instead of the tower light (−7) · team-owned filament or fasteners (−20 to −50) · drop the 3rd servo and spare switches (−5). Priced backup options and local (Tokopedia) sources: `docs/sourcing-options.md`.
 **PLC**: request a loan from Delta Thailand this week. If none, buying a DVP12SE11T costs ≈ Rp2.6–3.3M (≈ 165–210 USD) on Tokopedia, which does not fit the budget, so use the ESP32 fallback rack controller (≈ +20 USD, see 02 §4.4) unless a sponsor covers it. **Pi 3**: team-owned; a replacement 3B+ is ≈ Rp1.1M (≈ 70 USD).

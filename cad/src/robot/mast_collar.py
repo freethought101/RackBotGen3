@@ -19,7 +19,7 @@ from lib.robot_dims import CROSS_Y, DECK_Z, MAST_X, MAST_Y
 
 WALL = 6.0
 HEIGHT = 23.0          # top at z = 90, below the Z carriage plate (92) and wheels (92.4) at their lowest
-FIT = 0.1
+FIT = 0.3              # per side on the 2040: the printed pocket comes out undersize
 FLANGE_X = (20.0, 52.0)       # +x side only; bolts at x = 32 and 46 into the cross member's top slot
 FLANGE_T = 6.0
 FLANGE_Y = (-245.5, -234.5)
