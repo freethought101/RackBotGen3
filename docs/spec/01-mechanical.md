@@ -93,15 +93,19 @@ Print orientation: floor down, no supports. ≈ 6 h each.
 | Approach tag | **tag36h11 ID 0, 50 × 50**, on a printed fin (`tag_fin`) on the outer face of the **front-right** upright, centre x ≈ 125, z = 230. On the right so it does not clash with the bay-tag strip on the left |
 | Bay tags | **IDs 1–4, 16 × 16**, on a printed strip (`tag_strip_rack`) on the front face of the front-left upright, at bay floor + 15. Used for Z fine-alignment |
 | Dock block (printed, `dock_block`) | Bolted (2 × M5) to the front face of the front base cross member. V-funnel 0–40 high: mouth 282 wide at y = −85, then a **10 mm parallel throat 202 wide** (nose 200 + 2) ending at the stop. Holds the nose to **±1 mm in X**. Funnel is shorter than the 60 mm nose so the robot body never enters it |
-| Dock stop & switch | Stop face at **y = −30**, 220 wide, **90 high** (stays below the tray at the lowest Z). KW11-3Z dock-detect switch behind a slot at z 70–85 |
-| Dock contacts | 2 × spring contacts (brass leaf or 10 mm pogo, CAD), 80 apart, center height 60, on the dock stop face. **+24 V on the right, GND on the left** (viewed from the robot) |
+| Dock stop & switch | Stop face at **y = −30**, 220 wide, **90 high** (stays below the tray at the lowest Z). The switch bracket and slot (z 70–85) are printed, but **no switch is fitted at the rack**: the PLC dock input (X4) belongs to the charging dock at the spare station, and the robot's NOSE switch confirms docking here |
+| Dock contacts | None since v0.1.22: the recesses are printed (same part as the spare station) but left empty. The robot charges at the spare station (§5) |
 | Rear | DIN rail 35 mm (≈ 250) between rear uprights: Delta PSU, Delta PLC, terminal blocks, 24→5 V buck for the router. Mushroom E-stop and mini 3-color tower light on top |
 | Flat-pack | Uprights unbolt from base/top (8 × M5 + brackets). Shelves stay on uprights in pairs. Max piece ≤ 400 long |
 | Mass | ≈ 1.7 kg (frame 1.04, shelves 0.25, dock 0.25, tags, fasteners), ≈ 1.0 kg electronics |
 
 ## 5. Spare station
 
-- Same dock funnel, stop and switch as the rack, but **no dock contacts**.
+- **Home and charging dock.** Same dock block as the rack, fitted with the **KW11-3Z dock-detect switch** (to PLC X4)
+  and the **dock contacts**: 2 × spring contacts (brass leaf or 10 mm pogo, CAD), 80 apart, center height 60, on the
+  dock stop face. **+24 V on the right, GND on the left** (viewed from the robot). The robot waits here between jobs.
+- Dock power comes from the dock relay on the rack's DIN rail (PLC Y0) over a 2-core lead; the S1, S2 and dock
+  switches share a 4-core cable to the PLC (02 §4).
 - Two shelves (same printed part as the rack): **S1 GOOD** at 150, **S2 RMA** at 195, each with a lever switch (to PLC, see 02; fallback is vision-only).
 - Approach tag **ID 10** (50 mm) on the left fin. Slot tags **IDs 11 (S1), 12 (S2)** at 16 mm on the left strip.
 - Same 2020 frame layout as the rack but **uprights × 215** (top at 255): 2 × 220 + 4 × 215 + 2 × 180 = 1.66 m. Mass ≈ 1.3 kg.
@@ -260,7 +264,7 @@ IDs refer to [`docs/parts.csv`](../parts.csv) (supplier, cost and order status a
 | P06 | GT2 belt set | 1 | GT2 6 mm belt (≈ 0.8 m used, buy ≥ 1 m), 20T pulley 5 mm bore, toothless idler 5 mm bore | Y extractor (80 µsteps/mm) |
 | P08 | Ball caster | 3 | Metal ball caster, raised with printed spacers to 42 mm (rear) / 27 mm (front) | 2 rear supports, 1 anti-tip under the nose |
 | P09 | MG90S servo | 2 (+1 spare) | 22.8 × 12.2 × 28.5, metal gear, run at 5.8 V | Extractor fingers A/B |
-| P10 | KW11-3Z lever microswitch | 15 (13 + 2 spare) | 20 × 10 × 6.4, SPDT, lever | 4 bays, 2 spare slots, 2 docks, robot nose, tray slots A/B, Z and Y home |
+| P10 | KW11-3Z lever microswitch | 15 (12 + 3 spare) | 20 × 10 × 6.4, SPDT, lever | 4 bays, 2 spare slots, spare-station dock, robot nose, tray slots A/B, Z and Y home |
 | P11 | Fastener kit | kit | M5 T-nuts (~120), M5 button heads 8/10/12, M5 × 16 (7) + M5 × 25 (3) for the Z carriage to the tray, 2020 inside corner brackets (~48), M3 screws + nuts, M3 heat-set inserts (~60), M5 heat-set inserts (~15, tray back plate) | Everything |
 | P30 | Dock contacts | small | Brass strip / 0.5 mm sheet or 10 mm pogo pins; copper sheet for the robot pads | Charging contacts (dock stop face and nose) |
 
@@ -302,7 +306,7 @@ why §2 gives 130–150 g for the caddy.
 | Dummy drive shell (`dummy_drive_shell.py`) | 6 · PLA · floor down | 102 × 147 × 26 · 80 cm³ | 3.5" drive stand-in, filled with steel ballast in epoxy to 600 ± 30 g total (§3) | M3 heat-set inserts at the 3.5" bottom-hole positions for the caddy screws |
 | Dummy drive lid (`dummy_drive_lid.py`) | 6 · PLA · flat | 95 × 141 × 2 · 24 cm³ | Closes the ballast pocket; label recess on top | 4 × M3 into the shell |
 | Bay shelf (`bay_shelf.py`) | 6 (4 rack + 2 spare) · PETG · floor down | 140 × 168 × 24 · 87 cm³ | Bay floor with 116 clear channel, 45° × 6 lead-in, back stop at y = 150, KW11 bay-switch bracket. Also braces the frame front-to-back | 2 × M5 button heads + T-nuts per side into the uprights; heads in counterbores reached through the channel |
-| Dock block (`dock_block.py`) | 2 (rack + spare) · PETG · floor down | 298 × 95 × 90 · 354 cm³ | V-funnel (282 mouth) + 10 mm throat (202) that centres the nose to ±1 mm; stop face at y = −30; recesses for the charging contacts (rack only) and the dock-detect switch bracket | 2 × M5 into the front face of the front base cross member |
+| Dock block (`dock_block.py`) | 2 (rack + spare) · PETG · floor down | 298 × 95 × 90 · 354 cm³ | V-funnel (282 mouth) + 10 mm throat (202) that centres the nose to ±1 mm; stop face at y = −30; recesses for the charging contacts and the dock-detect switch bracket (both fitted on the spare-station copy only) | 2 × M5 into the front face of the front base cross member |
 | Approach-tag fin (`tag_fin.py`) | 2 · PLA | 70 × 23 × 70 · 20 cm³ | Holds the 50 mm approach tag (ID 0 rack, ID 10 spare) for station approach | Outer face of the front-right upright |
 | Tag strip, rack (`tag_strip_rack.py`) | 1 · PLA | 20 × 3 × 167 · 9 cm³ | Bay tags IDs 1–4 (16 mm) at bay floor + 15, for Z fine-alignment | Front face of the front-left upright |
 | Tag strip, spare (`tag_strip_spare.py`) | 1 · PLA | 20 × 3 × 89 · 5 cm³ | Slot tags IDs 11–12 | Front face of the front-left upright |

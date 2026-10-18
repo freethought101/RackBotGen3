@@ -30,7 +30,7 @@ async def test_full_swap(system):
     assert [s["state"] for s in job["states"]] == [s.value for s in JOB_STATES] + ["END"]
     assert 60 < job["cycle_s"] < 300 and 0.2 < job["wh"] < 2.0
     assert_swapped(system, 2, 102, 105)
-    assert system.mission.state == S.IDLE_DOCKED and system.mission.location == "rack"
+    assert system.mission.state == S.IDLE_DOCKED and system.mission.location == "spare"
     await wait_until(lambda: system.rack.state.dock_power, what="dock power")
 
 
@@ -45,7 +45,8 @@ async def test_two_swaps_with_restock(system):
     assert system.store.inventory()["bay3"] == 106
 
 
-@pytest.mark.parametrize("state", JOB_STATES, ids=lambda s: s.value)
+# RETURN only drives after an abort (a job ends docked at home); that drive is in test_abort_*.
+@pytest.mark.parametrize("state", JOB_STATES[:-1], ids=lambda s: s.value)
 async def test_estop_in_every_state_then_resume(system, state):
     m = system.mission
     job = m.submit(4)
@@ -72,7 +73,7 @@ async def test_caddy_id_mismatch_faults(system):
     system.mission.abort()
     await wait_until(lambda: job_result(system, job["id"]) == "aborted", what="aborted")
     await wait_until(lambda: system.mission.state == S.IDLE_DOCKED, what="back home")
-    assert system.mission.location == "rack"
+    assert system.mission.location == "spare"
 
 
 async def test_bay_alignment_error_faults(system):
@@ -91,11 +92,12 @@ async def test_small_alignment_error_is_corrected(system):
 async def test_abort_while_running_returns_home(system):
     m = system.mission
     job = m.submit(1)
-    await wait_until(lambda: m.state == S.PICK_GOOD, what="PICK_GOOD")
+    await wait_until(lambda: m.state == S.TO_RACK, what="TO_RACK")
+    await system.clock.sleep(2)  # undocked, on the way
     m.abort()
     await wait_until(lambda: job_result(system, job["id"]) == "aborted", what="aborted")
     await wait_until(lambda: m.state == S.IDLE_DOCKED, 20, "back home")
-    assert m.location == "rack" and system.world.docked_at == "rack"
+    assert m.location == "spare" and system.world.docked_at == "spare"
     assert system.world.incidents == []
 
 

@@ -138,7 +138,7 @@ Schematic, PCB layout, DRC/ERC clean, Gerbers + drill + BOM + position file (JLC
 |---|---|
 | **Delta 24 V DIN-rail PSU** | 24 V, **≥ 75 W**, universal 100–240 VAC input (Thailand 220 V / 50 Hz). Chosen: **Delta LYTE II DRL-24V120W1EN** (24 V / 5 A, 120 W, 123.6 × 30 × 116.8 mm) |
 | **Delta DVP-12SE11T PLC** | 8 DI / 4 DO (NPN transistor), 24 VDC, built-in Ethernet, **Modbus TCP server**. Programmed with ISPSoft/WPLSoft |
-| Dock power relay | 24 V relay module (≥ 5 A contact) driven by PLC Y0, + 3 A polyfuse on the dock + line |
+| Dock power relay | 24 V relay module (≥ 5 A contact) driven by PLC Y0, + 3 A polyfuse on the dock + line. Stays on the rack's DIN rail; its output runs to the charging dock at the **spare station** over a **2-core 0.75 mm² lead (≈ 1.5 m)**: ≈ 1.2 A at 24 V, < 0.1 V drop |
 | Tower light | Mini 3-color 24 VDC LED (R/Y/G), common + |
 | E-stop | Mushroom NC, 2 contacts: one to PLC X5, one in series with the dock relay coil (hardware interlock) |
 | Router | Travel router (e.g. GL.iNet GL-MT300N-V2) powered from 24 → 5 V USB buck; LAN to PLC, Wi-Fi AP `RACKBOT` |
@@ -154,11 +154,11 @@ Power budget: PLC ≈ 5 W, light 3 W, router 3 W, robot charger ≈ 28 W → **�
 | X1 | Bay 2 caddy present | |
 | X2 | Bay 3 caddy present | |
 | X3 | Bay 4 caddy present | |
-| X4 | Rack dock switch | Robot nose fully docked |
+| X4 | Spare-station dock switch | Robot nose fully docked at the charging dock (home). The rack dock has no switch; the robot's NOSE switch confirms docking there |
 | X5 | Rack E-stop OK | **NC**: 1 = OK, 0 = pressed |
-| X6 | Spare S1 (GOOD) present | Cable to the spare station (≈ 1 m, 4-core) |
+| X6 | Spare S1 (GOOD) present | 4-core cable to the spare station (≈ 1.5 m): +24 V, X4, X6, X7 |
 | X7 | Spare S2 (RMA) present | |
-| Y0 | Dock power enable | Relay → dock contacts. **Interlock in ladder: Y0 = cmd AND X4 AND X5 AND watchdog OK** |
+| Y0 | Dock power enable | Relay → dock contacts at the spare station. **Interlock in ladder: Y0 = cmd AND X4 AND X5 AND watchdog OK** |
 | Y1 | Tower GREEN | Idle / all bays OK |
 | Y2 | Tower YELLOW | Swap in progress / degraded bay |
 | Y3 | Tower RED | Fault / E-stop / Pi watchdog lost |
@@ -187,5 +187,6 @@ The firmware exposes the **identical Modbus TCP register map** over Wi-Fi, so th
 
 - Robot E-stop is a hard cut of VMOT. Rack E-stop is a hard cut of dock power, plus a PLC input → Pi stops the robot in software.
 - PLC watchdog: if the Pi heartbeat register stops changing for 2 s → RED lamp and dock power off.
-- Dock contacts are energized only while the robot is fully docked (X4) — no live 24 V exposed otherwise.
+- Dock contacts (spare station) are energized only while the robot is fully docked there (X4) — no live 24 V exposed
+  otherwise. The relay stays at the rack, so the rack E-stop still cuts dock power in hardware.
 - Battery: BMS protection, fuse, XT60 removable. Never charge unattended. Charging is only via the CC/CV module.

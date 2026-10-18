@@ -15,6 +15,7 @@ from abc import ABC, abstractmethod
 from typing import Callable
 
 from . import protocol as P
+from .config import HOME
 from .protocol import Event, Reply, Telemetry
 
 log = logging.getLogger(__name__)
@@ -304,7 +305,7 @@ class MockMotion(MotionBase):
         )
 
     def _charging(self) -> bool:
-        return self.world.docked_at == "rack" and self.world.dock_power
+        return self.world.docked_at == HOME and self.world.dock_power
 
     def _dock_v(self) -> float:
         return 24.0 if self._charging() else 0.0

@@ -12,7 +12,7 @@ from __future__ import annotations
 import math
 from dataclasses import dataclass, field
 
-from .config import Config
+from .config import HOME, Config
 from .vision import TagPose
 
 
@@ -51,8 +51,8 @@ class SimWorld:
                 shelf = cfg.shelf_by_location(loc)
                 self.stations[shelf.station].shelves[float(shelf.height)] = caddy
         self.tray: dict[str, int | None] = {"A": inventory.get("trayA"), "B": inventory.get("trayB")}
-        self.docked_at: str | None = "rack"
-        self.x, self.y, self.th = self.dock_pose("rack")
+        self.docked_at: str | None = HOME
+        self.x, self.y, self.th = self.dock_pose(HOME)
         self.dock_power = False  # PLC output Y0
         self.rack_estop_ok = True  # PLC input X5
         self.robot_estop = False  # robot mushroom pressed

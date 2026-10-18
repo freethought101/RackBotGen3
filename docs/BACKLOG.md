@@ -82,7 +82,8 @@ Fixed in the design: see 00 revision history v0.1.6. Still to verify on hardware
 
 - [ ] DVP-SE Modbus addresses (M0 = 0x0800, D0 = 0x1000) against the DVP-SE manual (03 §4).
 - [ ] DVP-SE input wiring (sink/source naming for S/S) before wiring the switches (02 §4.2).
-- [ ] PLC watchdog trips in 2 ± 0.5 s; dock power only with dock switch + E-stop OK (test T9).
+- [ ] PLC watchdog trips in 2 ± 0.5 s; dock power only with the spare-station dock switch + E-stop OK (test T9).
+- [ ] Charging dock at the spare station (v0.1.22): fit the contacts and the dock switch on the spare-station dock block (none on the rack's); run the 2-core dock power lead from the rack relay and wire the dock switch to X4 in the 4-core spare-station cable.
 
 ## Test protocol (04 §3)
 

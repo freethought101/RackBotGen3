@@ -84,7 +84,7 @@ These shops had no better match in the big shops above.
 - [ ] **Battery shop:** P20 genuine 18650 3.5 Ah ×4 (Samsung 35E or LG MJ1, ≈ Rp100–140k each; avoid the Rp45k fakes). Ask them to **spot-weld** the 4S pack with the nickel strip and BMS from shops 2 and 3. Don't solder directly to the cells.
 - [ ] **Hardware store:**
   - P11 fastener kit (M5 T-nuts, screws, corner brackets, M3/M5 heat-set inserts, M3 screws + nuts)
-  - P30 brass sheet 0.5 mm (dock contacts; online alternative: soember-suksess, 10 × 10 cm, Rp22k), copper sheet for the robot pads, 4-core cable ≈ 1.5 m
+  - P30 brass sheet 0.5 mm (dock contacts; online alternative: soember-suksess, 10 × 10 cm, Rp22k), copper sheet for the robot pads, 4-core cable ≈ 1.5 m (spare-station switches), 2-core 0.75 mm² cable ≈ 1.5 m (dock power to the spare station, ≈ Rp15k)
   - P35 steel ballast + epoxy
 - [ ] **3D filament:** P32 PETG 2 kg, P33 PLA 1 kg, P34 TPU 95A 0.25 kg (also used for the drive tires)
 - [ ] **Print shop:** P36 tag/label printing (matte vinyl) and a table mat of at least 1200 × 600 mm

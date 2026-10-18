@@ -1,5 +1,8 @@
 """Dock block (PETG, x2: rack + spare station). Spec: docs/spec/01-mechanical.md §4-5.
 
+Both copies are identical; only the spare-station copy (the robot's home) gets the charging contacts and
+the dock-detect switch.
+
 Bolts to the front face of the station's front base cross member (2020, y = 10..30).
 The robot nose (200 W, z 30..100) is centred by a short V-funnel and stops against
 the stop face at y = DOCK_STOP_Y; the robot tray then overhangs the nose to y = -25.
@@ -33,7 +36,7 @@ RIB_X = (-100.0, -60.0, 60.0, 100.0)
 RIB_T = 6.0
 RIB_H = 40.0
 
-# Charging contacts: brass leaf springs screwed into recesses on the stop face.
+# Charging contacts (spare station only): brass leaf springs screwed into recesses on the stop face.
 CONTACT_X = (-40.0, 40.0)      # GND left, +24 V right (seen from the robot)
 CONTACT_Z = 60.0
 CONTACT_RECESS = (12.0, 30.0, 3.0)   # width, height, depth

@@ -7,6 +7,8 @@ import logging
 from abc import ABC, abstractmethod
 from dataclasses import asdict, dataclass, field
 
+from .config import HOME
+
 log = logging.getLogger(__name__)
 
 # Delta DVP Modbus addresses (verify against the DVP-SE manual during PLC bring-up)
@@ -21,7 +23,7 @@ COIL_RED = 0x0802  # M2
 
 # D0 bits (= X0..X7)
 IN_BAY0 = 0  # b0..b3 bay 1..4 present
-IN_DOCK = 4
+IN_DOCK = 4  # dock switch of the charging dock (spare station)
 IN_ESTOP_OK = 5
 IN_S1 = 6
 IN_S2 = 7
@@ -243,7 +245,7 @@ class MockRack(RackBase):
         for i, present in enumerate(w.bay_present()):
             x |= present << (IN_BAY0 + i)
         spare = w.spare_present()
-        x |= (w.docked_at == "rack") << IN_DOCK
+        x |= (w.docked_at == HOME) << IN_DOCK
         x |= w.rack_estop_ok << IN_ESTOP_OK
         x |= spare["S1"] << IN_S1
         x |= spare["S2"] << IN_S2

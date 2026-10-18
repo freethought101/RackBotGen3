@@ -1,7 +1,7 @@
 # RackBotGen3 — System Overview
 
 Delta Cup 2026 · Automation track · Regional Final, Thailand, 14 Nov 2026
-Status: **Draft v0.1.21 (18 Oct 2026)** — single owner for all subsystems; peers review and give feedback.
+Status: **Draft v0.1.22 (18 Oct 2026)** — single owner for all subsystems; peers review and give feedback.
 
 | Doc | Content |
 |---|---|
@@ -18,7 +18,8 @@ Status: **Draft v0.1.21 (18 Oct 2026)** — single owner for all subsystems; pee
 A proof-of-concept **autonomous hot-swap robot for data-center drive maintenance**. When the monitoring
 dashboard reports a failing drive, a small mobile robot fetches a spare caddy from a spare station,
 drives to the rack, pulls the failed 3.5" caddy, inserts the spare, verifies it, and returns the failed
-drive to an RMA slot. Then it docks and charges.
+drive to an RMA slot. It waits and charges at the spare station, its home base, so every job starts with the
+spare already in reach.
 
 Pitch angle (judging: Innovation, Technical Viability, Impact & Sustainability, Communication):
 - **Lights-out data centers**: no technician walk or truck roll per failed drive, shorter degraded-RAID window.
@@ -69,22 +70,26 @@ Fits a table of at least **1.2 m × 0.6 m** (a floor works too). The rack and sp
   |                                                               |
   |  [SPARE STATION]  <-------- ~700 mm --------->  [RACK 1x4]    |
   |   S2 RMA / S1 GOOD        robot path           bays 1-4       |
-  |   tag 10              [ROBOT] (turns 180°)     tag 0, dock    |
-  |                                                Delta PLC+PSU  |
+  |   tag 10, dock +      [ROBOT] (turns 180°)     tag 0, dock    |
+  |   charging (home)                              Delta PLC+PSU  |
   +---------------------------------------------------------------+
                table / mat >= 1200 x 600 mm
 ```
 
 ## 6. Swap workflow (happy path)
 
+The robot waits docked and charging at the spare station (home).
+
 1. The dashboard marks **bay N = FAILED** (simulated SMART fault, or operator button). A swap job is queued.
-2. The robot undocks from the rack (reverses 250 mm), turns 180° and approaches the spare station using tag 10, then funnel-docks.
-3. **Pick spare**: aligns slot A with S1, extends Y, engages finger A, retracts. The spare is now in slot A, held by the finger.
-4. Undocks, turns 180°, approaches the rack using tag 0 and docks. The PLC confirms the dock switch.
-5. **Extract**: aligns slot B with bay N and reads the caddy tag (checks the ID matches the job). Extends, engages finger B, retracts. The PLC sees bay N empty.
-6. **Insert**: lowers Z by 45 mm so slot A (the upper slot) is level with bay N, extends (pushing the spare in), releases finger A, retracts. The PLC sees bay N occupied, and the dashboard shows bay N OK with the new caddy ID.
-7. **Return RMA**: drives to the spare station, aligns slot B with S2, pushes the failed caddy in, releases and retracts.
-8. Returns to the rack dock. Dock power is enabled by the PLC and the robot charges. The job is closed with cycle time and Wh used.
+2. The PLC turns dock power off. **Pick spare**: the robot aligns slot A with S1, extends Y, engages finger A, retracts. The spare is now in slot A, held by the finger.
+3. **Undocks** (reverses 250 mm), turns 180°, approaches the rack using tag 0 and funnel-docks (robot NOSE switch).
+4. **Extract**: aligns slot B with bay N and reads the caddy tag (checks the ID matches the job). Extends, engages finger B, retracts. The PLC sees bay N empty.
+5. **Insert**: lowers Z by 45 mm so slot A (the upper slot) is level with bay N, extends (pushing the spare in), releases finger A, retracts. The PLC sees bay N occupied, and the dashboard shows bay N OK with the new caddy ID.
+6. **Return RMA**: drives back to the spare station and docks (the PLC confirms its dock switch), aligns slot B with S2, pushes the failed caddy in, releases and retracts.
+7. **Charge**: still docked at home, the PLC enables dock power and the robot charges. The job is closed with cycle time and Wh used.
+
+Two drives per job (spare → rack → spare). Until v0.1.21 the robot lived at the rack and drove four
+(rack → spare → rack → spare → rack); in the simulator the cycle drops from about 163 s to 107 s.
 
 Target: **≤ 3 min per full swap cycle**, **≥ 95 % success over 50 cycles** (see 04 test protocol).
 
@@ -94,11 +99,17 @@ Target: **≤ 3 min per full swap cycle**, **≥ 95 % success over 50 cycles** (
 flowchart LR
   subgraph RACK["Rack (static)"]
     PSU["Delta 24 V DIN PSU"] --> PLC["Delta DVP-12SE PLC"]
-    PSU --> DOCK["Dock contacts\n(enabled by PLC Y0)"]
-    SW["Bay switches 1-4\nSpare S1/S2 switches\nDock switch, E-stop"] --> PLC
+    PSU --> RLY["Dock power relay\n(PLC Y0)"]
+    SW["Bay switches 1-4, E-stop"] --> PLC
     PLC --> LAMP["Tower light R/Y/G"]
     PLC <-- Ethernet --> RTR["Travel router\n(Wi-Fi AP)"]
   end
+  subgraph SPARE["Spare station (home)"]
+    DOCK["Dock contacts"]
+    SSW["S1/S2 switches\nDock switch"]
+  end
+  RLY -- "2-core power lead" --> DOCK
+  SSW -- "4-core signal cable" --> PLC
   subgraph ROBOT["Robot (mobile)"]
     BAT["4S Li-ion ~50 Wh\n+ BMS + INA226"] --> MB["Motion board\nESP32-S3 + 4x TMC2209"]
     BAT --> PI["Raspberry Pi 3\n+ IMX708 120° camera"]
@@ -167,4 +178,5 @@ Weigh every bag in week 5 (see 04).
 | v0.1.19 | 2026-10-12 | Cross-check open items closed: main fuse **7.5 A** (35E cells max 8 A); motion board JP1–JP4 now **normally bridged** (MKS TMC2209 V2.0 has UART on pin 5; cut to open), fab files regenerated; drive hub bore deepened for the 24 ± 1 mm shaft and hub fitted with a 2 mm shim against the bracket plate (keeps the radial load at ≈ 18 mm from the flange); PSU spec ≥ 75 W, chosen DRL-24V120W1EN (120 W), P24 35 → 39 USD (Rp622k). Budget ≈ 464 USD |
 | v0.1.20 | 2026-10-14 | Motion PCB: JLCPCB **Economic assembly** of the 39 SMD parts on 2 of the 5 boards (`fab/rbg3-motion-jlc-bom.csv` + `-jlc-cpl.csv`); through-hole parts still hand-soldered. P22 25 → 40 USD; P23 keeps only the through-hole parts (SMD parts only for a bare spare). Budget ≈ 479 USD |
 | v0.1.21 | 2026-10-18 | Print-service tolerances: caddy drive-screw slots 3.4 → **3.7 mm** (real HDDs use 6-32 UNC); mast collar socket 0.1 → **0.3 mm** per side on the 2040; drive hub bore 5.15 → **5.3 mm**. Print rule: ≥ 4 walls + ≥ 20 % gyroid/cubic (service runs 5 walls + 20 %), 100 % scale, no hole compensation (insert pilots stay tight). No parts or cost change |
+| v0.1.22 | 2026-10-18 | **Charging dock moved to the spare station**, which becomes the robot's home: a job starts with the pick from S1 and ends after placing the RMA caddy in S2, so each swap drives spare → rack → spare (2 drives instead of 4; simulated cycle 163 → 107 s). Dock contacts and the dock switch (PLC X4) are fitted on the spare-station dock block only; the dock relay stays on the rack's DIN rail, so the rack E-stop still cuts dock power. Pi app: `HOME = "spare"`. Parts: P30 adds a 2-core dock power lead (8 → 9 USD), P10 now 12 + 3 spare; budget ≈ 480 USD |
 | v0.1.4 | 2026-10-06 | Robot CAD v0 + checks: direct drive (axle y −135), nose z 30–90, swing-down fingers, tray camera window, caddy tag moved left, E-stop on the mast top; mass 4.49 kg; budget ≈ 478 USD |
