@@ -7,6 +7,7 @@ Open checks and to-dos collected from the spec, the CAD and PCB work, and review
 
 - [ ] Ask Delta Thailand for a DVP-12SE (or SE/SS2 with Ethernet) PLC loan; decide on the ESP32 rack fallback otherwise.
 - [ ] Order all parts by **8 Oct** (motors, extrusion, fasteners locally if AliExpress quotes > 10 days). Re-check prices against the budget (≈ 478 USD, 04 §1).
+- [ ] **Charge at the spare station (base), not the rack**: move the dock pads, 24 V feed, PLC Y0 relay and the X4/X5 interlock to the spare-station dock block; update the 00 §6 workflow (start and end at base) and the dock-sense notes in 02 §1; check the parts list if the relay, cable or pads change. The pitch video already shows this.
 - [ ] Team decisions: broken 3.5" HDDs available? Team-owned parts to reuse (Pi 3, steppers, filament, router)? Demo on a table or the floor?
 
 ## Before ordering the motion PCB (deadline 14 Oct)

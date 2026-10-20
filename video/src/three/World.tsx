@@ -4,9 +4,9 @@ import {useLayoutEffect, useMemo} from 'react';
 import {staticFile, useCurrentFrame} from 'remotion';
 import * as THREE from 'three';
 import {RoomEnvironment} from 'three/examples/jsm/environments/RoomEnvironment.js';
-import {BayState, CaddyMode, stateAt, WorldState} from '../anim';
+import {BayState, CaddyMode, inOut, ROUTES, stateAt, WorldState} from '../anim';
 import {cameraAt} from '../camera';
-import {AXLE_Y, BAY_PITCH, CAM_LENS, COLORS, FINGER_DZ, FINGER_X, H_BAY, H_SPARE, SCENES, SPARE_D, TAG_APPROACH, TOWER, Y_NOTCH_HOME, Y_PULL} from '../constants';
+import {AXLE_Y, BAY_PITCH, CAM_LENS, COLORS, FINGER_DZ, FINGER_X, H_BAY, H_SPARE, SCENES, SPARE_D, SPARE_X, TAG_APPROACH, TOWER, Y_NOTCH_HOME, Y_PULL} from '../constants';
 import {c3, clamp01} from '../geom';
 import {tagTexture} from './tag';
 
@@ -188,6 +188,26 @@ const Robot: React.FC<{s: WorldState; frame: number; caddies: React.ReactNode; s
   );
 };
 
+// ---- planned route: the path still ahead of the robot, drawn on the floor like a nav overlay ------------
+const RouteLine: React.FC<{frame: number}> = ({frame}) => {
+  const r = ROUTES.find((q) => frame >= q.f0 - 40 && frame <= q.f1 + 12);
+  if (!r) return null;
+  const k = clamp01(Math.min((frame - (r.f0 - 40)) / 12, (r.f1 + 12 - frame) / 12));
+  const i = Math.floor(inOut(clamp01((frame - r.f0) / (r.f1 - r.f0))) * (r.pts.length - 1));
+  const pts = r.pts.slice(i).map(([x, y]) => c3(x, y, 2));
+  if (pts.length < 2) return null;
+  const end = pts[pts.length - 1];
+  return (
+    <>
+      <Line points={pts} color={COLORS.accent} lineWidth={3} dashed dashSize={0.04} gapSize={0.025} transparent opacity={0.85 * k} />
+      <mesh position={end} rotation={[-Math.PI / 2, 0, 0]}>
+        <ringGeometry args={[0.035, 0.05, 40]} />
+        <meshBasicMaterial color={COLORS.accent} transparent opacity={0.9 * k} toneMapped={false} />
+      </mesh>
+    </>
+  );
+};
+
 // ---- the data hall: a dark row of racks for the hook --------------------------------------------
 const HALL_X = [-1350, -1000, -650, -330, 330, 650, 1000, 1350];
 const Hall: React.FC<{frame: number}> = ({frame}) => {
@@ -224,6 +244,7 @@ export const World: React.FC = () => {
   const studio = frame >= SCENES.reveal[0] && frame < SCENES.how[1];
   const dark = frame < SCENES.reveal[0];
   const showRobot = frame >= SCENES.reveal[0];
+  const arena = frame >= SCENES.swap[0]; // the wide rack-to-spare floor
   const failedGlow = s.bays[1] === 'failed' || (s.caddies.failed.mode !== 'rack' && frame < SCENES.delta[0]) ? 0.25 + 0.2 * Math.sin(frame / 5) : 0;
   setEmissive(failed, failedGlow);
   const how = frame - SCENES.how[0];
@@ -245,17 +266,17 @@ export const World: React.FC = () => {
       <CameraRig frame={frame} envK={dark ? 0.06 : 1} />
       {dark && <Hall frame={frame} />}
       <color attach="background" args={[dark ? '#05070A' : COLORS.bg]} />
-      <fog attach="fog" args={[dark ? '#05070A' : COLORS.bg, 1.6, 5.5]} />
+      <fog attach="fog" args={[dark ? '#05070A' : COLORS.bg, arena ? 4 : 1.6, arena ? 11 : 5.5]} />
       <hemisphereLight args={['#dfe8ff', '#1a1c20', amb]} />
       <directionalLight
         position={[1.2, 2.2, 1.6]}
         intensity={key}
         castShadow
-        shadow-mapSize={[2048, 2048]}
-        shadow-camera-left={-1.2}
-        shadow-camera-right={1.2}
-        shadow-camera-top={1.2}
-        shadow-camera-bottom={-1.2}
+        shadow-mapSize={[4096, 4096]}
+        shadow-camera-left={-3.4}
+        shadow-camera-right={3.4}
+        shadow-camera-top={3.4}
+        shadow-camera-bottom={-3.4}
         shadow-bias={-0.0004}
       />
       <directionalLight position={[-1.5, 1.0, -1.2]} intensity={dark ? 0.35 : 1.2} color="#7fb2ff" />
@@ -264,7 +285,7 @@ export const World: React.FC = () => {
 
       {/* floor */}
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.0005, 0]} receiveShadow>
-        <planeGeometry args={[12, 12]} />
+        <planeGeometry args={[30, 30]} />
         <meshStandardMaterial color={dark ? '#07090C' : '#121419'} roughness={0.9} />
       </mesh>
       <Grid
@@ -276,7 +297,7 @@ export const World: React.FC = () => {
         sectionSize={0.25}
         sectionThickness={1}
         sectionColor={dark ? '#18202a' : '#2a313b'}
-        fadeDistance={4}
+        fadeDistance={arena ? 9 : 4}
         fadeStrength={1.2}
         infiniteGrid
       />
@@ -292,7 +313,7 @@ export const World: React.FC = () => {
             <TowerLight s={s} frame={frame} />
             <Tag id={0} at={[TAG_APPROACH.x, TAG_APPROACH.y - 0.2, TAG_APPROACH.z]} size={50} />
           </group>
-          <group position={c3(0, -SPARE_D, 0)} rotation={[0, Math.PI, 0]}>
+          <group position={c3(SPARE_X, -SPARE_D, 0)} rotation={[0, Math.PI, 0]}>
             <Prim object={spare} />
             <Caddy obj={failed} m={s.caddies.failed} s={s} where="spare" />
             <Caddy obj={spareCaddy} m={s.caddies.spare} s={s} where="spare" />
@@ -300,6 +321,7 @@ export const World: React.FC = () => {
           </group>
         </>
       )}
+      {arena && <RouteLine frame={frame} />}
       {showRobot && <Robot s={s} frame={frame} caddies={caddyRobot} showFrustum={frustum} />}
     </>
   );
