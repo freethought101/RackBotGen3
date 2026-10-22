@@ -17,7 +17,9 @@ Open checks and to-dos collected from the spec, the CAD and PCB work, and review
 - [ ] **XT30 polarity**: pad 2 = +, pad 1 = −; confirm against the connector you bought and the battery lead.
 - [ ] DevKit onboard RGB LED pin (GPIO38 or 48 depending on revision): confirm it does not conflict with AUX_IN (GPIO38) / BUZZER (GPIO48).
 - [ ] StepStick pin 6 (CLK, tied to GND on the board) on the bought modules — some modules wire pins 5/6 differently.
-- [ ] Optional: tidy the 15 silkscreen-only DRC items in the KiCad PCB editor.
+- [ ] Optional: tidy the 16 silkscreen-only DRC items in the KiCad PCB editor.
+- [x] Schematic review (v0.1.25): servo-rail 220 µF + 100 nF, +5V/+3V3 10 µF + 100 nF, R25 buzzer pull-down, test pads TP1–TP7, E-stop NO contact to J13 (firmware: `sw` bit5, immediate E-stop).
+- [x] JLCPCB: C15850 (Samsung CL21A106KAYNNNE, 10 µF 25 V X5R 0805, C20/C22) is a basic part, in stock (checked 22 Oct; re-check in the BOM upload).
 - [ ] **EE review** of the motion board and robot power path before the JLCPCB order: send `docs/review/electrical-review.md` (questions 1–12). Optional ~30 min ME review: `docs/review/mechanical-review.md`.
 - [ ] Upload `fab/rbg3-motion-gerbers.zip` to JLCPCB and check their viewer (2 layers, 1.6 mm, 1 oz).
 
@@ -41,7 +43,7 @@ Open checks and to-dos collected from the spec, the CAD and PCB work, and review
 - [ ] KFL08 (48 × 27, 37 mm pitch), Tr8×2 nut (flange Ø22) and 5→8 coupler (Ø19 × 25) vs `KFL08`, `NUT_BLOCK_DZ`, `COUPLER_Z`.
 - [ ] **Tr8 nut flange hole pattern**: count the flange holes (CAD assumes 3 × M3 on a 16 mm circle; many Tr8 nuts have 4) and measure the circle Ø and the hole Ø. Then update the nut block in `cad/src/robot/z_carriage.py`, possibly with M3 heat-set inserts instead of nuts underneath.
 - [ ] E-stop box base: the hole spacing (CAD assumes 2 × M3, 26 mm apart, into inserts in the mast top plate).
-- [ ] VMOT relay (P38): find a place for it on the electronics tray or deck; check that it pulls in at 12 V (empty battery) and stays cool at 16.8 V; check that the E-stop drops VMOT within 50 ms.
+- [ ] VMOT relay (P38): find a place for it on the electronics tray or deck; check that it pulls in at 12 V (empty battery) and stays cool at 16.8 V; check that the E-stop drops VMOT within 50 ms. Release the E-stop 20 times with VMOT loaded: the BMS must not trip on the 120–220 A capacitor inrush (if it does, add an NTC or pre-charge resistor) and the relay contact must not weld. Check that a press shows at once as `sw` bit5 / `EVT ESTOP`.
 - [ ] DevKit plugged-in height (~8.5 mm sockets) clears the RC parts underneath; Y motor clears the motion board components.
 - [ ] Camera Module 3 Wide: works on Pi 3 with libcamera/Picamera2; CSI cable length (≈ 500 mm) and routing on the moving carriage.
 - [ ] Rack electronics placeholders (Delta PSU, DVP-12SE, relay, router, tower light, E-stop) vs real sizes on the DIN rail.

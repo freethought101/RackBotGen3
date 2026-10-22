@@ -68,10 +68,12 @@ so don't pick the SMD "elco SMD" listings. Since v0.1.20 JLCPCB assembles the SM
 
 | BOM line | Qty (buy) | Listing | ≈ Price |
 |---|---|---|---|
-| 0805 resistors 100k ×2, 18k ×1, 10k ×8, 1k ×8, 330 ×3, 4.7k ×2 | packs of 10 | Putra Niaga, e.g. [10k](https://www.tokopedia.com/putraniagabdg/10pcs-resistor-smd-0805-10k-tahanan-10-000-ohm-10-k-marking-103-1729816378253083944) (same listing style for each value) | ≈ Rp1k per pack |
-| 100 nF 0805 (C2, C4, C6, C8, C10–C17) | 12 (20) | [Putra Niaga 10 pcs](https://www.tokopedia.com/putraniagabdg/10pcs-kapasitor-smd-0805-100nf-0-1uf-100n-0-1uf-104-50v-100nf-10pcs) | Rp2.4k × 2 |
+| 0805 resistors 100k ×2, 18k ×1, 10k ×9, 1k ×8, 330 ×3, 4.7k ×2 | packs of 10 | Putra Niaga, e.g. [10k](https://www.tokopedia.com/putraniagabdg/10pcs-resistor-smd-0805-10k-tahanan-10-000-ohm-10-k-marking-103-1729816378253083944) (same listing style for each value) | ≈ Rp1k per pack |
+| 100 nF 0805 (C2, C4, C6, C8, C10–C17, C19, C21, C23) | 15 (20) | [Putra Niaga 10 pcs](https://www.tokopedia.com/putraniagabdg/10pcs-kapasitor-smd-0805-100nf-0-1uf-100n-0-1uf-104-50v-100nf-10pcs) | Rp2.4k × 2 |
 | 100 µF 35 V THT (C1, C3, C5, C7; Ø8 footprint, legs bent to 3.5 mm if Ø6.3) | 4 (5) | [Putra Niaga](https://www.tokopedia.com/putraniagabdg/elco-100uf-35v-kapasitor-electrolit-polar-100-uf-35-volt-105) | Rp0.5k each |
 | 470 µF 35 V THT (C9, Ø10 P5) | 1 (2) | [Tektron, Nippon Chemi-con LXZ](https://www.tokopedia.com/tektron/nippon-chemi-con-470uf-35v-lxz-series-capacitor-elko-kapasitor) | Rp1.5k each |
+| 220 µF 25 V THT (C18, servo rail; Ø8 P3.5, ≤ 12 mm tall) | 1 (2) | Putra Niaga elco listings (same style as the 100 µF) | ≈ Rp0.5k each |
+| 10 µF 25 V 0805 X5R (C20, C22; JLCPCB fits them, only for a bare spare) | 2 (10) | Putra Niaga 0805 capacitor listings | ≈ Rp2k per 10 |
 | SMBJ18A (D1) | 1 (2) | [Putra Niaga](https://www.tokopedia.com/putraniagabdg/dioda-tvs-smbj18a-18v-600w-smb-do-214aa-supresor-diode-smbj18-marking-lt-1737854510245053736) (in stock; others are pre-order) | Rp2.4k each |
 | 1N4148W SOD-123 (D2) | 1 (5) | [Elektro Bar](https://www.tokopedia.com/elektrobar/1n4148w-t4-sod-123-switching-diode-smd-sod123) | Rp0.2k each |
 | MMBT3904 SOT-23 (Q1) | 1 (5) | [Putra Niaga](https://www.tokopedia.com/putraniagabdg/transistor-smd-mmbt3904-npn-sot-23-2n3904-tr-3904-sot23-marking-1am) | Rp0.3k each |

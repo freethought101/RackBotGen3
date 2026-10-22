@@ -303,6 +303,22 @@ void test_estop_and_driver_reconfiguration() {
   ASSERT_REPLY("14 ERR E_NOT_HOMED", r.send("14 Z 150"));
 }
 
+void test_estop_button_before_vmot_drops() {
+  Rig r;
+  r.ready();
+  r.send("10 Z 250");
+  r.run(500);
+  r.hal.estop_button = true;  // NO contact closes; VMOT_SENSE still reads high (slow decay)
+  r.run(10);
+  TEST_ASSERT_TRUE(r.has("10 FAIL E_ESTOP"));
+  TEST_ASSERT_TRUE(r.has("EVT ESTOP"));
+  TEST_ASSERT_FALSE(r.hal.en);
+  r.run(1000);  // VMOT present but the button is still pressed: stay in E-stop
+  TEST_ASSERT_TRUE(r.c.estop());
+  r.hal.estop_button = false;
+  TEST_ASSERT_EQUAL_STRING("EVT ESTOP_CLEAR", r.waitFor("EVT ESTOP_CLEAR", 2000).c_str());
+}
+
 void test_driver_reset_detected() {
   Rig r;
   r.ready();
@@ -382,6 +398,7 @@ int main() {
   RUN_TEST(test_dock_gives_up);
   RUN_TEST(test_stop_cancels_motion);
   RUN_TEST(test_estop_and_driver_reconfiguration);
+  RUN_TEST(test_estop_button_before_vmot_drops);
   RUN_TEST(test_driver_reset_detected);
   RUN_TEST(test_limit_switch_outside_homing);
   RUN_TEST(test_status_telemetry);

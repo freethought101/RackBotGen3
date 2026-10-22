@@ -8,10 +8,10 @@ Spec: [`docs/spec/02-electrical.md`](../../docs/spec/02-electrical.md) §3.
 |---|---|
 | `rbg3-motion.kicad_sch` / `.kicad_pcb` / `.kicad_pro` | KiCad 10 project (schematic ERC clean, DRC: 0 errors, 0 unconnected, 0 parity) |
 | `lib/rbg3.kicad_sym`, `lib/rbg3.pretty/` | Custom symbols (`ESP32-S3-DevKitC-1`, `StepStick_TMC2209`) and the DevKit socket footprint |
-| `scripts/build.sh` | Rebuilds the layout from scratch: text fix-ups → placement → silkscreen (`silk.py`) → GND pour → Freerouting → stitching vias → pours → DRC |
+| `scripts/build.sh` | Rebuilds the layout from scratch: text fix-ups → placement → silkscreen (`silk.py`) → antenna keep-out → Freerouting (GND routed as tracks too, so traces cannot cut a pour pocket loose) → stitching vias → pours → DRC; fails on unrouted nets or any error-level DRC item |
 | `fab/rbg3-motion-gerbers.zip` | Gerbers + Excellon drill (separate PTH / NPTH files) for JLCPCB (2 layers, 1.6 mm, 1 oz, HASL is fine) |
 | `fab/rbg3-motion-bom.csv`, `fab/rbg3-motion-pos.csv` | BOM and placement file (hand assembly expected: 0805 / SOT-23 / SOD-123 / SMB + through-hole) |
-| `fab/rbg3-motion-jlc-bom.csv`, `fab/rbg3-motion-jlc-cpl.csv` | JLCPCB **Economic** assembly of the 39 SMD parts on 2 of the 5 boards (the plan since spec v0.1.20) (LCSC numbers in `scripts/jlc_pcba.py`; all basic or preferred, so no extended-part fees). Check Q1, D1 and D2 orientation in the placement preview |
+| `fab/rbg3-motion-jlc-bom.csv`, `fab/rbg3-motion-jlc-cpl.csv` | JLCPCB **Economic** assembly of the 45 SMD parts on 2 of the 5 boards (the plan since spec v0.1.20) (LCSC numbers in `scripts/jlc_pcba.py`; all basic or preferred, so no extended-part fees). Check Q1, D1 and D2 orientation in the placement preview |
 | `fab/rbg3-motion-schematic.pdf`, `fab/rbg3-motion.step` | Schematic print and 3D board for the robot CAD |
 
 Rebuild: `scripts/build.sh` (needs KiCad 10 at `/Applications/KiCad`, Java 21+, Freerouting jar at
@@ -23,7 +23,10 @@ Rebuild: `scripts/build.sh` (needs KiCad 10 at `/Applications/KiCad`, Java 21+, 
   corner, mating face 1.7 mm past the board edge so the plug goes in from outside,
   J2 **5 V** from the off-board 5 V/5 A buck, J3 **6 V servo** from the off-board 6 V/3 A buck.
   Bulk 470 µF + **SMBJ18A** unidirectional TVS right at J1 (cathode on VMOT: clamps ringing, and a reversed harness
-  conducts and blows the 7.5 A fuse); 100 µF + 100 nF at every driver.
+  conducts and blows the 7.5 A fuse); 100 µF + 100 nF at every driver. 220 µF + 100 nF on the servo rail
+  (C18/C19), 10 µF + 100 nF on +5V (C20/C21) and on +3V3 (C22/C23).
+- **Test pads** TP1–TP7 (SMD, Ø 2 mm): VM, 5V, 6V, 3V3 between the drive L/R sockets; UART, EN, GND by R5/R6.
+- **J13 (AUX)** takes the robot E-stop's NO contact (pressed = low): the firmware reports the press at once.
 - **ESP32**: powered over USB from the Pi; its 5V pin is **not** connected. 3V3 from the DevKit feeds logic.
   Use a **90° USB-C plug** whose cable exits away from the board: the area under the USB end (y 179.5–191) is kept
   free of connectors (J12/J13 sit left of it), but J10/J11 on the bottom edge are ≈ 13 mm from the port.
@@ -71,7 +74,7 @@ Only the 3 bare spares need them.*
       Easiest before the sockets go on; always with the module unplugged.
 - [ ] Through-hole, low to tall: J14/J15 servo headers → JST-XH (J4–J13, J16–J19) → StepStick sockets (8 rows) →
       DevKit female headers (**matching row only**, 22.86 or 25.4 mm) → J2/J3 terminals → J1 XT30 →
-      electrolytics C1/C3/C5/C7/C9 last (**long leg to the + pad**).
+      electrolytics C1/C3/C5/C7/C9/C18 last (**long leg to the + pad**; C18 is the 220 µF / 25 V servo-rail cap).
 - [ ] Clean the flux and look for bridges, especially at Q1, the socket rows and the DevKit rows.
 
 **Bring-up, stop at the first failure**
@@ -79,15 +82,17 @@ Only the 3 bare spares need them.*
 - [ ] Nothing plugged in: no short from VMOT, +5V, +6V_SERVO or +3V3 to GND.
 - [ ] Bench supply 16.8 V, limit 0.2 A, into J1 (pad 2 = +): idle current near zero, VMOT on all four VM pins,
       nothing warm. Don't test reverse polarity (by design it blows the 7.5 A fuse through D1).
-- [ ] Set and check the 5.0 V and 5.8 V (servo, "6V" rail) bucks off-board before wiring them to J2/J3.
+- [ ] Set and check the 5.0 V and 5.8 V (servo, "6V" rail) bucks off-board before wiring them to J2/J3. Check the
+      polarity of both leads with a meter before tightening the terminals (J2/J3 are not reverse-protected), then
+      read 5.0 V and 5.8 V at TP2 and TP3.
 - [ ] ESP32 in, powered over USB (its 5V pin is not used): GPIO1 reads ≈ 2.56 V at 16.8 V; each input J8–J13 toggles
-      (home switches are NC, so they read active until pressed).
+      (home switches are NC, so they read active until pressed). Press the E-stop: TEL `sw` bit5 sets at once.
 - [ ] **VMOT off**, then fit the TMC2209s (EN pin at the `EN` mark) and connect the motors. Never plug or unplug a
       driver or a motor with VMOT on. Power up; the firmware sets motor current over UART. Check that addresses 0–3
       answer, then jog each axis slowly (motor wrong way or stuttering: swap one coil pair in its cable).
 
 ## Known cosmetic items
 
-DRC reports 15 silkscreen-only items (reference designators touching each other or the C9 outline, and the J1 outline clipped by the
-board edge). JLCPCB clips silkscreen over pads automatically; tidy them in the KiCad PCB editor if wanted. It also reports 4
+DRC reports 16 silkscreen-only items (reference designators touching each other or the C9 outline, the "DOCK+ V+ NC" label
+touching a C20 pad, and the J1 outline clipped by the board edge). JLCPCB clips silkscreen over pads automatically; tidy them in the KiCad PCB editor if wanted. It also reports 4
 `lib_footprint_mismatch` warnings for JP1–JP4, whose courtyards are removed on purpose (`scripts/fix_text.py`).

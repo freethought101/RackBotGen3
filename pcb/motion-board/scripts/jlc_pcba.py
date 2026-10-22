@@ -13,6 +13,7 @@ FAB = Path(__file__).resolve().parent.parent / "fab"
 # (value, footprint) -> LCSC part
 LCSC = {
     ("100nF", "C_0805_2012Metric"): "C49678",      # CC0805KRX7R9BB104, 50 V X7R, basic
+    ("10uF", "C_0805_2012Metric"): "C15850",       # CL21A106KAYNNNE, 25 V X5R, basic (checked 2026-10-22)
     ("100k", "R_0805_2012Metric"): "C149504",      # 0805W8F1003T5E, basic
     ("18k", "R_0805_2012Metric"): "C17506",        # 0805W8F1802T5E, preferred
     ("10k", "R_0805_2012Metric"): "C17414",        # 0805W8F1002T5E, basic

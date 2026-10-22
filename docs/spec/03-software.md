@@ -81,7 +81,7 @@ USB CDC, 115200 8N1, ASCII lines terminated by `\n`.
 Error codes: `E_ARG`, `E_BUSY`, `E_NOT_HOMED`, `E_INTERLOCK`, `E_LIMIT`, `E_ESTOP`, `E_NODOCK`, `E_TIMEOUT`, `E_STOPPED` (motion cancelled by `STOP` or `ENABLE 0`).
 Only one motion command runs at a time; any other motion command (and `VEL` while one runs) gets `E_BUSY`. While `VEL` is active, motion commands get `E_BUSY` until the wheels stop. DRIVE/TURN/DOCK/VEL also need both axes homed (`E_NOT_HOMED`). `ENABLE 0` clears the homed flags (axes can be moved by hand while unpowered).
 
-`sw` bitmask: bit0 Z_HOME, bit1 Y_HOME, bit2 NOSE, bit3 SLOT_A, bit4 SLOT_B (1 = pressed). Z_HOME/Y_HOME are NC switches: the firmware reports pressed = input high, so a broken wire looks like "at home" and homing stops instead of driving into the end.
+`sw` bitmask: bit0 Z_HOME, bit1 Y_HOME, bit2 NOSE, bit3 SLOT_A, bit4 SLOT_B, bit5 E-stop button (1 = pressed). Z_HOME/Y_HOME are NC switches: the firmware reports pressed = input high, so a broken wire looks like "at home" and homing stops instead of driving into the end.
 
 ## 4. Rack Modbus TCP register map
 

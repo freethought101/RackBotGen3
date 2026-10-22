@@ -11,7 +11,7 @@ Status: Draft v0.1. The motion board (§3) is the KiCad deliverable. Everything 
 | Battery | **4S1P 18650**, 3.5 Ah cells (e.g. Samsung 35E / LG MJ1), 14.4 V nominal, 16.8 V full, 12.0 V cutoff → **50.4 Wh** (airline < 100 Wh) |
 | BMS | 4S, ≥ 15 A, common port (charge and discharge on the same P+/P−), balancing |
 | Main fuse / switch | **7.5 A** blade fuse **first, at the battery P+** (so everything after it, INA226 included, is fused) + 10 A rocker switch at the battery box. 7.5 A sits under the Samsung 35E's 8 A max discharge (MJ1: 10 A); normal draw is < 2 A |
-| E-stop | Robot mushroom (NC, twist release) in series with the coil of a **12 V automotive relay (SPST-NO, 30/40 A)** whose contact cuts **VMOT only** (steppers and servos). The button carries only the coil current (≈ 0.1–0.2 A), so its weak DC breaking rating does not matter ("10 A" on button listings is thermal current). Fail-safe: a pressed button, broken wire or loose connector drops the relay. 1N4007 flyback diode across the coil. The coil draws ≈ 1.5–3 W continuously (a few % of the battery per hour). The relay sits in the harness between the bus and J1 (no PCB change). Logic stays alive to report the E-stop. The Z lead screw is self-locking (dry/POM nut; marginal if greased), so the load cannot drop. Cutting VMOT resets the TMC2209 registers; firmware re-configures them before re-enabling (03 §8) |
+| E-stop | Robot mushroom (NC, twist release) in series with the coil of a **12 V automotive relay (SPST-NO, 30/40 A)** whose contact cuts **VMOT only** (steppers and servos). The button carries only the coil current (≈ 0.1–0.2 A), so its weak DC breaking rating does not matter ("10 A" on button listings is thermal current). Fail-safe: a pressed button, broken wire or loose connector drops the relay. 1N4007 flyback diode across the coil. The coil draws ≈ 1.5–3 W continuously (a few % of the battery per hour). The relay sits in the harness between the bus and J1 (no PCB change). Logic stays alive to report the E-stop; the button's NO contact goes to J13 (AUX_IN), so the firmware sees a press at once instead of waiting for VMOT to decay. The Z lead screw is self-locking (dry/POM nut; marginal if greased), so the load cannot drop. Cutting VMOT resets the TMC2209 registers; firmware re-configures them before re-enabling (03 §8) |
 | Energy meter | **INA226** module (**10 mΩ / R010** shunt, ±8 A; local modules ship with R100, so replace it with a 2512 R010 1 % shunt) between the fuse and the main bus. **+ current = discharge, − = charging** |
 | Charging | Dock pads → Schottky (SS54) → **CC/CV buck (XL4015-type) set 16.8 V / 1.5 A** → main bus (feeds loads + charges through the BMS). Full charge ≈ 2.5 h; the dock also tops up between demo runs. **Charger grounding:** most XL4015 CC/CV boards sense current with a shunt between IN− and OUT−. Dock − connects **only** to the charger IN−, never to robot GND, or the current limit is bypassed (measure IN−↔OUT− on the bought module first). Lock the CV/CC trim pots with glue after setting and re-check before the event. The Pi turns dock power off (Modbus M0) once charge current tapers below 0.2 A |
 | Dock sense | Dock **pad side, before the SS54** (so the charger cannot backfeed it) → divider → ESP32 ADC (`DOCK_V`, J18). Divider low side on robot GND (≈ 75 mV error from the charger shunt, negligible). **Docked = DOCK_V > 20 V** and PLC enabled dock power |
@@ -50,7 +50,7 @@ Wire: battery/VMOT 18 AWG, motors 22–24 AWG, signals 26 AWG. Connectors: XT60 
 ## 3. Motion board (KiCad PCB)
 
 Two-layer module carrier, **100 × 100 mm**, 1 oz copper, 4 × M3 holes at 93 × 93 pitch.
-Ordered from JLCPCB **by 14 Oct**, with **Economic assembly of the 39 SMD parts on 2 of the 5 boards** (`fab/rbg3-motion-jlc-bom.csv` + `-jlc-cpl.csv`); the through-hole parts are hand-soldered. The same schematic can be built on perfboard as a fallback.
+Ordered from JLCPCB **by 14 Oct**, with **Economic assembly of the 45 SMD parts on 2 of the 5 boards** (`fab/rbg3-motion-jlc-bom.csv` + `-jlc-cpl.csv`); the through-hole parts are hand-soldered. The same schematic can be built on perfboard as a fallback.
 **Implemented in `pcb/motion-board/`** (KiCad 10, ERC/DRC clean; see its README for the pre-order checklist).
 As built: VMOT/GND traces 1.0 mm + GND pours on both layers, motor traces 0.6 mm, +6 V servo 1.0 mm, other supplies 0.5 mm, signals 0.25 mm.
 
@@ -76,8 +76,8 @@ As built: VMOT/GND traces 1.0 mm + GND pours on both layers, motor traces 0.6 mm
 | 40 | SERVO_B | out | Finger B, 330 Ω series |
 | 41 / 42 | I2C_SDA / I2C_SCL | i/o | INA226 @ 0x40, 4.7 k pull-ups |
 | 47 | STATUS_LED | out | WS2812 (external), 330 Ω series |
-| 48 | BUZZER | out | Via NPN (onboard RGB on some DevKit revisions also on 48/38: harmless) |
-| 38 | AUX_IN | in | Spare switch input J13 (onboard RGB LED on some DevKit revisions shares 38: harmless as an input) |
+| 48 | BUZZER | out | Via NPN, 1 k base resistor + **10 k pull-down (R25)** so the buzzer stays off while the pin floats at reset. DevKitC-1 v1.0 also drives its onboard RGB LED from 48 (v1.1 moved it to 38): the LED shows noise while the buzzer sounds, harmless |
+| 38 | AUX_IN | in | J13: **robot E-stop NO contact** (pressed = low). Reports a press at once; VMOT_SENSE alone takes up to ≈ 370 ms with the drivers disabled. Onboard RGB LED of DevKitC-1 v1.1 shares 38: harmless as an input |
 | — | Avoid | — | 0, 3, 45, 46 (strapping); 19/20 (USB); 43/44 (UART0); 33–37 (octal flash/PSRAM on R8/R16 modules) |
 
 Switch inputs: internal pull-up + 10 k external pull-up to 3V3, 1 k series, 100 nF to GND (debounce/ESD).
@@ -90,7 +90,7 @@ Switch inputs: internal pull-up + 10 k external pull-up to 3V3, 1 k series, 100 
 | J2 5V_IN | 2-pin 5.08 screw terminal | +5 V, GND from the 5 V buck (which also feeds the Pi). Not reverse-protected: polarity on the silkscreen |
 | J3 6V_SERVO_IN | 2-pin 5.08 screw terminal | +6 V rail (buck set to **5.8 V**), GND from the servo buck. Not reverse-protected: polarity on the silkscreen |
 | J4…J7 (MOTOR_L/R/Z/Y) | JST-XH 4-pin | 2B, 2A, 1A, 1B (match the StepStick pinout) |
-| J8…J13 | JST-XH 3-pin | GND, SIG, 3V3 (Z_HOME, Y_HOME, NOSE, SLOT_A, SLOT_B, AUX_IN on GPIO38). KW11 COM → GND, NC (home switches) or NO (others) → SIG; the 3V3 pin is spare |
+| J8…J13 | JST-XH 3-pin | GND, SIG, 3V3 (Z_HOME, Y_HOME, NOSE, SLOT_A, SLOT_B, AUX_IN on GPIO38). KW11 COM → GND, NC (home switches) or NO (others) → SIG; the 3V3 pin is spare. J13: the robot E-stop's NO contact (COM → GND, NO → SIG) |
 | J14 / J15 (SERVO_A/B) | 2.54 3-pin male header | GND, 6 V, SIG |
 | J16 (I2C) | JST-XH 4-pin | 3V3, GND, SDA, SCL |
 | J17 (WS2812) | JST-XH 3-pin | 5 V, DIN, GND |
@@ -112,6 +112,16 @@ Switch inputs: internal pull-up + 10 k external pull-up to 3V3, 1 k series, 100 
   (unidirectional; standoff 18 V > 16.8 V, breakdown 20–22 V). It clamps switch and E-stop ringing at about
   21–23 V, because those currents are small. The datasheet clamp of 29.2 V applies only at the full rated pulse
   current and is right at the TMC2209's 29 V operating limit (32 V absolute max). An SMBJ17A (27.6 V clamp) is the drop-in if more margin is wanted.
+- Low-voltage rails (v0.1.25, from the schematic review): **+6V_SERVO** 220 µF / 25 V electrolytic (C18) + 100 nF
+  (C19), because the servo buck is off-board on a lead and MG90S start/stall pulses would sag the rail at the
+  servos (25 V, so a buck failing short to the 16.8 V bus does not also destroy the capacitor). **+5V** (LED,
+  buzzer) 10 µF + 100 nF (C20/C21) near J17/J19. **+3V3** 10 µF + 100 nF (C22/C23) between the drive sockets, on
+  top of the DevKit's own regulator capacitors.
+- Test pads (SMD, Ø 2 mm, `TP1`–`TP7`): VM, 5V, 6V, 3V3 in a row between the drive L and drive R sockets;
+  UART, EN and GND next to R6/R5 at the DevKit edge. They can be probed with the modules fitted.
+- Grounding (harness rule): the board GND is reached through J1 (motor return), J2/J3 (buck grounds) and the
+  Pi↔ESP32 USB cable, so motor current can share the USB ground. Keep the J1 GND lead short and thick, and
+  run the 5 V and servo buck output grounds to J2/J3 rather than back to the battery.
 - Reverse polarity: the XT30 is keyed, so a reversed VMOT harness needs a mis-crimped pigtail. If that happens,
   the TVS conducts and the 7.5 A fuse blows, but until it does the fault current also returns through board GND,
   the 5 V buck wiring and the Pi↔ESP32 USB ground. Nothing on the board actively blocks reverse polarity

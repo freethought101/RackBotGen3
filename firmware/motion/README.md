@@ -22,8 +22,8 @@ make -C sim                       # host simulator (used by rackbot/tests/test_f
 
 ## Behaviour
 
-- **Safety first in every loop pass**: VMOT_SENSE < 9 V → all axes halted, drivers disabled, homed flags
-  cleared, the running command answers `FAIL E_ESTOP`, `EVT ESTOP`. When VMOT is back (> 10.5 V for 200 ms)
+- **Safety first in every loop pass**: E-stop button pressed (NO contact on AUX_IN, J13) or VMOT_SENSE < 9 V → all axes halted, drivers disabled, homed flags
+  cleared, the running command answers `FAIL E_ESTOP`, `EVT ESTOP`. When the button is released and VMOT is back (> 10.5 V for 200 ms)
   every TMC2209 register is re-sent and verified via IFCNT; only then `EVT ESTOP_CLEAR` and `ENABLE 1` is
   accepted. GSTAT.reset is also polled every 500 ms (`EVT DRIVER_RESET`, same recovery).
 - **Homing** (`HOME Y`, then `HOME Z`): seek at 10 mm/s, back off 3 mm, re-seek at 2 mm/s, set Y = 0 /
@@ -49,7 +49,7 @@ Settings are RAM only; the Pi sends its calibration after connecting.
 2. Flash, open the monitor, `1 PING` → `1 OK RBG3-FW 0.1.0`. With VMOT on you should see `EVT ESTOP_CLEAR`;
    if not, the UART bus is not answering (check the 1 k on TX, PDN_UART pin 4, addresses 0-3).
 3. Switches: watch `sw=` in TEL while pressing each one (bit0 Z_HOME, bit1 Y_HOME, bit2 NOSE, bit3 SLOT_A,
-   bit4 SLOT_B). Unplug a home switch: its bit must read 1.
+   bit4 SLOT_B, bit5 E-stop button on J13). Unplug a home switch: its bit must read 1.
 4. Directions: `2 ENABLE 1`, `3 CFG bench 1`, `4 HOME Y` with a hand on the E-stop. If an axis runs away from
    its switch, flip it in `DIR_HIGH_COUNTS_UP` (`src/pins.h`). Wheels: `DRIVE 100` must go forward.
 5. Fingers: find the servo angles with `CFG fa_engage <deg>` + `FINGER A ENGAGE`, then copy them into

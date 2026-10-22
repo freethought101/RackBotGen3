@@ -28,7 +28,7 @@ The Tokopedia part is 22 shops (it was 33). The first 5 carry most of the order.
 - [ ] P18 MP2482/SY8205 5 A buck (set to 5.8 V for the servos) ×1, Rp19k
 - [ ] P18 XL4015 5 A CC/CV (battery charger) ×1, Rp23k
 - [ ] P26 relay module 24 V, optocoupled ×1, Rp27k
-- [ ] P21 robot E-stop LA38-11ZS 22 mm, self-locking ×1, Rp14k. Wire its NC contact.
+- [ ] P21 robot E-stop LA38-11ZS 22 mm, self-locking ×1, Rp14k. Wire its NC contact to the VMOT relay coil and its NO contact to motion board J13 (check it really is 1 NO + 1 NC).
 - [ ] P23 active buzzer 5 V, 12 × 9.5 mm ×1, ≈ Rp5k
 - [ ] P21 rocker switch 16 A, 3-pin ×1, Rp3k
 - [ ] P20 pure nickel strip 0.12 × 8 mm, 10 m ×1, Rp21k
@@ -42,6 +42,7 @@ The Tokopedia part is 22 shops (it was 33). The first 5 carry most of the order.
 - [ ] *(optional, only to build a bare spare board: JLCPCB assembles the SMD parts, v0.1.20)* 100 nF 0805, 10 pcs ×2, Rp5k
 - [ ] Elco 100 µF 35 V **through-hole** ×5, Rp2.5k
 - [ ] Elco 470 µF 35 V **through-hole** ×2, Rp3.5k
+- [ ] Elco 220 µF 25 V **through-hole**, Ø8 mm, 3.5 mm pitch, ≤ 12 mm tall ×2 (C18, servo rail, v0.1.25), ≈ Rp1k
 - [ ] *(optional, only to build a bare spare board: JLCPCB assembles the SMD parts, v0.1.20)* SMBJ18A TVS ×2, Rp5k
 - [ ] *(optional, only to build a bare spare board: JLCPCB assembles the SMD parts, v0.1.20)* MMBT3904 SOT-23 ×5, Rp1.5k
 - [ ] 5.08 mm 2-pin screw terminal ×2, Rp2k

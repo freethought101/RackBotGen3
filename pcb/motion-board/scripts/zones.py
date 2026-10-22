@@ -1,6 +1,6 @@
 """Add the antenna keep-out and GND pours for RBG3-MOTION v1 (idempotent).
 
-  .../python3 scripts/zones.py [B|F|both]     default: both
+  .../python3 scripts/zones.py [none|B|F|both]     default: both (none = keep-out only)
 """
 
 import os
@@ -27,7 +27,7 @@ def outline(zone, x0, y0, x1, y1):
 
 def main():
     which = sys.argv[1] if len(sys.argv) > 1 else "both"
-    layers = {"B": [pcbnew.B_Cu], "F": [pcbnew.F_Cu], "both": [pcbnew.F_Cu, pcbnew.B_Cu]}[which]
+    layers = {"none": [], "B": [pcbnew.B_Cu], "F": [pcbnew.F_Cu], "both": [pcbnew.F_Cu, pcbnew.B_Cu]}[which]
     board = pcbnew.LoadBoard(BOARD)
 
     # Add-only: pcbnew's SWIG wrappers misbehave after a Remove(), so old pours and tracks are
