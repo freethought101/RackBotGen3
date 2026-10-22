@@ -8,8 +8,12 @@
 	)
 	(paper "A4")
 	(title_block
-		(title "rbg3-motion")
-		(date "2026-10-05")
+		(title "RBG3-MOTION v1: robot motion board")
+		(date "2026-10-18")
+		(rev "1")
+		(company "RackBotGen3 (Delta Cup 2026)")
+		(comment 1 "Spec: docs/spec/02-electrical.md §3; board notes: pcb/motion-board/README.md")
+		(comment 2 "2 layers, 100 x 100 mm, 1.6 mm FR-4, 1 oz copper")
 	)
 	(layers
 		(0 "F.Cu" signal)
