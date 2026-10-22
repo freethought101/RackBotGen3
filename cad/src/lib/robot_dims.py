@@ -94,6 +94,13 @@ YFRAME_DZ = (50.0, 56.0)             # frame over the top wheels joining the arm
 YWHEEL_DY = (-84.0, -58.0)           # V-wheel pairs (above and below the rail), axles along x
 YWHEEL_DZ = (YRAIL_DZ[0] - 6.0, YRAIL_DZ[1] + 6.0)
 VWHEEL = {"d": 15.2, "w": 8.8, "sink": 1.6, "spacer_d": 10.0}   # mini V-wheel; rim sits 1.6 mm in the groove
+# Axle stack plate -> wheel: 6 mm mini spacer (eccentric 8 mm hex, or plain) + 1 mm 5 x 8 shim on the bearing's
+# inner ring. The plates get a pad or recess around each axle so the wheel sits on its groove centre.
+WHEEL_STACK = 7.0
+ECC_HOLE_D = 7.3                     # eccentric spacer boss is 7.12; printed holes come out undersize
+WHEEL_SEAT_D = 12.0                  # pad / recess diameter around an axle (spacer hex is 9.2 across corners)
+ZWHEEL_SEAT_Y = (MAST_Y[0] + MAST_Y[1]) / 2 + VWHEEL["w"] / 2 + WHEEL_STACK   # -228.6: 0.6 pad on the Z plate
+YWHEEL_SEAT_X = (YRAIL_X[0] + YRAIL_X[1]) / 2 + VWHEEL["w"] / 2 + WHEEL_STACK  # 105.4: 0.4 recess in the Y plate
 # Fingers swing in the x-z plane about an axis along y (servo output shaft points +y):
 # parked = pointing up (+z), engaged = pointing -x into the caddy's side notch.
 FINGER_X = 69.5                      # pivot x (servo output axis); servo 63.4..75.6, 2.4 mm from the tray lip

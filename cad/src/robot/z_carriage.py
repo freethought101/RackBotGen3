@@ -11,8 +11,8 @@ from cadgen import step, stl
 
 from lib.dims import M3_CLEAR, M5_CLEAR
 from lib.prims import box, cyl_z
-from lib.robot_dims import (NUT_BLOCK_DZ, SCREW_XY, TRAY_BOLTS, ZPLATE_DZ, ZPLATE_X, ZPLATE_Y, ZWHEEL_DZ,
-                            ZWHEEL_X)
+from lib.robot_dims import (ECC_HOLE_D, NUT_BLOCK_DZ, SCREW_XY, TRAY_BOLTS, WHEEL_SEAT_D, ZPLATE_DZ, ZPLATE_X,
+                            ZPLATE_Y, ZWHEEL_DZ, ZWHEEL_SEAT_Y, ZWHEEL_X)
 
 NUT_FLANGE_D, NUT_BODY_D = 22.0, 10.5
 
@@ -29,7 +29,11 @@ def z_carriage():
     part = box(*ZPLATE_X, y0, y1, *ZPLATE_DZ)
     for s in (-1, 1):
         for z in ZWHEEL_DZ:
-            part -= _y_hole(M5_CLEAR, s * ZWHEEL_X, z, y0 - 0.1, y1 + 0.1)          # V-wheel axles
+            part += _y_hole(WHEEL_SEAT_D, s * ZWHEEL_X, z, ZWHEEL_SEAT_Y, y0 + 0.1)  # spacer seat pad
+    for s in (-1, 1):
+        for z in ZWHEEL_DZ:
+            d = ECC_HOLE_D if s > 0 else M5_CLEAR                                   # eccentric spacers on +x
+            part -= _y_hole(d, s * ZWHEEL_X, z, ZWHEEL_SEAT_Y - 0.1, y1 + 0.1)        # V-wheel axles
     sx, sy = SCREW_XY
     part += box(sx - 13.0, sx + 13.0, sy - 13.0, y0, *NUT_BLOCK_DZ)
     part -= cyl_z(NUT_BODY_D, sx, sy, NUT_BLOCK_DZ[0] - 0.1, NUT_BLOCK_DZ[1] + 0.1)

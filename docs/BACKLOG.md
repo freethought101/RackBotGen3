@@ -38,7 +38,7 @@ Open checks and to-dos collected from the spec, the CAD and PCB work, and review
 - [ ] Mast unit packs at 228 mm deep **with the Y motor removed** (230 with it fitted) vs the 230 mm bag limit: check with the real bag.
 - [ ] NEMA17 (42 × 42 × 40, 5 mm shaft, 31 mm hole pitch) and the direct-drive wheel hub fit (wheel x 125–149 on a 22 mm shaft).
 - [ ] MG90S dimensions (22.8 × 12.2 × 28.5, shaft 5.9 mm from the end, tab size) vs the y_carriage ledges.
-- [ ] Mini V-wheels / eccentric spacers (modeled Ø15.2 × 8.8, rim 1.6 mm in the groove, spacer Ø10): measure the real wheel and spacer; adjust `ZWHEEL_X` / `YWHEEL_DZ`.
+- [ ] Mini V-wheels / eccentric spacers (modeled Ø15.2 × 8.8, rim 1.6 mm in the groove, spacer Ø10): measure the real wheel and spacer; adjust `ZWHEEL_X` / `YWHEEL_DZ`, and `VWHEEL["w"]` / `WHEEL_STACK` if the wheel width or the spacer + shim height differ (v0.1.23).
 - [ ] Ball caster heights: rear 42 mm (table to rail bottom), front anti-tip 23.5 mm (6.5 mm gap, clears the dock floor plate).
 - [ ] KFL08 (48 × 27, 37 mm pitch), Tr8×2 nut (flange Ø22) and 5→8 coupler (Ø19 × 25) vs `KFL08`, `NUT_BLOCK_DZ`, `COUPLER_Z`.
 - [ ] **Tr8 nut flange hole pattern**: count the flange holes (CAD assumes 3 × M3 on a 16 mm circle; many Tr8 nuts have 4) and measure the circle Ø and the hole Ø. Then update the nut block in `cad/src/robot/z_carriage.py`, possibly with M3 heat-set inserts instead of nuts underneath.

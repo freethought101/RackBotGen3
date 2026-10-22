@@ -15,7 +15,7 @@ The live, per-part order list is the Notion **Parts & Order List** database, mir
 |---|---|---|
 | NEMA17 42×40, ≥ 0.4 N·m (Tokopedia) | 4 | 42 |
 | 2020 V-slot 6 × 1 m (4.96 m of cuts + kerf) + 2040 V-slot 0.42 m (robot + rack + spare station), Lajarus Teknik | — | 23 |
-| Mini V-wheel kits | 8 | 8 |
+| Mini V-wheels + 4 mini eccentric spacers, 4 plain 6 mm spacers, 10 shims 5 × 8 × 1 | 8 | 10 |
 | Tr8×2 lead screw 350 + anti-backlash nut + coupler + KFL08 flange bearing | 1 | 7 |
 | GT2 belt (Y axis), 20T, idler | set | 3 |
 | Wheels 80 × 24 mm: printed PETG hub + TPU 95A tire (filament in §1.4) | 2 | 0 |
@@ -23,7 +23,7 @@ The live, per-part order list is the Notion **Parts & Order List** database, mir
 | MG90S servo (Tokopedia) | 3 | 4 |
 | Lever microswitches KW11-3Z (13 + 2 spare) | 15 | 3 |
 | Fastener kit (~120 M5 T-nuts, screws incl. 7 × M5×16 + 3 × M5×25 for the tray, ~48 corner brackets, M3 + ~60 M3 / ~15 M5 heat-set inserts) | — | 28 |
-| **Subtotal** | | **121** |
+| **Subtotal** | | **123** |
 
 ### 1.2 Robot — electronics
 
@@ -74,11 +74,11 @@ The live, per-part order list is the Notion **Parts & Order List** database, mir
 
 | | USD |
 |---|---|
-| Robot mechanical | 121 |
+| Robot mechanical | 123 |
 | Robot electronics | 178 |
 | Rack electrical | 104 |
 | Printing & demo | 77 |
-| **Total** | **≈ 480** (of 500) |
+| **Total** | **≈ 482** (of 500) |
 
 The margin is ≈ 20 USD after the v0.1.12–v0.1.17 move to local (Tokopedia) suppliers, buying the travel router (v0.1.16) and JLCPCB SMD assembly of the motion board (v0.1.20); only the motion PCB (JLCPCB) is imported. **Savings options** (use them if prices come in higher, or a router must be bought):
 wide-angle OV5647 camera instead of the IMX708 board (−29, more distortion) ·

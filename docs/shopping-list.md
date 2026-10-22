@@ -49,9 +49,12 @@ The Tokopedia part is 22 shops (it was 33). The first 5 carry most of the order.
 - [ ] Female header 1×40 ×5, Rp10k
 - [ ] Male header 1×40 ×1, Rp1k
 
-### 5. Rajawali3D: V-wheels + pulley, ≈ Rp140k
+### 5. Rajawali3D: V-wheels + pulley, ≈ Rp170k
 - [ ] P04 OpenBuilds mini V-wheel with 105zz ×8, Rp101k
-- [ ] P04 eccentric spacer 8 × 6 mm, 8HEX, M5 ×4, Rp27k
+- [ ] P04 **mini** eccentric spacer (for mini V-wheels): 8 mm hex, 6 mm tall, 5 mm bore, ×4, Rp27k.
+      Not the standard 10 mm hex / 6.35 mm one, which is for full-size V-wheels
+- [ ] P04 plain aluminium spacer 6 mm, M5 (5 mm bore) ×4, ≈ Rp15k (for the 4 non-eccentric wheels)
+- [ ] P04 precision shim 5 × 8 × 1 mm ×10 (8 + 2 spare), ≈ Rp15k: goes between the spacer and the wheel bearing
 - [ ] P06 GT2 20T pulley, bore 5 mm, 6 mm belt ×1, Rp12k
 
 ## One- or two-item orders (Tokopedia)
@@ -94,7 +97,7 @@ These shops had no better match in the big shops above.
 - **P26 3 A polyfuse:** no local through-hole polyfuse rated ≥ 30 V turned up (the 3 A ones on Tokopedia are 16 V or 24 V, too close to the 24 V rail). Recommended: a UK5-HESI DIN fuse terminal with a 3.15 A slow-blow fuse (CNC Store Bandung). It isn't resettable, so carry spare fuses. This changes the spec (02 §4), so it needs your OK.
 
 ## Overseas
-- [ ] **JLCPCB:** P22 motion PCB, 5 pcs, 2 layers, 1.6 mm, from `pcb/motion-board/fab/rbg3-motion-gerbers.zip`. Ship by **DHL**.
+- [ ] **JLCPCB:** P22 motion PCB, 5 pcs, 2 layers, 1.6 mm, from `pcb/motion-board/fab/rbg3-motion-gerbers.zip`. Ship by **UPS Worldwide** as quoted (2–4 days work + 4–6 days shipping). Order on **23 Oct**.
 
 ## Only if needed (not in the budget)
 - **P12 Raspberry Pi 3 Model B+** (team-owned): ≈ Rp1.06–1.19M, e.g. [tokosalim](https://www.tokopedia.com/tokosalim/raspberry-pi-3-model-b-quad-core-with-bluetooth) (250+ sold). A Rp579k listing (tronicstand) looks too cheap to trust.

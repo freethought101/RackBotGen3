@@ -16,8 +16,8 @@ from lib.robot_dims import (AXLE_Y, AXLE_Z, BASE_FRONT_Y, BASE_REAR_Y, BATTERY, 
                             CAM_LENS, CASTER_FRONT, CASTER_FRONT_GAP, CASTER_REAR, COUPLER_Z, CROSS_Y, DECK_Z,
                             DRIVE_MOTOR_X, ESTOP_XY, FINGER_DZ, FINGER_X, KFL08, MAST_X, MAST_Y, MAST_Z, NOSE_Z,
                             PCB_XY, PCB_Z, PI_XY, RAIL_X, RAIL_Z, SCREW_XY, SCREW_Z, SERVO, SERVO_FACE_DY, VWHEEL,
-                            Y_NOTCH_HOME, YPLATE_X, YRAIL_DZ, YRAIL_X, YRAIL_Y, YWHEEL_DY,
-                            YWHEEL_DZ, ZMOTOR_Z, ZPLATE_Y, ZWHEEL_DZ, ZWHEEL_X,
+                            Y_NOTCH_HOME, YRAIL_DZ, YRAIL_X, YRAIL_Y, YWHEEL_DY,
+                            YWHEEL_DZ, YWHEEL_SEAT_X, ZMOTOR_Z, ZWHEEL_DZ, ZWHEEL_SEAT_Y, ZWHEEL_X,
                             BELT_DZ, BELT_STRAND_X, BELT_X, IDLER_Y, PULLEY_CORE_D, PULLEY_FLANGE_D, PULLEY_Y,
                             YMOTOR_DZ)
 from robot.battery_box import battery_box
@@ -115,7 +115,7 @@ def lift_parts(Z):
     yc = (MAST_Y[0] + MAST_Y[1]) / 2                         # mast side groove centre
     for s in (-1, 1):
         for dz in ZWHEEL_DZ:
-            parts.append(vendor.vwheel((s * ZWHEEL_X, yc, Z + dz), "y", VWHEEL, spacer_to=ZPLATE_Y[0],
+            parts.append(vendor.vwheel((s * ZWHEEL_X, yc, Z + dz), "y", VWHEEL, spacer_to=ZWHEEL_SEAT_Y,
                                        label=f"vwheel:z{'LR'[s > 0]}{dz:.0f}"))
     parts.append(vslot(*YRAIL_X, *YRAIL_Y, Z + YRAIL_DZ[0], Z + YRAIL_DZ[1], "y_rail_2020"))
     # Y belt drive: motor (shaft down) + 20T pulley behind the rail end, idler on the front bracket, belt loop.
@@ -142,7 +142,7 @@ def extractor_parts(Z, Y, fingers):
     xc = (YRAIL_X[0] + YRAIL_X[1]) / 2                       # rail top/bottom groove centre
     for dy in YWHEEL_DY:
         for dz in YWHEEL_DZ:
-            parts.append(vendor.vwheel((xc, pivot_y + dy, Z + dz), "x", VWHEEL, spacer_to=YPLATE_X[0],
+            parts.append(vendor.vwheel((xc, pivot_y + dy, Z + dz), "x", VWHEEL, spacer_to=YWHEEL_SEAT_X,
                                        label=f"vwheel:y{dy:.0f}{dz:.0f}"))
     for slot, dz in FINGER_DZ.items():
         pz = Z + dz
