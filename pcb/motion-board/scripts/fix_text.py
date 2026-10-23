@@ -9,6 +9,9 @@
    the DRC schematic-parity check is clean.
 4. The ESP32-S3-DevKitC-1 socket courtyard covers only the two header strips, so low SMD parts can
    sit under the plugged-in module (~8.5 mm above the board). The module outline stays on F.Fab.
+5. The StepStick sockets (Pololu_Breakout-16) get 1.0 mm holes instead of the library's 0.8 mm, so
+   female-header tails (often ~0.6 mm square, ~0.85 mm across) fit. The 1.6 mm pads stay, so the copper
+   and routing do not change.
 """
 
 import os
@@ -152,8 +155,19 @@ def strip_jumper_courtyards(text):
     return text, count
 
 
+def widen_stepstick_drills(text):
+    count = 0
+    for m in list(re.finditer(r'\(footprint "Module:Pololu_Breakout-16_', text))[::-1]:
+        start, end = m.start(), block_end(text, m.start())
+        fp, n = re.subn(r"\(drill 0\.8\)", "(drill 1)", text[start:end])
+        text = text[:start] + fp + text[end:]
+        count += n
+    return text, count
+
+
 def main():
     board = open(BOARD).read()
+    board, _ = widen_stepstick_drills(board)
     board, n = re.subn(r'\(net "(?!/|unconnected-)([^"]+)"\)', r'(net "/\1")', board)
     board = board.replace('(net "/unconnected-', '(net "unconnected-')
     board, stripped = strip_top_level(board, ("zone", "segment", "via", "arc"))

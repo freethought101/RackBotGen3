@@ -11,7 +11,7 @@ Status: Draft v0.1. The motion board (§3) is the KiCad deliverable. Everything 
 | Battery | **4S1P 18650**, 3.5 Ah cells (e.g. Samsung 35E / LG MJ1), 14.4 V nominal, 16.8 V full, 12.0 V cutoff → **50.4 Wh** (airline < 100 Wh) |
 | BMS | 4S, ≥ 15 A, common port (charge and discharge on the same P+/P−), balancing |
 | Main fuse / switch | **7.5 A** blade fuse **first, at the battery P+** (so everything after it, INA226 included, is fused) + 10 A rocker switch at the battery box. 7.5 A sits under the Samsung 35E's 8 A max discharge (MJ1: 10 A); normal draw is < 2 A |
-| E-stop | Robot mushroom (NC, twist release) in series with the coil of a **12 V automotive relay (SPST-NO, 30/40 A)** whose contact cuts **VMOT only** (steppers and servos). The button carries only the coil current (≈ 0.1–0.2 A), so its weak DC breaking rating does not matter ("10 A" on button listings is thermal current). Fail-safe: a pressed button, broken wire or loose connector drops the relay. 1N4007 flyback diode across the coil. The coil draws ≈ 1.5–3 W continuously (a few % of the battery per hour). The relay sits in the harness between the bus and J1 (no PCB change). Logic stays alive to report the E-stop. The Z lead screw is self-locking (dry/POM nut; marginal if greased), so the load cannot drop. Cutting VMOT resets the TMC2209 registers; firmware re-configures them before re-enabling (03 §8) |
+| E-stop | Robot mushroom (NC, twist release) in series with the coil of a **12 V automotive relay (SPST-NO, 30/40 A)** whose contact cuts **VMOT only** (steppers and servos). The button carries only the coil current (≈ 0.1–0.2 A), so its weak DC breaking rating does not matter ("10 A" on button listings is thermal current). Fail-safe: a pressed button, broken wire or loose connector drops the relay. 1N4007 flyback diode across the coil. The coil draws ≈ 1.5–3 W continuously (a few % of the battery per hour). The relay sits in the harness between the bus and J1 (no PCB change). Logic stays alive to report the E-stop; the button's NO contact goes to J13 (AUX_IN), so the firmware sees a press at once instead of waiting for VMOT to decay. The Z lead screw is self-locking (dry/POM nut; marginal if greased), so the load cannot drop. Cutting VMOT resets the TMC2209 registers; firmware re-configures them before re-enabling (03 §8) |
 | Energy meter | **INA226** module (**10 mΩ / R010** shunt, ±8 A; local modules ship with R100, so replace it with a 2512 R010 1 % shunt) between the fuse and the main bus. **+ current = discharge, − = charging** |
 | Charging | Dock pads → Schottky (SS54) → **CC/CV buck (XL4015-type) set 16.8 V / 1.5 A** → main bus (feeds loads + charges through the BMS). Full charge ≈ 2.5 h; the dock also tops up between demo runs. **Charger grounding:** most XL4015 CC/CV boards sense current with a shunt between IN− and OUT−. Dock − connects **only** to the charger IN−, never to robot GND, or the current limit is bypassed (measure IN−↔OUT− on the bought module first). Lock the CV/CC trim pots with glue after setting and re-check before the event. The Pi turns dock power off (Modbus M0) once charge current tapers below 0.2 A |
 | Dock sense | Dock **pad side, before the SS54** (so the charger cannot backfeed it) → divider → ESP32 ADC (`DOCK_V`, J18). Divider low side on robot GND (≈ 75 mV error from the charger shunt, negligible). **Docked = DOCK_V > 20 V** and PLC enabled dock power |
@@ -36,8 +36,8 @@ Wire: battery/VMOT 18 AWG, motors 22–24 AWG, signals 26 AWG. Connectors: XT60 
 
 ## 2. Compute & motion control
 
-- **Raspberry Pi 3B/3B+**: Raspberry Pi OS Lite 64-bit, headless. IMX708 120° camera board (Camera Module 3 Wide class) on CSI (500 mm flex). USB to the ESP32 (serial). Wi-Fi client on the rack network.
-- **ESP32-S3-DevKitC-1** (N8 or N16R8; **not** the -V 1.8 V variants, which put GPIO47/48 at 1.8 V) plugged into the motion board. **Powered over USB from the Pi** with a USB-A → USB-C cable whose C plug is **right-angled, cable exiting away from the board** (a straight plug reaches the switch connectors J10/J11 on the bottom edge). The DevKit 5V pin is *not* connected to the board 5 V (prevents backfeed).
+- **Raspberry Pi 3B/3B+**: Raspberry Pi OS Lite 64-bit, headless. IMX708 120° camera board (Camera Module 3 Wide class) on CSI (500 mm flex). USB to the ESP32 (serial). **Wi-Fi access point** for the rack network (v0.1.27, no travel router): AP `RACKBOT` (WPA2, 2.4 GHz) with DHCP, set up with NetworkManager.
+- **ESP32-S3-DevKitC-1** (N8, N8R2 or N16R8: the firmware needs 8 MB flash and no PSRAM; **not** the -V 1.8 V variants, which put GPIO47/48 at 1.8 V) plugged into the motion board. **Powered over USB from the Pi** with a USB-A → USB-C cable whose C plug is **right-angled, cable exiting away from the board** (a straight plug reaches the switch connectors J10/J11 on the bottom edge). The DevKit 5V pin is *not* connected to the board 5 V (prevents backfeed).
 - **4 × TMC2209 StepStick** (e.g. BTT v1.3), one shared single-wire UART, VIO from ESP32 3V3 (drivers disabled if the ESP32 is unpowered).
 
 | Driver | UART addr (MS1/MS2) | Motor | Run current (rms) | Microsteps |
@@ -50,7 +50,7 @@ Wire: battery/VMOT 18 AWG, motors 22–24 AWG, signals 26 AWG. Connectors: XT60 
 ## 3. Motion board (KiCad PCB)
 
 Two-layer module carrier, **100 × 100 mm**, 1 oz copper, 4 × M3 holes at 93 × 93 pitch.
-Ordered from JLCPCB **by 14 Oct**. The same schematic can be built on perfboard as a fallback.
+Ordered from JLCPCB **by 14 Oct**, with **Economic assembly of the 45 SMD parts on 2 of the 5 boards** (`fab/rbg3-motion-jlc-bom.csv` + `-jlc-cpl.csv`); the through-hole parts are hand-soldered. The same schematic can be built on perfboard as a fallback.
 **Implemented in `pcb/motion-board/`** (KiCad 10, ERC/DRC clean; see its README for the pre-order checklist).
 As built: VMOT/GND traces 1.0 mm + GND pours on both layers, motor traces 0.6 mm, +6 V servo 1.0 mm, other supplies 0.5 mm, signals 0.25 mm.
 
@@ -76,8 +76,8 @@ As built: VMOT/GND traces 1.0 mm + GND pours on both layers, motor traces 0.6 mm
 | 40 | SERVO_B | out | Finger B, 330 Ω series |
 | 41 / 42 | I2C_SDA / I2C_SCL | i/o | INA226 @ 0x40, 4.7 k pull-ups |
 | 47 | STATUS_LED | out | WS2812 (external), 330 Ω series |
-| 48 | BUZZER | out | Via NPN (onboard RGB on some DevKit revisions also on 48/38: harmless) |
-| 38 | AUX_IN | in | Spare switch input J13 (onboard RGB LED on some DevKit revisions shares 38: harmless as an input) |
+| 48 | BUZZER | out | Via NPN, 1 k base resistor + **10 k pull-down (R25)** so the buzzer stays off while the pin floats at reset. DevKitC-1 v1.0 also drives its onboard RGB LED from 48 (v1.1 moved it to 38): the LED shows noise while the buzzer sounds, harmless |
+| 38 | AUX_IN | in | J13: **robot E-stop NO contact** (pressed = low). Reports a press at once; VMOT_SENSE alone takes up to ≈ 370 ms with the drivers disabled. Onboard RGB LED of DevKitC-1 v1.1 shares 38: harmless as an input |
 | — | Avoid | — | 0, 3, 45, 46 (strapping); 19/20 (USB); 43/44 (UART0); 33–37 (octal flash/PSRAM on R8/R16 modules) |
 
 Switch inputs: internal pull-up + 10 k external pull-up to 3V3, 1 k series, 100 nF to GND (debounce/ESD).
@@ -90,7 +90,7 @@ Switch inputs: internal pull-up + 10 k external pull-up to 3V3, 1 k series, 100 
 | J2 5V_IN | 2-pin 5.08 screw terminal | +5 V, GND from the 5 V buck (which also feeds the Pi). Not reverse-protected: polarity on the silkscreen |
 | J3 6V_SERVO_IN | 2-pin 5.08 screw terminal | +6 V rail (buck set to **5.8 V**), GND from the servo buck. Not reverse-protected: polarity on the silkscreen |
 | J4…J7 (MOTOR_L/R/Z/Y) | JST-XH 4-pin | 2B, 2A, 1A, 1B (match the StepStick pinout) |
-| J8…J13 | JST-XH 3-pin | GND, SIG, 3V3 (Z_HOME, Y_HOME, NOSE, SLOT_A, SLOT_B, AUX_IN on GPIO38). KW11 COM → GND, NC (home switches) or NO (others) → SIG; the 3V3 pin is spare |
+| J8…J13 | JST-XH 3-pin | GND, SIG, 3V3 (Z_HOME, Y_HOME, NOSE, SLOT_A, SLOT_B, AUX_IN on GPIO38). KW11 COM → GND, NC (home switches) or NO (others) → SIG; the 3V3 pin is spare. J13: the robot E-stop's NO contact (COM → GND, NO → SIG) |
 | J14 / J15 (SERVO_A/B) | 2.54 3-pin male header | GND, 6 V, SIG |
 | J16 (I2C) | JST-XH 4-pin | 3V3, GND, SDA, SCL |
 | J17 (WS2812) | JST-XH 3-pin | 5 V, DIN, GND |
@@ -112,6 +112,16 @@ Switch inputs: internal pull-up + 10 k external pull-up to 3V3, 1 k series, 100 
   (unidirectional; standoff 18 V > 16.8 V, breakdown 20–22 V). It clamps switch and E-stop ringing at about
   21–23 V, because those currents are small. The datasheet clamp of 29.2 V applies only at the full rated pulse
   current and is right at the TMC2209's 29 V operating limit (32 V absolute max). An SMBJ17A (27.6 V clamp) is the drop-in if more margin is wanted.
+- Low-voltage rails (v0.1.25, from the schematic review): **+6V_SERVO** 220 µF / 25 V electrolytic (C18) + 100 nF
+  (C19), because the servo buck is off-board on a lead and MG90S start/stall pulses would sag the rail at the
+  servos (25 V, so a buck failing short to the 16.8 V bus does not also destroy the capacitor). **+5V** (LED,
+  buzzer) 10 µF + 100 nF (C20/C21) near J17/J19. **+3V3** 10 µF + 100 nF (C22/C23) between the drive sockets, on
+  top of the DevKit's own regulator capacitors.
+- Test pads (SMD, Ø 2 mm, `TP1`–`TP7`): VM, 5V, 6V, 3V3 in a row between the drive L and drive R sockets;
+  UART, EN and GND next to R6/R5 at the DevKit edge. They can be probed with the modules fitted.
+- Grounding (harness rule): the board GND is reached through J1 (motor return), J2/J3 (buck grounds) and the
+  Pi↔ESP32 USB cable, so motor current can share the USB ground. Keep the J1 GND lead short and thick, and
+  run the 5 V and servo buck output grounds to J2/J3 rather than back to the battery.
 - Reverse polarity: the XT30 is keyed, so a reversed VMOT harness needs a mis-crimped pigtail. If that happens,
   the TVS conducts and the 7.5 A fuse blows, but until it does the fault current also returns through board GND,
   the 5 V buck wiring and the Pi↔ESP32 USB ground. Nothing on the board actively blocks reverse polarity
@@ -138,13 +148,12 @@ Schematic, PCB layout, DRC/ERC clean, Gerbers + drill + BOM + position file (JLC
 |---|---|
 | **Delta 24 V DIN-rail PSU** | 24 V, **≥ 75 W**, universal 100–240 VAC input (Thailand 220 V / 50 Hz). Chosen: **Delta LYTE II DRL-24V120W1EN** (24 V / 5 A, 120 W, 123.6 × 30 × 116.8 mm) |
 | **Delta DVP-12SE11T PLC** | 8 DI / 4 DO (NPN transistor), 24 VDC, built-in Ethernet, **Modbus TCP server**. Programmed with ISPSoft/WPLSoft |
-| Dock power relay | 24 V relay module (≥ 5 A contact) driven by PLC Y0, + 3 A polyfuse on the dock + line |
-| Tower light | Mini 3-color 24 VDC LED (R/Y/G), common + |
+| Dock power relay | 24 V relay module (≥ 5 A contact) driven by PLC Y0, + 3 A polyfuse on the dock + line. Stays on the rack's DIN rail; its output runs to the charging dock at the **spare station** over a **2-core 0.75 mm² lead (≈ 1.5 m)**: ≈ 1.2 A at 24 V, < 0.1 V drop |
+| Status lamps | 3 × 22 mm panel indicator lamps, 24 VDC LED (R/Y/G), common +, in a 3-hole control box on the rack top (replaced the tower light in v0.1.27) |
 | E-stop | Mushroom NC, 2 contacts: one to PLC X5, one in series with the dock relay coil (hardware interlock) |
-| Router | Travel router (e.g. GL.iNet GL-MT300N-V2) powered from 24 → 5 V USB buck; LAN to PLC, Wi-Fi AP `RACKBOT` |
 | Terminal blocks | DIN rail terminal blocks for 24 V / 0 V distribution |
 
-Power budget: PLC ≈ 5 W, light 3 W, router 3 W, robot charger ≈ 28 W → **≈ 40 W**, so the 120 W PSU runs at about a third of its rating.
+Power budget: PLC ≈ 5 W, lamps < 1 W, robot charger ≈ 28 W → **≈ 35 W**, so the 120 W PSU runs at about a third of its rating.
 
 ### 4.2 PLC I/O map
 
@@ -154,14 +163,14 @@ Power budget: PLC ≈ 5 W, light 3 W, router 3 W, robot charger ≈ 28 W → **�
 | X1 | Bay 2 caddy present | |
 | X2 | Bay 3 caddy present | |
 | X3 | Bay 4 caddy present | |
-| X4 | Rack dock switch | Robot nose fully docked |
+| X4 | Spare-station dock switch | Robot nose fully docked at the charging dock (home). The rack dock has no switch; the robot's NOSE switch confirms docking there |
 | X5 | Rack E-stop OK | **NC**: 1 = OK, 0 = pressed |
-| X6 | Spare S1 (GOOD) present | Cable to the spare station (≈ 1 m, 4-core) |
+| X6 | Spare S1 (GOOD) present | 4-core cable to the spare station (≈ 1.5 m): +24 V, X4, X6, X7 |
 | X7 | Spare S2 (RMA) present | |
-| Y0 | Dock power enable | Relay → dock contacts. **Interlock in ladder: Y0 = cmd AND X4 AND X5 AND watchdog OK** |
-| Y1 | Tower GREEN | Idle / all bays OK |
-| Y2 | Tower YELLOW | Swap in progress / degraded bay |
-| Y3 | Tower RED | Fault / E-stop / Pi watchdog lost |
+| Y0 | Dock power enable | Relay → dock contacts at the spare station. **Interlock in ladder: Y0 = cmd AND X4 AND X5 AND watchdog OK** |
+| Y1 | Lamp GREEN | Idle / all bays OK |
+| Y2 | Lamp YELLOW | Swap in progress / degraded bay |
+| Y3 | Lamp RED | Fault / E-stop / Pi watchdog lost |
 
 Input wiring: switches connect +24 V to Xn with S/S tied to 0 V (the DVP-SE inputs accept sink or source wiring through S/S; on above 15 V, 5 mA).
 Output wiring: lamp/relay coil between +24 V and Yn (NPN sinking). The 12SE11T transistor outputs need their own supply:
@@ -173,19 +182,26 @@ The Modbus register map is in [03-software.md §4](03-software.md#4-rack-modbus-
 
 | Device | IP |
 |---|---|
-| Travel router (AP `RACKBOT`, WPA2) | 192.168.8.1 |
-| Delta PLC | 192.168.8.10 (static, set in ISPSoft/DCISoft) |
-| Raspberry Pi | 192.168.8.20 (static/DHCP reservation) |
-| Dashboard clients (laptop/phone) | DHCP |
+| Raspberry Pi (AP `RACKBOT`, WPA2, DHCP server) | 192.168.8.1 |
+| Rack controller: ESP32 (P40), or the Delta PLC | 192.168.8.10 (static) |
+| Dashboard clients (laptop/phone) | DHCP from the Pi |
+
+No travel router since v0.1.27: the Pi on the robot is the access point, so the rack ESP32 and the dashboard join it.
+The 2 s watchdog covers Wi-Fi dropouts. If the Delta PLC is used after all, its Ethernet port needs a Wi-Fi client
+bridge (any router in client/WISP mode, kept at 192.168.8.10 on the PLC side).
 
 ### 4.4 Fallback rack controller (if no PLC)
 
-ESP32 DevKit + 8-ch 24 V optocoupler input board + 4-ch MOSFET output board on the same DIN rail.
+ESP32 DevKit V1 (WROOM-32) + 8-ch 24 V → 3.3 V optocoupler input board (X0–X7) + 2 × dual MOSFET module (D4184, 3.3 V
+trigger, low-side: Y0–Y3) + 24 → 5 V buck, on the same DIN rail (P40, ≈ 18 USD, counted in the budget as a contingency since
+v0.1.27). The MOSFETs sink like the PLC's NPN outputs, so the status lamps keep their common +24 V wiring and the dock relay
+module is set to **low-level trigger**. The rack E-stop's second contact still cuts the dock relay coil in hardware.
 The firmware exposes the **identical Modbus TCP register map** over Wi-Fi, so the Pi software does not change.
 
 ## 5. Safety summary
 
 - Robot E-stop is a hard cut of VMOT. Rack E-stop is a hard cut of dock power, plus a PLC input → Pi stops the robot in software.
 - PLC watchdog: if the Pi heartbeat register stops changing for 2 s → RED lamp and dock power off.
-- Dock contacts are energized only while the robot is fully docked (X4) — no live 24 V exposed otherwise.
+- Dock contacts (spare station) are energized only while the robot is fully docked there (X4) — no live 24 V exposed
+  otherwise. The relay stays at the rack, so the rack E-stop still cuts dock power in hardware.
 - Battery: BMS protection, fuse, XT60 removable. Never charge unattended. Charging is only via the CC/CV module.

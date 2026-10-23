@@ -55,6 +55,17 @@ PLACEMENT = {
     "R19": (124.0, 180.0, 0, "F"), "R20": (134.0, 180.0, 0, "F"),
     "R21": (110.0, 112.0, 90, "F"), "R22": (110.0, 117.0, 90, "F"), "R23": (110.0, 129.0, 90, "F"),
     "R24": (127.0, 173.0, 0, "F"), "Q1": (132.0, 173.0, 0, "F"), "D2": (138.0, 173.0, 0, "F"),
+    "R25": (134.5, 176.5, 0, "F"),   # BUZ_B pull-down: Q1 stays off while GPIO48 floats at reset
+    # Servo rail bulk (the servo buck is off-board on a lead): electrolytic between the Z and Y sockets,
+    # 100 nF next to the servo headers.
+    "C18": (132.75, 164.0, 0, "F"), "C19": (129.5, 177.0, 0, "F"),
+    # +5V (LED, buzzer) decoupling next to J17/J19; +3V3 bulk between the drive sockets.
+    "C20": (110.0, 150.0, 90, "F"), "C21": (110.0, 156.5, 90, "F"),
+    "C22": (120.0, 142.0, 0, "F"), "C23": (123.5, 142.0, 0, "F"),
+    # Test points (SMD pads, so the B.Cu pour runs under them). Power rails in a row between the drive L and
+    # drive R socket columns (x 126.2-141.5); TMC_UART, EN_N and a GND next to R6/R5 at the DevKit edge.
+    **{f"TP{i + 1}": (x, 141.5, 0, "F") for i, x in enumerate((129.5, 132.5, 135.5, 138.5))},
+    "TP5": (163.0, 136.0, 0, "F"), "TP6": (163.0, 131.0, 0, "F"), "TP7": (163.0, 140.5, 0, "F"),
     # Mounting holes, 93 x 93 mm pitch.
     "H1": (103.5, 103.5, 0, "F"), "H2": (196.5, 103.5, 0, "F"),
     "H3": (103.5, 196.5, 0, "F"), "H4": (196.5, 196.5, 0, "F"),

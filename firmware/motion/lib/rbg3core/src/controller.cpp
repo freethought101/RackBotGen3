@@ -57,7 +57,7 @@ void Controller::begin() {
   char data[24];
   snprintf(data, sizeof data, "RBG3-FW %s", FW_VERSION);
   event("BOOT", data);
-  if (hal_.vmot() < settings.vmot_min) event("ESTOP");  // VMOT off at boot: report it like an E-stop
+  if (hal_.vmot() < settings.vmot_min || in_.estop) event("ESTOP");  // VMOT off at boot: report it like an E-stop
 }
 
 void Controller::feed(char c) {
@@ -476,9 +476,12 @@ void Controller::enterEstop(const char* evt) {
 
 void Controller::updateSafety(uint32_t now) {
   float v = hal_.vmot();
-  if (!estop_ && v < settings.vmot_min) return enterEstop("ESTOP");
+  // The button's NO contact reports a press at once; VMOT_SENSE alone takes up to ~370 ms to fall below
+  // vmot_min when the drivers are disabled (pcb/motion-board/sim).
+  bool pressed = hal_.inputs().estop;
+  if (!estop_ && (pressed || v < settings.vmot_min)) return enterEstop("ESTOP");
   if (estop_) {
-    if (v < settings.vmot_ok) {
+    if (pressed || v < settings.vmot_ok) {
       vmot_ok_since_ = 0;
       return;
     }
@@ -526,7 +529,7 @@ void Controller::telemetry() {
   if (job_ == Job::FINGER) busy[n++] = 'F';
   if (vel_active_) busy[n++] = 'V';
   uint8_t sw = (in_.z_home ? 1 : 0) | (in_.y_home ? 2 : 0) | (in_.nose ? 4 : 0) | (in_.slot_a ? 8 : 0) |
-               (in_.slot_b ? 16 : 0);
+               (in_.slot_b ? 16 : 0) | (in_.estop ? 32 : 0);
   char homed[3] = {};
   int h = 0;
   if (homed_[AX_Z]) homed[h++] = 'Z';

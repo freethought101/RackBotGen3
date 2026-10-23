@@ -15,7 +15,7 @@ The live, per-part order list is the Notion **Parts & Order List** database, mir
 |---|---|---|
 | NEMA17 42×40, ≥ 0.4 N·m (Tokopedia) | 4 | 42 |
 | 2020 V-slot 6 × 1 m (4.96 m of cuts + kerf) + 2040 V-slot 0.42 m (robot + rack + spare station), Lajarus Teknik | — | 23 |
-| Mini V-wheel kits | 8 | 8 |
+| Mini V-wheels + 4 mini eccentric spacers, 4 plain 6 mm spacers, 10 shims 5 × 8 × 1 | 8 | 10 |
 | Tr8×2 lead screw 350 + anti-backlash nut + coupler + KFL08 flange bearing | 1 | 7 |
 | GT2 belt (Y axis), 20T, idler | set | 3 |
 | Wheels 80 × 24 mm: printed PETG hub + TPU 95A tire (filament in §1.4) | 2 | 0 |
@@ -23,13 +23,13 @@ The live, per-part order list is the Notion **Parts & Order List** database, mir
 | MG90S servo (Tokopedia) | 3 | 4 |
 | Lever microswitches KW11-3Z (13 + 2 spare) | 15 | 3 |
 | Fastener kit (~120 M5 T-nuts, screws incl. 7 × M5×16 + 3 × M5×25 for the tray, ~48 corner brackets, M3 + ~60 M3 / ~15 M5 heat-set inserts) | — | 28 |
-| **Subtotal** | | **121** |
+| **Subtotal** | | **123** |
 
 ### 1.2 Robot — electronics
 
 | Item | Qty | USD |
 |---|---|---|
-| Raspberry Pi 3B/3B+ | 1 | 0 (team-owned) |
+| Raspberry Pi 3 Model B+ (not team-owned after all, Tokopedia) | 1 | 70 |
 | IMX708 120° camera board (Camera Module 3 **Wide** class, Tokopedia) | 1 | 37 |
 | microSD 32 GB A1 | 1 | 8 |
 | CSI flex cable 500 mm | 1 | 1 |
@@ -39,11 +39,11 @@ The live, per-part order list is the Notion **Parts & Order List** database, mir
 | INA226 module + **10 mΩ / R010** 2512 shunt (local modules ship R100: swap it) | 1 | 2 |
 | 18650 3.5 Ah × 4 + 4S BMS + holder/nickel strip | set | 33 |
 | XT60/XT30, fuse holder, rocker switch, robot E-stop, silicone wire, JST-XH kit | set | 25 |
-| Motion PCB, JLCPCB 5 pcs + shipping | 1 | 25 |
+| Motion PCB, JLCPCB 5 pcs + Economic SMD assembly of 2 + shipping | 1 | 40 |
 | Passives, headers, StepStick sockets, TVS, caps, WS2812, buzzer (itemised, Tokopedia) | set | 5 |
 | USB-A to USB-C cable, 90° C plug (Pi → DevKit) | 1 | 2 |
 | VMOT relay for the E-stop (12 V automotive, 30/40 A) + flyback diode | 1 | 2 |
-| **Subtotal** | | **163** |
+| **Subtotal** | | **248** |
 
 ### 1.3 Rack & spare station — electrical
 
@@ -51,15 +51,14 @@ The live, per-part order list is the Notion **Parts & Order List** database, mir
 |---|---|---|
 | **Delta 24 V DIN-rail PSU, DRL-24V120W1EN (120 W)** | 1 | 39 |
 | DIN rail, terminal blocks, 24 V relay module, polyfuse (CNC Store Bandung) | set | 5 |
-| 24 V mini tower light R/Y/G | 1 | 8 |
+| Status lamps: 3 × 22 mm 24 V panel indicators (R/Y/G) in a 3-hole box (replaces the tower light, v0.1.27) | 1 | 3 |
 | Rack E-stop (2 NC contacts) | 1 | 3 |
-| 24 → 5 V USB buck (router) | 1 | 2 |
-| Dock contacts (pogo/brass), copper sheet, spare-station cable | set | 8 |
-| Travel router GL.iNet GL-MT300N-V2 (not owned; Tokopedia) | 1 | 38 |
+| Dock contacts (pogo/brass), copper sheet, spare-station cables (4-core signal + 2-core dock power) | set | 9 |
 | **Delta DVP-12SE11T PLC** | 1 | **not in budget, loan/sponsor** (≈ 150–250) |
-| **Subtotal** | | **103** |
+| **ESP32 rack controller (PLC fallback, contingency; likely needed)**: DevKit + 8-ch 24 V opto inputs + 2 × dual MOSFET outputs + buck (02 §4.4) | set | 18 |
+| **Subtotal** | | **77** |
 
-### 1.4 Printing & demo materials
+### 1.4 Printing, demo materials & services
 
 | Item | USD |
 |---|---|
@@ -68,22 +67,23 @@ The live, per-part order list is the Notion **Parts & Order List** database, mir
 | TPU 95A 0.25 kg | 8 |
 | Steel ballast + epoxy (dummy drives) | 8 |
 | Tag/label printing, table mat | 10 |
-| **Subtotal** | **77** |
+| Claude Pro, 1 month (Rp360k) | 23 |
+| **Subtotal** | **100** |
 
 ### 1.5 Total
 
 | | USD |
 |---|---|
-| Robot mechanical | 121 |
-| Robot electronics | 163 |
-| Rack electrical | 103 |
-| Printing & demo | 77 |
-| **Total** | **≈ 464** (of 500) |
+| Robot mechanical | 123 |
+| Robot electronics | 248 |
+| Rack electrical | 77 (59 with the PLC loan) |
+| Printing, demo & services | 100 |
+| **Total** | **≈ 548** (of 500: **≈ 48 over**; ≈ 530 if the PLC loan comes through) |
 
-The margin is ≈ 36 USD after the v0.1.12–v0.1.17 move to local (Tokopedia) suppliers and buying the travel router (v0.1.16); only the motion PCB (JLCPCB) is imported. **Savings options** (use them if prices come in higher, or a router must be bought):
+**v0.1.27: the budget is ≈ 48 USD over** after buying the Raspberry Pi (+70), one month of Claude Pro (+23) and counting the ESP32 rack controller (+18), since PLC access now looks unlikely; dropping the travel router (−40, the Pi is the access point) and replacing the tower light with panel lamps (−5) took back 45. The savings options below recover ≈ 60–90 USD; otherwise the overrun needs the team's approval. Before that, the margin was ≈ 20 USD after the v0.1.12–v0.1.17 move to local (Tokopedia) suppliers, buying the travel router (v0.1.16) and JLCPCB SMD assembly of the motion board (v0.1.20); only the motion PCB (JLCPCB) is imported. **Savings options** (use them if prices come in higher, or a router must be bought):
 wide-angle OV5647 camera instead of the IMX708 board (−29, more distortion) ·
-3 panel LEDs instead of the tower light (−7) · team-owned filament or fasteners (−20 to −50) · drop the 3rd servo and spare switches (−5). Priced backup options and local (Tokopedia) sources: `docs/sourcing-options.md`.
-**PLC**: request a loan from Delta Thailand this week. If none, buying a DVP12SE11T costs ≈ Rp2.6–3.3M (≈ 165–210 USD) on Tokopedia, which does not fit the budget, so use the ESP32 fallback rack controller (≈ +20 USD, see 02 §4.4) unless a sponsor covers it. **Pi 3**: team-owned; a replacement 3B+ is ≈ Rp1.1M (≈ 70 USD).
+team-owned filament or fasteners (−20 to −50) · drop the 3rd servo and spare switches (−5). Priced backup options and local (Tokopedia) sources: `docs/sourcing-options.md`.
+**PLC**: request a loan from Delta Thailand this week. If none, buying a DVP12SE11T costs ≈ Rp2.6–3.3M (≈ 165–210 USD) on Tokopedia, which does not fit the budget, so use the ESP32 fallback rack controller (≈ +20 USD, see 02 §4.4) unless a sponsor covers it. **Pi 3**: not team-owned after all (23 Oct), so a 3B+ is bought (≈ Rp1.1M ≈ 70 USD, v0.1.27).
 
 ## 2. Schedule
 
@@ -148,10 +148,10 @@ Until parts arrive, software runs in sim mode and mechanical fit is tested with 
 | T6 | Docking | Start 700 mm away, ±50 mm lateral, ±10° heading → 20/20 docks, X repeatability ±2 mm | W4 |
 | T7 | Bay fine-alignment | Residual Z error ≤ 1 mm after correction (20×) | W4 |
 | T8 | Vision performance | ≥ 8 fps at 640×480 on the Pi 3 while the dashboard streams | W3–W4 |
-| T9 | PLC / rack | All I/O match the map. Watchdog trips in 2 ± 0.5 s. Dock power only with dock + E-stop OK | W3–W4 |
+| T9 | PLC / rack | All I/O match the map. Watchdog trips in 2 ± 0.5 s. Dock power only with the spare-station dock switch + E-stop OK | W3–W4 |
 | T10 | E-stop | Robot motion stops < 0.2 s. Mission recovers via re-home + resume | W4 |
 | T11 | **Full swap** | Cycle ≤ 3 min. **≥ 48/50 cycles** without manual intervention | W5 |
-| T12 | Battery & charging | 1 h continuous cycling, cells ≥ 3.5 V. Charging confirmed on dock (I < 0) | W5 |
+| T12 | Battery & charging | 1 h continuous cycling, cells ≥ 3.5 V. Charging confirmed on the spare-station dock (I < 0) | W5 |
 | T13 | Dashboard | All views live on a laptop + phone. Fault injection → auto job → bay OK | W4–W5 |
 | T14 | **Pack test** | Every bag ≤ 7 kg incl. personal items. Reassembly ≤ 20 min + calibration ≤ 10 min from a written checklist | W5 |
 
@@ -181,7 +181,7 @@ Log every swap (timestamp, result, cycle time, Wh) in SQLite. The data goes into
 - [ ] No butane soldering iron. Leave the soldering iron at home or put it in checked baggage.
 - [ ] One-page device description ("educational robot prototype for Delta Cup 2026, no hazardous materials") + Delta invitation letter for security and customs.
 - [ ] Thailand mains 220 V / 50 Hz, sockets A/B/C/O. The Delta PSU is universal input. Bring 2 plug adapters and a power strip.
-- [ ] Wi-Fi router SSID and IPs unchanged. Dashboard tested offline (no internet needed).
+- [ ] Pi access point SSID `RACKBOT` and IPs unchanged. Dashboard tested offline (no internet needed).
 - [ ] Laptop with: STL files, firmware build, Pi SD card image backup, ISPSoft project, demo video (backup), pitch deck.
 - [ ] National flag (required by the guidebook) + university flag.
 - [ ] Reassembly and calibration checklist printed.

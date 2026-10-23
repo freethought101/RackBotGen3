@@ -31,6 +31,7 @@ class FakeHal : public Hal {
   bool reset_flag = false;
   int configure_calls = 0;
   bool slot_a = false, slot_b = false;
+  bool estop_button = false;     // E-stop NO contact on AUX_IN
   bool nose_fixed = false;       // NOSE input when no dock distance is set
   double nose_at_mm = -1;        // NOSE closes when the wheels have moved this far forward (< 0: off)
   bool home_wire_broken = false; // NC switch with a broken wire reads "pressed"
@@ -97,6 +98,7 @@ class FakeHal : public Hal {
     in.nose = nose_at_mm >= 0 ? wheels >= nose_at_mm : nose_fixed;
     in.slot_a = slot_a;
     in.slot_b = slot_b;
+    in.estop = estop_button;
     return in;
   }
   float vmot() override { return vmot_v; }

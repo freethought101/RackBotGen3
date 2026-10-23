@@ -38,6 +38,7 @@ UPRIGHT_Y = (20.0, 135.0)      # upright centers along y
 M5_CLEAR = 5.3
 M3_CLEAR = 3.4
 M3_INSERT_D = 4.0              # heat-set insert pilot
+HDD_SCREW_CLEAR = 3.7          # drive bottom screws: real HDDs are 6-32 UNC (3.5 mm), the dummy takes M3
 
 # Docking (station frame: z = 0 on the table)
 NOSE_W = 200.0                 # robot nose width

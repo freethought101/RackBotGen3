@@ -37,8 +37,11 @@ On the Pi (no `--sim`): `SerialMotion` on `/dev/ttyACM0`, `ModbusRack` at `192.1
 
 - **Resume** re-runs the faulted state; each state first checks whether its goal is already met (slot switches),
   so resuming after a fault that happened mid-state is safe. If the drivers lost power, resume re-homes Y then Z first.
-- **Abort** marks the job aborted and drives back to the rack; caddies stay where they are (inventory shows them).
-- **Job preconditions**: robot docked at the rack, bay occupied, a good spare in S1, S2 empty, tray empty.
+- **Home** is the spare station (`config.HOME`): it has the charging dock and the PLC dock switch X4. A job starts
+  there with the pick from S1 and ends there after placing the RMA caddy in S2, so RETURN normally just turns the
+  dock power back on.
+- **Abort** marks the job aborted and drives back home; caddies stay where they are (inventory shows them).
+- **Job preconditions**: robot docked at the spare station, bay occupied, a good spare in S1, S2 empty, tray empty.
   Otherwise the job is `rejected`.
 - **Approach**: besides "tag lost > 0.5 s", the robot also backs off when it gets closer than `abort_d` (200 mm)
   without meeting the hand-off criteria; otherwise it would creep into the station misaligned.

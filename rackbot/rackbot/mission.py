@@ -16,7 +16,7 @@ from collections import deque
 from dataclasses import dataclass, field
 from enum import Enum
 
-from .config import Config, Op, Shelf
+from .config import HOME, Config, Op, Shelf
 from .motion import MotionError
 from .vision import approach_step
 
@@ -26,7 +26,6 @@ log = logging.getLogger(__name__)
 class S(str, Enum):
     STARTUP = "STARTUP"
     IDLE_DOCKED = "IDLE_DOCKED"
-    TO_SPARE = "TO_SPARE"
     PICK_GOOD = "PICK_GOOD"
     TO_RACK = "TO_RACK"
     EXTRACT_FAILED = "EXTRACT_FAILED"
@@ -37,8 +36,9 @@ class S(str, Enum):
     FAULT = "FAULT"
 
 
-JOB_STATES = [S.TO_SPARE, S.PICK_GOOD, S.TO_RACK, S.EXTRACT_FAILED, S.INSERT_GOOD, S.TO_SPARE_RMA,
-              S.PLACE_RMA, S.RETURN]
+# A job starts docked at HOME (the spare station), so the first step is the pick; RETURN only drives
+# after an abort and otherwise just turns the dock power back on.
+JOB_STATES = [S.PICK_GOOD, S.TO_RACK, S.EXTRACT_FAILED, S.INSERT_GOOD, S.TO_SPARE_RMA, S.PLACE_RMA, S.RETURN]
 
 # Faults that must not be retried by a primitive
 NO_RETRY = {"E_ESTOP", "E_ABORT", "E_CADDY_ID", "E_ALIGN"}
@@ -277,8 +277,8 @@ class Mission:
         tel = await self.motion.status()
         if not (tel.nose and self.rack.state.dock):
             self.location = None
-            raise Fault("E_NOT_DOCKED", "place the robot docked at the rack, then resume")
-        self.location = "rack"
+            raise Fault("E_NOT_DOCKED", "place the robot docked at the spare station, then resume")
+        self.location = HOME
         await self.rack.set_dock_power(True)
         self._set_state(S.IDLE_DOCKED)
 
@@ -354,8 +354,8 @@ class Mission:
     def _check_preconditions(self, bay: int) -> None:
         rs = self.rack.state
         tel = self.motion.telemetry
-        if self.location != "rack":
-            raise JobRejected("robot is not docked at the rack")
+        if self.location != HOME:
+            raise JobRejected("robot is not docked at the spare station")
         if not rs.online:
             raise JobRejected("rack PLC offline")
         if not rs.bay_present[bay - 1]:
@@ -371,13 +371,15 @@ class Mission:
         ctx.states.append({"state": st.value, "t": round(self.clock.now() - ctx.t_start, 2)})
         bay = self.cfg.bay(ctx.bay)
         tel = await self.motion.status()
-        if st in (S.TO_SPARE, S.TO_SPARE_RMA):
+        if st == S.TO_SPARE_RMA:
             await self._attempt("goto spare", lambda: self._goto("spare"), self._recover_drive)
-        elif st in (S.TO_RACK, S.RETURN):
+        elif st == S.TO_RACK:
             await self._attempt("goto rack", lambda: self._goto("rack"), self._recover_drive)
-            if st == S.RETURN:
-                await self._start_charging()
+        elif st == S.RETURN:
+            await self._attempt("goto home", lambda: self._goto(HOME), self._recover_drive)
+            await self._start_charging()
         elif st == S.PICK_GOOD:
+            await self.rack.set_dock_power(False)  # no charging during a job
             if not tel.slot_loaded("A"):
                 s1 = self.cfg.spare("S1")
                 ctx.caddy_in = await self._attempt("pull A", lambda: self._pull("A", s1, None), self._recover_y)
@@ -396,7 +398,7 @@ class Mission:
                 await self._attempt("push B", lambda: self._push("B", s2, ctx.caddy_out), self._recover_y)
 
     async def _return_home(self) -> None:
-        await self._attempt("goto rack", lambda: self._goto("rack"), self._recover_drive)
+        await self._attempt("goto home", lambda: self._goto(HOME), self._recover_drive)
         await self._start_charging()
         self._set_state(S.IDLE_DOCKED)
 
@@ -541,7 +543,7 @@ class Mission:
         tag = self.cfg.station_tag(station)
         await self._ensure_y_home()
         await self._secure_fingers()
-        if self.location == "rack":
+        if self.location == HOME:
             await self.rack.set_dock_power(False)
         await self._step("Z approach", self.motion.move_z, self.g.z_approach)
         if tel.nose:
@@ -553,8 +555,8 @@ class Mission:
         tel = await self.motion.status()
         if not tel.nose:
             raise Fault("E_NODOCK", "NOSE not pressed after DOCK")
-        if station == "rack" and not await self.rack.wait_for(lambda s: s.dock, 2.0):
-            raise Fault("E_NODOCK", "PLC does not see the robot docked (X4)")
+        if station == HOME and not await self.rack.wait_for(lambda s: s.dock, 2.0):
+            raise Fault("E_NODOCK", "PLC does not see the robot docked at the spare station (X4)")
         self.location = station
         await self._step("Z drive", self.motion.move_z, self.g.z_drive)
 
@@ -608,7 +610,7 @@ class Mission:
             await self.clock.sleep(0.25)
         if not ok:
             raise Fault("E_NOCHARGE", "dock power on but no charging current")
-        self.events("info", "robot", "docked at rack, charging")
+        self.events("info", "robot", "docked at the spare station, charging")
 
     async def _idle_housekeeping(self) -> None:
         tel = self.motion.telemetry

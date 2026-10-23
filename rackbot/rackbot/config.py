@@ -11,6 +11,8 @@ from typing import Any
 import yaml
 
 DEFAULT_PATH = Path(__file__).resolve().parent.parent / "config.yaml"
+# The station with the charging contacts and the PLC dock switch (X4): the robot waits and charges here.
+HOME = "spare"
 
 
 class Section(dict):
