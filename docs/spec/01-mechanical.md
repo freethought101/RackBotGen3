@@ -86,7 +86,7 @@ Print orientation: floor down, no supports. ≈ 6 h each.
 
 | Item | Spec |
 |---|---|
-| Footprint / height | 220 W (base feet) × ≈ 335 D (dock mouth y = −85 to rear electronics y ≈ 250) × 360 H, plus tower light |
+| Footprint / height | 220 W (base feet) × ≈ 335 D (dock mouth y = −85 to rear electronics y ≈ 250) × 360 H, plus the status lamp box |
 | Frame | 2020 V-slot: **2 base cross members × 220** (y 10–30 and 125–145, on the table), **4 uprights × 320** (centres x ±80, y 20 / 135), **2 top cross members × 180**. Inside corner brackets. **2.08 m total**. The shelves brace the frame front-to-back |
 | Bay shelves (×4, identical part, also used ×2 on the spare station) | Printed: 4 mm floor, side channel walls (116 clear), front lead-in 45° × 6, back stop at y = 150, top of floor at `H_BAY[n]`. Bolted to uprights (2 × M5 each side) |
 | Bay switch | Lever microswitch (KW11-3Z) at back stop. Pressed by the caddy rear in the last 3 mm of travel. Wired to PLC (see 02) |
@@ -95,7 +95,7 @@ Print orientation: floor down, no supports. ≈ 6 h each.
 | Dock block (printed, `dock_block`) | Bolted (2 × M5) to the front face of the front base cross member. V-funnel 0–40 high: mouth 282 wide at y = −85, then a **10 mm parallel throat 202 wide** (nose 200 + 2) ending at the stop. Holds the nose to **±1 mm in X**. Funnel is shorter than the 60 mm nose so the robot body never enters it |
 | Dock stop & switch | Stop face at **y = −30**, 220 wide, **90 high** (stays below the tray at the lowest Z). The switch bracket and slot (z 70–85) are printed, but **no switch is fitted at the rack**: the PLC dock input (X4) belongs to the charging dock at the spare station, and the robot's NOSE switch confirms docking here |
 | Dock contacts | None since v0.1.22: the recesses are printed (same part as the spare station) but left empty. The robot charges at the spare station (§5) |
-| Rear | DIN rail 35 mm (≈ 250) between rear uprights: Delta PSU, Delta PLC, terminal blocks, 24→5 V buck for the router. Mushroom E-stop and mini 3-color tower light on top |
+| Rear | DIN rail 35 mm (≈ 250) between rear uprights: Delta PSU, Delta PLC, terminal blocks, ESP32 rack controller (P40) if no PLC. Mushroom E-stop and the 3-lamp status box on top |
 | Flat-pack | Uprights unbolt from base/top (8 × M5 + brackets). Shelves stay on uprights in pairs. Max piece ≤ 400 long |
 | Mass | ≈ 1.7 kg (frame 1.04, shelves 0.25, dock 0.25, tags, fasteners), ≈ 1.0 kg electronics |
 
@@ -284,7 +284,7 @@ why §2 gives 130–150 g for the caddy.
 | Part (script) | Qty · material · print | Size · vol. | What it does | Mounts to / fasteners |
 |---|---|---|---|---|
 | Nose / bumper (`nose.py`) | 1 · PETG (+ TPU strip, not modeled) | 200 × 60 × 60 · 161 cm³ | Fits the 202 mm dock throat (±1 mm in X), its tip stops at y = −30. Carries the 2 copper charging pads (x ±40, z 60) and the dock-detect KW11 (lever at x = 20). z 30–90, so it stays under the tray | Front 2020 cross member (y −110…−90) |
-| Deck (`deck.py`) | 1 · PETG · flat | 246 × 300 × 5 · 355 cm³ | Main plate. Carries the mast collar, Z-motor mount, electronics/Pi trays and battery box, and caps the drive brackets. Has a cut-out for the mast | Sits on the 2020 side rails at z 62–67; M3 into the inserts in the drive-bracket webs |
+| Deck (`deck.py`) | 1 · PETG · flat | 246 × 300 × 5 · 355 cm³ | Main plate. Carries the mast collar, Z-motor mount, electronics/Pi trays and battery box, and caps the drive brackets. Has a cut-out for the mast. Laser-cut option (undecided): `deck_dxf.py` → `cad/DXF/robot/deck.dxf`, same outline and holes, for 5 mm acrylic | Sits on the 2020 side rails at z 62–67; M3 into the inserts in the drive-bracket webs; trays and battery box M3 + nut through the deck (6 holes) |
 | Drive bracket (`drive_bracket.py`) | 2 (one mirrored) · PETG | 48 × 64 × 48 · 21 cm³ | Holds a drive NEMA17 under the deck, shaft out to the wheel | Motor on the outer plate; 2 webs to the side rail's outer face (M5 + T-nut, head inserted through the bore before the wheel goes on); M3 × 4 inserts in the web tops for the deck |
 | Drive hub (`drive_wheel.py`) | 2 · PETG · outboard face down | Ø75 × 24 · 27 cm³ | Wheel hub direct on the 5 mm D-shaft (axle y −135, z 40), bore Ø5.3 (the set screw takes up the play). The blind bore clears the 24 ± 1 mm shaft, so the hub is located by a 2 mm shim against the bracket plate (wheel centre 18 mm from the flange, under the motor's 28 N radial rating at 20 mm) | M3 set screw onto the shaft flat, in a radial M3 × 4 insert; Ø8 rim window for the iron and hex key |
 | Drive tire (`drive_wheel.py`) | 2 · TPU 95A · print slowly, direct drive | Ø80 × 21 · 21 cm³ | Traction, Ø80 × 24 wheel assembled | 0.5 mm undersize on the rim seat, held between two 1.5 mm lips; Ø4 hole lined up with the set-screw window |

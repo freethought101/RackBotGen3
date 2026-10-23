@@ -36,7 +36,7 @@ Wire: battery/VMOT 18 AWG, motors 22–24 AWG, signals 26 AWG. Connectors: XT60 
 
 ## 2. Compute & motion control
 
-- **Raspberry Pi 3B/3B+**: Raspberry Pi OS Lite 64-bit, headless. IMX708 120° camera board (Camera Module 3 Wide class) on CSI (500 mm flex). USB to the ESP32 (serial). Wi-Fi client on the rack network.
+- **Raspberry Pi 3B/3B+**: Raspberry Pi OS Lite 64-bit, headless. IMX708 120° camera board (Camera Module 3 Wide class) on CSI (500 mm flex). USB to the ESP32 (serial). **Wi-Fi access point** for the rack network (v0.1.27, no travel router): AP `RACKBOT` (WPA2, 2.4 GHz) with DHCP, set up with NetworkManager.
 - **ESP32-S3-DevKitC-1** (N8, N8R2 or N16R8: the firmware needs 8 MB flash and no PSRAM; **not** the -V 1.8 V variants, which put GPIO47/48 at 1.8 V) plugged into the motion board. **Powered over USB from the Pi** with a USB-A → USB-C cable whose C plug is **right-angled, cable exiting away from the board** (a straight plug reaches the switch connectors J10/J11 on the bottom edge). The DevKit 5V pin is *not* connected to the board 5 V (prevents backfeed).
 - **4 × TMC2209 StepStick** (e.g. BTT v1.3), one shared single-wire UART, VIO from ESP32 3V3 (drivers disabled if the ESP32 is unpowered).
 
@@ -149,12 +149,11 @@ Schematic, PCB layout, DRC/ERC clean, Gerbers + drill + BOM + position file (JLC
 | **Delta 24 V DIN-rail PSU** | 24 V, **≥ 75 W**, universal 100–240 VAC input (Thailand 220 V / 50 Hz). Chosen: **Delta LYTE II DRL-24V120W1EN** (24 V / 5 A, 120 W, 123.6 × 30 × 116.8 mm) |
 | **Delta DVP-12SE11T PLC** | 8 DI / 4 DO (NPN transistor), 24 VDC, built-in Ethernet, **Modbus TCP server**. Programmed with ISPSoft/WPLSoft |
 | Dock power relay | 24 V relay module (≥ 5 A contact) driven by PLC Y0, + 3 A polyfuse on the dock + line. Stays on the rack's DIN rail; its output runs to the charging dock at the **spare station** over a **2-core 0.75 mm² lead (≈ 1.5 m)**: ≈ 1.2 A at 24 V, < 0.1 V drop |
-| Tower light | Mini 3-color 24 VDC LED (R/Y/G), common + |
+| Status lamps | 3 × 22 mm panel indicator lamps, 24 VDC LED (R/Y/G), common +, in a 3-hole control box on the rack top (replaced the tower light in v0.1.27) |
 | E-stop | Mushroom NC, 2 contacts: one to PLC X5, one in series with the dock relay coil (hardware interlock) |
-| Router | Travel router (e.g. GL.iNet GL-MT300N-V2) powered from 24 → 5 V USB buck; LAN to PLC, Wi-Fi AP `RACKBOT` |
 | Terminal blocks | DIN rail terminal blocks for 24 V / 0 V distribution |
 
-Power budget: PLC ≈ 5 W, light 3 W, router 3 W, robot charger ≈ 28 W → **≈ 40 W**, so the 120 W PSU runs at about a third of its rating.
+Power budget: PLC ≈ 5 W, lamps < 1 W, robot charger ≈ 28 W → **≈ 35 W**, so the 120 W PSU runs at about a third of its rating.
 
 ### 4.2 PLC I/O map
 
@@ -169,9 +168,9 @@ Power budget: PLC ≈ 5 W, light 3 W, router 3 W, robot charger ≈ 28 W → **�
 | X6 | Spare S1 (GOOD) present | 4-core cable to the spare station (≈ 1.5 m): +24 V, X4, X6, X7 |
 | X7 | Spare S2 (RMA) present | |
 | Y0 | Dock power enable | Relay → dock contacts at the spare station. **Interlock in ladder: Y0 = cmd AND X4 AND X5 AND watchdog OK** |
-| Y1 | Tower GREEN | Idle / all bays OK |
-| Y2 | Tower YELLOW | Swap in progress / degraded bay |
-| Y3 | Tower RED | Fault / E-stop / Pi watchdog lost |
+| Y1 | Lamp GREEN | Idle / all bays OK |
+| Y2 | Lamp YELLOW | Swap in progress / degraded bay |
+| Y3 | Lamp RED | Fault / E-stop / Pi watchdog lost |
 
 Input wiring: switches connect +24 V to Xn with S/S tied to 0 V (the DVP-SE inputs accept sink or source wiring through S/S; on above 15 V, 5 mA).
 Output wiring: lamp/relay coil between +24 V and Yn (NPN sinking). The 12SE11T transistor outputs need their own supply:
@@ -183,14 +182,20 @@ The Modbus register map is in [03-software.md §4](03-software.md#4-rack-modbus-
 
 | Device | IP |
 |---|---|
-| Travel router (AP `RACKBOT`, WPA2) | 192.168.8.1 |
-| Delta PLC | 192.168.8.10 (static, set in ISPSoft/DCISoft) |
-| Raspberry Pi | 192.168.8.20 (static/DHCP reservation) |
-| Dashboard clients (laptop/phone) | DHCP |
+| Raspberry Pi (AP `RACKBOT`, WPA2, DHCP server) | 192.168.8.1 |
+| Rack controller: ESP32 (P40), or the Delta PLC | 192.168.8.10 (static) |
+| Dashboard clients (laptop/phone) | DHCP from the Pi |
+
+No travel router since v0.1.27: the Pi on the robot is the access point, so the rack ESP32 and the dashboard join it.
+The 2 s watchdog covers Wi-Fi dropouts. If the Delta PLC is used after all, its Ethernet port needs a Wi-Fi client
+bridge (any router in client/WISP mode, kept at 192.168.8.10 on the PLC side).
 
 ### 4.4 Fallback rack controller (if no PLC)
 
-ESP32 DevKit + 8-ch 24 V optocoupler input board + 4-ch MOSFET output board on the same DIN rail.
+ESP32 DevKit V1 (WROOM-32) + 8-ch 24 V → 3.3 V optocoupler input board (X0–X7) + 2 × dual MOSFET module (D4184, 3.3 V
+trigger, low-side: Y0–Y3) + 24 → 5 V buck, on the same DIN rail (P40, ≈ 18 USD, counted in the budget as a contingency since
+v0.1.27). The MOSFETs sink like the PLC's NPN outputs, so the status lamps keep their common +24 V wiring and the dock relay
+module is set to **low-level trigger**. The rack E-stop's second contact still cuts the dock relay coil in hardware.
 The firmware exposes the **identical Modbus TCP register map** over Wi-Fi, so the Pi software does not change.
 
 ## 5. Safety summary

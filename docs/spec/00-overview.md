@@ -1,7 +1,7 @@
 # RackBotGen3 — System Overview
 
 Delta Cup 2026 · Automation track · Regional Final, Thailand, 14 Nov 2026
-Status: **Draft v0.1.25 (22 Oct 2026)** — single owner for all subsystems; peers review and give feedback.
+Status: **Draft v0.1.27 (23 Oct 2026)** — single owner for all subsystems; peers review and give feedback.
 
 | Doc | Content |
 |---|---|
@@ -31,7 +31,7 @@ Pitch angle (judging: Innovation, Technical Viability, Impact & Sustainability, 
 | # | Constraint | Design response |
 |---|---|---|
 | C1 | Built and tested by **10 Nov 2026** (about 5 weeks) | Off-the-shelf modules, 4 steppers with a single driver type, Python on the Pi, mechanical docking instead of precision navigation |
-| C2 | **≤ 500 USD** | Est. ≈ 464 USD (see 04). Delta PLC loaned or sponsored, with an ESP32 fallback |
+| C2 | **≤ 500 USD** | Est. ≈ 548 USD, **over** (see 04 §1.5). Delta PLC loan unlikely; ESP32 rack controller counted (P40) |
 | C3 | Manufacturable with a 400×400 mm FDM printer, grinder and drill press | 2020/2040 V-slot cut to length, printed plates/brackets; no machining beyond cutting and drilling |
 | C4 | **Carry-on, 7 kg per bag, 4 members** | Flat-pack rack, removable mast; ≈ 14 kg of hardware over 4 bags (≈ 50 % margin) |
 | C5 | Airline safety | Li-ion pack **≈ 50 Wh (< 100 Wh)**, in cabin, terminals protected; universal-input Delta PSU (Thailand 220 V / 50 Hz) |
@@ -101,8 +101,8 @@ flowchart LR
     PSU["Delta 24 V DIN PSU"] --> PLC["Delta DVP-12SE PLC"]
     PSU --> RLY["Dock power relay\n(PLC Y0)"]
     SW["Bay switches 1-4, E-stop"] --> PLC
-    PLC --> LAMP["Tower light R/Y/G"]
-    PLC <-- Ethernet --> RTR["Travel router\n(Wi-Fi AP)"]
+    PLC --> LAMP["Status lamps R/Y/G"]
+    PLC <-. Wi-Fi .-> RTR["Pi access point\n(on the robot)"]
   end
   subgraph SPARE["Spare station (home)"]
     DOCK["Dock contacts"]
@@ -135,7 +135,7 @@ Per-person carry-on limit is 7 kg (bag size ≈ 56 × 36 × 23 cm). The hardware
 | Robot electronics (motion board, Pi, wiring) | 0.4 | Mounted on base |
 | Battery pack 4S ≈ 50 Wh (**cabin, own pouch**) | 0.35 | LiPo bag |
 | Rack frame (flat-packed) + printed shelves + dock block | 1.7 | Uprights 320 mm |
-| Rack electronics (Delta PSU, PLC, DIN rail, tower light, E-stop, router) | 1.0 | Padded box |
+| Rack electronics (Delta PSU, ESP32 rack controller or PLC, DIN rail, status lamps, E-stop) | 1.0 | Padded box |
 | Spare station (2020 frame + 2 shelves + dock block) | 1.3 | Uprights 215 mm |
 | Caddies + dummy drives × 6 (≈ 0.75 each) | 4.5 | 1–2 per bag |
 | Table mat, tools (carry-on legal), spares, cables | 2.0 | Split |
@@ -181,4 +181,5 @@ Weigh every bag in week 5 (see 04).
 | v0.1.22 | 2026-10-18 | **Charging dock moved to the spare station**, which becomes the robot's home: a job starts with the pick from S1 and ends after placing the RMA caddy in S2, so each swap drives spare → rack → spare (2 drives instead of 4; simulated cycle 163 → 107 s). Dock contacts and the dock switch (PLC X4) are fitted on the spare-station dock block only; the dock relay stays on the rack's DIN rail, so the rack E-stop still cuts dock power. Pi app: `HOME = "spare"`. Parts: P30 adds a 2-core dock power lead (8 → 9 USD), P10 now 12 + 3 spare; budget ≈ 480 USD |
 | v0.1.23 | 2026-10-22 | V-wheel axles: the eccentric spacers had only 5.3 mm holes (their 7.12 mm boss could not turn), and the CAD's 7.6 / 6.6 mm wheel-to-plate gaps would have put the wheels 1.6 / 0.6 mm off the groove centre with 6 mm spacers. Now 7.3 mm eccentric holes (Z +x pair, Y lower pair) and a fixed 7 mm stack (6 mm spacer + 1 mm 5 × 8 shim) set by a pad (Z) or recess (Y) at each axle. Mini eccentric spacer is 8 mm hex. P04 adds 4 plain spacers + 10 shims (8 → 10 USD); budget ≈ 482 USD |
 | v0.1.25 | 2026-10-22 | Motion PCB, from the schematic review: servo rail 220 µF / 25 V + 100 nF (C18/C19), +5V and +3V3 10 µF + 100 nF each (C20–C23), 10 k pull-down on the buzzer transistor base (R25), 7 SMD test pads (TP1–TP7), notes on the schematic sheet. The robot E-stop's NO contact goes to J13 (AUX_IN): the firmware reports a press at once (`sw` bit5) instead of waiting up to ≈ 370 ms for VMOT to decay. Layout build now routes GND as tracks too (a reroute had cut GND pour pockets loose) and fails on any DRC error. JLCPCB assembly 39 → 45 SMD parts (all basic); P23 adds the 220 µF. No cost change |
+| v0.1.27 | 2026-10-23 | **Budget ≈ 482 → ≈ 548 USD (≈ 48 over)**: the Raspberry Pi 3 is not team-owned after all, so a 3B+ is bought (P12, +70), and one month of Claude Pro is added (new P39, Rp360k ≈ 23). Deck: 6 M3 holes for the electronics tray, Pi tray and battery box (positions now shared in `robot_dims.py`; the Pi tray holes had sat in its own window and over the side rail, the battery box holes over the rear cross member), and an optional laser-cut file `deck_dxf.py` → `cad/DXF/robot/deck.dxf`. Sourcing links for P03, P12, P14, P20 and the last P23 lines. PLC access looks unlikely, so the **ESP32 rack controller (new P40, 18 USD) is counted** as a contingency. **Travel router dropped** (P29, P31 not needed, −40): the Pi is the Wi-Fi access point (02 §4.3). Tower light → 3 × 22 mm 24 V panel lamps (P27 8 → 3). Budget ≈ 548 USD (≈ 530 with a PLC loan) |
 | v0.1.4 | 2026-10-06 | Robot CAD v0 + checks: direct drive (axle y −135), nose z 30–90, swing-down fingers, tray camera window, caddy tag moved left, E-stop on the mast top; mass 4.49 kg; budget ≈ 478 USD |

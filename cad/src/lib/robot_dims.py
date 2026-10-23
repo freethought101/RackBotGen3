@@ -119,6 +119,10 @@ PCB_XY = (19.0, -362.0)              # motion board lower-left corner (100 x 100
 PCB_Z = DECK_Z[1] + 10.0
 PI_XY = (-123.0, -343.5)             # Pi 3 corner (85 along x, 56 along y), between the battery box and the Z motor
 BATTERY = (-118.0, -38.0, -387.5, -349.0, DECK_Z[1], DECK_Z[1] + 50.0)   # inside: 4 x 18650 2 x 2 along x + BMS on top
+# M3 + nut through the deck for the trays and the battery box (nuts clear the side rails and the rear cross member)
+PCB_DECK_HOLES = ((PCB_XY[0] + 2.0, PCB_XY[1] + 50.0), (PCB_XY[0] + 98.0, PCB_XY[1] + 50.0))
+PI_DECK_HOLES = ((PI_XY[0] + 6.0, PI_XY[1] + 28.0), (PI_XY[0] + 77.0, PI_XY[1] + 28.0))   # outside the tray window
+BATTERY_DECK_HOLES = ((BATTERY[0] + 10.0, BATTERY[3] - 8.0), (BATTERY[1] - 10.0, BATTERY[3] - 8.0))
 ESTOP_XY = (-22.0, -255.0)           # on the mast top plate: highest, easiest point to hit
 BUCKS = {"charger": (-60.0, -205.0), "5v": (4.0, -205.0), "6v": (-28.0, -172.0)}   # (x0, y0) under the tray
 BUCK_SIZE = (56.0, 27.0, 20.0)       # envelope for XL4015-class modules

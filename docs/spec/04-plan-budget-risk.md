@@ -29,7 +29,7 @@ The live, per-part order list is the Notion **Parts & Order List** database, mir
 
 | Item | Qty | USD |
 |---|---|---|
-| Raspberry Pi 3B/3B+ | 1 | 0 (team-owned) |
+| Raspberry Pi 3 Model B+ (not team-owned after all, Tokopedia) | 1 | 70 |
 | IMX708 120° camera board (Camera Module 3 **Wide** class, Tokopedia) | 1 | 37 |
 | microSD 32 GB A1 | 1 | 8 |
 | CSI flex cable 500 mm | 1 | 1 |
@@ -43,7 +43,7 @@ The live, per-part order list is the Notion **Parts & Order List** database, mir
 | Passives, headers, StepStick sockets, TVS, caps, WS2812, buzzer (itemised, Tokopedia) | set | 5 |
 | USB-A to USB-C cable, 90° C plug (Pi → DevKit) | 1 | 2 |
 | VMOT relay for the E-stop (12 V automotive, 30/40 A) + flyback diode | 1 | 2 |
-| **Subtotal** | | **178** |
+| **Subtotal** | | **248** |
 
 ### 1.3 Rack & spare station — electrical
 
@@ -51,15 +51,14 @@ The live, per-part order list is the Notion **Parts & Order List** database, mir
 |---|---|---|
 | **Delta 24 V DIN-rail PSU, DRL-24V120W1EN (120 W)** | 1 | 39 |
 | DIN rail, terminal blocks, 24 V relay module, polyfuse (CNC Store Bandung) | set | 5 |
-| 24 V mini tower light R/Y/G | 1 | 8 |
+| Status lamps: 3 × 22 mm 24 V panel indicators (R/Y/G) in a 3-hole box (replaces the tower light, v0.1.27) | 1 | 3 |
 | Rack E-stop (2 NC contacts) | 1 | 3 |
-| 24 → 5 V USB buck (router) | 1 | 2 |
 | Dock contacts (pogo/brass), copper sheet, spare-station cables (4-core signal + 2-core dock power) | set | 9 |
-| Travel router GL.iNet GL-MT300N-V2 (not owned; Tokopedia) | 1 | 38 |
 | **Delta DVP-12SE11T PLC** | 1 | **not in budget, loan/sponsor** (≈ 150–250) |
-| **Subtotal** | | **104** |
+| **ESP32 rack controller (PLC fallback, contingency; likely needed)**: DevKit + 8-ch 24 V opto inputs + 2 × dual MOSFET outputs + buck (02 §4.4) | set | 18 |
+| **Subtotal** | | **77** |
 
-### 1.4 Printing & demo materials
+### 1.4 Printing, demo materials & services
 
 | Item | USD |
 |---|---|
@@ -68,22 +67,23 @@ The live, per-part order list is the Notion **Parts & Order List** database, mir
 | TPU 95A 0.25 kg | 8 |
 | Steel ballast + epoxy (dummy drives) | 8 |
 | Tag/label printing, table mat | 10 |
-| **Subtotal** | **77** |
+| Claude Pro, 1 month (Rp360k) | 23 |
+| **Subtotal** | **100** |
 
 ### 1.5 Total
 
 | | USD |
 |---|---|
 | Robot mechanical | 123 |
-| Robot electronics | 178 |
-| Rack electrical | 104 |
-| Printing & demo | 77 |
-| **Total** | **≈ 482** (of 500) |
+| Robot electronics | 248 |
+| Rack electrical | 77 (59 with the PLC loan) |
+| Printing, demo & services | 100 |
+| **Total** | **≈ 548** (of 500: **≈ 48 over**; ≈ 530 if the PLC loan comes through) |
 
-The margin is ≈ 20 USD after the v0.1.12–v0.1.17 move to local (Tokopedia) suppliers, buying the travel router (v0.1.16) and JLCPCB SMD assembly of the motion board (v0.1.20); only the motion PCB (JLCPCB) is imported. **Savings options** (use them if prices come in higher, or a router must be bought):
+**v0.1.27: the budget is ≈ 48 USD over** after buying the Raspberry Pi (+70), one month of Claude Pro (+23) and counting the ESP32 rack controller (+18), since PLC access now looks unlikely; dropping the travel router (−40, the Pi is the access point) and replacing the tower light with panel lamps (−5) took back 45. The savings options below recover ≈ 60–90 USD; otherwise the overrun needs the team's approval. Before that, the margin was ≈ 20 USD after the v0.1.12–v0.1.17 move to local (Tokopedia) suppliers, buying the travel router (v0.1.16) and JLCPCB SMD assembly of the motion board (v0.1.20); only the motion PCB (JLCPCB) is imported. **Savings options** (use them if prices come in higher, or a router must be bought):
 wide-angle OV5647 camera instead of the IMX708 board (−29, more distortion) ·
-3 panel LEDs instead of the tower light (−7) · team-owned filament or fasteners (−20 to −50) · drop the 3rd servo and spare switches (−5). Priced backup options and local (Tokopedia) sources: `docs/sourcing-options.md`.
-**PLC**: request a loan from Delta Thailand this week. If none, buying a DVP12SE11T costs ≈ Rp2.6–3.3M (≈ 165–210 USD) on Tokopedia, which does not fit the budget, so use the ESP32 fallback rack controller (≈ +20 USD, see 02 §4.4) unless a sponsor covers it. **Pi 3**: team-owned; a replacement 3B+ is ≈ Rp1.1M (≈ 70 USD).
+team-owned filament or fasteners (−20 to −50) · drop the 3rd servo and spare switches (−5). Priced backup options and local (Tokopedia) sources: `docs/sourcing-options.md`.
+**PLC**: request a loan from Delta Thailand this week. If none, buying a DVP12SE11T costs ≈ Rp2.6–3.3M (≈ 165–210 USD) on Tokopedia, which does not fit the budget, so use the ESP32 fallback rack controller (≈ +20 USD, see 02 §4.4) unless a sponsor covers it. **Pi 3**: not team-owned after all (23 Oct), so a 3B+ is bought (≈ Rp1.1M ≈ 70 USD, v0.1.27).
 
 ## 2. Schedule
 
@@ -181,7 +181,7 @@ Log every swap (timestamp, result, cycle time, Wh) in SQLite. The data goes into
 - [ ] No butane soldering iron. Leave the soldering iron at home or put it in checked baggage.
 - [ ] One-page device description ("educational robot prototype for Delta Cup 2026, no hazardous materials") + Delta invitation letter for security and customs.
 - [ ] Thailand mains 220 V / 50 Hz, sockets A/B/C/O. The Delta PSU is universal input. Bring 2 plug adapters and a power strip.
-- [ ] Wi-Fi router SSID and IPs unchanged. Dashboard tested offline (no internet needed).
+- [ ] Pi access point SSID `RACKBOT` and IPs unchanged. Dashboard tested offline (no internet needed).
 - [ ] Laptop with: STL files, firmware build, Pi SD card image backup, ISPSoft project, demo video (backup), pitch deck.
 - [ ] National flag (required by the guidebook) + university flag.
 - [ ] Reassembly and calibration checklist printed.

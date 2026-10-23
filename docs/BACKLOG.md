@@ -7,7 +7,7 @@ Open checks and to-dos collected from the spec, the CAD and PCB work, and review
 
 - [ ] Ask Delta Thailand for a DVP-12SE (or SE/SS2 with Ethernet) PLC loan; decide on the ESP32 rack fallback otherwise.
 - [ ] Order all parts by **8 Oct** (motors, extrusion, fasteners locally if AliExpress quotes > 10 days). Re-check prices against the budget (≈ 478 USD, 04 §1).
-- [ ] Team decisions: broken 3.5" HDDs available? Team-owned parts to reuse (Pi 3, steppers, filament, router)? Demo on a table or the floor?
+- [ ] Team decisions: broken 3.5" HDDs available? Team-owned parts to reuse (steppers, filament, fasteners)? Demo on a table or the floor?
 
 ## Before ordering the motion PCB (deadline 14 Oct)
 
@@ -46,7 +46,7 @@ Open checks and to-dos collected from the spec, the CAD and PCB work, and review
 - [ ] VMOT relay (P38): find a place for it on the electronics tray or deck; check that it pulls in at 12 V (empty battery) and stays cool at 16.8 V; check that the E-stop drops VMOT within 50 ms. Release the E-stop 20 times with VMOT loaded: the BMS must not trip on the 120–220 A capacitor inrush (if it does, add an NTC or pre-charge resistor) and the relay contact must not weld. Check that a press shows at once as `sw` bit5 / `EVT ESTOP`.
 - [ ] DevKit plugged-in height (~8.5 mm sockets) clears the RC parts underneath; Y motor clears the motion board components.
 - [ ] Camera Module 3 Wide: works on Pi 3 with libcamera/Picamera2; CSI cable length (≈ 500 mm) and routing on the moving carriage.
-- [ ] Rack electronics placeholders (Delta PSU, DVP-12SE, relay, router, tower light, E-stop) vs real sizes on the DIN rail.
+- [ ] Rack electronics placeholders (Delta PSU, DVP-12SE / ESP32 modules, relay, status lamp box, E-stop) vs real sizes on the DIN rail.
 - [x] Delta 24 V DIN PSU: picked DRL-24V120W1EN (LYTE II, 120 W, universal input) — v0.1.19.
 - [ ] Detail bolt patterns on the robot printed parts once the hardware is in hand (current parts are v0 for fit).
 - [ ] Cable routing: drag chain or spiral for the Z carriage (Y motor, servos, switches, camera).
