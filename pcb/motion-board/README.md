@@ -102,5 +102,6 @@ Only the 3 bare spares need them.*
 ## Known cosmetic items
 
 DRC reports 16 silkscreen-only items (reference designators touching each other or the C9 outline, the "DOCK+ V+ NC" label
-touching a C20 pad, and the J1 outline clipped by the board edge). JLCPCB clips silkscreen over pads automatically; tidy them in the KiCad PCB editor if wanted. It also reports 4
-`lib_footprint_mismatch` warnings for JP1–JP4, whose courtyards are removed on purpose (`scripts/fix_text.py`).
+touching a C20 pad, and the J1 outline clipped by the board edge). JLCPCB clips silkscreen over pads automatically; tidy them in the KiCad PCB editor if wanted. It also reports 8
+`lib_footprint_mismatch` warnings, both changed on purpose in `scripts/fix_text.py`: JP1–JP4 have their courtyards
+removed, and the StepStick sockets U2–U5 are drilled 1.0 mm instead of the library's 0.8 mm so female-header tails fit.
