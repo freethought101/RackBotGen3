@@ -63,9 +63,9 @@ These shops had no better match in the big shops above.
 6. [ ] **xyz garage:** P17 MKS TMC2209 V2.0 ×5, Rp245k. UART on pin 5: JP1–JP4 are bridged on the board, nothing to solder.
 7. [ ] **wirogix:** P13 IMX708 12 MP 120° camera board ×1, Rp595k. Ask about autofocus and board size.
 8. [ ] **EasyWare Electro:** XY-3606 5 V / 5 A buck ×2 (P18 Pi + board, P29 router), Rp45k
-9. [ ] **WKH Elektronik:** P19 2512 **R010** shunt ×2 (Rp6k) and P21 XT30 male + female pair (Rp11k)
+9. [ ] **WKH Elektronik:** P19 2512 **R010** shunt ×2 (Rp6k) and P21 XT30 male + female pair **with leads** (pigtails, red/black; ≈ Rp11–15k)
 10. [ ] **solarperfect:** P19 INA226 module ×1, Rp22k. It has the R100 shunt; swap it for the R010.
-11. [ ] **teknoza:** P21 Amass XT60 pair ×1, ≈ Rp23k
+11. [ ] **teknoza:** P21 Amass XT60 pair **with leads** (pigtails) ×1, ≈ Rp23–30k
 12. [ ] **easy-go-512:** P21 JST-XH 230 pcs kit ×1, Rp26k. Ask whether it includes straight PCB headers.
 13. [ ] **archive-oneconnection:** P09 MG90S ×3, Rp70k (unless bought at CNC Store)
 14. [ ] **Putra Jaya Motor:** P38 Bosch 12 V 4-pin relay + ceramic socket ×1, Rp23k

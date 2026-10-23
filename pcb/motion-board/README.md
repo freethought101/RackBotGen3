@@ -60,7 +60,8 @@ Rebuild: `scripts/build.sh` (needs KiCad 10 at `/Applications/KiCad`, Java 21+, 
 
 ## Assembly and bring-up checklist
 
-Hand assembly (JLCPCB makes the bare board only). Tools: fine-tip iron, flux, 0.5–0.8 mm solder, tweezers,
+JLCPCB fits the 45 SMD parts on 2 of the 5 boards (Economic PCBA); the through-hole parts and the 3 bare
+spares are hand-soldered. Tools: fine-tip iron, flux, 0.5–0.8 mm solder, tweezers,
 multimeter, current-limited bench supply.
 
 **Solder, low parts first so the board sits flat**
@@ -76,6 +77,13 @@ Only the 3 bare spares need them.*
       DevKit female headers (**matching row only**, 22.86 or 25.4 mm) → J2/J3 terminals → J1 XT30 →
       electrolytics C1/C3/C5/C7/C9/C18 last (**long leg to the + pad**; C18 is the 220 µF / 25 V servo-rail cap).
 - [ ] Clean the flux and look for bridges, especially at Q1, the socket rows and the DevKit rows.
+
+**Harness polarity, before the first plug-in** (nothing on the board blocks a reversed lead, spec 02 §3)
+
+- [ ] Use ready-made XT30/XT60 pigtails (leads soldered at the factory) and wire by colour only: red = +, black = −.
+- [ ] Meter every finished lead on its mating pins: + must land on J1 pad 2 (the `+` mark next to J1). Check the
+      battery pack's XT60 from the shop the same way.
+- [ ] The first power-up is always the bench supply below, never the battery.
 
 **Bring-up, stop at the first failure**
 

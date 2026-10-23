@@ -14,7 +14,7 @@ Open checks and to-dos collected from the spec, the CAD and PCB work, and review
 - [ ] **DevKit header row spacing**: measure the ESP32-S3-DevKitC-1 (22.86 or 25.4 mm). The board has both; note which row to populate.
 - [ ] **DevKit pinout**: compare `pcb/motion-board/lib/rbg3.kicad_sym` (J1 pins 1–22, J3 pins 23–44, pin 1 at the antenna end) with Espressif's pin layout for the board revision you bought.
 - [ ] **TMC2209 module pinout**: check the module silkscreen against the Pololu layout used (EN, MS1, MS2, PDN_UART, PDN_UART2, CLK, STEP, DIR / VM, GND, 2B, 2A, 1A, 1B, VDD, GND), especially UART on pin 4 vs 5.
-- [ ] **XT30 polarity**: pad 2 = +, pad 1 = −; confirm against the connector you bought and the battery lead. The silkscreen now marks + and − above J1's pads (23 Oct). Check the finished battery lead with a multimeter before the first plug-in, and power the board first from a current-limited bench supply (≈ 0.2 A).
+- [ ] **XT30 polarity**: pad 2 = +, pad 1 = −; confirm against the connector you bought and the battery lead. The silkscreen now marks + and − above J1's pads (23 Oct). Use ready-made XT30/XT60 pigtails (P21) and wire red = +, black = −. Check the finished battery lead with a multimeter before the first plug-in, and power the board first from a current-limited bench supply (≈ 0.2 A).
 - [ ] DevKit onboard RGB LED pin (GPIO38 or 48 depending on revision): confirm it does not conflict with AUX_IN (GPIO38) / BUZZER (GPIO48).
 - [ ] StepStick pin 6 (CLK, tied to GND on the board) on the bought modules — some modules wire pins 5/6 differently.
 - [ ] Optional: tidy the 16 silkscreen-only DRC items in the KiCad PCB editor.
