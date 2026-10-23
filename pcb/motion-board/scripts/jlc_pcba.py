@@ -26,7 +26,8 @@ LCSC = {
 }
 
 # KiCad -> JLCPCB rotation offsets (degrees). Check every part in JLCPCB's placement preview before paying.
-ROT_OFFSET = {"SOT-23": 180, "D_SMB": 180}
+# Checked in the preview on 2026-10-23: SOT-23 needs 180; D_SMB and D_SOD-123 need none (with 180, D1 came out reversed).
+ROT_OFFSET = {"SOT-23": 180}
 
 
 def main():
