@@ -44,7 +44,7 @@ Rebuild: `scripts/build.sh` (needs KiCad 10 at `/Applications/KiCad`, Java 21+, 
   Copper keep-out under the DevKit antenna (top-right corner).
 - **Silkscreen** (`scripts/silk.py`): the board name, plus function and pin order at every connector. Each StepStick socket
   has its module pin names at the corners (EN/VM at the top, DIR/GND at the bottom), and the DevKit socket is marked
-  ANTENNA END / USB END. The reference designators of J8–J15 and JP1–JP4 are on F.Fab; the function labels name those parts.
+  ANTENNA END / USB END, and the XT30 (J1) has + / − marks above its pads. The reference designators of J8–J15 and JP1–JP4 are on F.Fab; the function labels name those parts.
 
 ## Check before ordering (things drawn from memory, not datasheets)
 

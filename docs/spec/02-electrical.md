@@ -37,7 +37,7 @@ Wire: battery/VMOT 18 AWG, motors 22–24 AWG, signals 26 AWG. Connectors: XT60 
 ## 2. Compute & motion control
 
 - **Raspberry Pi 3B/3B+**: Raspberry Pi OS Lite 64-bit, headless. IMX708 120° camera board (Camera Module 3 Wide class) on CSI (500 mm flex). USB to the ESP32 (serial). Wi-Fi client on the rack network.
-- **ESP32-S3-DevKitC-1** (N8 or N16R8; **not** the -V 1.8 V variants, which put GPIO47/48 at 1.8 V) plugged into the motion board. **Powered over USB from the Pi** with a USB-A → USB-C cable whose C plug is **right-angled, cable exiting away from the board** (a straight plug reaches the switch connectors J10/J11 on the bottom edge). The DevKit 5V pin is *not* connected to the board 5 V (prevents backfeed).
+- **ESP32-S3-DevKitC-1** (N8, N8R2 or N16R8: the firmware needs 8 MB flash and no PSRAM; **not** the -V 1.8 V variants, which put GPIO47/48 at 1.8 V) plugged into the motion board. **Powered over USB from the Pi** with a USB-A → USB-C cable whose C plug is **right-angled, cable exiting away from the board** (a straight plug reaches the switch connectors J10/J11 on the bottom edge). The DevKit 5V pin is *not* connected to the board 5 V (prevents backfeed).
 - **4 × TMC2209 StepStick** (e.g. BTT v1.3), one shared single-wire UART, VIO from ESP32 3V3 (drivers disabled if the ESP32 is unpowered).
 
 | Driver | UART addr (MS1/MS2) | Motor | Run current (rms) | Microsteps |

@@ -14,13 +14,13 @@ Open checks and to-dos collected from the spec, the CAD and PCB work, and review
 - [ ] **DevKit header row spacing**: measure the ESP32-S3-DevKitC-1 (22.86 or 25.4 mm). The board has both; note which row to populate.
 - [ ] **DevKit pinout**: compare `pcb/motion-board/lib/rbg3.kicad_sym` (J1 pins 1–22, J3 pins 23–44, pin 1 at the antenna end) with Espressif's pin layout for the board revision you bought.
 - [ ] **TMC2209 module pinout**: check the module silkscreen against the Pololu layout used (EN, MS1, MS2, PDN_UART, PDN_UART2, CLK, STEP, DIR / VM, GND, 2B, 2A, 1A, 1B, VDD, GND), especially UART on pin 4 vs 5.
-- [ ] **XT30 polarity**: pad 2 = +, pad 1 = −; confirm against the connector you bought and the battery lead.
+- [ ] **XT30 polarity**: pad 2 = +, pad 1 = −; confirm against the connector you bought and the battery lead. The silkscreen now marks + and − above J1's pads (23 Oct). Check the finished battery lead with a multimeter before the first plug-in, and power the board first from a current-limited bench supply (≈ 0.2 A).
 - [ ] DevKit onboard RGB LED pin (GPIO38 or 48 depending on revision): confirm it does not conflict with AUX_IN (GPIO38) / BUZZER (GPIO48).
 - [ ] StepStick pin 6 (CLK, tied to GND on the board) on the bought modules — some modules wire pins 5/6 differently.
 - [ ] Optional: tidy the 16 silkscreen-only DRC items in the KiCad PCB editor.
 - [x] Schematic review (v0.1.25): servo-rail 220 µF + 100 nF, +5V/+3V3 10 µF + 100 nF, R25 buzzer pull-down, test pads TP1–TP7, E-stop NO contact to J13 (firmware: `sw` bit5, immediate E-stop).
 - [x] JLCPCB: C15850 (Samsung CL21A106KAYNNNE, 10 µF 25 V X5R 0805, C20/C22) is a basic part, in stock (checked 22 Oct; re-check in the BOM upload).
-- [ ] **EE review** of the motion board and robot power path before the JLCPCB order: send `docs/review/electrical-review.md` (questions 1–12). Optional ~30 min ME review: `docs/review/mechanical-review.md`.
+- [ ] **EE review** of the motion board and robot power path before the JLCPCB order: send `docs/review/electrical-review.md` (questions 1–12). Optional ~30 min ME review: `docs/review/mechanical-review.md`. 22 Oct: a human EE gave an overall hardware OK. His only warning was that the firmware must not set any input pin as an output or the other way round; checked, and `pins.h` and `main.cpp` match the netlist and spec 02 §3.1. Questions 1–12 are still unanswered. Of those, only the TVS margin and copper widths would change the PCB.
 - [ ] Upload `fab/rbg3-motion-gerbers.zip` to JLCPCB and check their viewer (2 layers, 1.6 mm, 1 oz).
 
 ## Before printing the full set

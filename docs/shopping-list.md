@@ -18,7 +18,7 @@ The Tokopedia part is 22 shops (it was 33). The first 5 carry most of the order.
 
 ### 2. Rajacell: motors + robot odds and ends, ≈ Rp940k
 - [ ] P01 NEMA17 JK42HS40-1704 (1.7 A, 40 mm) ×4, Rp673k
-- [ ] P16 ESP32-S3 dev board **N16R8** (or N8R2; not R8V/R16V) ×1, ≈ Rp112k
+- [ ] P16 ESP32-S3 dev board **N8R2** (N16R8 sold out at Rajacell on 23 Oct; either works; not R8V/R16V) ×1, ≈ Rp112.5k
 - [ ] P15 Pi camera FFC cable, **50 cm** variant ×1, Rp10k
 - [ ] P08 W420 steel-ball caster ×3, Rp37k. Ask the height; it must be < 27 mm.
 - [ ] P10 micro limit switch, lever, 5 A SPDT 3-pin ×15, ≈ Rp53k
