@@ -113,3 +113,41 @@ the fastest option from Bali for anything missing.
 | P40 (found 2026-10-23) | ESP32: [javatech DevKit V1 30-pin](https://www.tokopedia.com/javatechnology/esp32-esp-32-devkit-v1-board-30-pin-esp-32s-doit-wifi-bluetooth-iot) or [Arduino Store](https://www.tokopedia.com/arduinoid/esp32-esp-32-devkit-v1-board-30-pin-wifi-bluetooth-ble-microcontroller) · inputs: [thana maju 8-ch 24 V → 3.3 V opto](https://www.tokopedia.com/thana-maju/8bit-8-channel-optocoupler-isolator-24v-to-3-3v-plc-signal-converter) or [Lisu Instrument](https://www.tokopedia.com/lisuinstrument/8bit-channel-optocoupler-isolator-24v-to-3-3v-plc-signal-converter-pnp-output) · outputs: [Fortuna Jogja dual MOSFET D4184](https://www.tokopedia.com/fortunajogja/dual-mosfet-driver-d4148-switch-trigger-pwm-module) ×2 | ESP32 ≈ Rp74–130k · opto ≈ Rp149k · MOSFET ≈ Rp15k each | Opto board: check the output is 3.3 V (not the 5 V DST-1R8P-N). MOSFET: input 3.3–20 V, output 5–36 V. Buck: same type as P29 |
 
 OV5647 wide camera instead of the IMX708 board (−29) · team-owned filament or fasteners (−20 to −50) · drop the 3rd servo and spare switches (−5) · buy locally instead of importing (avoids ≈ 30–40 % import tax).
+
+## 6. 3D print services (checked 2026-10-23)
+
+Send the current package (`cad/STL/RackBotGen3-print-R3-2026-10-23.zip`) and ask for the **slicer weight** at 0.2 mm layer,
+5 walls, 20 % infill, no scaling, and whether supports and the raft are counted in the weight. Compare totals, not the price per gram.
+The deck (246 × 300) and dock block (298 long) need a **bed ≥ 300 mm**; R3 is ≈ 4,200 cm³ solid, ≈ 2 kg printed.
+Tokopedia listing prices are per gram; the headline price is usually the cheapest variant (draft layer or PLA), so read the PETG 0.2 mm variant.
+
+**Bed ≥ 300 mm (can print every part):**
+
+| Shop | City | Bed (mm) | PETG 0.2 mm / g | TPU / g | Est. R3 total | Notes |
+|---|---|---|---|---|---|---|
+| [its basic](https://www.tokopedia.com/itsbasic/jasa-3d-print-custom-3d-printing-cetak-3d-filament-fdm-premium-abs-pla-asa-petg-tpu-ukuran-besar-big-size-jumbo-printing-1732290935035102871) | Bandung | 400 × 400 × 400 | Rp800 | Rp1,000 (95A) | ≈ Rp1.6M | 5.3k sold, 5.0 (17 reviews). Done in 15 days or the money back. Cheapest |
+| [JAP3D](https://www.tokopedia.com/jap3d/jasa-cetak-3d-print-multicolor-custom-bahan-pla-petg-abs-tpu-dengan-resolusi-0-1mm-0-3mm-dan-kapasitas-42cm-x-42cm-x-48cm-1729830671585936506) | Bekasi | 420 × 420 × 480 | Rp950 | Rp1,400 | ≈ Rp1.9M | 29.8k sold, 4.9 (61 reviews) |
+| [3DTEC](https://www.tokopedia.com/3dtec/3dtec-jasa-cetak-3d-print-pla-abs-tpu-petg-berkualitas-tinggi-ukuran-besar-kecil-layer-0-2mm-bebas-biaya-tambahan-1731125656412194449) | Kab. Bekasi | 420 × 420 × 480 | Rp995 | Rp995 | ≈ Rp2.0M | 174k sold, 5.0 (239 reviews): the longest track record. Sends a slicer screenshot of the weight. Default infill 25 %, so ask for 20 % |
+| [BeauxButton](https://www.tokopedia.com/beauxbutton/jasa-cetak-3d-print-pla-pla-petg-lengkap-murah-cepat-berkualitas) | Bekasi | 256 (Bambu P1S); 300 × 300 on the [big-size listing](https://www.tokopedia.com/beauxbutton/jasa-cetak-3d-print-pla-pla-ukuran-besar-big-size-bed-300-x-300-mm-1730905966309180778) | Rp1,100 (big size Rp1,500–2,000) | [Rp1,500](https://www.tokopedia.com/beauxbutton/jasa-cetak-3d-print-tpu-fleksibel-flex-murah-berkualitas-normal-putih-5c94f) | **Quoted ≈ Rp2.2M** (R2) | 400k sold, 5.0 (522 reviews). Already has R2; send R3 as a replacement |
+| [DTRON3D](https://www.tokopedia.com/dtron3d/large-size-3d-print-jasa-cetak-3d-ukuran-besar-up-to-500x500x450-mm) | Surakarta | 500 × 500 × 450 | Rp1,300 (PLA Rp1,000) | — | ≈ Rp2.6M | 65k sold, 5.0. Minimum 10 pcs |
+| [K3D Project](https://www.tokopedia.com/k3dproject/jasa-cetak-3d-print-multicolor-fdm-filament-pla-petg-tpu-abs-high-quality-big-size-print-4-warna-1729897334773548909) | Jakarta Utara | 420 | Rp1,600 | — | ≈ Rp3.2M | 14k sold. Expensive |
+
+**Smaller beds (≤ 256 mm), cheaper.** Use them for everything except the deck and dock block if the order is split:
+[bit 3D](https://www.tokopedia.com/bit3d/jasa-3d-print-custom-petg-cetak-3-dimensi-3d-printing-0-20-mm-putih) (Kab. Bogor, eSUN PETG Rp700/g, 300k+ sold) ·
+[Bran 3D Print](https://www.tokopedia.com/bran3dprint/jasa-3d-print-petg-pla-pla-abs-jasa-cetak-3d-print-petg-pla-pla-abs-petg-76184) (Cirebon, Rp600/g at 0.2 mm) ·
+[INITECH](https://www.tokopedia.com/initech/jasa-custom-3d-print-plastik-3-dimensi-pla-abs-petg-tpu-printing-pla-0-24-1abba) (Kab. Bandung, PETG Rp749/g, TPU Rp1,099/g, bed 240) ·
+[Goshen 3D](https://www.tokopedia.com/goshen3d/jasa-cetak-3d-print-material-pla-abs-petg-tpu-pla-silk-3-color-pla-gid-1731576568550884677) (Sidoarjo, PETG Rp800/g, bed 256) ·
+[KanagaraStore](https://www.tokopedia.com/kanagarastore/jasa-cetak-3d-print-fdm-bahan-pla-petg-abs-tpu-bambulab-x1c-3d-printing-3dprint-pla-3-tiga-dimensi-0-2mm-jasa-print-3d-1731112075632280768) (Kab. Tangerang, PETG black/white Rp850/g, bed 256).
+Skipped: very cheap listings with no sales history (e.g. AlexMediaGroup Rp165/g, Finca Melo Rp750/g).
+
+**Outside Tokopedia:**
+
+| Service | Where | Price | Notes |
+|---|---|---|---|
+| [3D Lab Bali](https://www.3dlab.co.id/en/3d-printing) | Jimbaran, Bali | Quote only, minimum Rp100k | PLA, PETG, TPU, nylon-CF. Pick up or courier; Mon–Fri 10–17. Local, so the fit coupon loop is fastest |
+| [Bisamake Makerspace](https://www.facebook.com/BisamakeBali/) | Denpasar | Quote only | Also laser cutting (deck DXF). PETG not confirmed |
+| [Filamen](https://filamen.com/) | Depok / Yogyakarta | From Rp800/g | Instant online quote from the STL. PLA, PETG, TPU 95A, ASA. 2 / 4 / 7-day service tiers |
+| [JLC3DP](https://jlc3dp.com/) | China | Priced by solid volume: SLA/MJF ≈ Rp7M+ for R3 (estimate) | Not worth it for this order: solid prints, international shipping on volume weight and ≈ 30–40 % import tax (§1). FDM minimum 30 × 30 × 15 (fingers too small). Only worth it for small MJF PA12 parts added to another JLCPCB order |
+
+Not suitable: Zelta3D and SEN3DPrints (resin/MJF only); Robothead Studio Bali (closing).
+
