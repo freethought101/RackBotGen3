@@ -1,0 +1,4 @@
+(sym_lib_table
+  (version 7)
+  (lib (name "sys")(type "KiCad")(uri "${KIPRJMOD}/rbg3-system.kicad_sym")(options "")(descr "RBG3 system wiring blocks (generated)"))
+)
