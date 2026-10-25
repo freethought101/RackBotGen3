@@ -35,9 +35,20 @@ HDD_HOLE_Y = (41.28, 85.73)    # bottom hole positions from drive front (verify 
 # 2020 upright position used by the shelf mounting flanges
 UPRIGHT_INNER_X = 70.0         # |x| of the upright inner face
 UPRIGHT_Y = (20.0, 135.0)      # upright centers along y
-M5_CLEAR = 5.3
-M3_CLEAR = 3.4
-M3_INSERT_D = 4.0              # heat-set insert pilot
+# Hole sizes are modeled oversize: fit test 1 (25 Oct, hole coupon, PETG) printed small holes 0.2-0.65 mm under.
+# Design -> printed: 2.5 -> 2.11, 3.4 -> 3.19, 4.0 -> 3.58, 5.3 -> 5.08, 6.4 -> 5.75. See docs/fit-test-01.md.
+M5_CLEAR = 5.5
+M3_CLEAR = 3.6
+M3_INSERT_D = 4.4              # M3 heat-set insert pilot (OD 4.5): prints ~4.0
+M5_INSERT_D = 7.0              # M5 heat-set insert pilot (OD ~7): prints ~6.4
+M3_SELF_TAP_D = 2.85           # prints ~2.5
+M2_PILOT_D = 1.95              # M2 self-tapping pilot, prints ~1.6 (not measured, by extrapolation)
+M25_PILOT_D = 2.4              # M2.5 self-tapping pilot (Pi standoffs), prints ~2.05
+
+# KW11-3Z lever microswitch (P10 drawing): body length, height (pin edge to lever edge), thickness; free lever height
+# above the lever edge; mounting holes +/- hole_dx from the body centre, ~hole_up in from the pin edge (estimated).
+KW11 = {"l": 19.7, "h": 10.6, "t": 6.6, "lever": 7.1, "hole_dx": 4.75, "hole_up": 3.0}
+KW11_PRESS = 2.0               # lever travel at which a switch counts as triggered (design value)
 HDD_SCREW_CLEAR = 3.7          # drive bottom screws: real HDDs are 6-32 UNC (3.5 mm), the dummy takes M3
 
 # Docking (station frame: z = 0 on the table)

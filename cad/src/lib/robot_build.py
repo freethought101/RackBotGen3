@@ -12,7 +12,7 @@ from cadgen import read_step, srgb
 from lib import vendor
 from lib.extrusion import vslot
 from lib.prims import box, cyl_z
-from lib.robot_dims import (AXLE_Y, AXLE_Z, BASE_FRONT_Y, BASE_REAR_Y, BATTERY, BUCK_SIZE, BUCKS, CAM_DZ,
+from lib.robot_dims import (AXLE_Y, AXLE_Z, BASE_FRONT_Y, BASE_REAR_Y, BATTERY, BUCK_SIZE, BUCKS, CAM_BOARD, CAM_DZ,
                             CAM_LENS, CASTER_FRONT, CASTER_FRONT_GAP, CASTER_REAR, COUPLER_Z, CROSS_Y, DECK_Z,
                             DRIVE_MOTOR_X, ESTOP_XY, FINGER_DZ, FINGER_X, KFL08, MAST_X, MAST_Y, MAST_Z, NOSE_Z,
                             PCB_XY, PCB_Z, PI_XY, RAIL_X, RAIL_Z, SCREW_XY, SCREW_Z, SERVO, SERVO_FACE_DY, VWHEEL,
@@ -102,8 +102,8 @@ def base_parts():
     zt = MAST_Z[1] + 6.0                         # on the mast top plate
     parts.append(vendor.board(ex - 20, ey - 20, zt, 40.0, 40.0, 40.0, "estop_box", srgb("#FACC15")))
     parts.append(_p(cyl_z(40.0, ex, ey, zt + 40.0, zt + 60.0), "estop_button", srgb("#DC2626")))
-    bw, bl, bh = BUCK_SIZE
     for name, (x, y) in BUCKS.items():
+        bw, bl, bh = BUCK_SIZE[name]
         parts.append(vendor.board(x, y, DECK_Z[1], bw, bl, bh, f"buck:{name}", srgb("#7C3AED")))
     return parts
 
@@ -129,9 +129,14 @@ def lift_parts(Z):
         parts.append(_p(box(x0, x1, PULLEY_Y, IDLER_Y, Z + BELT_DZ[0], Z + BELT_DZ[1]), f"gt2_belt:{side}",
                         vendor.RUBBER))
     lx, ly = CAM_LENS
-    cam = box(lx - 12.5, lx + 12.5, ly - 3.5, ly - 1.5, Z + CAM_DZ - 11.5, Z + CAM_DZ + 12.5)
-    cam += bd.Pos(lx, ly - 1.5, Z + CAM_DZ) * bd.Rot(-90, 0, 0) * bd.Cylinder(
-        4.0, 1.4, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN))
+    cb, py, zc = CAM_BOARD, ly - 1.0, Z + CAM_DZ                 # PCB front face as in tray_stack.CAM_PCB_Y
+    zb = zc - cb["lens_up"]
+    cam = box(lx - cb["w"] / 2, lx + cb["w"] / 2, py - cb["t"], py, zb, zb + cb["h"])
+    hh = cb["holder"] / 2
+    cam += box(lx - hh, lx + hh, py, py + cb["holder_l"], zc - hh, zc + hh)
+    cam += bd.Pos(lx, py, zc) * bd.Rot(-90, 0, 0) * bd.Cylinder(
+        cb["barrel_d"] / 2, cb["lens_l"], align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN))
+    cam += box(lx - 10.5, lx + 10.5, py - cb["t"] - cb["back"], py - cb["t"], zb, zb + 6.0)   # connector
     parts.append(_p(cam, "camera_module_3_wide", vendor.GREEN))
     return parts
 

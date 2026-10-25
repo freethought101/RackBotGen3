@@ -30,7 +30,7 @@ def drive_bracket():
     for y0, y1 in ((Y_SPAN[0], Y_SPAN[0] + WEB_T), (Y_SPAN[1] - WEB_T, Y_SPAN[1])):
         part += box(RAIL_X[1], x0, y0, y1, RAIL_Z[0], ytop)                      # webs to the rail
         part -= cyl_x(M5_CLEAR, RAIL_X[1] - 0.1, RAIL_X[1] + 4.0, (y0 + y1) / 2, (RAIL_Z[0] + RAIL_Z[1]) / 2)
-        part -= cyl_x(10.0, RAIL_X[1] + 4.0, x1 + 0.1, (y0 + y1) / 2, (RAIL_Z[0] + RAIL_Z[1]) / 2)  # head access
+        part -= cyl_x(10.5, RAIL_X[1] + 4.0, x1 + 0.1, (y0 + y1) / 2, (RAIL_Z[0] + RAIL_Z[1]) / 2)  # head access
     part -= cyl_x(BOSS_D, x0 - 0.1, x1 + 0.1, AXLE_Y, AXLE_Z)
     for dy in (-NEMA_PITCH / 2, NEMA_PITCH / 2):
         for dz in (-NEMA_PITCH / 2, NEMA_PITCH / 2):

@@ -37,7 +37,7 @@ def mast_top_plate():
         part -= _y_hole(M5_CLEAR, x, ztop - TAB_DROP / 2, TAB[0] - 0.1, TAB[1] + 0.1)     # -> front slots
     part -= cyl_z(10.0, sx, sy, ztop - 0.1, ztop + T + 0.1)                       # screw clearance
     for dy in (-KFL08["pitch"] / 2, KFL08["pitch"] / 2):
-        part -= cyl_z(M5_CLEAR, sx, sy + dy, ztop - 0.1, ztop + T + 0.1)          # KFL08 hangs below
+        part -= cyl_z(M5_CLEAR, sx, sy + dy, ztop - 0.1, ztop + T + 0.1)          # KFL08 hangs below (M4 + nut)
     ex, ey = ESTOP_XY
     for dx in (-ESTOP_HOLE_DX, ESTOP_HOLE_DX):
         part -= cyl_z(M3_INSERT_D, ex + dx, ey, ztop + T - INSERT_DEPTH, ztop + T + 0.1)  # E-stop box

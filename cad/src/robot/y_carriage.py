@@ -10,7 +10,7 @@ plate's outer face and pinches the belt's inner strand.
 from cadgen import build123d as bd
 from cadgen import step, stl
 
-from lib.dims import M5_CLEAR
+from lib.dims import M2_PILOT_D, M5_CLEAR
 from lib.prims import box, cyl_x
 from lib.robot_dims import (ARM_DY, ARM_X, BELT_DZ, BELT_STRAND_X, ECC_HOLE_D, FINGER_DZ, FINGER_X, SERVO,
                             SERVO_FACE_DY, WHEEL_SEAT_D, YCARRIAGE_DY, YFRAME_DZ, YPLATE_X, YWHEEL_DY, YWHEEL_DZ,
@@ -20,7 +20,7 @@ LEDGE_X0 = FINGER_X - SERVO["wid"] / 2      # flush with the servo's side, 2.4 m
 LEDGE_DEPTH = 5.0           # along +y, in front of the servo tabs
 CLAMP_DY = (-80.0, -62.0)   # belt clamp y span relative to the finger pivot (between the wheel axle bolts)
 CLAMP_JAW = 3.0
-M2_PILOT = 1.7              # self-tapping M2 into PETG
+M2_PILOT = M2_PILOT_D       # self-tapping M2 into PETG
 
 
 def ledge_spans(f):
@@ -40,7 +40,7 @@ def y_carriage():
     z_lo = min(z0 for f in FINGER_DZ.values() for z0, _ in ledge_spans(f))
     z_hi = max(z1 for f in FINGER_DZ.values() for _, z1 in ledge_spans(f))
     part += box(*ARM_X, ARM_DY[0], ARM_DY[1], z_lo, max(z_hi, fz1))                 # arm
-    tab_y = SERVO_FACE_DY - 9.5                                                     # front face of the tabs
+    tab_y = SERVO_FACE_DY - SERVO["tab_drop"]                                       # front face of the tabs
     for f in FINGER_DZ.values():
         for z0, z1 in ledge_spans(f):
             part += box(LEDGE_X0, ARM_X[0], tab_y, tab_y + LEDGE_DEPTH, z0, z1)

@@ -25,9 +25,9 @@ The Tokopedia part is 22 shops (it was 33). The first 5 carry most of the order.
 - [ ] P10 micro limit switch, lever, 5 A SPDT 3-pin ×15, ≈ Rp53k
 - [ ] P20 4S 30 A battery protection board (BMS) ×1, Rp27k
 
-### 3. CNC Store Bandung: power modules, E-stop, DIN parts, ≈ Rp185k
-- [ ] P18 MP2482/SY8205 5 A buck (set to 5.8 V for the servos) ×1, Rp19k
-- [ ] P18 XL4015 5 A CC/CV (battery charger) ×1, Rp23k
+### 3. CNC Store Bandung: power modules, E-stop, DIN parts, ≈ Rp190k
+- [ ] P18 XL4015 5 A CC/CV ×2, Rp47k: one battery charger, one servo buck set to 5.8 V
+      (not the MP2482/SY8205 module: its output is fixed at 5 V)
 - [ ] P26 relay module 24 V, optocoupled ×1, Rp27k
 - [ ] P21 robot E-stop LA38-11ZS 22 mm, self-locking ×1, Rp14k. Wire its NC contact to the VMOT relay coil and its NO contact to motion board J13 (check it really is 1 NO + 1 NC).
 - [ ] P23 active buzzer 5 V, 12 × 9.5 mm ×1, ≈ Rp5k

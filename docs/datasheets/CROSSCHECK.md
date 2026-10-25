@@ -1,6 +1,7 @@
-# Datasheet cross-check (spec v0.1.15, 10 Oct 2026)
+# Datasheet cross-check (spec v0.1.25, 22 Oct 2026; motor, KFL08, KW11-3Z, MG90S and casters added 25 Oct)
 
 Spec, CAD and firmware values checked against the files in this folder. Page numbers are PDF pages.
+First pass at v0.1.15 (10 Oct), re-checked by an independent reviewer, updated for v0.1.16–v0.1.25 on 22 Oct.
 ✓ match · ✗ mismatch (fixed in the spec unless noted) · ⚠ open: no source, or a judgment call
 
 ## Robot motion
@@ -8,11 +9,15 @@ Spec, CAD and firmware values checked against the files in this folder. Page num
 | Value (where) | Datasheet | Status |
 |---|---|---|
 | JK42HS40-1704: 1.7 A, 40 mm, ≥ 0.4 N·m (parts.csv P01) | 1.7 A, 1.5 Ω, 2.3 mH, 4.2 kg·cm = 0.41 N·m, 0.28 kg (P01 catalog p. 32) | ✓ (0.41 is only just ≥ 0.4) |
-| 5 mm D-shaft ≥ 22 mm, 31 mm hole pitch, Ø22 boss (`drive_bracket.py`, `z_motor_mount.py`, `rail_bracket.py`) | Ø5 × 24 ± 1, 31 ± 0.2, boss Ø22 × 2, M3 depth 4.5 (p. 32) | ✓ |
+| 5 mm D-shaft ≥ 22 mm, 31 mm hole pitch, Ø22 boss, □42.3 × 40 body (`drive_bracket.py`, `z_motor_mount.py`, `rail_bracket.py`, `vendor.py`) | Ø5 × 24 ± 1, 31 ± 0.2, boss Ø22 × 2 ± 0.25, □42.3 max, L 40 ± 1, M3 depth 4.5 min (p. 32) | ✓ boss holes all Ø23 (rail bracket was Ø22.5, v0.1.26); motor screws M3 × 8 through the 4–5 mm plates so they can't bottom out (v0.1.26) |
 | Motor mass 280 g (`vendor.py` MASS_G) | 0.28 kg (p. 32) | ✓ |
-| "Torque ≈ 10 N per wheel" (01 §6.2) | 0.41 N·m at the rated 1.7 A; the run current is 1.0 A → ≈ 0.25 N·m → ≈ 6 N at r = 40 mm (p. 32, p. 33 curve) | ✗ → ≈ 6 N (still ≈ 4× the need) |
-| Direct-drive wheel on the motor shaft (01 §6.2) | Max radial force **28 N at 20 mm from the flange** (p. 32). Static load ≈ 21 N per wheel with 2 loaded caddies (≈ 6 kg, 72 % on the axle), wheel centre ≈ 18 mm from the flange | ⚠ 75 % of the limit before bumps. v0.1.19: hub bore no longer bottoms on the 24 ± 1 mm shaft (it was sized for 22 mm and would have pushed the wheel 1–3 mm out); hub fitted with a 2 mm shim |
-| Z 15 mm/s on Tr8×2 = 450 rpm at 12 V (empty pack) | 12 V / 1.6 A-peak curve ≈ 0.2 N·m at 450 rpm; Z needs ≈ 0.05 N·m (p. 33) | ✓ |
+| **Bought motor is the 17HS4401S** (Lajarus, cart 24 Oct), not the JK42HS40-1704 | P01_17hs4401s_handsontec: 1.7 A, 1.5 Ω, 2.8 mH, **0.43 N·m**, 280 g, body 40 max, □42 max, 31 ± 0.1 pitch, M3 4.5 deep, boss Ø22 × 2, **shaft Ø5 × 23 ± 0.5**, flat 4.5 ± 0.1 across (p. 2) | ✓ (25 Oct) everything the CAD uses matches: the shaft ends 1 mm shorter than the JK's 24 ± 1, inside the hub bore's range, and the flat sits 2.0 from the axis as modeled (`FLAT_R` 2.2 with print shrink). Radial and axial load limits are not given, so the JK values (28 N at 20 mm, 10 N axial) remain the working estimate |
+| KFL08: 48 × 27, 37 pitch, 5 flange, 13 tall, Ø22 boss (`robot_dims.KFL08`); fixed with M5 (`mast_top_plate.py`, P11) | Handsontec table: H 48, L 27, J 37, A0 12.5, **N Ø4.8, bolt M4** (P05_kfl08_handsontec p. 2; p. 1 says M5, contradicting the table). STEP model: 46.5 × 27 × 11.35 (`docs/3d-models/P05_kfl08.step`) | ⚠ envelope ✓ (CAD slightly larger). **Bolt size**: an M5 won't pass a 4.8 hole; use 2 × M4 + nuts unless the bought one has ≥ 5.3 mm holes (measure). The plate's 5.5 holes take either. M4 × 16 + nuts added to P11 (25 Oct) |
+| "Torque ≈ 10 N per wheel" (01 §6.2) | 0.41 N·m at the rated 1.7 A; the run current is 1.0 A → ≈ 0.25 N·m → ≈ 6 N at r = 40 mm (p. 32, p. 33 curve) | ✗ → ≈ 6 N (said to be ≈ 4× the need; the need itself isn't written down in 01 §6.2) |
+| Direct-drive wheel on the motor shaft (01 §6.2) | Max radial force **28 N at 20 mm from the flange** (p. 32). Static load ≈ 21 N per wheel with 2 loaded caddies (≈ 6 kg, 72 % on the axle), wheel centre ≈ 18 mm from the flange | ⚠ 75 % of the limit before bumps; at the 1.0 kg design load per caddy the reviewer gets ≈ 23.6 N (84 %). v0.1.19: hub bore no longer bottoms on the 24 ± 1 mm shaft (it was sized for 22 mm and would have pushed the wheel 1–3 mm out); hub fitted with a 2 mm shim |
+| Z 15 mm/s on Tr8×2 = 450 rpm at 12 V (empty pack) | 12 V / 1.6 A-peak curve ≈ 0.2 N·m at 450 rpm; Z needs ≈ 0.05 N·m (p. 33) | ✓ (the curve is at a higher current than the 0.9 A Z setting, so the margin is smaller than 4×, still ample) |
+| Z lead screw axial load on the motor | Max axial force **10 N** (p. 32) | ⚠ the lift load must go into the KFL08, not the motor: lock the screw in the KFL08 (collar or set screws) so the coupler doesn't push on the shaft |
+| Y 60 mm/s (01 §6.3) on GT2 20T | 60 / 40 mm per rev = 90 rpm, far below the curve's knee (p. 33) | ✓ firmware `v_y` was 50, now 60 (22 Oct) |
 | TMC2209 VS limit "29 V" (02 §3.3, TVS note) | Operating 5.5–29 V; absolute max 32 V (P17_tmc2209 §20.1, §19) | ✗ wording → 29 V operating / 32 V abs max |
 | Run currents 1.0 / 1.0 / 0.9 / 0.6 A rms (02 §2, `settings.h`) | 1.4 A rms design guideline per coil (§20.1) | ✓ |
 | R_sense 0.11 Ω (`pins.h`) | MKS V2.0 schematic: R0805 0R11 | ✓ |
@@ -20,10 +25,12 @@ Spec, CAD and firmware values checked against the files in this folder. Page num
 | CLK tied to GND = internal clock | "Tie to GND using short wire for internal clock" | ✓ |
 | Cutting VMOT resets the registers (02 §1, 03 §8) | §17: cycling VS resets the chip | ✓ |
 | VIO from ESP32 3V3 | VCC_IO 3.00–5.25 V | ✓ |
-| UART on StepStick pin 4; JP1–JP4 open (02 §3.3) | **MKS TMC2209 V2.0 (P17): PDN/UART on pin 5**; pin 4 only if the optional R8 is fitted (P17 size-pin drawing) | ✗ → JP1–JP4 are now bridged by default (v0.1.19) |
+| UART on StepStick pin 4; JP1–JP4 open (02 §3.3) | **MKS TMC2209 V2.0 (P17): PDN/UART on pin 5**; pin 4 is linked through **R8 = 0 Ω (fitted)** on the schematic; R5 not fitted (P17 schematic) | ✗ → JP1–JP4 are now bridged by default (v0.1.19). Pins 4 and 5 are then both UART; check 4↔5 continuity on arrival |
 | MG90S supply (02 §3.3, P18) | Operating 4.8–6.0 V (P09 p. 1) | ✓ buck set to 5.8 V (v0.1.18) |
 | MG90S 22.8 × 12.2 × 28.5, 14 g (`robot_dims.py` SERVO) | 22.5 × 12 × 35.5 (height probably includes the output spline), 13.4 g (P09 p. 1) | ⚠ measure (already in the backlog) |
-| MG90S stall current vs the 3 A servo buck | Not given | ⚠ no source |
+| MG90S tabs 4.85 per side (`SERVO["tab"]`) | 32.5 over the tabs − 22.5 body = 5.0 per side; tabs ≈ 21 above the bottom; 35.5 to the top of the horn (P09 p. 1 drawing). The cart listing (CNC Store) gives 22 × 12 × 29 | ✓ tab span. Tab height vs the output face isn't readable on the drawing; the P09 STEP gives 7.9 (tab face to output face) and a 5.0 mm horn, now used for `SERVO` and the `y_carriage` ledges (25 Oct; the CAD had 9.5 and 2). Measure on arrival |
+| KW11-3Z body 20 × 10 × 6.4, M2 holes 9.5 apart (`bay_shelf`, `dock_block`, tray, nose) | Generic drawing: 19.7 × 10.6 × 6.6, mounting holes **9.5** apart (P10_kw11-3z_dimensions.png) | ✓ pitch confirmed (25 Oct). The tray pockets were closed (the switch couldn't be fitted, independent review 25 Oct): now open to the back face with M2 screws and a wire groove, sized from this drawing (hole position 3 mm from the pin edge is estimated, slotted ±1) |
+| MG90S stall current vs the 3 A servo buck | Not in P09. Retailer bench tests at 5 V: ≈ 0.65–0.8 A stall ([Protosupplies](https://protosupplies.com/product/servo-motor-micro-mg90s/)); expect ≈ 1 A at 5.8 V | ⚠ no datasheet, but 2 stalled servos (≈ 2 A) stay under 3 A |
 
 ## Robot compute and I/O
 
@@ -32,14 +39,15 @@ Spec, CAD and firmware values checked against the files in this folder. Page num
 | Strapping pins 0, 3, 45, 46 (02 §3.1) | Same (P16 datasheet, pin table notes) | ✓ |
 | "35–37 (PSRAM)" avoided (02 §3.1) | Octal flash/PSRAM uses **GPIO33–37** | ✗ → 33–37 (33/34 are unused anyway) |
 | GPIO47/48 at 1.8 V on R8V/R16V | Same (pin table note 4) | ✓ |
-| VMOT_SENSE on GPIO1, DOCK_V on GPIO2 | ADC1_CH0 / ADC1_CH1 (not ADC2, so Wi-Fi safe) | ✓ |
+| VMOT_SENSE on GPIO1, DOCK_V on GPIO2 | ADC1_CH0 / ADC1_CH1 | ✓ |
 | VMOT divider "readable to ≈ 20 V" | Calibrated ADC range at 12 dB is 0–2.9 V → 2.9 × 118/18 = **19.0 V** (Table 5-6) | ✗ → ≈ 19 V (16.8 V reads 2.56 V ✓) |
 | DOCK_V 24 V → 2.18 V | Within 0–2.9 V; readable to ≈ 32 V | ✓ |
-| Onboard RGB on GPIO48/38 | DevKitC-1 schematic: RGB_CTRL on GPIO38 (v1.1) / GPIO48 (v1.0) | ✓ |
-| DevKit header row spacing 22.86 / 25.4 | Not in the schematic | ⚠ measure (already in parts.csv P16) |
+| Onboard RGB on GPIO38 | DevKitC-1 v1.1 schematic: RGB_CTRL on GPIO38 (the v1.0 GPIO48 claim has no file here) | ✓ |
+| DevKit header row spacing 22.86 / 25.4 | Espressif v1.1 drawing: board 25.40 wide, rows 1.27 in from each edge → **22.86 mm** (P16_esp32-s3-devkitc-1_dimensions) | ✓ for a genuine v1.1; the board drills both, so still check the bought clone before soldering |
 | Pi 3B+ 85 × 56, holes 58 × 49 at 3.5 (`pi_tray.py`) | Same (P12 mechanical drawing) | ✓ |
 | Pi 5 V input, buck 5.15 V / 5 A | 5 V / 2.5 A (P12 brief) | ✓ |
-| Camera ~120° diag, 102° H, focus ~150 mm, 25 × 24 (P13, 01 §6) | CM3 Wide: 120° diag, 102° H, focus 5 cm–∞, 25 × 24 × 12.4 mm (P13 brief pp. 4–5) | ✓ for the genuine Wide; ⚠ the third-party IMX708 board must be measured |
+| Camera ~120° diag, 102° H, focus ~150 mm, 25 × 24 (P13, 01 §6) | CM3 Wide: 120° diag, 102° H, focus 5 cm–∞ (P13 brief pp. 4–5), 25 × 24 × 12.4 mm (p. 3) | ✓ for the genuine Wide; ⚠ the bought third-party board (Tokopedia wirogix) is unidentified. Arducam's 120° IMX708 M12 board is 25 × 24 × 15.4 mm; Waveshare's IMX708-120 matches the CM3 size. Measure on arrival |
+| Tray camera slot: board 25 wide in a 25.0 × 3 slot, lens centre assumed 12 above the board's bottom edge (`tray_stack.py` lines 64–66) | CM3 Wide drawing: board **25 × 23.862**, **lens 14.4 above the bottom edge** (9.46 below the top), PCB 1.12 thick, connector 2.75 deep behind the top 5.71 mm, Ø2.2 holes 21 × 12.5 apart (P13_camera-module-3-wide_mechanical-drawing; STEP in `docs/3d-models/`) | ✓ fixed 25 Oct: wirogix sent the Waveshare IMX708-120 spec, same board as the CM3 Wide. Slot now 25.8 wide with 0.4 mm per side, floor 14.8 below the lens, front window for the holder, 3.35 mm rear connector pocket, 18 mm ribbon slot (`CAM_BOARD` in `robot_dims.py`) |
 | INA226 @ 0x40, ±8 A with R010, bus ≤ 16.8 V | A1 = A0 = GND → 0x40; ±81.92 mV / 10 mΩ = ±8.19 A; bus 0–36 V (P19 §5.5, Table 6-2) | ✓ |
 | WS2812 VIH = 0.7 × VDD (02 §3.3) | 0.7 VDD (PCB_ws2812b) | ✓ |
 
@@ -48,17 +56,19 @@ Spec, CAD and firmware values checked against the files in this folder. Page num
 | Value (where) | Datasheet | Status |
 |---|---|---|
 | 35E 3.5 Ah, 4.2 V, 50.4 Wh (02 §1, P20) | 3.6 V nominal, 3450 mAh typ / 3350 min, 4.20 V, cutoff 2.50 V → 4S = **49.7 Wh** (P20 Samsung p. 2) | ✓ < 100 Wh; put the bought cell's Wh on the airline label |
-| MJ1 3.5 Ah | 3500 mAh, 3.635 V → 4S = **50.9 Wh** (P20 LG p. 3) | ✓ same note |
+| MJ1 3.5 Ah | 3500 mAh, 3.635 V → 4S = **50.9 Wh** (P20 LG p. 4) | ✓ same note |
 | Charge 1.5 A (02 §1) | 35E max charge 1.5 A (exactly at the limit); MJ1 standard 1.7 A, max 3.4 A | ✓ |
 | 10 A fuse, BMS ≥ 15 A | 35E max discharge **8 A**; MJ1 10 A. Normal draw < 2 A | ✗ → 7.5 A fuse (v0.1.19) |
 | Pack cutoff 12.0 V | 3.0 V/cell, above the 2.5 V minimum | ✓ (conservative) |
 | Servo buck MP2482 / SY8205 on VMOT ≤ 16.8 V, 3 A | MP2482 4.5–30 V, 5 A; SY8205 4.5–30 V, 5 A (P18) | ✓ |
-| Charger XL4015 CC/CV 16.8 V / 1.5 A from 24 V | XL4015E1: Vin 8–36 V (abs max 40 V), Vout 1.25–32 V, 5 A, dropout 0.3 V, 7 A switch limit (P18_xl4015 pp. 1, 4–5) | ✓ for 24 V → 16.8 V at 1.5 A. The chip has no CC loop: the 1.5 A limit comes from the module's own shunt + op-amp, so it can only be checked on the bought board (backlog: measure IN− ↔ OUT−) |
-| XY-3606 5 V / 5 A (P18, P29 input ≥ 30 V) | No datasheet exists | ⚠ check the listing / board on arrival |
+| Charger XL4015 CC/CV 16.8 V / 1.5 A from 24 V | XL4015E1: Vin 8–36 V (abs max 40 V), Vout 1.25–32 V, 5 A, dropout 0.3 V, 7 A switch limit (P18_xl4015 pp. 1, 4–5) | ✓ for 24 V → 16.8 V at 1.5 A. The chip has no CC loop: the 1.5 A limit comes from the module's own shunt + op-amp, so it can only be checked on the bought board (backlog: measure IN− ↔ OUT−). Reverse-engineered boards use a TL431 reference + LM358 against a shunt, CC trimmer 0.2–5 A ([CircuitDigest](https://circuitdigest.com/electronic-circuits/diy-xl4015-dc-dc-buck-converter-module)); no shunt value or position published |
+| XY-3606 5 V / 5 A (P18, P29 input ≥ 30 V) | No maker datasheet. Listings ([Grobotronics](https://grobotronics.com/dc-dc-converter-step-down-9-36v-5a.html?sl=en)): 9–36 V in, fixed **5.2 V** out, 6 A at 9–24 V in, 5 A at 24–32 V | ✓ from listings: 24 V in has 12 V margin (P29); 5.2 V suits the Pi (spec says 5.15 V). Some sellers use the name for an LM2596 board: check the bought one |
 | SS54 in the dock path | 40 V, 5 A (PCB_ss54_mdd) vs 24 V / 1.5 A | ✓ |
 | SMBJ18A: standoff 18, breakdown 20–22, clamp 29.2 V; SMBJ17A 27.6 V | VWM 18, VBR 20.0–22.1, VC 29.2 V (Vishay, Littelfuse) | ✓ |
-| VMOT relay coil 0.1–0.2 A, pulls in at 12 V, OK at 16.8 V (P38) | The Bosch file is a family overview with no coil data | ⚠ no source (already in the backlog) |
+| VMOT relay coil 0.1–0.2 A, pulls in at 12 V, OK at 16.8 V (P38) | The Bosch file is a family overview with no coil data. A similar Bosch 12 V / 30 A mini relay (0 332 209 150) lists 85 ± 5 Ω, 140 mA, pull-in ≤ 8 V (retailer); 85 Ω at 16.8 V = 0.2 A | ⚠ plausible but not for the exact part; measure the coil resistance on arrival |
 | 1N4007 flyback | 1 A, 1000 V | ✓ |
+| XT60 at the battery (P21) | XT60H: 35 A, 500 V DC, ≤ 1 mΩ (P21_amass-xt60h p. 2) | ✓ |
+| 7.5 A main fuse (v0.1.19) | 35E 8 A max discharge, MJ1 10 A (P20) | ✓ |
 
 ## Motion board connectors and parts
 
@@ -69,24 +79,57 @@ Spec, CAD and firmware values checked against the files in this folder. Page num
 | JST-XH for motors (1.0 A) | 3 A with AWG 22 (PCB_jst-xh) | ✓ |
 | MKDS 5.08 for 5 V / 5 A | 10 A, 300 V (PCB_mkds) | ✓ |
 | MMBT3904 buzzer driver | 200 mA, 40 V | ✓ |
+| 1N4148W (SMD signal diode) | 75 V, 300 mA (PCB_1n4148w p. 2) | ✓ |
+| Servo rail 220 µF / 25 V (C18, v0.1.25) | Rail is 5.8 V, so 4× voltage margin; no part datasheet on file | ✓ |
 
 ## Rack
 
 | Value (where) | Datasheet | Status |
 |---|---|---|
 | PSU 75–100 W (02 §4.1) | The saved example DRP024V060W1AZ is **60 W** (P24 p. 1) | ✓ chosen DRL-24V120W1EN is 120 W (P24_delta-drl-24v120w1en); spec now ≥ 75 W (v0.1.19) |
+| PSU size 123.6 × 30 × 116.8, 24 V / 5 A (02 §4.1) | Same; 120 W, 90–264 VAC (P24_delta-drl-24v120w1en pp. 1–2) | ✓ |
+| Dock relay module ≥ 5 A contact (P26) | Songle SRD: 10 A / 250 VAC; 24 V coil 15 mA (L) or 18.7 mA (D), pulls in ≤ 75 % (P26 p. 1) | ✓ well within a PLC output's 0.5 A |
+| Charger ≈ 28 W in the rack budget (02 §4.1) | 16.8 V × 1.5 A = 25.2 W out ÷ ≈ 90 % (assumed, the XL4015 sheet gives a curve, not this point) | ⚠ estimate |
 | PLC ≈ 5 W in the power budget | DVP-12SE11T 1.5 W (P25 instruction sheet) | ✓ (budget conservative) |
 | Inputs: +24 V to Xn, S/S to 0 V ("verify sink/source") | S/S supports both SINK and SOURCE wiring; on at > 15 V, 5 mA | ✓ (resolved) |
 | Outputs Y0–Y3 NPN sinking | Transistor outputs need **UP = +24 V and ZP = 0 V** wired; 0.5 A/point, lamp ≤ 2.5 W/point | ✗ UP/ZP missing from 02 §4.2 → added |
-| Modbus M0 = 0x0800, D0 = 0x1000 (03 §4) | Not in the instruction sheet or catalogue (needs the DVP programming manual) | ⚠ no source (verify during PLC bring-up) |
+| Modbus M0 = 0x0800, D0 = 0x1000 (03 §4) | Not in the instruction sheet or catalogue. Third-party guides agree: D0 = 0x1000 (D0–D4095 → 0x1000–0x1FFF), M0 = 0x0800 ([plcprogramming.io](https://plcprogramming.io/guides/delta-plc-modbus-address), [Industrial Monitor Direct](https://industrialmonitordirect.com/blogs/knowledgebase/delta-plc-modbus-register-mapping-and-function-codes)) | ⚠ consistent but not from Delta; confirm with the DVP programming manual or at PLC bring-up |
 | 12SE size | 37.4 W × 90 H × 60 D, 35 mm DIN rail | ✓ |
 
 ## No datasheet at all (verify on purchased hardware; mostly already in `docs/BACKLOG.md`)
-KW11-3Z, V-wheels, KFL08, Tr8×2 nut and coupler, GT2 pulley/idler, ball casters, 4S BMS, both E-stops,
-24 V relay module, 3 A polyfuse, tower light current, dock contacts, travel router, third-party IMX708 board,
-CSI cable (only a 200 mm drawing exists). Estimates with no source: robot power 4 / 12–20 W, rack budget, MASS_G masses.
+Shop questions sent 25 Oct (Tokopedia chat) for the battery pack, V-wheel/eccentric spacer/pulley, camera, E-stops,
+relay, buck modules, KW11-3Z and TMC2209. Ball caster (bustan listing): **20 mm tall**, 48 × 32 base, holes 40 apart,
+Ø15 ball: ✗ the CAD needs 42 (rear) and 23.5 (front), so spacers or taller casters are needed.
+OpenBuilds STEP models (25 Oct, `docs/3d-models/`): mini eccentric spacer boss **Ø7.11** (✓ `ECC_HOLE_D` assumes 7.12,
+now 7.9 for print shrink, ≈ 7.25 printed; 7.6 would have printed ≈ 7.0), 6 mm tall + 3.7 mm boss, hex ≈ 8.5 across flats / 10 across corners (fits the Ø12
+`WHEEL_SEAT_D` pads); mini V-wheel Ø15.23 × 8.8 (✓ `VWHEEL`); GT2 20T Ø15 flange, Ø12.2 teeth, 14 wide (✓ CAD 12 / 16).
+These are the OpenBuilds originals; the bought Rajawali3D clones should match but check on arrival.
+V-wheels and the mini eccentric spacers (7.12 mm boss, 8 mm hex: shop listing only, and the v0.1.23 axle
+holes depend on it), Tr8×2 nut, coupler (seller spec Ø20 × 25 matches), GT2 pulley/idler, ball casters, 4S BMS, both E-stops (listings
+for the robot's LA38-11ZS agree on **1 NO + 1 NC**, 10 A, latching, which v0.1.25 needs for J13; check that the bought one has both), polyfuse / fuse terminal, tower light
+current, dock contacts, travel router, CSI cable (only a 200 mm drawing exists).
+
+## Values from a standard, quote or simulation (no datasheet in this folder)
+| Value (where) | Source | Status |
+|---|---|---|
+| Real drives use 6-32 UNC screws → 3.7 mm caddy slots (01 §3, v0.1.21) | SFF-8301 (3.5" form factor); not saved here | ⚠ save the SFF-8301 PDF or try a real drive |
+| VMOT decays in up to ≈ 370 ms after an E-stop (02 §3.1) | SPICE run in the design review pack | ⚠ simulation; measure on the bench |
+| Cycle time 107 s (v0.1.22) | Firmware simulator, run with Y at 50 mm/s | ⚠ simulation; Y at 60 mm/s makes it slightly shorter |
+| Print tolerances, 5 walls + 20 % (v0.1.21) | Print-service quote | ⚠ check the first parts |
+| JLCPCB 2–4 days + 4–6 days UPS (v0.1.24) | JLCPCB quote | ⚠ quote |
+
+## Estimates with no source
+Robot power 4 W idle / 12–20 W moving; full charge ≈ 2.5 h (3.5 Ah ÷ 1.5 A ≈ 2.3 h in CC + CV top-off); caddy + dummy
+≈ 750 g and the 1.0 kg design load; MASS_G masses in `vendor.py`; finger `DONE` after 300 ms (03 §3); ADC error
+on VMOT_SENSE / DOCK_V (not specified; calibrate against a meter).
+
+## Docs still to correct (found by the review, not yet fixed)
+- 02 §2 "e.g. BTT v1.3" and P17 "BTT v1.3 / FYSETC style": the bought modules are MKS TMC2209 V2.0.
+- 02 §3.3 "pin 4 carries UART only if its optional R8 is fitted": R8 is fitted (0 Ω) on the MKS V2.0.
+- 01 §6.3: add the KFL08 screw lock (Z axial load) and the 1.0 kg wheel-load figure.
 
 ## Open decisions (not changed in the spec)
 1. ~~**Servo supply**~~: decided in v0.1.18, buck set to 5.8 V.
 2. ~~**Drive shaft radial load**~~: decided in v0.1.19, wheel kept tight to the bracket plate (2 mm shim, bore clears the full shaft); outboard bearing only if the shafts show play.
 3. ~~**Fuse vs cell rating**~~: decided in v0.1.19, 7.5 A main fuse (works with 35E and MJ1).
+4. ~~**Y speed**~~: decided 22 Oct, 60 mm/s as in the spec; firmware updated.

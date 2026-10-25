@@ -13,7 +13,7 @@ Frame: station frame — x = 0 on the bay centerline, y = 0 at the rack face, z 
 from cadgen import build123d as bd
 from cadgen import step, stl
 
-from lib.dims import DOCK_STOP_Y, M3_CLEAR, M5_CLEAR, NOSE_W
+from lib.dims import DOCK_STOP_Y, M2_PILOT_D, M3_CLEAR, M5_CLEAR, NOSE_W
 from lib.prims import box, cyl_x, prism_xy
 
 THROAT = NOSE_W + 2.0          # 202
@@ -45,7 +45,7 @@ CONTACT_SCREW_DZ = 8.0
 # Dock-detect KW11-3Z: same mounting scheme as the bay shelf.
 SWITCH_SLOT = (-4.0, 4.0, 70.0, 85.0)  # x0, x1, z0, z1
 BRACKET_X = (4.0, 7.0)
-SWITCH_HOLE_D = 1.7            # M2 self-tapping pilot
+SWITCH_HOLE_D = M2_PILOT_D
 SWITCH_HOLE_Z = (69.75, 79.25)
 SWITCH_ADJUST = 2.0
 

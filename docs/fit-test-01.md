@@ -33,6 +33,23 @@ Don't print 4–6 until 1–3 pass.
 If a hole is off, measure it with calipers and tell me the result, e.g. "5.3 printed as 5.0". I'll update
 `M5_CLEAR` and the other hole constants in `cad/src/lib/dims.py` and regenerate everything.
 
+### Result, 25 Oct (PETG, print shop in Bekasi, caliper, one reading per hole)
+
+| Hole | Design (R3) | Printed | Error | New design (R4) |
+|---|---|---|---|---|
+| 1 M2 pilot | 1.7 | not measured | ≈ -0.3 assumed | 1.95 |
+| 2 M3 self-tap | 2.5 | 2.11 | -0.39 | 2.85 |
+| 3 M3 clear | 3.4 | 3.19 | -0.21 | 3.6 |
+| 4 M3 insert | 4.0 | 3.58 | -0.42 | 4.4 |
+| 5 M5 clear, hub bore | 5.3 | 5.08 | -0.22 | 5.5 (hub D-flat 2.1 → 2.2) |
+| 6 M5 insert | 6.4 | 5.75 | -0.65 | 7.0 |
+
+Small holes print 0.2–0.65 mm under on this printer, so the hole constants in `dims.py` are now modeled oversize
+(also `ECC_HOLE_D` 7.3 → 7.9 in `robot_dims.py` (7.6 at first, which still printed under the Ø7.11 boss); finger horn screw 2.2 → 2.5; anti-backlash nut pocket 10.5 / 22.0 →
+10.8 / 22.4; button-head counterbores: lid 6.0 → 6.4, shelf 10.0 → 10.4, drive bracket head access 10.0 → 10.5). Slices: shelf channel **116.04** (design 116.0, exact); caddy body
+109.63 (design 110), rails not measured. The caddy slice seats in the shelf slice by hand. The insert test waits for the
+inserts (the shop has none). If another shop prints the full run, have it print the R4 hole coupon first.
+
 ## 2–3. Slice fit (the 1 mm/side channel clearance)
 
 - [ ] Caddy slice slides into the shelf slice from the front by hand, ≤ 5 N, no binding, no rocking > 1 mm.
@@ -56,5 +73,5 @@ Too tight or too loose → send me both measurements and I'll adjust `BAY_CHANNE
 
 ## Robot parts (when printed)
 
-- [ ] Drive hub slides onto the motor shaft by hand (bore 5.3); the set screw locks it with no wobble.
+- [ ] Drive hub slides onto the motor shaft by hand (bore 5.5, prints ≈ 5.3); the set screw locks it with no wobble.
 - [ ] Mast collar slides onto the 2040 by hand (0.3 mm per side) and doesn't rock once the gusset screws are in.

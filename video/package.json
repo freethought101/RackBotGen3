@@ -1,0 +1,26 @@
+{
+  "name": "rackbot-pitch-video",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "studio": "remotion studio",
+    "render": "remotion render RackBotPitch out/rackbot-pitch.mp4 --codec h264 --crf 18 --gl angle",
+    "still": "remotion still RackBotPitch --gl angle"
+  },
+  "dependencies": {
+    "@react-three/drei": "9.122.0",
+    "@react-three/fiber": "8.18.0",
+    "@remotion/cli": "4.0.536",
+    "@remotion/three": "4.0.536",
+    "@remotion/google-fonts": "4.0.536",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "remotion": "4.0.536",
+    "three": "0.170.0"
+  },
+  "devDependencies": {
+    "@types/react": "18.3.12",
+    "@types/three": "0.170.0",
+    "typescript": "5.6.3"
+  }
+}
