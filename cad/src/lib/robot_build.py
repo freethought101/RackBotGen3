@@ -102,8 +102,8 @@ def base_parts():
     zt = MAST_Z[1] + 6.0                         # on the mast top plate
     parts.append(vendor.board(ex - 20, ey - 20, zt, 40.0, 40.0, 40.0, "estop_box", srgb("#FACC15")))
     parts.append(_p(cyl_z(40.0, ex, ey, zt + 40.0, zt + 60.0), "estop_button", srgb("#DC2626")))
-    bw, bl, bh = BUCK_SIZE
     for name, (x, y) in BUCKS.items():
+        bw, bl, bh = BUCK_SIZE[name]
         parts.append(vendor.board(x, y, DECK_Z[1], bw, bl, bh, f"buck:{name}", srgb("#7C3AED")))
     return parts
 

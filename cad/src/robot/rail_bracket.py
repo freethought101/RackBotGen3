@@ -16,7 +16,7 @@ from lib.robot_dims import (BELT_X, PULLEY_Y, RAIL_BRACKET_BOLT_X, TRAY_BOLTS, Y
                             YBRACKET_PLATE_Y, YBRACKET_X, YBRACKET_Y, YCARRIAGE_DY, YFRAME_DZ, YMOTOR_PLATE_DZ,
                             Y_NOTCH_HOME, YRAIL_DZ, YRAIL_Y)
 
-NEMA_PITCH = 31.0
+NEMA_PITCH, BOSS_D = 31.0, 23.0   # boss Ø22: same 0.5 mm clearance as the drive bracket and Z-motor mount
 # Y home switch (KW11-3Z) lies flat on a post on the strip behind the carriage, lever pointing +y. The carriage frame's
 # rear face (y = Y_NOTCH_HOME + YCARRIAGE_DY[0] + Y, z YFRAME_DZ) presses it; it triggers at Y = 0. Screws from the
 # top; the holes are slotted +/-1.5 in y to set the trigger point.
@@ -49,7 +49,7 @@ def rail_bracket():
     pz0, pz1 = YMOTOR_PLATE_DZ
     part += box(YBRACKET_X[0], BELT_X + 19.0, YBRACKET_Y[0], PULLEY_Y + 23.0, pz0, pz1)   # motor overhangs 2 mm
     part += box(*YBRACKET_X, YBRACKET_Y[0], PULLEY_Y + 23.0, YBRACKET_DZ[0], pz1)          # web to the strip
-    part -= cyl_z(22.5, BELT_X, PULLEY_Y, pz0 - 0.1, pz1 + 0.1)                             # motor boss / shaft
+    part -= cyl_z(BOSS_D, BELT_X, PULLEY_Y, pz0 - 0.1, pz1 + 0.1)                             # motor boss / shaft
     for dx in (-NEMA_PITCH / 2, NEMA_PITCH / 2):
         for dy in (-NEMA_PITCH / 2, NEMA_PITCH / 2):
             part -= cyl_z(M3_CLEAR, BELT_X + dx, PULLEY_Y + dy, pz0 - 0.1, pz1 + 0.1)

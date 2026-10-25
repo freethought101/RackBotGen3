@@ -41,7 +41,7 @@ DRIVE_PLATE_X = (119.0, 123.0)       # |x| printed bracket plate between motor f
 DRIVE_INSERT_X = 105.0               # |x| deck -> drive bracket M3 (inserts in the web tops, clear of the motor)
 DRIVE_INSERT_Y = (AXLE_Y - 27.0, AXLE_Y + 27.0)
 CASTER_REAR = [(-65.0, -380.0), (65.0, -380.0)]   # under the rear cross member
-CASTER_FRONT = (0.0, -60.0)          # anti-tip caster under the nose, 3 mm off the table
+CASTER_FRONT = (0.0, -60.0)          # anti-tip caster under the nose, 23.5 mm tall (nose floor z 30 - gap)
 CASTER_FRONT_GAP = 6.5               # 3.5 mm above the dock floor plate (3 mm) when docked
 
 # ---- Mast / Z ---------------------------------------------------------------------------------
@@ -134,7 +134,11 @@ PI_DECK_HOLES = ((PI_XY[0] + 6.0, PI_XY[1] + 28.0), (PI_XY[0] + 77.0, PI_XY[1] +
 BATTERY_DECK_HOLES = ((BATTERY[0] + 10.0, BATTERY[3] - 8.0), (BATTERY[1] - 10.0, BATTERY[3] - 8.0))
 ESTOP_XY = (-22.0, -255.0)           # on the mast top plate: highest, easiest point to hit
 BUCKS = {"charger": (-60.0, -205.0), "5v": (4.0, -205.0), "6v": (-28.0, -172.0)}   # (x0, y0) under the tray
-BUCK_SIZE = (56.0, 27.0, 20.0)       # envelope for XL4015-class modules
+# (x, y, z) envelope per module (P18), from the Tokopedia listings we order from; measure on arrival.
+# charger: XL4015 CC/CV (CNC Store Bandung) gives no size; other sellers list 52-55 x 25-27 x 14-15.
+# 5v: XY-3606 (EasyWare) lists 63 x 27 x 10; 13 high for the DC jack and capacitors.
+# 6v: a second XL4015, set to 5.8 V (v0.1.29; the MP2482/SY8205 module is fixed at 5 V).
+BUCK_SIZE = {"charger": (55.0, 27.0, 15.0), "5v": (63.0, 27.0, 13.0), "6v": (55.0, 27.0, 15.0)}
 # Y drive: GT2 6 mm belt loop in a horizontal plane beside the rail's outer face. 20T pulley behind the
 # rail end on the Y motor (shaft pointing down, body above the belt), idler on a fork bracket at the rail's
 # front end, carriage clamps the inner strand. 200 x 16 / (20 x 2 mm) = 80 usteps/mm.

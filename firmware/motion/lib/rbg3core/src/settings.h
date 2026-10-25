@@ -19,7 +19,7 @@ struct Settings {
   float v_drive = 150, a_drive = 300;
   float v_turn = 60;
   float v_z = 15, a_z = 50;
-  float v_y = 50, a_y = 200;
+  float v_y = 60, a_y = 200;
   float v_dock = 50;
   float home_fast = 10, home_slow = 2, home_backoff = 3;
 

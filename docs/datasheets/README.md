@@ -9,6 +9,7 @@ Spec values checked against these files: [CROSSCHECK.md](CROSSCHECK.md).
 | P13_camera-module-3_brief.pdf | P13 Camera Module 3 | datasheets.raspberrypi.com |
 | P16_esp32-s3_datasheet.pdf | P16 ESP32-S3 | espressif.com |
 | P16_esp32-s3-devkitc-1_schematic.pdf | P16 DevKitC-1 v1.1 schematic | dl.espressif.com |
+| P16_esp32-s3-devkitc-1_dimensions.pdf | P16 DevKitC-1 v1.1 dimension drawing (25.40 wide, rows 22.86 apart) | dl.espressif.com |
 | P17_tmc2209.pdf | P17 TMC2209 (U2-U5) | analog.com / DigiKey mirror (if present) |
 | P19_ina226.pdf | P19 INA226 | ti.com |
 | PCB_mmbt3904.pdf | Q1 MMBT3904 | diodes.com |

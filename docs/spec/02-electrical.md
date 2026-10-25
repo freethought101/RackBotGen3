@@ -50,7 +50,7 @@ Wire: battery/VMOT 18 AWG, motors 22–24 AWG, signals 26 AWG. Connectors: XT60 
 ## 3. Motion board (KiCad PCB)
 
 Two-layer module carrier, **100 × 100 mm**, 1 oz copper, 4 × M3 holes at 93 × 93 pitch.
-Ordered from JLCPCB **by 14 Oct**, with **Economic assembly of the 45 SMD parts on 2 of the 5 boards** (`fab/rbg3-motion-jlc-bom.csv` + `-jlc-cpl.csv`); the through-hole parts are hand-soldered. The same schematic can be built on perfboard as a fallback.
+Ordered from JLCPCB **on 23 Oct** (re-planned; quoted 2–4 days work + 4–6 days UPS), with **Economic assembly of the 45 SMD parts on 2 of the 5 boards** (`fab/rbg3-motion-jlc-bom.csv` + `-jlc-cpl.csv`); the through-hole parts are hand-soldered. The same schematic can be built on perfboard as a fallback.
 **Implemented in `pcb/motion-board/`** (KiCad 10, ERC/DRC clean; see its README for the pre-order checklist).
 As built: VMOT/GND traces 1.0 mm + GND pours on both layers, motor traces 0.6 mm, +6 V servo 1.0 mm, other supplies 0.5 mm, signals 0.25 mm.
 
@@ -128,7 +128,9 @@ Switch inputs: internal pull-up + 10 k external pull-up to 3V3, 1 k series, 100 
   (a series P-FET is a v2 option).
 - Buck modules are **off-board** (vendor footprints vary): the 5 V/5 A buck feeds the Pi and J2 (5 V in), the
   servo buck (3 A, from VMOT, after the E-stop) feeds J3. It is **set to 5.8 V**: the MG90S is rated 4.8–6.0 V, so
-  5.8 V leaves margin for trim drift and ripple. The rail keeps its "6V" name on the board. The board has no on-board regulators.
+  5.8 V leaves margin for trim drift and ripple. The servo buck is a second **XL4015 CC/CV** board (same as the
+  charger): set CV to 5.8 V with a meter before connecting J3, and turn CC to maximum. Its output ground is tied to
+  the board GND through J3, so its IN−/OUT− shunt is bypassed and the CC limit does not act; that is fine here. The rail keeps its "6V" name on the board. The board has no on-board regulators.
 - WS2812 level: driven from 3V3 through 330 Ω. Strictly out of spec (VIH = 0.7 × 5 V = 3.5 V) but it works with most parts on a short lead; it is a status light only. If it is unreliable, use a WS2812B-V5/SK6812 variant with a 3.3 V-compatible input. There is no buffer footprint on v1.
 - Silkscreen (`pcb/motion-board/scripts/silk.py`): board name `RBG3-MOTION v1`, function and pin order at every
   connector (+5V/GND and +6V/GND at J2/J3, 2B 2A 1A 1B at J4–J7, G S 3V3 at J8–J13, G + S at J14/J15, and so on).
@@ -148,7 +150,7 @@ Schematic, PCB layout, DRC/ERC clean, Gerbers + drill + BOM + position file (JLC
 |---|---|
 | **Delta 24 V DIN-rail PSU** | 24 V, **≥ 75 W**, universal 100–240 VAC input (Thailand 220 V / 50 Hz). Chosen: **Delta LYTE II DRL-24V120W1EN** (24 V / 5 A, 120 W, 123.6 × 30 × 116.8 mm) |
 | **Delta DVP-12SE11T PLC** | 8 DI / 4 DO (NPN transistor), 24 VDC, built-in Ethernet, **Modbus TCP server**. Programmed with ISPSoft/WPLSoft |
-| Dock power relay | 24 V relay module (≥ 5 A contact) driven by PLC Y0, + 3 A polyfuse on the dock + line. Stays on the rack's DIN rail; its output runs to the charging dock at the **spare station** over a **2-core 0.75 mm² lead (≈ 1.5 m)**: ≈ 1.2 A at 24 V, < 0.1 V drop |
+| Dock power relay | 24 V relay module (≥ 5 A contact) driven by PLC Y0, + 3.15 A slow-blow fuse in a UK5-HESI fuse terminal on the dock + line (no local polyfuse rated ≥ 30 V). Stays on the rack's DIN rail; its output runs to the charging dock at the **spare station** over a **2-core 0.75 mm² lead (≈ 1.5 m)**: ≈ 1.2 A at 24 V, < 0.1 V drop |
 | Status lamps | 3 × 22 mm panel indicator lamps, 24 VDC LED (R/Y/G), common +, in a 3-hole control box on the rack top (replaced the tower light in v0.1.27) |
 | E-stop | Mushroom NC, 2 contacts: one to PLC X5, one in series with the dock relay coil (hardware interlock) |
 | Terminal blocks | DIN rail terminal blocks for 24 V / 0 V distribution |

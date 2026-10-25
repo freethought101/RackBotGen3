@@ -6,10 +6,10 @@ Open checks and to-dos collected from the spec, the CAD and PCB work, and review
 ## Now (this week)
 
 - [ ] Ask Delta Thailand for a DVP-12SE (or SE/SS2 with Ethernet) PLC loan; decide on the ESP32 rack fallback otherwise.
-- [ ] Order all parts by **8 Oct** (motors, extrusion, fasteners locally if AliExpress quotes > 10 days). Re-check prices against the budget (≈ 478 USD, 04 §1).
+- [ ] Order all parts on **Fri 23 Oct** (re-planned 22 Oct, 04 §2): print service, JLCPCB (UPS) and Tokopedia (motors, extrusion, fasteners locally if AliExpress quotes > 10 days). Re-check prices against the budget (≈ 577 USD, 04 §1).
 - [ ] Team decisions: broken 3.5" HDDs available? Team-owned parts to reuse (steppers, filament, fasteners)? Demo on a table or the floor?
 
-## Before ordering the motion PCB (deadline 14 Oct)
+## Before ordering the motion PCB (order on 23 Oct)
 
 - [ ] **DevKit header row spacing**: measure the ESP32-S3-DevKitC-1 (22.86 or 25.4 mm). The board has both; note which row to populate.
 - [ ] **DevKit pinout**: compare `pcb/motion-board/lib/rbg3.kicad_sym` (J1 pins 1–22, J3 pins 23–44, pin 1 at the antenna end) with Espressif's pin layout for the board revision you bought.
@@ -77,7 +77,7 @@ Fixed in the design: see 00 revision history v0.1.6. Still to verify on hardware
 - [x] NEMA17 radial load rating vs ≈ 20 N per wheel (direct drive): 28 N at 20 mm per the datasheet; hub bore fixed in v0.1.19.
 - [ ] Rack and spare station don't slide when docking (≈ 17 N push); add a yaw criterion to T6.
 - [ ] Battery pack + BMS fit the 80 × 38.5 × 47.5 box (2 × 2 cells along x).
-- [ ] Buck/charger modules fit 56 × 27 × 20.
+- [ ] Buck/charger modules fit their CAD spaces: charger and 5.8 V (both XL4015) 55 × 27 × 15, 5 V 63 × 27 × 13.
 - [ ] Tray slot switch lever triggers within ≥ 4 mm past the stop face.
 
 ## Rack / PLC bring-up
