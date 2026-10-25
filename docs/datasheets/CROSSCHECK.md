@@ -11,7 +11,7 @@ Spec, CAD and firmware values checked against the files in this folder. Page num
 | 5 mm D-shaft ≥ 22 mm, 31 mm hole pitch, Ø22 boss (`drive_bracket.py`, `z_motor_mount.py`, `rail_bracket.py`) | Ø5 × 24 ± 1, 31 ± 0.2, boss Ø22 × 2, M3 depth 4.5 (p. 32) | ✓ |
 | Motor mass 280 g (`vendor.py` MASS_G) | 0.28 kg (p. 32) | ✓ |
 | **Bought motor is the 17HS4401S** (Lajarus, cart 24 Oct), not the JK42HS40-1704 | P01_17hs4401s_handsontec: 1.7 A, 1.5 Ω, 2.8 mH, **0.43 N·m**, 280 g, body 40 max, □42 max, 31 ± 0.1 pitch, M3 4.5 deep, boss Ø22 × 2, **shaft Ø5 × 23 ± 0.5**, flat 4.5 ± 0.1 across (p. 2) | ✓ (25 Oct) everything the CAD uses matches: the shaft ends 1 mm shorter than the JK's 24 ± 1, inside the hub bore's range, and the flat sits 2.0 from the axis as modeled (`FLAT_R` 2.2 with print shrink). Radial and axial load limits are not given, so the JK values (28 N at 20 mm, 10 N axial) remain the working estimate |
-| KFL08: 48 × 27, 37 pitch, 5 flange, 13 tall, Ø22 boss (`robot_dims.KFL08`); fixed with M5 (`mast_top_plate.py`, P11) | Handsontec table: H 48, L 27, J 37, A0 12.5, **N Ø4.8, bolt M4** (P05_kfl08_handsontec p. 2; p. 1 says M5, contradicting the table). STEP model: 46.5 × 27 × 11.35 (`docs/3d-models/P05_kfl08.step`) | ⚠ envelope ✓ (CAD slightly larger). **Bolt size**: an M5 won't pass a 4.8 hole; use 2 × M4 + nuts unless the bought one has ≥ 5.3 mm holes (measure). The plate's 5.5 holes take either |
+| KFL08: 48 × 27, 37 pitch, 5 flange, 13 tall, Ø22 boss (`robot_dims.KFL08`); fixed with M5 (`mast_top_plate.py`, P11) | Handsontec table: H 48, L 27, J 37, A0 12.5, **N Ø4.8, bolt M4** (P05_kfl08_handsontec p. 2; p. 1 says M5, contradicting the table). STEP model: 46.5 × 27 × 11.35 (`docs/3d-models/P05_kfl08.step`) | ⚠ envelope ✓ (CAD slightly larger). **Bolt size**: an M5 won't pass a 4.8 hole; use 2 × M4 + nuts unless the bought one has ≥ 5.3 mm holes (measure). The plate's 5.5 holes take either. M4 × 16 + nuts added to P11 (25 Oct) |
 | "Torque ≈ 10 N per wheel" (01 §6.2) | 0.41 N·m at the rated 1.7 A; the run current is 1.0 A → ≈ 0.25 N·m → ≈ 6 N at r = 40 mm (p. 32, p. 33 curve) | ✗ → ≈ 6 N (still ≈ 4× the need) |
 | Direct-drive wheel on the motor shaft (01 §6.2) | Max radial force **28 N at 20 mm from the flange** (p. 32). Static load ≈ 21 N per wheel with 2 loaded caddies (≈ 6 kg, 72 % on the axle), wheel centre ≈ 18 mm from the flange | ⚠ 75 % of the limit before bumps. v0.1.19: hub bore no longer bottoms on the 24 ± 1 mm shaft (it was sized for 22 mm and would have pushed the wheel 1–3 mm out); hub fitted with a 2 mm shim |
 | Z 15 mm/s on Tr8×2 = 450 rpm at 12 V (empty pack) | 12 V / 1.6 A-peak curve ≈ 0.2 N·m at 450 rpm; Z needs ≈ 0.05 N·m (p. 33) | ✓ |
@@ -26,7 +26,7 @@ Spec, CAD and firmware values checked against the files in this folder. Page num
 | MG90S supply (02 §3.3, P18) | Operating 4.8–6.0 V (P09 p. 1) | ✓ buck set to 5.8 V (v0.1.18) |
 | MG90S 22.8 × 12.2 × 28.5, 14 g (`robot_dims.py` SERVO) | 22.5 × 12 × 35.5 (height probably includes the output spline), 13.4 g (P09 p. 1) | ⚠ measure (already in the backlog) |
 | MG90S tabs 4.85 per side (`SERVO["tab"]`) | 32.5 over the tabs − 22.5 body = 5.0 per side; tabs ≈ 21 above the bottom; 35.5 to the top of the horn (P09 p. 1 drawing). The cart listing (CNC Store) gives 22 × 12 × 29 | ✓ tab span. ⚠ tab height vs the output face isn't readable on the drawing; measure on arrival (`y_carriage` ledges depend on it) |
-| KW11-3Z body 20 × 10 × 6.4, M2 holes 9.5 apart (`bay_shelf`, `dock_block`, tray, nose) | Generic drawing: 19.7 × 10.6 × 6.6, mounting holes **9.5** apart (P10_kw11-3z_dimensions.png) | ✓ pitch confirmed (25 Oct); the 0.2 mm thicker body fits the pockets |
+| KW11-3Z body 20 × 10 × 6.4, M2 holes 9.5 apart (`bay_shelf`, `dock_block`, tray, nose) | Generic drawing: 19.7 × 10.6 × 6.6, mounting holes **9.5** apart (P10_kw11-3z_dimensions.png) | ✓ pitch confirmed (25 Oct). The tray pockets were closed (the switch couldn't be fitted, independent review 25 Oct): now open to the back face with M2 screws and a wire groove, sized from this drawing (hole position 3 mm from the pin edge is estimated, slotted ±1) |
 | MG90S stall current vs the 3 A servo buck | Not given | ⚠ no source |
 
 ## Robot compute and I/O
@@ -91,7 +91,7 @@ Shop questions sent 25 Oct (Tokopedia chat) for the battery pack, V-wheel/eccent
 relay, buck modules, KW11-3Z and TMC2209. Ball caster (bustan listing): **20 mm tall**, 48 × 32 base, holes 40 apart,
 Ø15 ball: ✗ the CAD needs 42 (rear) and 23.5 (front), so spacers or taller casters are needed.
 OpenBuilds STEP models (25 Oct, `docs/3d-models/`): mini eccentric spacer boss **Ø7.11** (✓ `ECC_HOLE_D` assumes 7.12,
-now 7.6 for print shrink), 6 mm tall + 3.7 mm boss, hex ≈ 8.5 across flats / 10 across corners (fits the Ø12
+now 7.9 for print shrink, ≈ 7.25 printed; 7.6 would have printed ≈ 7.0), 6 mm tall + 3.7 mm boss, hex ≈ 8.5 across flats / 10 across corners (fits the Ø12
 `WHEEL_SEAT_D` pads); mini V-wheel Ø15.23 × 8.8 (✓ `VWHEEL`); GT2 20T Ø15 flange, Ø12.2 teeth, 14 wide (✓ CAD 12 / 16).
 These are the OpenBuilds originals; the bought Rajawali3D clones should match but check on arrival.
 V-wheels, Tr8×2 nut, coupler (seller spec Ø20 × 25 matches), GT2 pulley/idler, ball casters, 4S BMS, both E-stops,

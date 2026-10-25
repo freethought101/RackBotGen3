@@ -45,7 +45,7 @@ If a hole is off, measure it with calipers and tell me the result, e.g. "5.3 pri
 | 6 M5 insert | 6.4 | 5.75 | -0.65 | 7.0 |
 
 Small holes print 0.2–0.65 mm under on this printer, so the hole constants in `dims.py` are now modeled oversize
-(also `ECC_HOLE_D` 7.3 → 7.6 in `robot_dims.py`; finger horn screw 2.2 → 2.5; anti-backlash nut pocket 10.5 / 22.0 →
+(also `ECC_HOLE_D` 7.3 → 7.9 in `robot_dims.py` (7.6 at first, which still printed under the Ø7.11 boss); finger horn screw 2.2 → 2.5; anti-backlash nut pocket 10.5 / 22.0 →
 10.8 / 22.4; button-head counterbores: lid 6.0 → 6.4, shelf 10.0 → 10.4, drive bracket head access 10.0 → 10.5). Slices: shelf channel **116.04** (design 116.0, exact); caddy body
 109.63 (design 110), rails not measured. The caddy slice seats in the shelf slice by hand. The insert test waits for the
 inserts (the shop has none). If another shop prints the full run, have it print the R4 hole coupon first.

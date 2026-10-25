@@ -156,7 +156,7 @@ All numbers live in `cad/src/lib/robot_dims.py`. `cad/checks/robot_check.py` ver
   2 × M5 into the mast side slots, and a **rear gusset** (4 × M5 into the mast's back slots up to z 160, rib to the
   deck). The mast unit lifts out for packing.
 - **Z carriage** plate x −70…62, y −228…−222, on **4 mini V-wheels in the mast's side grooves** (axles along y at
-  x ±26, z Z+14 and Z+92; eccentric spacers on the +x pair, in 7.6 mm holes).
+  x ±26, z Z+14 and Z+92; eccentric spacers on the +x pair, in 7.9 mm holes).
 - **V-wheel axle stack** (both carriages): plate → 6 mm spacer (mini eccentric, 8 mm hex, or plain) → 1 mm shim
   5 × 8 on the bearing's inner ring → wheel → nylock nut. The plates have a 0.6 mm pad (Z) or 0.4 mm recess (Y)
   around each axle so this 7 mm stack puts every wheel on its groove centre (`WHEEL_STACK` in `robot_dims.py`).
@@ -172,8 +172,11 @@ All numbers live in `cad/src/lib/robot_dims.py`. `cad/checks/robot_check.py` ver
   wide, slot B floor at Z, slot A floor at Z + 45; left wall full height, **right side open above a 6 mm lip** for the
   fingers. Fixed to the Z plate by **10 × M5 from behind into M5 heat-set inserts** in the back plate (columns x ±38,
   ±50 clear of the mast, Z wheels and nut block; the x = 50 column also clamps the Y-rail bracket).
-- Handle stops at y = −200 (a pulled caddy's handle front rests at −196); KW11 slot-presence switches in pockets
-  behind the stops (lever must reach ≥ 4 mm past the stop face).
+- Handle stops at y = −200 (a pulled caddy's handle front rests at −196); KW11 slot-presence switches lie flat in pockets
+  behind the stops, open to the back face (lever reaches 6.6 mm past the stop face, spec ≥ 4). Each is fixed with
+  2 × M2 self-tapping screws through access holes in the bottom face (slot B) or top face (slot A) before the tray
+  is bolted on; the wires run down a groove in the back face, and the Z plate closes the pockets. The back plate
+  also has Ø12 × 9 pockets for the lower Z-wheel axle nuts (the axles end past the Z plate's front face).
 - **Camera mount** on the left wall (lens at (−78, −115), Z + 15) and a **window in the left wall** (y −98…−38,
   z 8–26 above slot B) so the camera sees the caddy tag. Sized for the Waveshare IMX708-120 (same board as the Camera
   Module 3 Wide drawing, 25 × 23.86, lens 14.4 above the bottom edge): the PCB drops in from the top into a slot with
@@ -190,7 +193,7 @@ All numbers live in `cad/src/lib/robot_dims.py`. `cad/checks/robot_check.py` ver
   **Idler** at (117, −44) in a printed **fork bracket** on the rail's outer face (slotted ±3 mm for tension). A
   **clamp on the carriage's outer plate** grips the inner strand. 200 × 16 / (20 × 2) = 80 µsteps/mm.
 - **Y carriage** (gantry style): outer plate x 105–109 with **4 mini V-wheels above and below the rail** (axles along
-  x, eccentric spacers on the lower pair in 7.6 mm holes), a frame over the top wheels (z Z+50…56) and the **arm on the rail's inner
+  x, eccentric spacers on the lower pair in 7.9 mm holes), a frame over the top wheels (z Z+50…56) and the **arm on the rail's inner
   side** (x 76.5–82, 2 mm from the rail). Captured in z, x and yaw.
 - **Fingers swing about an axis along y**: each MG90S (x 63.4…75.6, 2.4 mm from the tray lip) has its output shaft
   pointing +y and sits *behind* its finger, so nothing passes the rack face. Parked = finger up; engaged = finger
@@ -295,11 +298,11 @@ why §2 gives 130–150 g for the caddy.
 | Mast collar (`mast_collar.py`) | 1 · PETG | 78 × 57 × 93 · 39 cm³ | Locates and braces the foot of the 2040 mast (28 mm deep socket, 0.3 mm per side). The rear gusset takes the forward tilt of the loaded mast in tension | Flange 2 × M5 through the deck into the mast cross member's top slot; 2 × M5 into the mast side slots; gusset 4 × M5 into the mast's back slots (to z 160) with a rib to the deck. Undo these to lift the mast unit out for packing |
 | Mast top plate (`mast_top_plate.py`) | 1 · PETG | 92 × 65 × 36 · 40 cm³ | Caps the mast. Holds the KFL08 bearing (hanging below) for the top of the lead screw, and the robot E-stop box on top | Front tab 2 × M5 + T-nuts into both front slots (no tapping); 2 × M3 inserts for the E-stop box |
 | Z-motor mount (`z_motor_mount.py`) | 1 · PETG | 65 × 40 × 45 · 18 cm³ | Fixes the Z NEMA17 at (−51, −265) in x, y and yaw and stops it lifting; the body rests on the deck | 4 × M3 into the motor face; M3 + nuts through the deck at the wall feet |
-| Z carriage (`z_carriage.py`) | 1 · PETG | 132 × 56 × 110 · 108 cm³ | Lift plate riding the mast on 4 mini V-wheels (eccentric spacers on the +x pair, 7.6 mm holes; 0.6 mm spacer pads). Carries the anti-backlash nut on a raised side block (Z+44…64, clears the coupler at Z min) | V-wheel axles along y through the plate; 10 × M5 from behind into the tray's back-plate inserts (the x = 50 column also clamps the rail bracket) |
+| Z carriage (`z_carriage.py`) | 1 · PETG | 132 × 56 × 110 · 108 cm³ | Lift plate riding the mast on 4 mini V-wheels (eccentric spacers on the +x pair, 7.9 mm holes; 0.6 mm spacer pads). Carries the anti-backlash nut on a raised side block (Z+44…64, clears the coupler at Z min) | V-wheel axles along y through the plate; 10 × M5 from behind into the tray's back-plate inserts (the x = 50 column also clamps the rail bracket) |
 | Tray stack (`tray_stack.py`) | 1 · PETG · standing on its back plate, no support | 155 × 197 × 90 incl. camera mount (tray body 122 wide) · 434 cm³ | Two caddy slots at 45 pitch (B at Z, A at Z + 45). Left wall full height with the camera mount and window; right side open above a 6 mm lip for the fingers. Handle stops at y = −200 with KW11 slot-presence switches behind | 10 × M5 heat-set inserts in the back plate, screws from the Z carriage |
 | Rail bracket (`rail_bracket.py`) | 1 · PETG | 92 × 140 × 90 · 84 cm³ | Hangs the Y rail and Y motor off the lift, so the pull/push loads go into the tray/Z-plate sandwich. Carries the Y NEMA17 (shaft down) behind the rail end | Back plate clamped by the 3 × M5 tray screws at x = 50; strip 2 × M5 into the rail's inner slot |
 | Y idler bracket (`y_idler_bracket.py`) | 1 · PETG | 24 × 15 × 22 · 3 cm³ | Fork holding the GT2 idler at (117, −44) in the belt plane; also the carriage's hard stop at Y ≈ 187 | M5 + T-nut on the rail's outer face, slotted ±3 mm for belt tension; idler on an M5 bolt |
-| Y carriage (`y_carriage.py`) | 1 · PETG | 51 × 84 × 82 · 34 cm³ | Gantry carriage on the Y rail (4 mini V-wheels above and below, captured in z, x and yaw). The arm on the rail's inner side carries both MG90S; the belt clamp grips the inner strand | V-wheel axles along x (eccentric on the lower pair, 7.6 mm holes; 0.4 mm spacer recesses); servo tabs screw to ledges on the arm |
+| Y carriage (`y_carriage.py`) | 1 · PETG | 51 × 84 × 82 · 34 cm³ | Gantry carriage on the Y rail (4 mini V-wheels above and below, captured in z, x and yaw). The arm on the rail's inner side carries both MG90S; the belt clamp grips the inner strand | V-wheel axles along x (eccentric on the lower pair, 7.9 mm holes; 0.4 mm spacer recesses); servo tabs screw to ledges on the arm |
 | Finger (`finger.py`) | 2 · PETG or nylon | 10 × 10 × 25 · 2 cm³ | Swings down into the caddy's 12 mm side notch (10 thick → ±1 mm play) to pull, push and hold the caddy on the tray. Pivots at Z + 15 (slot B) and Z + 60 (slot A) | Screws to the MG90S horn |
 | Electronics tray (`electronics_tray.py`) | 1 · PETG | 108 × 108 × 10 · 22 cm³ | Standoffs for the 100 × 100 motion board, rear right (x 19–119, y −362…−262) | Board M3 at 93 × 93 into Ø9 standoffs with inserts; tray on the deck |
 | Pi tray (`pi_tray.py`) | 1 · PETG | 91 × 57 × 10 · 11 cm³ | Standoffs for the Raspberry Pi 3, rear left | Pi on the 58 × 49 hole pattern; tray on the deck |
