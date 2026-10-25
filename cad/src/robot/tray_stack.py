@@ -13,7 +13,7 @@ from cadgen import step, stl
 
 from lib.dims import CADDY_H, M5_INSERT_D
 from lib.prims import box, prism_yz
-from lib.robot_dims import (CAM_DZ, CAM_LENS, SLOT_A_DZ, TRAY_CHANNEL_W, TRAY_FLOOR_T, TRAY_FRONT_Y,
+from lib.robot_dims import (CAM_BOARD, CAM_DZ, CAM_LENS, SLOT_A_DZ, TRAY_CHANNEL_W, TRAY_FLOOR_T, TRAY_FRONT_Y,
                             TRAY_REAR_Y, TRAY_RIGHT_LIP_H, TRAY_STOP_Y, TRAY_TOP_DZ, TRAY_WALL_T, TRAY_BOLTS, ZPLATE_DZ)
 
 CH = TRAY_CHANNEL_W / 2              # 58
@@ -23,7 +23,10 @@ RIGHT_WALL_Y = (TRAY_REAR_Y, -207.0)          # right wall only behind the finge
 LEAD_IN = 2.0
 SWITCH_POCKET = (-12.0, 2.0)                  # x span of the KW11 pocket in the back plate
 SWITCH_SLOT = (-10.0, -2.0)
-CAM_BLOCK = (-92.0, -61.0, -128.0, -100.0)    # x0, x1, y0, y1
+CAM_BLOCK = (-93.5, -61.0, -128.0, -100.0)    # x0, x1, y0, y1
+CAM_PCB_Y = CAM_LENS[1] - 1.0                 # front face of the camera PCB
+CAM_FIT = 0.4                                 # per side around the PCB (slots print ~0.2-0.4 small, fit test 1)
+CAM_LEDGE = 1.5                               # PCB edge strips that hold it front and back
 CAM_WINDOW = (-98.0, -38.0, 8.0, 26.0)        # y0, y1, z0, z1 in the left wall (slot B level)
 M5_INSERT_DEPTH = 12.0                        # heat-set insert pilot depth, from the back face
 
@@ -60,11 +63,20 @@ def tray_stack():
     # Camera mount on the left wall, lens looking +y at slot B level.
     cx0, cx1, cy0, cy1 = CAM_BLOCK
     lx, ly = CAM_LENS
-    part += box(cx0, cx1, cy0, cy1, CAM_DZ - 15.0, CAM_DZ + 15.0)
-    part -= box(lx - 12.5, lx + 12.5, ly - 4.0, ly - 1.0, CAM_DZ - 12.0, CAM_DZ + 13.0)    # board slot
-    part -= box(lx - 12.5, lx + 12.5, ly - 4.0, ly - 1.0, CAM_DZ + 12.0, CAM_DZ + 15.1)    # insert from top
-    part -= box(lx - 8.0, cx1 + 0.1, ly - 1.1, cy1 + 0.1, CAM_DZ - 6.0, CAM_DZ + 6.0)        # lens fan (0..+50 deg)
-    part -= box(lx - 6.0, lx + 6.0, cy0 - 0.1, ly - 4.0, CAM_DZ - 3.0, CAM_DZ + 3.0)        # ribbon exit
+    # The PCB drops in from the top and rests on the slot floor, which puts the lens at CAM_DZ; edge strips hold it
+    # front and back, the holder and lens look out through a front window, the connector sits in a rear pocket.
+    cb = CAM_BOARD
+    hw = cb["w"] / 2 + CAM_FIT                                   # slot half width
+    zb = CAM_DZ - cb["lens_up"] - CAM_FIT                        # slot floor
+    ztop = CAM_DZ + 15.1
+    pf, pb = CAM_PCB_Y + CAM_FIT, CAM_PCB_Y - cb["t"] - CAM_FIT    # PCB slot front / back
+    part += box(cx0, cx1, cy0, cy1, zb - 2.5, CAM_DZ + 15.0)
+    part -= box(lx - hw, lx + hw, pb, pf, zb, ztop)                                          # PCB slot
+    win = hw - CAM_LEDGE
+    part -= box(lx - win, lx + win, pf - 0.1, CAM_PCB_Y + cb["holder_l"] + 0.8, zb, ztop)    # front window
+    part -= box(lx - 8.0, cx1 + 0.1, pf - 0.1, cy1 + 0.1, CAM_DZ - 6.0, CAM_DZ + 6.0)        # lens fan (0..+50 deg)
+    part -= box(lx - win, lx + win, pb - cb["back"] - 0.6, pb + 0.1, zb, ztop)              # connector pocket
+    part -= box(lx - 9.0, lx + 9.0, cy0 - 0.1, pb - cb["back"] - 0.5, zb, ztop)             # ribbon exit (16 mm FFC)
     wy0, wy1, wz0, wz1 = CAM_WINDOW
     part -= box(-OUT - 0.1, -CH + 0.1, wy0, wy1, wz0, wz1)       # sight line to the caddy tag
     part.label = "tray_stack"

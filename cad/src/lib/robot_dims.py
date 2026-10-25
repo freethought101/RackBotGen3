@@ -113,6 +113,11 @@ SERVO_FACE_DY = -7.0                 # output face y relative to the pivot (horn
 # ---- Camera -----------------------------------------------------------------------------------
 CAM_LENS = (-78.0, -115.0)           # x, y of the lens (looking +y)
 CAM_DZ = 15.0                        # lens height relative to Z (slot B level)
+# Waveshare IMX708-120 (wirogix listing) = Camera Module 3 Wide board (P13 mechanical drawing): 25 x 23.862 x 1.12 PCB,
+# lens centred across the width and 14.4 above the bottom edge; 10.8 square holder 4.23 deep + Ø6.95 barrel to 8.3 in
+# front of the PCB; connector 2.75 deep on the back.
+CAM_BOARD = {"w": 25.0, "h": 23.862, "t": 1.12, "lens_up": 14.4, "holder": 10.8, "holder_l": 4.23,
+             "barrel_d": 6.95, "lens_l": 8.3, "back": 2.75}
 
 # ---- Electronics / power ----------------------------------------------------------------------
 PCB_XY = (19.0, -362.0)              # motion board lower-left corner (100 x 100)
