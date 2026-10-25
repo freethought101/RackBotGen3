@@ -10,12 +10,18 @@ of the carriage arm's travel; above z_step the back plate stops short of the car
 from cadgen import build123d as bd
 from cadgen import step, stl
 
-from lib.dims import M3_CLEAR, M5_CLEAR
+from lib.dims import KW11, KW11_PRESS, M2_PILOT_D, M3_CLEAR, M5_CLEAR
 from lib.prims import box, cyl_x, cyl_z
 from lib.robot_dims import (BELT_X, PULLEY_Y, RAIL_BRACKET_BOLT_X, TRAY_BOLTS, YBRACKET_DZ, YBRACKET_PLATE,
-                            YBRACKET_PLATE_Y, YBRACKET_X, YBRACKET_Y, YMOTOR_PLATE_DZ, YRAIL_DZ, YRAIL_Y)
+                            YBRACKET_PLATE_Y, YBRACKET_X, YBRACKET_Y, YCARRIAGE_DY, YFRAME_DZ, YMOTOR_PLATE_DZ,
+                            Y_NOTCH_HOME, YRAIL_DZ, YRAIL_Y)
 
 NEMA_PITCH = 31.0
+# Y home switch (KW11-3Z) lies flat on a post on the strip behind the carriage, lever pointing +y. The carriage frame's
+# rear face (y = Y_NOTCH_HOME + YCARRIAGE_DY[0] + Y, z YFRAME_DZ) presses it; it triggers at Y = 0. Screws from the
+# top; the holes are slotted +/-1.5 in y to set the trigger point.
+YSW_X1 = YBRACKET_X[1]                    # body's +x end (lever free end, under the frame)
+YSW_ADJ = 1.5
 
 
 def _y_hole(d, x, z, y0, y1):
@@ -47,6 +53,20 @@ def rail_bracket():
     for dx in (-NEMA_PITCH / 2, NEMA_PITCH / 2):
         for dy in (-NEMA_PITCH / 2, NEMA_PITCH / 2):
             part -= cyl_z(M3_CLEAR, BELT_X + dx, PULLEY_Y + dy, pz0 - 0.1, pz1 + 0.1)
+    # Y home switch post.
+    st, sh = KW11["t"], KW11["h"]
+    frame_rear = Y_NOTCH_HOME + YCARRIAGE_DY[0]                     # at Y = 0
+    front = frame_rear + KW11_PRESS - KW11["lever"]                  # body's lever edge
+    back = front - sh
+    zt = YFRAME_DZ[1]                                                # body top flush with the frame top
+    zb = zt - st
+    xb0 = YSW_X1 - KW11["l"]
+    part += box(YBRACKET_X[0], YBRACKET_X[1], back, front, YBRACKET_DZ[1] - 0.1, zb)
+    xc, yh = (xb0 + YSW_X1) / 2, back + KW11["hole_up"]
+    for dx in (-KW11["hole_dx"], KW11["hole_dx"]):
+        part -= box(xc + dx - M2_PILOT_D / 2, xc + dx + M2_PILOT_D / 2, yh - YSW_ADJ, yh + YSW_ADJ, zb - 8.0, zb + 0.1)
+        for dy in (-YSW_ADJ, YSW_ADJ):
+            part -= cyl_z(M2_PILOT_D, xc + dx, yh + dy, zb - 8.0, zb + 0.1)
     part.label = "rail_bracket"
     return part
 

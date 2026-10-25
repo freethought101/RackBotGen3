@@ -59,14 +59,15 @@ def nema17_y(x, y_face, z, direction, label, length=40.0):
 
 
 def mg90s_y(pivot_x, face_y, pivot_z, label, servo):
-    """MG90S with its output shaft along +y ending at face_y, axis at (pivot_x, pivot_z).
+    """MG90S with its output face at face_y (shaft along +y), axis at (pivot_x, pivot_z), plus the horn hub.
     The case extends behind the face (-y) and upward from the shaft (shaft near the case's lower end)."""
     w, h, ln, off, tab = servo["wid"], servo["h"], servo["len"], servo["shaft_from_end"], servo["tab"]
+    td = servo["tab_drop"]
     z0, z1 = pivot_z - off, pivot_z - off + ln
-    body = box(pivot_x - w / 2, pivot_x + w / 2, face_y - h, face_y - 4.0, z0, z1)
-    body += box(pivot_x - w / 2, pivot_x + w / 2, face_y - 12.0, face_y - 9.5, z0 - tab, z1 + tab)   # tabs
-    body += bd.Pos(pivot_x, face_y - 4.0, pivot_z) * bd.Rot(-90, 0, 0) * bd.Cylinder(
-        2.3, 4.0, align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN))
+    body = box(pivot_x - w / 2, pivot_x + w / 2, face_y - h, face_y, z0, z1)
+    body += box(pivot_x - w / 2, pivot_x + w / 2, face_y - td - 2.5, face_y - td, z0 - tab, z1 + tab)   # tabs
+    body += bd.Pos(pivot_x, face_y, pivot_z) * bd.Rot(-90, 0, 0) * bd.Cylinder(
+        3.5, servo["horn"], align=(bd.Align.CENTER, bd.Align.CENTER, bd.Align.MIN))                     # horn hub
     return _tag(body, label, BLUE)
 
 

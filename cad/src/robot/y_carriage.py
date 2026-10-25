@@ -40,7 +40,7 @@ def y_carriage():
     z_lo = min(z0 for f in FINGER_DZ.values() for z0, _ in ledge_spans(f))
     z_hi = max(z1 for f in FINGER_DZ.values() for _, z1 in ledge_spans(f))
     part += box(*ARM_X, ARM_DY[0], ARM_DY[1], z_lo, max(z_hi, fz1))                 # arm
-    tab_y = SERVO_FACE_DY - 9.5                                                     # front face of the tabs
+    tab_y = SERVO_FACE_DY - SERVO["tab_drop"]                                       # front face of the tabs
     for f in FINGER_DZ.values():
         for z0, z1 in ledge_spans(f):
             part += box(LEDGE_X0, ARM_X[0], tab_y, tab_y + LEDGE_DEPTH, z0, z1)

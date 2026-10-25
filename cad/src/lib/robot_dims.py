@@ -8,6 +8,7 @@ from lib.dims import BAY_PITCH, CADDY_H, DOCK_STOP_Y, NOSE_W, TRAY_FRONT_DOCKED_
 
 # ---- Lift / extractor ranges ------------------------------------------------------------------
 Z_MIN, Z_MAX = 102.0, 295.0          # soft limits (slot B floor height)
+Z_HOME = 101.0                       # Z home switch triggers here (firmware z_home); the hard stop is ~100.6
 Y_NOTCH_HOME = -187.0                # finger pivot y at Y = 0 (notch centre of a caddy resting on the tray)
 Y_PULL = 177.0                       # finger centred in the notch of a seated caddy (handle front at y -20)
 Y_SEAT = 178.0                       # pushing: finger front face on the notch wall with the caddy seated
@@ -107,8 +108,11 @@ FINGER_X = 69.5                      # pivot x (servo output axis); servo 63.4..
 FINGER_DZ = {"B": 15.0, "A": SLOT_A_DZ + 15.0}   # pivot heights relative to Z (caddy mid-height)
 FINGER_LEN = 19.5                    # pivot to tip (tip at x = 50, inside the notch)
 FINGER_W, FINGER_T = 6.0, 10.0       # width (in the swing plane), thickness (along y): +/-1 mm play in the 12 mm notch
-SERVO = {"len": 22.8, "wid": 12.2, "h": 28.5, "shaft_from_end": 5.9, "tab": 4.85}  # MG90S
-SERVO_FACE_DY = -7.0                 # output face y relative to the pivot (horn 2 + half finger 5)
+# MG90S from the P09 STEP (docs/3d-models/P09_mg90s.step): case 23 x 12.4, output face 27.4 above the bottom, shaft
+# 6.2 from the case end, 2.5 mm tabs (33 over the tabs) whose upper face is 7.9 below the output face; the single-arm
+# horn is 5.0 tall (Ø7 hub 3.5 + arm plate 1.5, Ø1 holes every 2 mm at 4-14 from the axis, tip at 16.5).
+SERVO = {"len": 23.0, "wid": 12.4, "h": 27.4, "shaft_from_end": 6.2, "tab": 5.0, "tab_drop": 7.9, "horn": 5.0}
+SERVO_FACE_DY = -(SERVO["horn"] + FINGER_T / 2)   # -10: output face y relative to the pivot (horn 5 + half finger 5)
 
 # ---- Camera -----------------------------------------------------------------------------------
 CAM_LENS = (-78.0, -115.0)           # x, y of the lens (looking +y)

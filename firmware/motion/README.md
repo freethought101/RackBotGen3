@@ -27,7 +27,7 @@ make -C sim                       # host simulator (used by rackbot/tests/test_f
   every TMC2209 register is re-sent and verified via IFCNT; only then `EVT ESTOP_CLEAR` and `ENABLE 1` is
   accepted. GSTAT.reset is also polled every 500 ms (`EVT DRIVER_RESET`, same recovery).
 - **Homing** (`HOME Y`, then `HOME Z`): seek at 10 mm/s, back off 3 mm, re-seek at 2 mm/s, set Y = 0 /
-  Z = `z_home` (100). NC switches: open = pressed, so a broken wire reads "at home"; if the switch is still
+  Z = `z_home` (101). NC switches: open = pressed, so a broken wire reads "at home"; if the switch is still
   "pressed" after backing off, homing fails `E_LIMIT` instead of driving into the end stop.
   A home switch hit during a normal move halts the axis (`FAIL E_LIMIT`, `EVT LIMIT Z_HOME`).
 - **Interlocks** (all enforced here, not only on the Pi): Z needs Y ≤ 2; Y > 2 needs NOSE unless `CFG bench 1`;

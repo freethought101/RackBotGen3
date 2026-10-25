@@ -14,7 +14,7 @@ behind, and has pockets for the lower Z-wheel axle nuts.
 from cadgen import build123d as bd
 from cadgen import step, stl
 
-from lib.dims import CADDY_H, M2_PILOT_D, M5_INSERT_D
+from lib.dims import CADDY_H, KW11, M2_PILOT_D, M5_INSERT_D
 from lib.prims import box, cyl_z, prism_yz
 from lib.robot_dims import (CAM_BOARD, CAM_DZ, CAM_LENS, SLOT_A_DZ, TRAY_CHANNEL_W, TRAY_FLOOR_T, TRAY_FRONT_Y,
                             TRAY_REAR_Y, TRAY_RIGHT_LIP_H, TRAY_STOP_Y, TRAY_TOP_DZ, TRAY_WALL_T, TRAY_BOLTS, ZPLATE_DZ,
@@ -31,9 +31,9 @@ SW_X = -6.0                                   # body centre x
 SW_DZ = 15.0                                  # body mid-plane above the slot floor (caddy handle mid-height)
 SW_FRONT_Y = TRAY_STOP_Y - 0.5               # lever edge of the body: the free lever (7.1 high) reaches 6.6 past the
                                               # stop face, 2.6 past a pulled caddy's handle at y -196 (spec: >= 4)
-SW_BODY = (19.7, 10.6, 6.6)
+SW_BODY = (KW11["l"], KW11["h"], KW11["t"])
 SW_FIT = 0.3                                  # per side
-SW_HOLE_DX, SW_HOLE_UP = 4.75, 3.0            # holes +/- 4.75 from the centre, ~3 mm in from the pin edge (verify)
+SW_HOLE_DX, SW_HOLE_UP = KW11["hole_dx"], KW11["hole_up"]
 SW_HOLE_ADJ = 1.0                             # +/- slot in y for the hole position
 SW_HEAD_D = 5.5                               # access hole for an M2 pan head (Ø3.8) + driver
 WIRE_GROOVE = (4.0, 9.0, 4.0)                 # x0, x1, depth into the back face

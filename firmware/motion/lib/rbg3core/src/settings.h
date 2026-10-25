@@ -24,7 +24,7 @@ struct Settings {
   float home_fast = 10, home_slow = 2, home_backoff = 3;
 
   // geometry (mm)
-  float z_home = 100;  // Z position of the home switch (lift at its bottom stop): confirm on the robot
+  float z_home = 101;  // Z where the home switch triggers (CAD Z_HOME; hard stop ~100.6): confirm on the robot
   float z_min = 102, z_max = 295, z_drive_max = 220;
   float y_max = 180, y_safe = 2, y_pull = 177, y_push = 178.5f, y_at_tol = 0.5f;
   float z_travel = 220, y_travel = 200;  // homing search distance before E_LIMIT
