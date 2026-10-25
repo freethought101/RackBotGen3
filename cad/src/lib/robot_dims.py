@@ -97,7 +97,7 @@ VWHEEL = {"d": 15.2, "w": 8.8, "sink": 1.6, "spacer_d": 10.0}   # mini V-wheel; 
 # Axle stack plate -> wheel: 6 mm mini spacer (eccentric 8 mm hex, or plain) + 1 mm 5 x 8 shim on the bearing's
 # inner ring. The plates get a pad or recess around each axle so the wheel sits on its groove centre.
 WHEEL_STACK = 7.0
-ECC_HOLE_D = 7.3                     # eccentric spacer boss is 7.12; printed holes come out undersize
+ECC_HOLE_D = 7.6                     # eccentric spacer boss is 7.12; ~7 mm holes print ~0.6 under (fit test 1)
 WHEEL_SEAT_D = 12.0                  # pad / recess diameter around an axle (spacer hex is 9.2 across corners)
 ZWHEEL_SEAT_Y = (MAST_Y[0] + MAST_Y[1]) / 2 + VWHEEL["w"] / 2 + WHEEL_STACK   # -228.6: 0.6 pad on the Z plate
 YWHEEL_SEAT_X = (YRAIL_X[0] + YRAIL_X[1]) / 2 + VWHEEL["w"] / 2 + WHEEL_STACK  # 105.4: 0.4 recess in the Y plate

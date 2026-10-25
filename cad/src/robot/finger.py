@@ -11,7 +11,7 @@ from lib.prims import box
 from lib.robot_dims import FINGER_LEN, FINGER_T, FINGER_W
 
 HUB_D = 10.0
-HORN_SCREW_D = 2.2
+HORN_SCREW_D = 2.5         # M2 horn screw clearance; prints ~2.1 (fit test 1)
 
 
 @step(out="../../STEP/robot/finger.step")

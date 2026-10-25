@@ -1,4 +1,4 @@
-# Datasheet cross-check (spec v0.1.15, 10 Oct 2026)
+# Datasheet cross-check (spec v0.1.15, 10 Oct 2026; motor, KFL08, KW11-3Z, MG90S, camera and casters added 25 Oct)
 
 Spec, CAD and firmware values checked against the files in this folder. Page numbers are PDF pages.
 ✓ match · ✗ mismatch (fixed in the spec unless noted) · ⚠ open: no source, or a judgment call
@@ -10,6 +10,8 @@ Spec, CAD and firmware values checked against the files in this folder. Page num
 | JK42HS40-1704: 1.7 A, 40 mm, ≥ 0.4 N·m (parts.csv P01) | 1.7 A, 1.5 Ω, 2.3 mH, 4.2 kg·cm = 0.41 N·m, 0.28 kg (P01 catalog p. 32) | ✓ (0.41 is only just ≥ 0.4) |
 | 5 mm D-shaft ≥ 22 mm, 31 mm hole pitch, Ø22 boss (`drive_bracket.py`, `z_motor_mount.py`, `rail_bracket.py`) | Ø5 × 24 ± 1, 31 ± 0.2, boss Ø22 × 2, M3 depth 4.5 (p. 32) | ✓ |
 | Motor mass 280 g (`vendor.py` MASS_G) | 0.28 kg (p. 32) | ✓ |
+| **Bought motor is the 17HS4401S** (Lajarus, cart 24 Oct), not the JK42HS40-1704 | P01_17hs4401s_handsontec: 1.7 A, 1.5 Ω, 2.8 mH, **0.43 N·m**, 280 g, body 40 max, □42 max, 31 ± 0.1 pitch, M3 4.5 deep, boss Ø22 × 2, **shaft Ø5 × 23 ± 0.5**, flat 4.5 ± 0.1 across (p. 2) | ✓ (25 Oct) everything the CAD uses matches: the shaft ends 1 mm shorter than the JK's 24 ± 1, inside the hub bore's range, and the flat sits 2.0 from the axis as modeled (`FLAT_R` 2.2 with print shrink). Radial and axial load limits are not given, so the JK values (28 N at 20 mm, 10 N axial) remain the working estimate |
+| KFL08: 48 × 27, 37 pitch, 5 flange, 13 tall, Ø22 boss (`robot_dims.KFL08`); fixed with M5 (`mast_top_plate.py`, P11) | Handsontec table: H 48, L 27, J 37, A0 12.5, **N Ø4.8, bolt M4** (P05_kfl08_handsontec p. 2; p. 1 says M5, contradicting the table). STEP model: 46.5 × 27 × 11.35 (`docs/3d-models/P05_kfl08.step`) | ⚠ envelope ✓ (CAD slightly larger). **Bolt size**: an M5 won't pass a 4.8 hole; use 2 × M4 + nuts unless the bought one has ≥ 5.3 mm holes (measure). The plate's 5.5 holes take either |
 | "Torque ≈ 10 N per wheel" (01 §6.2) | 0.41 N·m at the rated 1.7 A; the run current is 1.0 A → ≈ 0.25 N·m → ≈ 6 N at r = 40 mm (p. 32, p. 33 curve) | ✗ → ≈ 6 N (still ≈ 4× the need) |
 | Direct-drive wheel on the motor shaft (01 §6.2) | Max radial force **28 N at 20 mm from the flange** (p. 32). Static load ≈ 21 N per wheel with 2 loaded caddies (≈ 6 kg, 72 % on the axle), wheel centre ≈ 18 mm from the flange | ⚠ 75 % of the limit before bumps. v0.1.19: hub bore no longer bottoms on the 24 ± 1 mm shaft (it was sized for 22 mm and would have pushed the wheel 1–3 mm out); hub fitted with a 2 mm shim |
 | Z 15 mm/s on Tr8×2 = 450 rpm at 12 V (empty pack) | 12 V / 1.6 A-peak curve ≈ 0.2 N·m at 450 rpm; Z needs ≈ 0.05 N·m (p. 33) | ✓ |
@@ -23,6 +25,8 @@ Spec, CAD and firmware values checked against the files in this folder. Page num
 | UART on StepStick pin 4; JP1–JP4 open (02 §3.3) | **MKS TMC2209 V2.0 (P17): PDN/UART on pin 5**; pin 4 only if the optional R8 is fitted (P17 size-pin drawing) | ✗ → JP1–JP4 are now bridged by default (v0.1.19) |
 | MG90S supply (02 §3.3, P18) | Operating 4.8–6.0 V (P09 p. 1) | ✓ buck set to 5.8 V (v0.1.18) |
 | MG90S 22.8 × 12.2 × 28.5, 14 g (`robot_dims.py` SERVO) | 22.5 × 12 × 35.5 (height probably includes the output spline), 13.4 g (P09 p. 1) | ⚠ measure (already in the backlog) |
+| MG90S tabs 4.85 per side (`SERVO["tab"]`) | 32.5 over the tabs − 22.5 body = 5.0 per side; tabs ≈ 21 above the bottom; 35.5 to the top of the horn (P09 p. 1 drawing). The cart listing (CNC Store) gives 22 × 12 × 29 | ✓ tab span. ⚠ tab height vs the output face isn't readable on the drawing; measure on arrival (`y_carriage` ledges depend on it) |
+| KW11-3Z body 20 × 10 × 6.4, M2 holes 9.5 apart (`bay_shelf`, `dock_block`, tray, nose) | Generic drawing: 19.7 × 10.6 × 6.6, mounting holes **9.5** apart (P10_kw11-3z_dimensions.png) | ✓ pitch confirmed (25 Oct); the 0.2 mm thicker body fits the pockets |
 | MG90S stall current vs the 3 A servo buck | Not given | ⚠ no source |
 
 ## Robot compute and I/O
@@ -40,6 +44,7 @@ Spec, CAD and firmware values checked against the files in this folder. Page num
 | Pi 3B+ 85 × 56, holes 58 × 49 at 3.5 (`pi_tray.py`) | Same (P12 mechanical drawing) | ✓ |
 | Pi 5 V input, buck 5.15 V / 5 A | 5 V / 2.5 A (P12 brief) | ✓ |
 | Camera ~120° diag, 102° H, focus ~150 mm, 25 × 24 (P13, 01 §6) | CM3 Wide: 120° diag, 102° H, focus 5 cm–∞, 25 × 24 × 12.4 mm (P13 brief pp. 4–5) | ✓ for the genuine Wide; ⚠ the third-party IMX708 board must be measured |
+| Tray camera slot: board 25 wide in a 25.0 × 3 slot, lens centre assumed 12 above the board's bottom edge (`tray_stack.py` lines 64–66) | CM3 Wide drawing: board **25 × 23.862**, **lens 14.4 above the bottom edge** (9.46 below the top), PCB 1.12 thick, connector 2.75 deep behind the top 5.71 mm, Ø2.2 holes 21 × 12.5 apart (P13_camera-module-3-wide_mechanical-drawing; STEP in `docs/3d-models/`) | ✗ (25 Oct) the slot has no side clearance (and printed slots come out small), the lens would sit 2.4 mm higher than modeled, and the rear connector may not fit the 3 mm slot. Fix once the wirogix board is identified (shop asked) |
 | INA226 @ 0x40, ±8 A with R010, bus ≤ 16.8 V | A1 = A0 = GND → 0x40; ±81.92 mV / 10 mΩ = ±8.19 A; bus 0–36 V (P19 §5.5, Table 6-2) | ✓ |
 | WS2812 VIH = 0.7 × VDD (02 §3.3) | 0.7 VDD (PCB_ws2812b) | ✓ |
 
@@ -82,7 +87,14 @@ Spec, CAD and firmware values checked against the files in this folder. Page num
 | 12SE size | 37.4 W × 90 H × 60 D, 35 mm DIN rail | ✓ |
 
 ## No datasheet at all (verify on purchased hardware; mostly already in `docs/BACKLOG.md`)
-KW11-3Z, V-wheels, KFL08, Tr8×2 nut and coupler, GT2 pulley/idler, ball casters, 4S BMS, both E-stops,
+Shop questions sent 25 Oct (Tokopedia chat) for the battery pack, V-wheel/eccentric spacer/pulley, camera, E-stops,
+relay, buck modules, KW11-3Z and TMC2209. Ball caster (bustan listing): **20 mm tall**, 48 × 32 base, holes 40 apart,
+Ø15 ball: ✗ the CAD needs 42 (rear) and 23.5 (front), so spacers or taller casters are needed.
+OpenBuilds STEP models (25 Oct, `docs/3d-models/`): mini eccentric spacer boss **Ø7.11** (✓ `ECC_HOLE_D` assumes 7.12,
+now 7.6 for print shrink), 6 mm tall + 3.7 mm boss, hex ≈ 8.5 across flats / 10 across corners (fits the Ø12
+`WHEEL_SEAT_D` pads); mini V-wheel Ø15.23 × 8.8 (✓ `VWHEEL`); GT2 20T Ø15 flange, Ø12.2 teeth, 14 wide (✓ CAD 12 / 16).
+These are the OpenBuilds originals; the bought Rajawali3D clones should match but check on arrival.
+V-wheels, Tr8×2 nut, coupler (seller spec Ø20 × 25 matches), GT2 pulley/idler, ball casters, 4S BMS, both E-stops,
 24 V relay module, 3 A polyfuse, tower light current, dock contacts, travel router, third-party IMX708 board,
 CSI cable (only a 200 mm drawing exists). Estimates with no source: robot power 4 / 12–20 W, rack budget, MASS_G masses.
 

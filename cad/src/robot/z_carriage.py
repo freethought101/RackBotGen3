@@ -14,7 +14,7 @@ from lib.prims import box, cyl_z
 from lib.robot_dims import (ECC_HOLE_D, NUT_BLOCK_DZ, SCREW_XY, TRAY_BOLTS, WHEEL_SEAT_D, ZPLATE_DZ, ZPLATE_X,
                             ZPLATE_Y, ZWHEEL_DZ, ZWHEEL_SEAT_Y, ZWHEEL_X)
 
-NUT_FLANGE_D, NUT_BODY_D = 22.0, 10.5
+NUT_FLANGE_D, NUT_BODY_D = 22.4, 10.8      # +0.3-0.4 for the print shrink (fit test 1)
 
 
 def _y_hole(d, x, z, y0, y1):

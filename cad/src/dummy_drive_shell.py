@@ -7,7 +7,7 @@ bottom at z = 0. Outer envelope is the 3.5" form factor (147 x 101.6 x 26.1).
 from cadgen import build123d as bd
 from cadgen import step, stl
 
-from lib.dims import HDD_H, HDD_HOLE_SPAN_X, HDD_HOLE_Y, HDD_L, HDD_W, M3_INSERT_D
+from lib.dims import HDD_H, HDD_HOLE_SPAN_X, HDD_HOLE_Y, HDD_L, HDD_W, M3_INSERT_D, M3_SELF_TAP_D
 from lib.prims import box, cyl_z
 
 WALL = 4.0
@@ -16,7 +16,6 @@ LID_T = 2.0
 LID_STEP = 1.0             # rebate the lid drops into, so the top stays flush
 BOSS_D = 8.0
 INSERT_DEPTH = 5.0
-M3_SELF_TAP_D = 2.5
 
 HALF_W = HDD_W / 2
 LID_SCREWS = [(sx * (HALF_W - WALL - 3.0), y) for sx in (-1, 1) for y in (WALL + 6.0, HDD_L - WALL - 6.0)]

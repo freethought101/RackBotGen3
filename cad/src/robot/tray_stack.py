@@ -11,7 +11,7 @@ heat-set inserts for the screws that come through the Z carriage plate from behi
 from cadgen import build123d as bd
 from cadgen import step, stl
 
-from lib.dims import CADDY_H
+from lib.dims import CADDY_H, M5_INSERT_D
 from lib.prims import box, prism_yz
 from lib.robot_dims import (CAM_DZ, CAM_LENS, SLOT_A_DZ, TRAY_CHANNEL_W, TRAY_FLOOR_T, TRAY_FRONT_Y,
                             TRAY_REAR_Y, TRAY_RIGHT_LIP_H, TRAY_STOP_Y, TRAY_TOP_DZ, TRAY_WALL_T, TRAY_BOLTS, ZPLATE_DZ)
@@ -25,7 +25,7 @@ SWITCH_POCKET = (-12.0, 2.0)                  # x span of the KW11 pocket in the
 SWITCH_SLOT = (-10.0, -2.0)
 CAM_BLOCK = (-92.0, -61.0, -128.0, -100.0)    # x0, x1, y0, y1
 CAM_WINDOW = (-98.0, -38.0, 8.0, 26.0)        # y0, y1, z0, z1 in the left wall (slot B level)
-M5_INSERT_D, M5_INSERT_DEPTH = 6.4, 12.0       # heat-set insert pilot, from the back face
+M5_INSERT_DEPTH = 12.0                        # heat-set insert pilot depth, from the back face
 
 
 def _y_hole(d, x, z, y0, y1):
