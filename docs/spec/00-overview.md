@@ -1,7 +1,7 @@
 # RackBotGen3 — System Overview
 
 Delta Cup 2026 · Automation track · Regional Final, Thailand, 14 Nov 2026
-Status: **Draft v0.1.29 (24 Oct 2026)** — single owner for all subsystems; peers review and give feedback.
+Status: **Draft v0.1.30 (25 Oct 2026)** — single owner for all subsystems; peers review and give feedback.
 
 | Doc | Content |
 |---|---|
@@ -31,7 +31,7 @@ Pitch angle (judging: Innovation, Technical Viability, Impact & Sustainability, 
 | # | Constraint | Design response |
 |---|---|---|
 | C1 | Built and tested by **10 Nov 2026** (about 5 weeks) | Off-the-shelf modules, 4 steppers with a single driver type, Python on the Pi, mechanical docking instead of precision navigation |
-| C2 | **≤ 500 USD** | Est. ≈ 577 USD, **over** (see 04 §1.5). Delta PLC loan unlikely; ESP32 rack controller counted (P40) |
+| C2 | **≤ 500 USD** (team target = the finalist grant; no cap in the guidebook) | ≈ 575 USD at Rp 18,000 from the actual cart and quotes, **≈ 75 over** (see 04 §1.0). Delta PLC loan unlikely; ESP32 rack controller counted (P40) |
 | C3 | Manufacturable with a 400×400 mm FDM printer, grinder and drill press | 2020/2040 V-slot cut to length, printed plates/brackets; no machining beyond cutting and drilling |
 | C4 | **Carry-on, 7 kg per bag, 4 members** | Flat-pack rack, removable mast; ≈ 14 kg of hardware over 4 bags (≈ 50 % margin) |
 | C5 | Airline safety | Li-ion pack **≈ 50 Wh (< 100 Wh)**, in cabin, terminals protected; universal-input Delta PSU (Thailand 220 V / 50 Hz) |
@@ -186,4 +186,5 @@ Weigh every bag in week 5 (see 04).
 | v0.1.27 | 2026-10-23 | **Budget ≈ 482 → ≈ 548 USD (≈ 48 over)**: the Raspberry Pi 3 is not team-owned after all, so a 3B+ is bought (P12, +70), and one month of Claude Pro is added (new P39, Rp360k ≈ 23). Deck: 6 M3 holes for the electronics tray, Pi tray and battery box (positions now shared in `robot_dims.py`; the Pi tray holes had sat in its own window and over the side rail, the battery box holes over the rear cross member), and an optional laser-cut file `deck_dxf.py` → `cad/DXF/robot/deck.dxf`. Sourcing links for P03, P12, P14, P20 and the last P23 lines. PLC access looks unlikely, so the **ESP32 rack controller (new P40, 18 USD) is counted** as a contingency. **Travel router dropped** (P29, P31 not needed, −40): the Pi is the Wi-Fi access point (02 §4.3). Tower light → 3 × 22 mm 24 V panel lamps (P27 8 → 3). Budget ≈ 548 USD (≈ 530 with a PLC loan) |
 | v0.1.28 | 2026-10-23 | **Parts fixes from the prototype review** (`docs/review/Corvin-project-review.pdf`): front anti-tip caster **27 → 23.5 mm** in the docs (the CAD already had nose floor z 30 − `CASTER_FRONT_GAP` 6.5; at 27 mm the ball rides the 3 mm dock plate and lifts the drive wheels). P11 adds 8 × M5×30 + nylocks (V-wheel axles) and an M3×16 for the Y belt clamp (28 → 30); P16 1 → 2 (spare DevKit, +7); P17 4 → 5 (spare, +3); P26 polyfuse → UK5-HESI fuse terminal + 3.15 A slow-blow (decided); P21 sourcing: the 1NC-only E-stop listing is not suitable, buy the LA38-11ZS 1 NO + 1 NC. New P41 harness extras (Pi micro-USB pigtail, extension leads, heat-shrink, heatsink, 6), P42 drag chain (2), P43 JST-XH crimper (7), P44 tethered power lead for R7 (2). 04 §1 lever switches corrected to 12 + 3. Budget ≈ 548 → **≈ 577 USD** (≈ 559 with a PLC loan); PETG quantity waits for the print-service quote |
 | v0.1.29 | 2026-10-24 | **Servo buck → a second XL4015 CC/CV** (P18), set to 5.8 V with CC at maximum: the MP2482/SY8205 module on order is fixed at 5 V (listing and photo show no trim pot). P18 ≈ Rp65k → Rp69k, still ≈ 4 USD; budget unchanged. CAD buck envelopes now per module from the Tokopedia listings (`BUCK_SIZE` in `robot_dims.py`): charger and servo buck 55 × 27 × 15, 5 V XY-3606 63 × 27 × 13 |
+| v0.1.30 | 2026-10-25 | **Fit test 1 and design review.** Holes modeled oversize from the fit-test coupon (prints 0.2–0.65 mm small; `dims.py`), eccentric holes 7.9; tray camera slot for the Waveshare IMX708-120; tray axle-nut pockets and fittable slot switches; Z/Y home-switch mounts (firmware `z_home` 101); nose switch holes; finger keyed to the horn, servo stack from the MG90S STEP; KFL08 on M4 (P11). **Budget** (04 §1.0) from the actual cart (Rp 6.5M incl. ≈ Rp 1M shipping to Bali), the BeauxButton print quote (Rp 2.0M) and the paid PCB, at Rp 18,000: **≈ 575 USD, ≈ 75 over**; savings options listed |
 | v0.1.4 | 2026-10-06 | Robot CAD v0 + checks: direct drive (axle y −135), nose z 30–90, swing-down fingers, tray camera window, caddy tag moved left, E-stop on the mast top; mass 4.49 kg; budget ≈ 478 USD |
