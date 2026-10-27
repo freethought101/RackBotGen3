@@ -18,6 +18,7 @@ from lib.robot_dims import (ARM_DY, ARM_X, BELT_DZ, BELT_STRAND_X, ECC_HOLE_D, F
 
 LEDGE_X0 = FINGER_X - SERVO["wid"] / 2      # flush with the servo's side, 2.4 mm from the tray lip
 LEDGE_DEPTH = 5.0           # along +y, in front of the servo tabs
+SERVO_SHIM = 1.0            # nominal washer stack between tab and ledge: 0-2 mm tunes the servo stack +/-1 mm
 CLAMP_DY = (-80.0, -62.0)   # belt clamp y span relative to the finger pivot (between the wheel axle bolts)
 CLAMP_JAW = 3.0
 M2_PILOT = M2_PILOT_D       # self-tapping M2 into PETG
@@ -40,7 +41,7 @@ def y_carriage():
     z_lo = min(z0 for f in FINGER_DZ.values() for z0, _ in ledge_spans(f))
     z_hi = max(z1 for f in FINGER_DZ.values() for _, z1 in ledge_spans(f))
     part += box(*ARM_X, ARM_DY[0], ARM_DY[1], z_lo, max(z_hi, fz1))                 # arm
-    tab_y = SERVO_FACE_DY - SERVO["tab_drop"]                                       # front face of the tabs
+    tab_y = SERVO_FACE_DY - SERVO["tab_drop"] + SERVO_SHIM                          # ledge face: tab face + 1 mm shim
     for f in FINGER_DZ.values():
         for z0, z1 in ledge_spans(f):
             part += box(LEDGE_X0, ARM_X[0], tab_y, tab_y + LEDGE_DEPTH, z0, z1)

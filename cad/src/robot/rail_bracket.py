@@ -22,6 +22,9 @@ NEMA_PITCH, BOSS_D = 31.0, 23.0   # boss Ø22: same 0.5 mm clearance as the driv
 # top; the holes are slotted +/-1.5 in y to set the trigger point.
 YSW_X1 = YBRACKET_X[1]                    # body's +x end (lever free end, under the frame)
 YSW_ADJ = 1.5
+YSW_POST_MARGIN = 1.5                     # post overhangs the switch body's -x end (the body is longer than the strip)
+MOTOR_PLATE_X1 = BELT_X + 19.0            # motor overhangs 2 mm: wider breaks the 230 mm bag limit (mast unit)
+EDGE_RIB = (8.0, 4.0)                     # +x edge rib under the plate (width, depth): the +x M3 holes are 1.7 mm in
 
 
 def _y_hole(d, x, z, y0, y1):
@@ -47,7 +50,8 @@ def rail_bracket():
     # Horizontal Y-motor plate behind the rail end: motor body on top, shaft down through the plate to the
     # 20T pulley in the belt plane.
     pz0, pz1 = YMOTOR_PLATE_DZ
-    part += box(YBRACKET_X[0], BELT_X + 19.0, YBRACKET_Y[0], PULLEY_Y + 23.0, pz0, pz1)   # motor overhangs 2 mm
+    part += box(YBRACKET_X[0], MOTOR_PLATE_X1, YBRACKET_Y[0], PULLEY_Y + 23.0, pz0, pz1)
+    part += box(MOTOR_PLATE_X1 - EDGE_RIB[0], MOTOR_PLATE_X1, YBRACKET_Y[0], PULLEY_Y + 23.0, pz0 - EDGE_RIB[1], pz0)
     part += box(*YBRACKET_X, YBRACKET_Y[0], PULLEY_Y + 23.0, YBRACKET_DZ[0], pz1)          # web to the strip
     part -= cyl_z(BOSS_D, BELT_X, PULLEY_Y, pz0 - 0.1, pz1 + 0.1)                             # motor boss / shaft
     for dx in (-NEMA_PITCH / 2, NEMA_PITCH / 2):
@@ -61,7 +65,7 @@ def rail_bracket():
     zt = YFRAME_DZ[1]                                                # body top flush with the frame top
     zb = zt - st
     xb0 = YSW_X1 - KW11["l"]
-    part += box(YBRACKET_X[0], YBRACKET_X[1], back, front, YBRACKET_DZ[1] - 0.1, zb)
+    part += box(xb0 - YSW_POST_MARGIN, YBRACKET_X[1], back, front, YBRACKET_DZ[1] - 0.1, zb)
     xc, yh = (xb0 + YSW_X1) / 2, back + KW11["hole_up"]
     for dx in (-KW11["hole_dx"], KW11["hole_dx"]):
         part -= box(xc + dx - M2_PILOT_D / 2, xc + dx + M2_PILOT_D / 2, yh - YSW_ADJ, yh + YSW_ADJ, zb - 8.0, zb + 0.1)

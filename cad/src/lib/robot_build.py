@@ -13,7 +13,7 @@ from lib import vendor
 from lib.extrusion import vslot
 from lib.prims import box, cyl_z
 from lib.robot_dims import (AXLE_Y, AXLE_Z, BASE_FRONT_Y, BASE_REAR_Y, BATTERY, BUCK_SIZE, BUCKS, CAM_BOARD, CAM_DZ,
-                            CAM_LENS, CASTER_FRONT, CASTER_FRONT_GAP, CASTER_REAR, COUPLER_Z, CROSS_Y, DECK_Z,
+                            CAM_LENS, CASTER, CASTER_FRONT, CASTER_FRONT_GAP, CASTER_REAR, COUPLER_Z, CROSS_Y, DECK_Z,
                             DRIVE_MOTOR_X, ESTOP_XY, FINGER_DZ, FINGER_X, KFL08, MAST_X, MAST_Y, MAST_Z, NOSE_Z,
                             PCB_XY, PCB_Z, PI_XY, RAIL_X, RAIL_Z, SCREW_XY, SCREW_Z, SERVO, SERVO_FACE_DY, VWHEEL,
                             Y_NOTCH_HOME, YRAIL_DZ, YRAIL_X, YRAIL_Y, YWHEEL_DY,
@@ -21,6 +21,7 @@ from lib.robot_dims import (AXLE_Y, AXLE_Z, BASE_FRONT_Y, BASE_REAR_Y, BATTERY, 
                             BELT_DZ, BELT_STRAND_X, BELT_X, IDLER_Y, PULLEY_CORE_D, PULLEY_FLANGE_D, PULLEY_Y,
                             YMOTOR_DZ)
 from robot.battery_box import battery_box
+from robot.caster_spacer import caster_spacer_front, caster_spacer_rear
 from robot.deck import deck
 from robot.drive_bracket import drive_bracket
 from robot.drive_wheel import drive_hub, drive_tire
@@ -73,10 +74,13 @@ def base_parts():
     parts.append(_p(tire.mirror(bd.Plane.YZ), "drive_tire:left", vendor.RUBBER))
     for s, side in ((-1, "left"), (1, "right")):
         parts.append(vendor.nema17_x(s * DRIVE_MOTOR_X[1], AXLE_Y, AXLE_Z, s, f"nema17:drive_{side}"))
+    rear_spacer = caster_spacer_rear()
     for i, (x, y) in enumerate(CASTER_REAR):
-        parts.append(vendor.ball_caster(x, y, 0.0, RAIL_Z[0], f"caster:rear_{i}"))
+        parts.append(vendor.ball_caster(x, y, 0.0, CASTER["h"], f"caster:rear_{i}"))
+        parts.append(_p(bd.Pos(x - CASTER_REAR[1][0], 0, 0) * rear_spacer, f"caster_spacer_rear:{i}"))
     cx, cy = CASTER_FRONT
-    parts.append(vendor.ball_caster(cx, cy, CASTER_FRONT_GAP, NOSE_Z[0] - CASTER_FRONT_GAP, "caster:front_antitip"))
+    parts.append(vendor.ball_caster(cx, cy, CASTER_FRONT_GAP, CASTER["h"], "caster:front_antitip"))
+    parts.append(_p(caster_spacer_front(), "caster_spacer_front"))
     # Mast, Z drive.
     parts.append(vslot(*MAST_X, *MAST_Y, *MAST_Z, "mast_2040"))
     parts.append(_p(mast_collar(), "mast_collar"))

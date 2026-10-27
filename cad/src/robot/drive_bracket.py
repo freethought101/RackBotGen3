@@ -13,8 +13,8 @@ from lib.dims import M3_CLEAR, M3_INSERT_D, M5_CLEAR
 from lib.prims import box, cyl_x, cyl_z
 from lib.robot_dims import AXLE_Y, AXLE_Z, DRIVE_INSERT_X, DRIVE_INSERT_Y, DRIVE_PLATE_X, RAIL_X, RAIL_Z
 
-Y_SPAN = (AXLE_Y - 32.0, AXLE_Y + 32.0)      # webs sit just beyond the 42.3 motor (0.85 mm)
-WEB_T = 10.0
+Y_SPAN = (AXLE_Y - 36.0, AXLE_Y + 36.0)      # webs start just beyond the 42.3 motor (0.85 mm)
+WEB_T = 14.0                                 # encloses the 10.5 head-access bore with 1.75 mm side walls
 INSERT_DEPTH = 4.5                           # M3 x 4 insert; 0.5 mm above the head-access bore
 PLATE_Z0 = 14.0
 NEMA_PITCH = 31.0

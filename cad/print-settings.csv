@@ -28,3 +28,5 @@ drive_tire,3,4,100,gyroid,TPU 95A: solid keeps the tire round for odometry; smal
 shelf_slice,3,4,15,gyroid,fit coupon: same as bay_shelf
 caddy_slice,3,4,15,gyroid,fit coupon: same as caddy
 hole_coupon,5,5,30,gyroid,fit coupon: same walls as the insert parts
+caster_spacer_rear,4,5,40,gyroid,carries the rear robot weight between the caster and the rail; M5 + nut pockets
+caster_spacer_front,3,4,30,gyroid,thin plate under the anti-tip caster
