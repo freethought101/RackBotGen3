@@ -10,7 +10,7 @@ of the carriage arm's travel; above z_step the back plate stops short of the car
 from cadgen import build123d as bd
 from cadgen import step, stl
 
-from lib.dims import KW11, KW11_PRESS, M2_PILOT_D, M3_CLEAR, M5_CLEAR
+from lib.dims import KW11, KW11_PRESS, M2_PILOT_D, M3_CLEAR, M5_CLEAR, M5_HEAD_CBORE
 from lib.prims import box, cyl_x, cyl_z
 from lib.robot_dims import (BELT_X, PULLEY_Y, RAIL_BRACKET_BOLT_X, TRAY_BOLTS, YBRACKET_DZ, YBRACKET_PLATE,
                             YBRACKET_PLATE_Y, YBRACKET_X, YBRACKET_Y, YCARRIAGE_DY, YFRAME_DZ, YMOTOR_PLATE_DZ,
@@ -24,7 +24,7 @@ YSW_X1 = YBRACKET_X[1]                    # body's +x end (lever free end, under
 YSW_ADJ = 1.5
 YSW_POST_MARGIN = 1.5                     # post overhangs the switch body's -x end (the body is longer than the strip)
 MOTOR_PLATE_X1 = BELT_X + 19.0            # motor overhangs 2 mm: wider breaks the 230 mm bag limit (mast unit)
-EDGE_RIB = (8.0, 4.0)                     # +x edge rib under the plate (width, depth): the +x M3 holes are 1.7 mm in
+STRIP_CBORE = (M5_HEAD_CBORE, 6.0)                 # M5 head counterbore from the strip's inner face: 10 mm left for M5 x 16 + T-nut
 
 
 def _y_hole(d, x, z, y0, y1):
@@ -39,6 +39,7 @@ def rail_bracket():
     zc = (YRAIL_DZ[0] + YRAIL_DZ[1]) / 2
     for y in (YRAIL_Y[0] + 12.0, YRAIL_Y[0] + 45.0):
         part -= cyl_x(M5_CLEAR, YBRACKET_X[0] - 0.1, YBRACKET_X[1] + 0.1, y, zc)    # into the rail inner slot
+        part -= cyl_x(STRIP_CBORE[0], YBRACKET_X[0] - 0.1, YBRACKET_X[0] + STRIP_CBORE[1], y, zc)
     # Back plate (L-shaped: full width below z_step, narrower above it).
     bx0, bx1_hi, bx1_lo, z_step, bz0, bz1 = YBRACKET_PLATE
     py0, py1 = YBRACKET_PLATE_Y
@@ -51,7 +52,6 @@ def rail_bracket():
     # 20T pulley in the belt plane.
     pz0, pz1 = YMOTOR_PLATE_DZ
     part += box(YBRACKET_X[0], MOTOR_PLATE_X1, YBRACKET_Y[0], PULLEY_Y + 23.0, pz0, pz1)
-    part += box(MOTOR_PLATE_X1 - EDGE_RIB[0], MOTOR_PLATE_X1, YBRACKET_Y[0], PULLEY_Y + 23.0, pz0 - EDGE_RIB[1], pz0)
     part += box(*YBRACKET_X, YBRACKET_Y[0], PULLEY_Y + 23.0, YBRACKET_DZ[0], pz1)          # web to the strip
     part -= cyl_z(BOSS_D, BELT_X, PULLEY_Y, pz0 - 0.1, pz1 + 0.1)                             # motor boss / shaft
     for dx in (-NEMA_PITCH / 2, NEMA_PITCH / 2):

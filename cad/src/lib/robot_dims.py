@@ -106,6 +106,8 @@ VWHEEL = {"d": 15.2, "w": 8.8, "sink": 1.6, "spacer_d": 10.0}   # mini V-wheel; 
 # Axle stack plate -> wheel: 6 mm mini spacer (eccentric 8 mm hex, or plain) + 1 mm 5 x 8 shim on the bearing's
 # inner ring. The plates get a pad or recess around each axle so the wheel sits on its groove centre.
 WHEEL_STACK = 7.0
+ECC_OFFSET = 0.7                     # mini eccentric spacer: bore 0.7 off the boss (OpenBuilds STEP). Its plate hole sits
+# 0.7 off the axle, square to the preload direction, so the wheel is mid-range and turning it moves it +/-0.7
 ECC_HOLE_D = 7.9                     # eccentric boss Ø7.11 (OpenBuilds STEP); ~7 mm holes print ~0.65 under (fit test 1) -> ~7.25
 WHEEL_SEAT_D = 12.0                  # pad / recess diameter around an axle (spacer hex is 9.2 across corners)
 ZWHEEL_SEAT_Y = (MAST_Y[0] + MAST_Y[1]) / 2 + VWHEEL["w"] / 2 + WHEEL_STACK   # -228.6: 0.6 pad on the Z plate
@@ -141,7 +143,8 @@ BATTERY = (-118.0, -28.0, -387.5, -347.0, DECK_Z[1], DECK_Z[1] + 60.0)
 # M3 + nut through the deck for the trays and the battery box (nuts clear the side rails and the rear cross member)
 PCB_DECK_HOLES = ((PCB_XY[0] + 2.0, PCB_XY[1] + 50.0), (PCB_XY[0] + 98.0, PCB_XY[1] + 50.0))
 PI_DECK_HOLES = ((PI_XY[0] + 6.0, PI_XY[1] + 28.0), (PI_XY[0] + 77.0, PI_XY[1] + 28.0))   # outside the tray window
-BATTERY_DECK_HOLES = ((BATTERY[0] + 10.0, BATTERY[3] - 8.0), (BATTERY[1] - 10.0, BATTERY[3] - 8.0))
+BATTERY_DECK_HOLES = ((BATTERY[1] + 7.5, -362.0), (BATTERY[1] + 7.5, -351.0))   # tab on the +x wall, outside the pack;
+# the nuts stay ahead of the rear cross member (y -370)
 ESTOP_XY = (-22.0, -255.0)           # on the mast top plate: highest, easiest point to hit
 BUCKS = {"charger": (-60.0, -205.0), "5v": (4.0, -205.0), "6v": (-28.0, -172.0)}   # (x0, y0) under the tray
 # (x, y, z) envelope per module (P18), from the Tokopedia listings we order from; measure on arrival.

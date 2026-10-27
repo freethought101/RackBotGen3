@@ -5,6 +5,7 @@ drive_hub,5,5,50,gyroid,motor torque into the tire; set-screw insert on the D-sh
 z_motor_mount,5,5,40,gyroid,Z motor reaction; small part so extra infill costs little
 z_carriage,5,5,35,gyroid,carries the tray stack cantilever; V-wheel axles and inserts
 y_carriage,5,5,40,gyroid,servos and V-wheel axles; small part
+belt_clamp,4,4,40,gyroid,small jaw pressing the belt ends onto the carriage pad
 rail_bracket,5,5,30,gyroid,holds the Y rail and Y motor cantilevered off the carriage
 tray_stack,4,5,25,gyroid,big part; stiffness comes from its walls and ribs; M5 inserts
 mast_collar,4,5,30,gyroid,clamps the 2040 mast to the base

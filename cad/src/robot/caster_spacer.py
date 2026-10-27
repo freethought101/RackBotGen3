@@ -10,14 +10,13 @@ up the design heights. Hole pitch slotted +/-2 mm, so a caster with holes 38-42 
 
 from cadgen import step, stl
 
-from lib.dims import M3_CLEAR, M5_CLEAR
+from lib.dims import M3_CLEAR, M3_NUT_AF, M5_CLEAR, M5_HEAD_CBORE
 from lib.prims import box, cyl_z
 from lib.robot_dims import CASTER, CASTER_FRONT, CASTER_FRONT_GAP, CASTER_REAR, NOSE_Z, RAIL_Z
 
 MARGIN = 2.0                  # spacer outline beyond the caster base, per side
-M5_HEAD_CBORE = 10.4          # M5 button/socket head + driver (prints ~10.0)
 M5_FLANGE = 6.0               # material under the rail between the counterbore and the top face
-NUT_AF, NUT_T = 5.9, 3.0      # M3 nut pocket (5.5 AF x 2.4 nut + print clearance)
+NUT_AF, NUT_T = M3_NUT_AF, 3.0   # M3 nut pocket (5.5 AF x 2.4 nut + print clearance)
 NUT_Z = 5.0                   # nut pocket floor above the spacer bottom
 
 

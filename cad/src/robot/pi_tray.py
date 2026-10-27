@@ -1,7 +1,10 @@
 """Raspberry Pi 3 tray (PETG): standoffs on the 58 x 49 mm hole pattern, board long side along x.
 
-Orientation: micro-USB / HDMI edge facing +y (toward the Z motor; the plug lands at x ~ -112, clear of the motor at
-x -72..-30), USB/Ethernet end at +x, GPIO header edge facing -y (battery box). The SD card end is at -x.
+Orientation (the real board, docs/3d-models/P12_raspberry-pi-3b.step): USB/Ethernet end at +x, SD card end at -x,
+GPIO header edge facing +y (Z motor), micro-USB / HDMI / audio edge facing -y against the battery box. A Pi 3 can't
+have that edge at +y with USB at +x (it would be a mirror image), and turned round its plugs would hit the Z motor. So
+the micro-USB is not used: the Pi is powered through GPIO pins 2/4 (5 V) and 6 (GND) from the 5 V buck; the HDMI and
+audio jacks sit in a relief in the battery box wall.
 """
 
 from cadgen import build123d as bd

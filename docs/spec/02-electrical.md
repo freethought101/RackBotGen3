@@ -26,7 +26,7 @@ flowchart LR
   K -. "closes" .-> KC
   VMOT --> TMC["4x TMC2209"]
   VMOT --> B6["Buck 5.8 V 3 A"] --> SERVO["2x MG90S"]
-  BUS --> B5["Buck 5.15 V 5 A"] --> PI["Raspberry Pi 3\n(micro-USB pigtail)"]
+  BUS --> B5["Buck 5.15 V 5 A"] --> PI["Raspberry Pi 3\n(GPIO 5 V pins 2/4 + GND 6)"]
   PI -- "USB (90° C plug)" --> ESP["ESP32-S3 DevKitC-1\n(powered over USB)"]
 ```
 
@@ -36,7 +36,7 @@ Wire: battery/VMOT 18 AWG, motors 22–24 AWG, signals 26 AWG. Connectors: XT60 
 
 ## 2. Compute & motion control
 
-- **Raspberry Pi 3B/3B+**: Raspberry Pi OS Lite 64-bit, headless. IMX708 120° camera board (Camera Module 3 Wide class) on CSI (500 mm flex). USB to the ESP32 (serial). **Wi-Fi access point** for the rack network (v0.1.27, no travel router): AP `RACKBOT` (WPA2, 2.4 GHz) with DHCP, set up with NetworkManager.
+- **Raspberry Pi 3B/3B+**: Raspberry Pi OS Lite 64-bit, headless. IMX708 120° camera board (Camera Module 3 Wide class) on CSI (1 m flex: ~530 mm route at Z max via the drag chain). USB to the ESP32 (serial). **Wi-Fi access point** for the rack network (v0.1.27, no travel router): AP `RACKBOT` (WPA2, 2.4 GHz) with DHCP, set up with NetworkManager.
 - **ESP32-S3-DevKitC-1** (N8, N8R2 or N16R8: the firmware needs 8 MB flash and no PSRAM; **not** the -V 1.8 V variants, which put GPIO47/48 at 1.8 V) plugged into the motion board. **Powered over USB from the Pi** with a USB-A → USB-C cable whose C plug is **right-angled, cable exiting away from the board** (a straight plug reaches the switch connectors J10/J11 on the bottom edge). The DevKit 5V pin is *not* connected to the board 5 V (prevents backfeed).
 - **4 × TMC2209 StepStick** (e.g. BTT v1.3), one shared single-wire UART, VIO from ESP32 3V3 (drivers disabled if the ESP32 is unpowered).
 

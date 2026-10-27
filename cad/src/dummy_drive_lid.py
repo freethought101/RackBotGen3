@@ -4,11 +4,11 @@ from cadgen import build123d as bd
 from cadgen import step, stl
 
 from dummy_drive_shell import HALF_W, LID_SCREWS, LID_STEP, LID_T, WALL
-from lib.dims import HDD_H, HDD_L, M3_CLEAR
+from lib.dims import HDD_H, HDD_L, M3_CLEAR, M3_HEAD_CBORE
 from lib.prims import box, cyl_z
 
 FIT_GAP = 0.2              # per side, lid to rebate
-CBORE_D = 6.4              # M3 button head (5.7); holes print ~0.3 under (fit test 1)
+CBORE_D = M3_HEAD_CBORE    # M3 button head (5.7)
 CBORE_DEPTH = 1.0
 LABEL_RECESS = 0.4
 

@@ -20,7 +20,7 @@ The Tokopedia part is 22 shops (it was 33). The first 5 carry most of the order.
 - [ ] P01 NEMA17 JK42HS40-1704 (1.7 A, 40 mm) ×4, Rp673k
 - [ ] P16 ESP32-S3 dev board **N8R2** (N16R8 sold out at Rajacell on 23 Oct; either works; not R8V/R16V) ×1, ≈ Rp112.5k
 - [ ] P12 Raspberry Pi 3 Model B+ ×1, ≈ Rp1.06–1.19M ([Rajacell listing](https://www.tokopedia.com/rajacell/original-raspberry-pi-3-model-b-3-pi-3-b-plus-bcm2837b0-1-4ghz-arm); not team-owned after all). Skip much cheaper listings.
-- [ ] P15 Pi camera FFC cable, **50 cm** variant ×1, Rp10k
+- [ ] P15 Pi camera FFC cable 15-pin, **1 m** ×1, ~Rp15–25k (not the Rajacell listing: it stops at 50 cm)
 - [ ] P08 W420 steel-ball caster ×3, Rp37k. Ask the height; it must be < 27 mm.
 - [ ] P10 micro limit switch, lever, 5 A SPDT 3-pin ×15, ≈ Rp53k
 - [ ] P20 4S 30 A battery protection board (BMS) ×1, Rp27k

@@ -105,7 +105,7 @@ The live, per-part order list is the Notion **Parts & Order List** database, mir
 | Raspberry Pi 3 Model B+ (not team-owned after all, Tokopedia) | 1 | 70 |
 | IMX708 120° camera board (Camera Module 3 **Wide** class, Tokopedia) | 1 | 37 |
 | microSD 32 GB A1 | 1 | 8 |
-| CSI flex cable 500 mm | 1 | 1 |
+| CSI flex cable 1 m | 1 | 1 |
 | ESP32-S3-DevKitC-1 (Tokopedia), 1 + 1 spare | 2 | 14 |
 | TMC2209 StepStick (Tokopedia), 4 + 1 spare | 5 | 15 |
 | Buck 5 V/5 A (XY-3606) + 2 × XL4015 CC/CV (charger, 5.8 V servo buck) | 3 | 4 |

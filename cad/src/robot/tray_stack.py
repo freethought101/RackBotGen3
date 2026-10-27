@@ -82,7 +82,7 @@ def tray_stack():
         zc = z0 + SW_DZ
         zl, zh = zc - st / 2 - SW_FIT, zc + st / 2 + SW_FIT
         part -= box(SW_X - hx, SW_X + hx, BACK_Y[0] - 0.1, SW_FRONT_Y, zl, zh)            # pocket, open at the back
-        part -= box(SW_X - hx, SW_X + hx, SW_FRONT_Y - 0.1, TRAY_STOP_Y + 0.1, zc - 3.0, zc + 3.0)   # lever slot
+        part -= box(SW_X - hx, SW_X + hx, SW_FRONT_Y - 0.1, TRAY_STOP_Y + 0.1, zl, zh)   # lever slot (lever 6.3 wide)
         for dx in (-SW_HOLE_DX, SW_HOLE_DX):
             x = SW_X + dx
             if access_up:   # head from the top face, pilot below the pocket

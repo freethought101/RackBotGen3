@@ -30,6 +30,8 @@ def z_motor_mount():
         part += box(wx0, wx1, sy + WALL_DY[0], sy + WALL_DY[1], z0, zp)
         part += box(fx0, fx1, fy0, fy1, z0, z0 + FOOT[2])
         part -= cyl_z(M3_CLEAR, (fx0 + fx1) / 2, (fy0 + fy1) / 2, z0 - 0.1, z0 + FOOT[2] + 0.1)
+    # Notch the plate's front +x corner: the lower -x Z-wheel axle head passes over it at the hard stop.
+    part -= box(sx + 19.0, xr + WALL_T + 0.1, sy + 16.8, sy + PLATE_DY[1] + 0.1, zp - 0.1, zp + ZMOUNT_T + 0.1)
     part -= cyl_z(BOSS_D, sx, sy, zp - 0.1, zp + ZMOUNT_T + 0.1)
     for dx in (-NEMA_PITCH / 2, NEMA_PITCH / 2):
         for dy in (-NEMA_PITCH / 2, NEMA_PITCH / 2):

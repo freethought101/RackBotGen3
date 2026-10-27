@@ -36,7 +36,12 @@ Checks: `PYTHONPATH=src python checks/bay_fit_check.py`, `checks/station_check.p
 `checks/robot_check.py` (overlap **and ≥ 1 mm running clearance** for every moving pair over 42 poses incl. intermediate
 Y and the hard stop; docked lift sweep carrying two caddies; full pull/push strokes at every bay and spare slot with
 the caddy moving with the finger, the idle finger parked and the other caddy on the tray; push seats the caddy; camera
-sight lines and FOV; mass/CG/tip-over; packing; print bed — see docs/spec/01 §6.8).
+sight lines and FOV; mass/CG/tip-over; packing; print bed — see docs/spec/01 §6.8), and `checks/fastener_check.py`:
+every screw, nut, T-nut and insert (`lib/robot_fasteners.py`, step.parts models in `cad/vendor/fasteners`) against the
+parts: no fastener hits a part it does not thread into (missing / misplaced / blocked holes), heads and nuts seated,
+thread engagement without bottoming out (T-nut ≥ 3 mm and short of the slot core, inserts, pilots, motor threads), and
+≥ 1 mm from parts moving relative to it over 19 poses. It prints the modeled fastener bill. `robot_assembly.step`
+shows the fasteners.
 
 To verify on real hardware: 3.5" bottom hole positions (`HDD_HOLE_Y`, slotted ±3 mm),
 KW11-3Z switch hole pitch and actuation point (bracket slotted ±2 mm).

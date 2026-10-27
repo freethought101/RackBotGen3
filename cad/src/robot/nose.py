@@ -13,7 +13,7 @@ from lib.robot_dims import (BASE_FRONT_Y, CASTER, CASTER_FRONT, CONTACT_X, CONTA
 
 WALL = 4.0
 PAD = (30.0, 20.0, 1.0)            # copper pad recess: width, height, depth
-SWITCH_SLOT = (8.0, 15.0)          # lever slot width, height (centre z = 52)
+SWITCH_SLOT = (8.0, 22.0)          # lever slot width, height (centre z = 52): covers the whole lever
 SWITCH_Z = 52.0
 SWITCH_REACH = 3.0                 # free lever tip past the nose tip: pressed 3 mm when docked (triggers at 2)
 SWITCH_ADJUST = 2.0                # +/- slot in y to tune the actuation point

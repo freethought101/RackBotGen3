@@ -6,20 +6,27 @@
 - hole_coupon: one of each hole size used on the printed parts, small to large from the chamfered corner.
 """
 
+from cadgen import build123d as bd
 from cadgen import step, stl
 
 from bay_shelf import bay_shelf
 from caddy import caddy
-from lib.dims import (BAY_CHANNEL_W, CADDY_BODY_L, M2_PILOT_D, M3_CLEAR, M3_INSERT_D, M3_SELF_TAP_D, M5_CLEAR,
-                      M5_INSERT_D)
+from lib.dims import (BAY_CHANNEL_W, CADDY_BODY_L, HDD_SCREW_CLEAR, M25_PILOT_D, M2_PILOT_D, M3_CLEAR, M3_HEAD_CBORE,
+                      M3_INSERT_D, M3_NUT_AF, M3_SELF_TAP_D, M5_CLEAR, M5_HEAD_CBORE, M5_INSERT_D, SHAFT5_BORE)
+from lib.robot_dims import ECC_HOLE_D
 from lib.prims import box, cyl_z, prism_xy
 
 SLICE_L = 40.0
 CADDY_SLICE_H = 12.0
 
-# (diameter, blind depth or None = through): M2 pilot, M3 self-tap, M3 clear, M3 insert, M5 clear, M5 insert
-HOLES = [(M2_PILOT_D, None), (M3_SELF_TAP_D, None), (M3_CLEAR, None), (M3_INSERT_D, None), (M5_CLEAR, None),
-         (M5_INSERT_D, 12.0)]
+# Hole coupon R5 (every hole size the parts use, small -> large from the chamfered corner; two rows):
+# (diameter, blind depth or None = through). Row 1: M2 pilot, M2.5 pilot, M3 self-tap, M3 clear, 6-32 drive screw,
+# M3 insert, M5 clear, 5 mm shaft bore. Row 2: M3 nut pocket (hex, 3 deep), M3 head cbore (3 deep), M5 insert,
+# eccentric spacer boss, M5 head cbore (3 deep).
+HOLES = [(M2_PILOT_D, None), (M25_PILOT_D, None), (M3_SELF_TAP_D, None), (M3_CLEAR, None), (HDD_SCREW_CLEAR, None),
+         (M3_INSERT_D, None), (M5_CLEAR, None), (SHAFT5_BORE, None)]
+HOLES_2 = [("hex", M3_NUT_AF, 3.0), (None, M3_HEAD_CBORE, 3.0), (None, M5_INSERT_D, 12.0), (None, ECC_HOLE_D, None),
+           (None, M5_HEAD_CBORE, 3.0)]
 COUPON_T = 14.0
 PITCH = 15.0
 
@@ -45,11 +52,20 @@ def caddy_slice():
 @stl(out="../STL/fit/hole_coupon.stl")
 def hole_coupon():
     length = PITCH * (len(HOLES) + 1)
-    part = box(0, length, 0, 18, 0, COUPON_T)
+    part = box(0, length, 0, 36, 0, COUPON_T)
     part -= prism_xy([(-0.1, -0.1), (5, -0.1), (-0.1, 5)], -0.1, COUPON_T + 0.1)   # marks the small end
     for i, (d, depth) in enumerate(HOLES):
         z0 = -0.1 if depth is None else COUPON_T - depth
         part -= cyl_z(d, PITCH * (i + 1), 9.0, z0, COUPON_T + 0.1)
+    for i, (kind, d, depth) in enumerate(HOLES_2):
+        x, z0 = PITCH * (i + 1) * len(HOLES) / len(HOLES_2), -0.1 if depth is None else COUPON_T - depth
+        if kind == "hex":
+            part -= bd.Pos(x, 27.0, z0) * bd.extrude(bd.RegularPolygon(d / 3 ** 0.5, 6), amount=COUPON_T + 0.2 - z0)
+            part -= cyl_z(M3_CLEAR, x, 27.0, -0.1, COUPON_T + 0.1)
+        else:
+            part -= cyl_z(d, x, 27.0, z0, COUPON_T + 0.1)
+            if depth is not None and d < 11:
+                part -= cyl_z(M5_CLEAR if d > 7 else M3_CLEAR, x, 27.0, -0.1, COUPON_T + 0.1)
     part.label = "hole_coupon"
     return part
 

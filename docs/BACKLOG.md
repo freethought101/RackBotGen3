@@ -45,7 +45,7 @@ Open checks and to-dos collected from the spec, the CAD and PCB work, and review
 - [ ] E-stop box base: the hole spacing (CAD assumes 2 × M3, 26 mm apart, into inserts in the mast top plate).
 - [ ] VMOT relay (P38): find a place for it on the electronics tray or deck; check that it pulls in at 12 V (empty battery) and stays cool at 16.8 V; check that the E-stop drops VMOT within 50 ms. Release the E-stop 20 times with VMOT loaded: the BMS must not trip on the 120–220 A capacitor inrush (if it does, add an NTC or pre-charge resistor) and the relay contact must not weld. Check that a press shows at once as `sw` bit5 / `EVT ESTOP`.
 - [ ] DevKit plugged-in height (~8.5 mm sockets) clears the RC parts underneath; Y motor clears the motion board components.
-- [ ] Camera Module 3 Wide: works on Pi 3 with libcamera/Picamera2; CSI cable length (≈ 500 mm) and routing on the moving carriage.
+- [ ] Camera Module 3 Wide: works on Pi 3 with libcamera/Picamera2; CSI cable 1 m (route ≈ 530 mm at Z max, v0.1.31); model the route and the drag chain mounts to confirm.
 - [ ] Rack electronics placeholders (Delta PSU, DVP-12SE / ESP32 modules, relay, status lamp box, E-stop) vs real sizes on the DIN rail.
 - [x] Delta 24 V DIN PSU: picked DRL-24V120W1EN (LYTE II, 120 W, universal input) — v0.1.19.
 - [ ] Detail bolt patterns on the robot printed parts once the hardware is in hand (current parts are v0 for fit).

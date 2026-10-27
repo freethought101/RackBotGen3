@@ -11,7 +11,7 @@ from cadgen import step, stl
 
 from lib.dims import KW11, KW11_PRESS, M2_PILOT_D, M5_CLEAR
 from lib.prims import box, cyl_x, cyl_z
-from lib.robot_dims import (ECC_HOLE_D, NUT_BLOCK, NUT_BLOCK_DZ, SCREW_XY, TRAY_BOLTS, WHEEL_SEAT_D, ZPLATE_DZ, ZPLATE_X,
+from lib.robot_dims import (ECC_HOLE_D, ECC_OFFSET, NUT_BLOCK, NUT_BLOCK_DZ, SCREW_XY, TRAY_BOLTS, WHEEL_SEAT_D, ZPLATE_DZ, ZPLATE_X,
                             ZPLATE_Y, ZWHEEL_DZ, ZWHEEL_SEAT_Y, ZWHEEL_X, Z_HOME)
 
 # Nut block mount: the block's face sits on a fin's +x face (fin in the y-z plane, so the lift load runs in its
@@ -52,8 +52,10 @@ def z_carriage():
             part += _y_hole(WHEEL_SEAT_D, s * ZWHEEL_X, z, ZWHEEL_SEAT_Y, y0 + 0.1)  # spacer seat pad
     for s in (-1, 1):
         for z in ZWHEEL_DZ:
-            d = ECC_HOLE_D if s > 0 else M5_CLEAR                                   # eccentric spacers on +x
-            part -= _y_hole(d, s * ZWHEEL_X, z, ZWHEEL_SEAT_Y - 0.1, y1 + 0.1)        # V-wheel axles
+            if s > 0:                                                               # eccentric spacer boss, 0.7 under the axle
+                part -= _y_hole(ECC_HOLE_D, s * ZWHEEL_X, z - ECC_OFFSET, ZWHEEL_SEAT_Y - 0.1, y1 + 0.1)
+            else:
+                part -= _y_hole(M5_CLEAR, s * ZWHEEL_X, z, ZWHEEL_SEAT_Y - 0.1, y1 + 0.1)  # V-wheel axles
     sx, sy = SCREW_XY
     fx1 = sx - FIN_GAP
     fx0 = fx1 - FIN_T
@@ -76,7 +78,8 @@ def z_carriage():
     lever_edge = ZSW_MOUNT_TOP - KW11_PRESS + KW11["lever"] - Z_HOME  # body's lever edge, relative to Z
     pin_edge = lever_edge + KW11["h"]
     hx0 = kx - ZSW_HANGER_T                                          # switch body sits at hx0 - t .. hx0
-    part += box(hx0, kx + 0.5, *ZSW_Y, lever_edge - 3.0, FIN_Z0 + 8.0)       # overlaps the fin's side face
+    part += box(hx0, kx + 0.5, *ZSW_Y, lever_edge, FIN_Z0 + 8.0)             # overlaps the fin's side face; no lower:
+    # below the switch body it would land on the Z-motor screw heads at the hard stop
     yc, zh = (ZSW_Y[0] + ZSW_Y[1]) / 2, pin_edge - KW11["hole_up"]
     for dy in (-KW11["hole_dx"], KW11["hole_dx"]):
         part -= box(hx0 - 0.1, kx + 0.6, yc + dy - M2_PILOT_D / 2, yc + dy + M2_PILOT_D / 2,
