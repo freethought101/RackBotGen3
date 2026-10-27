@@ -62,9 +62,14 @@ ZPLATE_X = (-70.0, 62.0)             # right edge 1.4 mm clear of the servos at 
 ZPLATE_DZ = (-10.0, 100.0)           # relative to Z
 ZWHEEL_X = 26.0                      # |x| V-wheel centres in the mast side grooves (axles along y)
 ZWHEEL_DZ = (14.0, 92.0)            # lower pair rolls 1.4 mm above the Z motor at Z_MIN (78 mm wheelbase)
-NUT_BLOCK_DZ = (44.0, 66.0)          # anti-backlash nut block; bottom clears the coupler top at Z_MIN, top 4.7 under the z 75 tray bolt heads
+# Anti-backlash nut block (P05, Lajarus Teknik "T8 Nut Block", a copy of OpenBuilds part 1055; drawing in
+# docs/datasheets/P05_anti-backlash-nut-block_drawing.jpg): l along the screw, h across, t through (screw centred). A 20
+# thick body with 2 x M5 holes (20 apart, 10 from its end face, hex nut pockets), a 5 slit and an 8 lip; the M5
+# preload screw enters the body's end face 10 off the screw axis, in line with one mounting hole.
+NUT_BLOCK = {"l": 33.0, "h": 34.0, "t": 12.0, "pitch": 20.0, "hole_down": 10.0, "preload_dy": 10.0}
+NUT_BLOCK_DZ = (47.0, 80.0)          # body end up against the carriage's shelf (the lift load), lip down
 # Tray -> Z plate: M5 from behind the plate into M5 heat-set inserts in the tray back plate. Columns clear the
-# mast (|x| <= 20), the Z wheels and the nut block (x -64..-38, z 44..64); the x = 50 column also clamps the
+# mast (|x| <= 20), the Z wheels and the nut-block mount (x -63..-41); the x = 50 column also clamps the
 # Y-rail bracket's back plate.
 TRAY_BOLTS = [(-50.0, -5.0), (-50.0, 75.0), (-38.0, -5.0), (-38.0, 75.0),
               (38.0, -5.0), (38.0, 37.0), (38.0, 75.0), (50.0, -5.0), (50.0, 37.0), (50.0, 75.0)]

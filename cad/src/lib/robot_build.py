@@ -14,7 +14,8 @@ from lib.extrusion import vslot
 from lib.prims import box, cyl_z
 from lib.robot_dims import (AXLE_Y, AXLE_Z, BASE_FRONT_Y, BASE_REAR_Y, BATTERY, BUCK_SIZE, BUCKS, CAM_BOARD, CAM_DZ,
                             CAM_LENS, CASTER, CASTER_FRONT, CASTER_FRONT_GAP, CASTER_REAR, COUPLER_Z, CROSS_Y, DECK_Z,
-                            DRIVE_MOTOR_X, ESTOP_XY, FINGER_DZ, FINGER_X, KFL08, MAST_X, MAST_Y, MAST_Z, NOSE_Z,
+                            DRIVE_MOTOR_X, ESTOP_XY, FINGER_DZ, FINGER_X, KFL08, MAST_X,
+                            NUT_BLOCK, NUT_BLOCK_DZ, MAST_Y, MAST_Z, NOSE_Z,
                             PCB_XY, PCB_Z, PI_XY, RAIL_X, RAIL_Z, SCREW_XY, SCREW_Z, SERVO, SERVO_FACE_DY, VWHEEL,
                             Y_NOTCH_HOME, YRAIL_DZ, YRAIL_X, YRAIL_Y, YWHEEL_DY,
                             YWHEEL_DZ, YWHEEL_SEAT_X, ZMOTOR_Z, ZWHEEL_DZ, ZWHEEL_SEAT_Y, ZWHEEL_X,
@@ -39,6 +40,7 @@ from robot.z_carriage import z_carriage
 from robot.z_motor_mount import z_motor_mount
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+NUT_STEP = os.path.join(HERE, "..", "..", "..", "docs", "3d-models", "P05_anti-backlash-nut-block_openbuilds.step")
 PCB_STEP = os.path.join(HERE, "..", "..", "..", "pcb", "motion-board", "fab", "rbg3-motion.step")
 PRINTED = srgb("#E8E4DA")
 ACCENT = srgb("#E07A1F")
@@ -116,6 +118,10 @@ def lift_parts(Z):
     at = bd.Pos(0, 0, Z)
     parts = [_p(at * z_carriage(), "z_carriage"), _p(at * tray_stack(), "tray_stack", ACCENT),
              _p(at * rail_bracket(), "rail_bracket")]
+    sx, sy = SCREW_XY                                          # anti-backlash nut block (P05) on the carriage fin
+    zc = Z + (NUT_BLOCK_DZ[0] + NUT_BLOCK_DZ[1]) / 2           # STEP: x across, y along the screw (body +y), z -12..0
+    nut = bd.Location(bd.Plane(origin=(sx + NUT_BLOCK["t"] / 2, sy, zc), x_dir=(0, 1, 0), z_dir=(1, 0, 0))) * read_step(NUT_STEP)
+    parts.append(_p(nut, "nut_block_tr8", srgb("#1F2937")))
     yc = (MAST_Y[0] + MAST_Y[1]) / 2                         # mast side groove centre
     for s in (-1, 1):
         for dz in ZWHEEL_DZ:
