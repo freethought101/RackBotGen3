@@ -10,7 +10,7 @@ The Tokopedia part is 22 shops (it was 33). The first 5 carry most of the order.
 - [ ] P02 2020 V-slot, 6 × 1 m (or per 10 cm cut to the CSV list), ≈ Rp302k
 - [ ] P03 2040 V-slot, 420 mm (per 10 cm, Rp13k), ≈ Rp55k
 - [ ] P05 T8 lead screw, **1 start, lead 2 mm**, per 10 cm: 350 mm, ≈ Rp67k
-- [ ] P05 T8 anti-backlash nut, **lead 2 mm / 1 start** ×1, Rp22k
+- [ ] P05 T8 anti-backlash nut block (OpenBuilds-style, 34 × 33 × 12), **lead 2 mm / 1 start** ×1, Rp22k
 - [ ] P05 KFL08 flange bearing ×1, Rp14k
 - [ ] P05 flexible coupler 5 × 8 mm ×1, Rp15k
 - [ ] P06 GT2 6 mm rubber belt per metre ×1, Rp20k

@@ -88,7 +88,7 @@ The live, per-part order list is the Notion **Parts & Order List** database, mir
 | NEMA17 42×40, ≥ 0.4 N·m (Tokopedia) | 4 | 42 |
 | 2020 V-slot 6 × 1 m (4.96 m of cuts + kerf) + 2040 V-slot 0.42 m (robot + rack + spare station), Lajarus Teknik | — | 23 |
 | Mini V-wheels + 4 mini eccentric spacers, 4 plain 6 mm spacers, 10 shims 5 × 8 × 1 | 8 | 10 |
-| Tr8×2 lead screw 350 + anti-backlash nut + coupler + KFL08 flange bearing | 1 | 7 |
+| Tr8×2 lead screw 350 + anti-backlash nut block + coupler + KFL08 flange bearing | 1 | 7 |
 | GT2 belt (Y axis), 20T, idler | set | 3 |
 | Wheels 80 × 24 mm: printed PETG hub + TPU 95A tire (filament in §1.4) | 2 | 0 |
 | Ball casters (2 rear + 1 anti-tip), printed spacers | 3 | 3 |
