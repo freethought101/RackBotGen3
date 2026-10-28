@@ -9,6 +9,7 @@ Spec values checked against these files: [CROSSCHECK.md](CROSSCHECK.md).
 | P13_camera-module-3_brief.pdf | P13 Camera Module 3 | datasheets.raspberrypi.com |
 | P16_esp32-s3_datasheet.pdf | P16 ESP32-S3 | espressif.com |
 | P16_esp32-s3-devkitc-1_schematic.pdf | P16 DevKitC-1 v1.1 schematic | dl.espressif.com |
+| P16_esp32-s3-devkitc-1_dimensions.pdf | P16 DevKitC-1 v1.1 dimension drawing (25.40 wide, rows 22.86 apart) | dl.espressif.com |
 | P17_tmc2209.pdf | P17 TMC2209 (U2-U5) | analog.com / DigiKey mirror (if present) |
 | P19_ina226.pdf | P19 INA226 | ti.com |
 | PCB_mmbt3904.pdf | Q1 MMBT3904 | diodes.com |
@@ -40,6 +41,24 @@ Spec values checked against these files: [CROSSCHECK.md](CROSSCHECK.md).
 | P24_delta-drl-24v120w1en.pdf | P24 Delta LYTE II DRL-120W series (the chosen DRL-24V120W1EN: 24 V 5 A, 123.6 × 30 × 116.8 mm); Rev. 02, June 2021 | piekarz.pl mirror (deltapsu.com download needs a captcha) |
 | P26_songle-srd-relay.pdf | P26 Songle SRD series relay (SRD-24VDC-SL-C is the usual relay on 24 V relay modules; check the marking on the module you get) | LCSC C15840 |
 | P21_amass-xt60h.pdf | P21 Amass XT60H connector | LCSC C5334533 |
+| P01_17hs4401s_handsontec.pdf | P01 17HS4401S (the motor in the cart, Lajarus): 1.7 A, 0.43 N·m, shaft Ø5 × 23 ± 0.5, dimension drawing | handsontec.com (found by the team, 25 Oct) |
+| P05_kfl08_handsontec.pdf | P05 KFL08 flange bearing: 48 × 27, holes 37 apart, Ø4.8 (M4), 12.5 tall | handsontec.com (found by the team, 25 Oct; the original file name was "T8-Holder-H") |
+| P10_kw11-3z_dimensions.png | P10 KW11-3Z generic dimension drawing: 19.7 × 10.6 × 6.6, mounting holes 9.5 apart | found by the team, 25 Oct |
+
+| P13_camera-module-3-wide_mechanical-drawing.pdf | P13 Camera Module 3 Wide drawing: 25 × 23.862, Ø2.2 holes 21 × 12.5 apart, lens 14.4 above the bottom edge, 12 deep | pip-assets.raspberrypi.com (RP-008155-DS-1) |
+| P13_arducam-b0310_datasheet.pdf | P13 Arducam B0310 IMX708 120° (a candidate for the wirogix board) | DigiKey mirror |
+| P16_esp32-s3-devkitc-1_v1.1_dimensions.dxf, P16_esp32-s3-devkitc-1_v1.1_pcb.pdf | P16 DevKitC-1 v1.1 outline DXF and PCB layout | dl.espressif.com |
+| P16_esp32-s3-devkitc-1_reference-design/ | P16 DevKitC-1 v1.1 reference design: schematic (.DSN/.pdf), PCB (.pcb/.pdf), Gerbers, BOM, placement | Espressif (downloaded by the team, 25 Oct) |
+| P18_xl4015_xlsemi-rev2.0.pdf | P18 XL4015 datasheet Rev 2.0 (Aug 2023, newer than P18_xl4015.pdf) | XLSEMI (downloaded by the team, 25 Oct) |
+
+3D models are kept separately in [`docs/3d-models/`](../3d-models/):
+- `P05_kfl08.step` (+ `.jpg` preview; Inventor "Mancal Flange oval Ø8", bounding box 46.5 × 27 × 11.35 mm).
+- `P13_camera-module-3-wide.step` (Raspberry Pi RP-008154-DS-1, "simple" Wide model, 30 MB).
+- `P09_mg90s.step` (Printables model 569094; bounding box 22.7 × 33 × 32.4 incl. tabs and horn).
+- From the OpenBuilds STEP Parts Library 1.5 (`*_openbuilds.step`): NEMA17, Xtreme and Delrin mini V-wheel
+  (Ø15.23 × 8.8), mini eccentric spacer 6 mm (boss Ø7.11), 6 mm spacer, 8 × 5 × 1 shim, 105ZZ bearing, GT2 20T pulley
+  (Ø15 flange, Ø12.2 teeth, 14 wide), smooth idler (OpenBuilds Ø22, not the Lajarus one) and micro limit switch
+  (OpenBuilds size, not the KW11-3Z). Generic OpenBuilds designs: the Rajawali3D / Lajarus parts are clones, so check on arrival.
 
 ## Product pages (no PDF)
 - P31 GL.iNet GL-MT300N-V2 router: specs on [docs.gl-inet.com](https://docs.gl-inet.com/router/en/3/specification/gl-mt300n-v2/) (5 V / 2 A in, < 2.75 W, 2 × 10/100 Ethernet, 58 × 58 × 25 mm).
@@ -56,6 +75,6 @@ Spec values checked against these files: [CROSSCHECK.md](CROSSCHECK.md).
 
 ## Not found
 - XY-3606 buck module (P18): sold with shop pages only; the module has no manufacturer datasheet.
-- KW11-3Z (P10): generic part, no manufacturer datasheet.
+- KW11-3Z (P10): generic part, no manufacturer datasheet (a generic dimension drawing is saved, see above).
 - BTT TMC2209 V1.3 board schematic (P17 now names the MKS module instead).
 - Delta DVP-12SE11T programming manual (the SE instruction sheet, catalogue and dimensions are saved).

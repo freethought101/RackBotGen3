@@ -6,7 +6,7 @@ from cadgen import step, stl
 
 from lib.dims import M3_CLEAR
 from lib.prims import box, cyl_z
-from lib.robot_dims import BATTERY
+from lib.robot_dims import BATTERY, BATTERY_DECK_HOLES
 
 WALL = 2.5
 
@@ -19,8 +19,8 @@ def battery_box():
     part -= box(x0, x1, y0, y1, z0 + WALL, z1 + 0.1)
     part -= box(x0 + 10, x1 - 10, y0 - WALL - 0.1, y1 + WALL + 0.1, z1 - 12, z1 - 4)   # strap slot
     part -= box(x1 - 0.1, x1 + WALL + 0.1, y0 + 12, y0 + 28, z0 + WALL, z0 + 20)       # XT60 lead exit
-    for x in (x0 + 10, x1 - 10):
-        part -= cyl_z(M3_CLEAR, x, (y0 + y1) / 2, z0 - 0.1, z0 + WALL + 0.1)
+    for x, y in BATTERY_DECK_HOLES:
+        part -= cyl_z(M3_CLEAR, x, y, z0 - 0.1, z0 + WALL + 0.1)                  # to the deck
     part.label = "battery_box"
     return part
 

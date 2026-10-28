@@ -130,6 +130,7 @@ class EspHal : public Hal {
     in.nose = digitalRead(pins::NOSE) == LOW;
     in.slot_a = digitalRead(pins::SLOT_A) == LOW;
     in.slot_b = digitalRead(pins::SLOT_B) == LOW;
+    in.estop = digitalRead(pins::AUX_IN) == LOW;
     return in;
   }
 

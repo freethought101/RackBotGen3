@@ -9,7 +9,7 @@ counterbores reached with a hex key through the channel.
 from cadgen import build123d as bd
 from cadgen import step, stl
 
-from lib.dims import BAY_CHANNEL_W, BAY_DEPTH, LEAD_IN, M5_CLEAR, UPRIGHT_INNER_X, UPRIGHT_Y
+from lib.dims import BAY_CHANNEL_W, BAY_DEPTH, LEAD_IN, M2_PILOT_D, M5_CLEAR, UPRIGHT_INNER_X, UPRIGHT_Y
 from lib.prims import box, cyl_x, prism_xy, prism_yz
 
 FLOOR_T = 4.0
@@ -18,7 +18,7 @@ WALL_H = 20.0
 RUNNER_INNER_X = 44.0      # runners support the caddy's side walls and rails (|x| 51.5..57)
 BACKSTOP_T = 4.0
 BOLT_Z = 8.0
-CBORE_D = 10.0
+CBORE_D = 10.4             # M5 button head (9.5); holes print ~0.3 under (fit test 1)
 FLANGE_T = 4.0             # material between the counterbore and the upright face
 FRONT_BLOCK = (0.0, 32.0)  # y span of the front flange block (also carries the lead-in)
 REAR_BLOCK = (123.0, BAY_DEPTH + BACKSTOP_T)
@@ -30,7 +30,7 @@ SWITCH_SLOT_W = 8.0
 SWITCH_SLOT_Z = (4.0, 18.0)
 BRACKET_X = (4.0, 7.0)
 BRACKET_Y_END = BAY_DEPTH + BACKSTOP_T + 14.0
-SWITCH_HOLE_D = 1.7        # M2 self-tapping pilot
+SWITCH_HOLE_D = M2_PILOT_D
 SWITCH_HOLE_Z = (3.25, 12.75)  # 9.5 mm pitch (verify against the purchased switch)
 SWITCH_HOLE_Y = 161.0
 SWITCH_ADJUST = 2.0        # +/- slot in y to tune the actuation point

@@ -8,7 +8,7 @@ from lib.dims import HDD_H, HDD_L, M3_CLEAR
 from lib.prims import box, cyl_z
 
 FIT_GAP = 0.2              # per side, lid to rebate
-CBORE_D = 6.0
+CBORE_D = 6.4              # M3 button head (5.7); holes print ~0.3 under (fit test 1)
 CBORE_DEPTH = 1.0
 LABEL_RECESS = 0.4
 

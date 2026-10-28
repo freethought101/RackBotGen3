@@ -26,6 +26,11 @@ def main():
         print("exported" if ok else "export FAILED", DSN)
     elif mode == "import":
         ok = pcbnew.ImportSpecctraSES(board, SES)
+        # Freerouting necks a track down near tight pads (e.g. 0.187 mm); widen those to the 0.2 mm board minimum.
+        min_w = pcbnew.FromMM(0.2)
+        for t in board.GetTracks():
+            if t.GetClass() == "PCB_TRACK" and t.GetWidth() < min_w:
+                t.SetWidth(min_w)
         board.BuildConnectivity()
         pcbnew.ZONE_FILLER(board).Fill(board.Zones())
         board.Save(BOARD)

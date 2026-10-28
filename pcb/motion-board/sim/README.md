@@ -58,6 +58,8 @@ All checks pass. The details are in [`results.md`](results.md).
    - Safety isn't affected, because the motors lose power the moment the relay opens. But the backlog test
      "E-stop drops VMOT within 50 ms" only holds with the drivers enabled. Run test T10 that way, or add a
      load on VMOT if a faster report is wanted.
+   - **v0.1.25:** the button's NO contact now goes to J13 (AUX_IN), so the firmware reports a press at once,
+     drivers enabled or not; VMOT_SENSE stays as the backup.
 3. **Backfeed: no diode needed for correct function, but the pack is drained slightly.**
    - With the dock unpowered, the bus feeds the module's VIN side (worst case, through the body diode of the
      XL4015's internal switch) and its feedback divider. That draws **5–13 mA** (0.1–0.2 W, 2–5 % of the 4 W

@@ -1,7 +1,7 @@
 # RackBotGen3 — System Overview
 
 Delta Cup 2026 · Automation track · Regional Final, Thailand, 14 Nov 2026
-Status: **Draft v0.1.19 (12 Oct 2026)** — single owner for all subsystems; peers review and give feedback.
+Status: **Draft v0.1.29 (24 Oct 2026)** — single owner for all subsystems; peers review and give feedback.
 
 | Doc | Content |
 |---|---|
@@ -18,7 +18,8 @@ Status: **Draft v0.1.19 (12 Oct 2026)** — single owner for all subsystems; pee
 A proof-of-concept **autonomous hot-swap robot for data-center drive maintenance**. When the monitoring
 dashboard reports a failing drive, a small mobile robot fetches a spare caddy from a spare station,
 drives to the rack, pulls the failed 3.5" caddy, inserts the spare, verifies it, and returns the failed
-drive to an RMA slot. Then it docks and charges.
+drive to an RMA slot. It waits and charges at the spare station, its home base, so every job starts with the
+spare already in reach.
 
 Pitch angle (judging: Innovation, Technical Viability, Impact & Sustainability, Communication):
 - **Lights-out data centers**: no technician walk or truck roll per failed drive, shorter degraded-RAID window.
@@ -30,7 +31,7 @@ Pitch angle (judging: Innovation, Technical Viability, Impact & Sustainability, 
 | # | Constraint | Design response |
 |---|---|---|
 | C1 | Built and tested by **10 Nov 2026** (about 5 weeks) | Off-the-shelf modules, 4 steppers with a single driver type, Python on the Pi, mechanical docking instead of precision navigation |
-| C2 | **≤ 500 USD** | Est. ≈ 464 USD (see 04). Delta PLC loaned or sponsored, with an ESP32 fallback |
+| C2 | **≤ 500 USD** | Est. ≈ 577 USD, **over** (see 04 §1.5). Delta PLC loan unlikely; ESP32 rack controller counted (P40) |
 | C3 | Manufacturable with a 400×400 mm FDM printer, grinder and drill press | 2020/2040 V-slot cut to length, printed plates/brackets; no machining beyond cutting and drilling |
 | C4 | **Carry-on, 7 kg per bag, 4 members** | Flat-pack rack, removable mast; ≈ 14 kg of hardware over 4 bags (≈ 50 % margin) |
 | C5 | Airline safety | Li-ion pack **≈ 50 Wh (< 100 Wh)**, in cabin, terminals protected; universal-input Delta PSU (Thailand 220 V / 50 Hz) |
@@ -69,22 +70,26 @@ Fits a table of at least **1.2 m × 0.6 m** (a floor works too). The rack and sp
   |                                                               |
   |  [SPARE STATION]  <-------- ~700 mm --------->  [RACK 1x4]    |
   |   S2 RMA / S1 GOOD        robot path           bays 1-4       |
-  |   tag 10              [ROBOT] (turns 180°)     tag 0, dock    |
-  |                                                Delta PLC+PSU  |
+  |   tag 10, dock +      [ROBOT] (turns 180°)     tag 0, dock    |
+  |   charging (home)                              Delta PLC+PSU  |
   +---------------------------------------------------------------+
                table / mat >= 1200 x 600 mm
 ```
 
 ## 6. Swap workflow (happy path)
 
+The robot waits docked and charging at the spare station (home).
+
 1. The dashboard marks **bay N = FAILED** (simulated SMART fault, or operator button). A swap job is queued.
-2. The robot undocks from the rack (reverses 250 mm), turns 180° and approaches the spare station using tag 10, then funnel-docks.
-3. **Pick spare**: aligns slot A with S1, extends Y, engages finger A, retracts. The spare is now in slot A, held by the finger.
-4. Undocks, turns 180°, approaches the rack using tag 0 and docks. The PLC confirms the dock switch.
-5. **Extract**: aligns slot B with bay N and reads the caddy tag (checks the ID matches the job). Extends, engages finger B, retracts. The PLC sees bay N empty.
-6. **Insert**: lowers Z by 45 mm so slot A (the upper slot) is level with bay N, extends (pushing the spare in), releases finger A, retracts. The PLC sees bay N occupied, and the dashboard shows bay N OK with the new caddy ID.
-7. **Return RMA**: drives to the spare station, aligns slot B with S2, pushes the failed caddy in, releases and retracts.
-8. Returns to the rack dock. Dock power is enabled by the PLC and the robot charges. The job is closed with cycle time and Wh used.
+2. The PLC turns dock power off. **Pick spare**: the robot aligns slot A with S1, extends Y, engages finger A, retracts. The spare is now in slot A, held by the finger.
+3. **Undocks** (reverses 250 mm), turns 180°, approaches the rack using tag 0 and funnel-docks (robot NOSE switch).
+4. **Extract**: aligns slot B with bay N and reads the caddy tag (checks the ID matches the job). Extends, engages finger B, retracts. The PLC sees bay N empty.
+5. **Insert**: lowers Z by 45 mm so slot A (the upper slot) is level with bay N, extends (pushing the spare in), releases finger A, retracts. The PLC sees bay N occupied, and the dashboard shows bay N OK with the new caddy ID.
+6. **Return RMA**: drives back to the spare station and docks (the PLC confirms its dock switch), aligns slot B with S2, pushes the failed caddy in, releases and retracts.
+7. **Charge**: still docked at home, the PLC enables dock power and the robot charges. The job is closed with cycle time and Wh used.
+
+Two drives per job (spare → rack → spare). Until v0.1.21 the robot lived at the rack and drove four
+(rack → spare → rack → spare → rack); in the simulator the cycle drops from about 163 s to 107 s.
 
 Target: **≤ 3 min per full swap cycle**, **≥ 95 % success over 50 cycles** (see 04 test protocol).
 
@@ -94,11 +99,17 @@ Target: **≤ 3 min per full swap cycle**, **≥ 95 % success over 50 cycles** (
 flowchart LR
   subgraph RACK["Rack (static)"]
     PSU["Delta 24 V DIN PSU"] --> PLC["Delta DVP-12SE PLC"]
-    PSU --> DOCK["Dock contacts\n(enabled by PLC Y0)"]
-    SW["Bay switches 1-4\nSpare S1/S2 switches\nDock switch, E-stop"] --> PLC
-    PLC --> LAMP["Tower light R/Y/G"]
-    PLC <-- Ethernet --> RTR["Travel router\n(Wi-Fi AP)"]
+    PSU --> RLY["Dock power relay\n(PLC Y0)"]
+    SW["Bay switches 1-4, E-stop"] --> PLC
+    PLC --> LAMP["Status lamps R/Y/G"]
+    PLC <-. Wi-Fi .-> RTR["Pi access point\n(on the robot)"]
   end
+  subgraph SPARE["Spare station (home)"]
+    DOCK["Dock contacts"]
+    SSW["S1/S2 switches\nDock switch"]
+  end
+  RLY -- "2-core power lead" --> DOCK
+  SSW -- "4-core signal cable" --> PLC
   subgraph ROBOT["Robot (mobile)"]
     BAT["4S Li-ion ~50 Wh\n+ BMS + INA226"] --> MB["Motion board\nESP32-S3 + 4x TMC2209"]
     BAT --> PI["Raspberry Pi 3\n+ IMX708 120° camera"]
@@ -124,7 +135,7 @@ Per-person carry-on limit is 7 kg (bag size ≈ 56 × 36 × 23 cm). The hardware
 | Robot electronics (motion board, Pi, wiring) | 0.4 | Mounted on base |
 | Battery pack 4S ≈ 50 Wh (**cabin, own pouch**) | 0.35 | LiPo bag |
 | Rack frame (flat-packed) + printed shelves + dock block | 1.7 | Uprights 320 mm |
-| Rack electronics (Delta PSU, PLC, DIN rail, tower light, E-stop, router) | 1.0 | Padded box |
+| Rack electronics (Delta PSU, ESP32 rack controller or PLC, DIN rail, status lamps, E-stop) | 1.0 | Padded box |
 | Spare station (2020 frame + 2 shelves + dock block) | 1.3 | Uprights 215 mm |
 | Caddies + dummy drives × 6 (≈ 0.75 each) | 4.5 | 1–2 per bag |
 | Table mat, tools (carry-on legal), spares, cables | 2.0 | Split |
@@ -165,4 +176,14 @@ Weigh every bag in week 5 (see 04).
 | v0.1.17 | 2026-10-10 | Last generic parts sourced: 4S 30 A BMS (Rajacell), nickel strip, rocker switch, DIN rail and UK5N terminal blocks (CNC Store Bandung), silicone wire (alladinshop), brass sheet, microSD brand. Datasheets added for the Delta DRL-24V120W1EN PSU, the Songle SRD relay and the Amass XT60H. No local polyfuse ≥ 30 V found: proposed UK5-HESI fuse terminal + 3.15 A fuse (pending). Budget ≈ 460 USD |
 | v0.1.18 | 2026-10-11 | Servo buck (P18) set to 5.8 V instead of 6 V: the MG90S is rated 4.8–6.0 V. The rail keeps its "6V" name; no PCB or cost change |
 | v0.1.19 | 2026-10-12 | Cross-check open items closed: main fuse **7.5 A** (35E cells max 8 A); motion board JP1–JP4 now **normally bridged** (MKS TMC2209 V2.0 has UART on pin 5; cut to open), fab files regenerated; drive hub bore deepened for the 24 ± 1 mm shaft and hub fitted with a 2 mm shim against the bracket plate (keeps the radial load at ≈ 18 mm from the flange); PSU spec ≥ 75 W, chosen DRL-24V120W1EN (120 W), P24 35 → 39 USD (Rp622k). Budget ≈ 464 USD |
+| v0.1.20 | 2026-10-14 | Motion PCB: JLCPCB **Economic assembly** of the 39 SMD parts on 2 of the 5 boards (`fab/rbg3-motion-jlc-bom.csv` + `-jlc-cpl.csv`); through-hole parts still hand-soldered. P22 25 → 40 USD; P23 keeps only the through-hole parts (SMD parts only for a bare spare). Budget ≈ 479 USD |
+| v0.1.21 | 2026-10-18 | Print-service tolerances: caddy drive-screw slots 3.4 → **3.7 mm** (real HDDs use 6-32 UNC); mast collar socket 0.1 → **0.3 mm** per side on the 2040; drive hub bore 5.15 → **5.3 mm**. Print rule: ≥ 4 walls + ≥ 20 % gyroid/cubic (service runs 5 walls + 20 %), 100 % scale, no hole compensation (insert pilots stay tight). No parts or cost change |
+| v0.1.22 | 2026-10-18 | **Charging dock moved to the spare station**, which becomes the robot's home: a job starts with the pick from S1 and ends after placing the RMA caddy in S2, so each swap drives spare → rack → spare (2 drives instead of 4; simulated cycle 163 → 107 s). Dock contacts and the dock switch (PLC X4) are fitted on the spare-station dock block only; the dock relay stays on the rack's DIN rail, so the rack E-stop still cuts dock power. Pi app: `HOME = "spare"`. Parts: P30 adds a 2-core dock power lead (8 → 9 USD), P10 now 12 + 3 spare; budget ≈ 480 USD |
+| v0.1.23 | 2026-10-22 | V-wheel axles: the eccentric spacers had only 5.3 mm holes (their 7.12 mm boss could not turn), and the CAD's 7.6 / 6.6 mm wheel-to-plate gaps would have put the wheels 1.6 / 0.6 mm off the groove centre with 6 mm spacers. Now 7.3 mm eccentric holes (Z +x pair, Y lower pair) and a fixed 7 mm stack (6 mm spacer + 1 mm 5 × 8 shim) set by a pad (Z) or recess (Y) at each axle. Mini eccentric spacer is 8 mm hex. P04 adds 4 plain spacers + 10 shims (8 → 10 USD); budget ≈ 482 USD |
+| v0.1.24 | 2026-10-22 | **Schedule re-plan** (04 §2): nothing ordered yet, so all orders go out on 23 Oct using the quotes received: print service 1–2 days (slowest 3–5) + courier, JLCPCB 2–4 days work + 4–6 days UPS. Parts in hand by 2 Nov at the latest; bench rig drives the robot until the PCB arrives; integration 3–6 Nov, single-slot fallback decision 6 Nov, feature freeze 7 Nov, 50 cycles 7–9 Nov. Test dates and risks R1, R2, R4, R5, R9 updated. No parts or cost change |
+| v0.1.25 | 2026-10-22 | Motion PCB, from the schematic review: servo rail 220 µF / 25 V + 100 nF (C18/C19), +5V and +3V3 10 µF + 100 nF each (C20–C23), 10 k pull-down on the buzzer transistor base (R25), 7 SMD test pads (TP1–TP7), notes on the schematic sheet. The robot E-stop's NO contact goes to J13 (AUX_IN): the firmware reports a press at once (`sw` bit5) instead of waiting up to ≈ 370 ms for VMOT to decay. Layout build now routes GND as tracks too (a reroute had cut GND pour pockets loose) and fails on any DRC error. JLCPCB assembly 39 → 45 SMD parts (all basic); P23 adds the 220 µF. No cost change |
+| v0.1.26 | 2026-10-22 | NEMA17 mounts checked against the JK42HS40 drawing: motor screws are **M3 × 8** (16, P11), because the motor's M3 holes are only 4.5 mm deep (min) and the plates are 4–5 mm. Rail bracket boss hole Ø22.5 → **Ø23**, like the drive bracket and Z-motor mount. Firmware Y speed 50 → 60 mm/s to match the spec. No cost change |
+| v0.1.27 | 2026-10-23 | **Budget ≈ 482 → ≈ 548 USD (≈ 48 over)**: the Raspberry Pi 3 is not team-owned after all, so a 3B+ is bought (P12, +70), and one month of Claude Pro is added (new P39, Rp360k ≈ 23). Deck: 6 M3 holes for the electronics tray, Pi tray and battery box (positions now shared in `robot_dims.py`; the Pi tray holes had sat in its own window and over the side rail, the battery box holes over the rear cross member), and an optional laser-cut file `deck_dxf.py` → `cad/DXF/robot/deck.dxf`. Sourcing links for P03, P12, P14, P20 and the last P23 lines. PLC access looks unlikely, so the **ESP32 rack controller (new P40, 18 USD) is counted** as a contingency. **Travel router dropped** (P29, P31 not needed, −40): the Pi is the Wi-Fi access point (02 §4.3). Tower light → 3 × 22 mm 24 V panel lamps (P27 8 → 3). Budget ≈ 548 USD (≈ 530 with a PLC loan) |
+| v0.1.28 | 2026-10-23 | **Parts fixes from the prototype review** (`docs/review/Corvin-project-review.pdf`): front anti-tip caster **27 → 23.5 mm** in the docs (the CAD already had nose floor z 30 − `CASTER_FRONT_GAP` 6.5; at 27 mm the ball rides the 3 mm dock plate and lifts the drive wheels). P11 adds 8 × M5×30 + nylocks (V-wheel axles) and an M3×16 for the Y belt clamp (28 → 30); P16 1 → 2 (spare DevKit, +7); P17 4 → 5 (spare, +3); P26 polyfuse → UK5-HESI fuse terminal + 3.15 A slow-blow (decided); P21 sourcing: the 1NC-only E-stop listing is not suitable, buy the LA38-11ZS 1 NO + 1 NC. New P41 harness extras (Pi micro-USB pigtail, extension leads, heat-shrink, heatsink, 6), P42 drag chain (2), P43 JST-XH crimper (7), P44 tethered power lead for R7 (2). 04 §1 lever switches corrected to 12 + 3. Budget ≈ 548 → **≈ 577 USD** (≈ 559 with a PLC loan); PETG quantity waits for the print-service quote |
+| v0.1.29 | 2026-10-24 | **Servo buck → a second XL4015 CC/CV** (P18), set to 5.8 V with CC at maximum: the MP2482/SY8205 module on order is fixed at 5 V (listing and photo show no trim pot). P18 ≈ Rp65k → Rp69k, still ≈ 4 USD; budget unchanged. CAD buck envelopes now per module from the Tokopedia listings (`BUCK_SIZE` in `robot_dims.py`): charger and servo buck 55 × 27 × 15, 5 V XY-3606 63 × 27 × 13 |
 | v0.1.4 | 2026-10-06 | Robot CAD v0 + checks: direct drive (axle y −135), nose z 30–90, swing-down fingers, tray camera window, caddy tag moved left, E-stop on the mast top; mass 4.49 kg; budget ≈ 478 USD |

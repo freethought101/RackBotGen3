@@ -1,0 +1,30 @@
+part,walls,top_bottom_layers,infill_pct,infill_pattern,why
+drive_bracket_right,5,5,40,gyroid,carries the robot weight on the drive motor; M3 inserts
+drive_bracket_left,5,5,40,gyroid,mirror of right
+drive_hub,5,5,50,gyroid,motor torque into the tire; set-screw insert on the D-shaft
+z_motor_mount,5,5,40,gyroid,Z motor reaction; small part so extra infill costs little
+z_carriage,5,5,35,gyroid,carries the tray stack cantilever; V-wheel axles and inserts
+y_carriage,5,5,40,gyroid,servos and V-wheel axles; small part
+rail_bracket,5,5,30,gyroid,holds the Y rail and Y motor cantilevered off the carriage
+tray_stack,4,5,25,gyroid,big part; stiffness comes from its walls and ribs; M5 inserts
+mast_collar,4,5,30,gyroid,clamps the 2040 mast to the base
+mast_top_plate,4,5,30,gyroid,KFL08 lead-screw bearing and E-stop; inserts
+y_idler_bracket,6,6,100,gyroid,tiny (2.6 cm3) and takes belt tension: print solid
+finger,6,6,100,gyroid,tiny (3.2 cm3) and pulls the drive caddy: print solid
+nose,4,4,20,gyroid,bumper and front caster; moderate load
+deck,4,5,25,gyroid,5 mm plate (top/bottom layers make it near-solid anyway); inserts
+electronics_tray,4,4,15,gyroid,light load; walls for the PCB inserts
+pi_tray,3,4,15,gyroid,light load
+battery_box,3,4,15,gyroid,holds a 200 g pack
+caddy,3,4,15,gyroid,biggest part by volume; carries a drive (≈ 530 g dummy); slot fit matters more than infill
+bay_shelf,3,4,15,gyroid,rack shelf; loads are low and spread out
+dock_block,3,4,10,gyroid,locating block only; big volume so infill is the main cost
+dummy_drive_shell,3,4,10,gyroid,PLA shell filled with steel ballast; M3 inserts
+dummy_drive_lid,2,4,15,gyroid,2 mm plate: top/bottom layers make it solid
+tag_fin,2,4,15,gyroid,tag carrier; no load
+tag_strip_rack,2,4,15,gyroid,3 mm strip: effectively solid
+tag_strip_spare,2,4,15,gyroid,3 mm strip: effectively solid
+drive_tire,3,4,100,gyroid,TPU 95A: solid keeps the tire round for odometry; small volume
+shelf_slice,3,4,15,gyroid,fit coupon: same as bay_shelf
+caddy_slice,3,4,15,gyroid,fit coupon: same as caddy
+hole_coupon,5,5,30,gyroid,fit coupon: same walls as the insert parts

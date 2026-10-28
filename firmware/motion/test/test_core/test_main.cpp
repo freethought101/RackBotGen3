@@ -148,7 +148,7 @@ void test_homing_finds_switches() {
   TEST_ASSERT_FLOAT_WITHIN(0.05, 0.0, r.hal.physMm(AX_Y));
   r.send("4 HOME Z");
   TEST_ASSERT_EQUAL_STRING("4 DONE", r.waitFor("4 ").c_str());
-  TEST_ASSERT_FLOAT_WITHIN(0.01f, 100.0f, r.c.mm(AX_Z));  // home switch = Z 100
+  TEST_ASSERT_FLOAT_WITHIN(0.01f, 101.0f, r.c.mm(AX_Z));  // home switch = Z 101 (z_home)
 }
 
 void test_homing_with_broken_switch_wire_fails_safe() {
@@ -303,6 +303,22 @@ void test_estop_and_driver_reconfiguration() {
   ASSERT_REPLY("14 ERR E_NOT_HOMED", r.send("14 Z 150"));
 }
 
+void test_estop_button_before_vmot_drops() {
+  Rig r;
+  r.ready();
+  r.send("10 Z 250");
+  r.run(500);
+  r.hal.estop_button = true;  // NO contact closes; VMOT_SENSE still reads high (slow decay)
+  r.run(10);
+  TEST_ASSERT_TRUE(r.has("10 FAIL E_ESTOP"));
+  TEST_ASSERT_TRUE(r.has("EVT ESTOP"));
+  TEST_ASSERT_FALSE(r.hal.en);
+  r.run(1000);  // VMOT present but the button is still pressed: stay in E-stop
+  TEST_ASSERT_TRUE(r.c.estop());
+  r.hal.estop_button = false;
+  TEST_ASSERT_EQUAL_STRING("EVT ESTOP_CLEAR", r.waitFor("EVT ESTOP_CLEAR", 2000).c_str());
+}
+
 void test_driver_reset_detected() {
   Rig r;
   r.ready();
@@ -345,7 +361,7 @@ void test_status_telemetry() {
   int n = sscanf(tel.c_str(), "TEL t=%*u z=%f y=%f l=%*f r=%*f en=%d busy= sw=%x vbat=%*f ibat=%*f vmot=%*f dock=%f "
                  "fa=P fb=P homed=%3s", &z, &y, &en, &sw, &dock, homed);
   TEST_ASSERT_EQUAL_INT_MESSAGE(6, n, tel.c_str());
-  TEST_ASSERT_FLOAT_WITHIN(0.01f, 100.0f, z);
+  TEST_ASSERT_FLOAT_WITHIN(0.01f, 101.0f, z);
   TEST_ASSERT_EQUAL_INT(1, en);
   TEST_ASSERT_EQUAL_HEX(0x0F, sw);  // Z_HOME + Y_HOME (both at home), NOSE, SLOT_A
   TEST_ASSERT_EQUAL_STRING("ZY", homed);
@@ -382,6 +398,7 @@ int main() {
   RUN_TEST(test_dock_gives_up);
   RUN_TEST(test_stop_cancels_motion);
   RUN_TEST(test_estop_and_driver_reconfiguration);
+  RUN_TEST(test_estop_button_before_vmot_drops);
   RUN_TEST(test_driver_reset_detected);
   RUN_TEST(test_limit_switch_outside_homing);
   RUN_TEST(test_status_telemetry);

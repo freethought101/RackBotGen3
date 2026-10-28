@@ -10,14 +10,16 @@ from cadgen import step, stl
 
 from bay_shelf import bay_shelf
 from caddy import caddy
-from lib.dims import BAY_CHANNEL_W, CADDY_BODY_L, M3_CLEAR, M3_INSERT_D, M5_CLEAR
+from lib.dims import (BAY_CHANNEL_W, CADDY_BODY_L, M2_PILOT_D, M3_CLEAR, M3_INSERT_D, M3_SELF_TAP_D, M5_CLEAR,
+                      M5_INSERT_D)
 from lib.prims import box, cyl_z, prism_xy
 
 SLICE_L = 40.0
 CADDY_SLICE_H = 12.0
 
 # (diameter, blind depth or None = through): M2 pilot, M3 self-tap, M3 clear, M3 insert, M5 clear, M5 insert
-HOLES = [(1.7, None), (2.5, None), (M3_CLEAR, None), (M3_INSERT_D, None), (M5_CLEAR, None), (6.4, 12.0)]
+HOLES = [(M2_PILOT_D, None), (M3_SELF_TAP_D, None), (M3_CLEAR, None), (M3_INSERT_D, None), (M5_CLEAR, None),
+         (M5_INSERT_D, 12.0)]
 COUPON_T = 14.0
 PITCH = 15.0
 

@@ -9,7 +9,7 @@ from cadgen import step, stl
 
 from lib.dims import (
     CADDY_BODY_L, CADDY_H, CADDY_HANDLE_L, CADDY_RAIL_H, CADDY_RAIL_W, CADDY_W,
-    HDD_HOLE_SPAN_X, HDD_HOLE_Y, M3_CLEAR, NOTCH_DEPTH, NOTCH_FROM_FRONT, NOTCH_L,
+    HDD_HOLE_SPAN_X, HDD_HOLE_Y, HDD_SCREW_CLEAR, NOTCH_DEPTH, NOTCH_FROM_FRONT, NOTCH_L,
 )
 from lib.prims import box, cyl_z, prism_xy, prism_yz
 
@@ -79,7 +79,7 @@ def caddy():
     # Drive screw slots with counterbores from below.
     for x in (-HDD_HOLE_SPAN_X / 2, HDD_HOLE_SPAN_X / 2):
         for y in HDD_HOLE_Y:
-            cuts.append(_slot(x, y, M3_CLEAR, FLOOR_LIFT - 0.1, POCKET_FLOOR_Z + 0.1))
+            cuts.append(_slot(x, y, HDD_SCREW_CLEAR, FLOOR_LIFT - 0.1, POCKET_FLOOR_Z + 0.1))
             cuts.append(_slot(x, y, CBORE_D, FLOOR_LIFT - 0.1, FLOOR_LIFT + CBORE_DEPTH))
 
     for c in cuts:

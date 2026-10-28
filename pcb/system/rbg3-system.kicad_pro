@@ -1,0 +1,4 @@
+{
+  "meta": {"filename": "rbg3-system.kicad_pro", "version": 3},
+  "sheets": [["cae35a47-7959-50a0-93bd-a4e87efc6f78", "Root"], ["117121ee-fead-5b7a-a5e6-e231b23e12b2", "Robot harness"], ["26317b7e-2c63-5012-b880-8f2bc7e03e23", "Rack and spare station"], ["4367257d-1ced-5788-92b9-198bf5a413b2", "ESP32 rack controller (PLC fallback)"]]
+}

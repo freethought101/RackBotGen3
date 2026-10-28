@@ -8,8 +8,9 @@ from cadgen import step, stl
 
 from lib.dims import M3_CLEAR, M5_CLEAR
 from lib.prims import box, cyl_z
-from lib.robot_dims import (BASE_FRONT_Y, BASE_REAR_Y, CROSS_Y, DECK_HALF_W, DECK_Z, DRIVE_INSERT_X,
-                            DRIVE_INSERT_Y, MAST_X, MAST_Y, RAIL_X, SCREW_XY)
+from lib.robot_dims import (BASE_FRONT_Y, BASE_REAR_Y, BATTERY_DECK_HOLES, CROSS_Y, DECK_HALF_W, DECK_Z,
+                            DRIVE_INSERT_X, DRIVE_INSERT_Y, MAST_X, MAST_Y, PCB_DECK_HOLES, PI_DECK_HOLES, RAIL_X,
+                            SCREW_XY)
 
 RAIL_HOLE_Y = (-375.0, -250.0, -100.0)
 CABLE_SLOTS = [(-10.0, 10.0, -330.0, -300.0), (-100.0, -85.0, -220.0, -180.0), (85.0, 100.0, -220.0, -180.0)]
@@ -33,6 +34,8 @@ def deck():
     sx, sy = SCREW_XY
     for x in (sx - 21.65 - 3.0 - 4.0, sx + 21.65 + 3.0 + 4.0):
         part -= cyl_z(M3_CLEAR, x, sy - 16.0, z0 - 0.1, z1 + 0.1)                 # Z-motor mount feet
+    for x, y in PCB_DECK_HOLES + PI_DECK_HOLES + BATTERY_DECK_HOLES:
+        part -= cyl_z(M3_CLEAR, x, y, z0 - 0.1, z1 + 0.1)                       # trays, battery box (M3 + nut)
     for x0, x1, y0, y1 in CABLE_SLOTS:
         part -= box(x0, x1, y0, y1, z0 - 0.1, z1 + 0.1)
     part.label = "deck"

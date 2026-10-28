@@ -15,6 +15,7 @@ struct Inputs {
   bool nose = false;
   bool slot_a = false;
   bool slot_b = false;
+  bool estop = false;  // robot E-stop NO contact on AUX_IN (J13): input low = pressed
 };
 
 struct DriverSettings {

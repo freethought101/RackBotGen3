@@ -17,7 +17,7 @@ FILLED = (True, True, False, True)   # bay 3 left empty in the model to show the
 
 # Rear electronics on a 35 mm DIN rail on the rear uprights' back faces (placeholders, check real sizes).
 REAR_FACE_Y = UPRIGHT_Y[1] + EXT / 2         # 145
-DIN = (-120.0, 65.0, 42.5, 77.5)             # x0, x1, z0, z1 (router sits right of the rail)
+DIN = (-120.0, 65.0, 42.5, 77.5)             # x0, x1, z0, z1
 DIN_DEPTH = 7.5
 DEVICES = [
     # label, x0, x1, depth, height, colour
@@ -41,10 +41,11 @@ def electronics():
     zc = (DIN[2] + DIN[3]) / 2
     for label, x0, x1, depth, h, c in DEVICES:
         parts.append(_placeholder(label, box(x0, x1, yr, yr + depth, zc - h / 2, zc + h / 2), c))
-    parts.append(_placeholder("travel_router", box(70.0, 128.0, y0, y0 + 25.0, 20.0, 78.0), "#E5E7EB"))
-    # On top: tower light (rear right) and E-stop (rear left), on the rear top cross member.
+    # On top: status lamp box (3 x 22 mm R/Y/G lamps, rear right) and E-stop (rear left), on the rear top cross member.
     ym = UPRIGHT_Y[1]
-    parts.append(_placeholder("tower_light", cyl_z(40.0, 60.0, ym, RACK_TOP_Z, RACK_TOP_Z + 120.0), "#E5E7EB"))
+    parts.append(_placeholder("lamp_box", box(10.0, 110.0, ym - 20.0, ym + 20.0, RACK_TOP_Z, RACK_TOP_Z + 45.0), "#9CA3AF"))
+    for x, c in ((30.0, "#16A34A"), (60.0, "#FACC15"), (90.0, "#DC2626")):
+        parts.append(_placeholder("status_lamp", cyl_z(30.0, x, ym, RACK_TOP_Z + 45.0, RACK_TOP_Z + 55.0), c))
     parts.append(_placeholder("estop_box", box(-80.0, -40.0, ym - 20.0, ym + 20.0, RACK_TOP_Z, RACK_TOP_Z + 40.0),
                               "#FACC15"))
     parts.append(_placeholder("estop_button", cyl_z(40.0, -60.0, ym, RACK_TOP_Z + 40.0, RACK_TOP_Z + 60.0),

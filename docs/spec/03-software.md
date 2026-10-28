@@ -81,7 +81,7 @@ USB CDC, 115200 8N1, ASCII lines terminated by `\n`.
 Error codes: `E_ARG`, `E_BUSY`, `E_NOT_HOMED`, `E_INTERLOCK`, `E_LIMIT`, `E_ESTOP`, `E_NODOCK`, `E_TIMEOUT`, `E_STOPPED` (motion cancelled by `STOP` or `ENABLE 0`).
 Only one motion command runs at a time; any other motion command (and `VEL` while one runs) gets `E_BUSY`. While `VEL` is active, motion commands get `E_BUSY` until the wheels stop. DRIVE/TURN/DOCK/VEL also need both axes homed (`E_NOT_HOMED`). `ENABLE 0` clears the homed flags (axes can be moved by hand while unpowered).
 
-`sw` bitmask: bit0 Z_HOME, bit1 Y_HOME, bit2 NOSE, bit3 SLOT_A, bit4 SLOT_B (1 = pressed). Z_HOME/Y_HOME are NC switches: the firmware reports pressed = input high, so a broken wire looks like "at home" and homing stops instead of driving into the end.
+`sw` bitmask: bit0 Z_HOME, bit1 Y_HOME, bit2 NOSE, bit3 SLOT_A, bit4 SLOT_B, bit5 E-stop button (1 = pressed). Z_HOME/Y_HOME are NC switches: the firmware reports pressed = input high, so a broken wire looks like "at home" and homing stops instead of driving into the end.
 
 ## 4. Rack Modbus TCP register map
 
@@ -90,7 +90,7 @@ Addresses use Delta DVP Modbus numbering (M0 = 0x0800, D0 = 0x1000). **Verify ag
 
 | Address | PLC device | Type | R/W (Pi) | Content |
 |---|---|---|---|---|
-| 0x1000 | D0 | holding reg | R | Inputs bitmask = X0–X7: b0–b3 bay 1–4 present, b4 dock, b5 E-stop OK, b6 S1 present, b7 S2 present |
+| 0x1000 | D0 | holding reg | R | Inputs bitmask = X0–X7: b0–b3 bay 1–4 present, b4 spare-station dock (X4), b5 E-stop OK, b6 S1 present, b7 S2 present |
 | 0x1001 | D1 | holding reg | R | Outputs bitmask = Y0–Y3: b0 dock power, b1 green, b2 yellow, b3 red |
 | 0x1002 | D2 | holding reg | R | PLC heartbeat (+1 every 100 ms) |
 | 0x1003 | D3 | holding reg | R | PLC state: 0 OK, 1 E-stop, 2 Pi watchdog lost |
@@ -131,17 +131,15 @@ Both fingers ride on the **same Y carriage**, so a Y stroke moves whatever the *
 ```mermaid
 stateDiagram-v2
   [*] --> IDLE_DOCKED
-  IDLE_DOCKED --> TO_SPARE: job(bay N)
-  TO_SPARE --> PICK_GOOD: docked at spare (NOSE)
+  IDLE_DOCKED --> PICK_GOOD: job(bay N), dock power off
   PICK_GOOD --> TO_RACK: slot A loaded
-  TO_RACK --> EXTRACT_FAILED: docked at rack (NOSE + PLC X4)
+  TO_RACK --> EXTRACT_FAILED: docked at rack (NOSE)
   EXTRACT_FAILED --> INSERT_GOOD: slot B loaded, PLC bay N empty
   INSERT_GOOD --> TO_SPARE_RMA: PLC bay N present
-  TO_SPARE_RMA --> PLACE_RMA: docked at spare
+  TO_SPARE_RMA --> PLACE_RMA: docked at spare (NOSE + PLC X4)
   PLACE_RMA --> RETURN: S2 present
-  RETURN --> IDLE_DOCKED: docked at rack, dock power on
-  TO_SPARE --> FAULT: retries exhausted
-  PICK_GOOD --> FAULT
+  RETURN --> IDLE_DOCKED: dock power on, charging
+  PICK_GOOD --> FAULT: retries exhausted
   TO_RACK --> FAULT
   EXTRACT_FAILED --> FAULT
   INSERT_GOOD --> FAULT
@@ -152,7 +150,10 @@ stateDiagram-v2
 
 - **PICK_GOOD** = `pull(A, S1)`. **EXTRACT_FAILED** = `pull(B, H_BAY[N])` with a caddy-ID check against inventory.
   **INSERT_GOOD** = `push(A, H_BAY[N])`. **PLACE_RMA** = `push(B, S2)`.
-- Before leaving the rack: M0 (dock power) off. On return: M0 on and check charging current < 0 from the INA226. Docked = NOSE pressed **and** DOCK_V > 20 V. Charging ends (M0 off) when the charge current tapers below 0.2 A.
+- **Home is the spare station**, where the charging dock is (since v0.1.22). A job is accepted only while the robot is
+  docked there, so it starts with the pick from S1 and ends after placing the RMA caddy in S2 without an extra drive.
+  RETURN only drives after an abort (back home from wherever the robot is).
+- At job start: M0 (dock power) off. In RETURN: M0 on and check charging current < 0 from the INA226. Docked = NOSE pressed **and** DOCK_V > 20 V. Charging ends (M0 off) when the charge current tapers below 0.2 A.
 - Fingers stay ENGAGED on loaded slots while driving and during Z moves; only the working finger is engaged during a Y stroke (§5.1).
 - E-stop at any time → mission paused in `FAULT(E_ESTOP)`. After release: firmware re-configures the drivers, then `ENABLE 1`, re-home Y, then Z, then the operator chooses resume or abort.
 - Every state transition is logged with a timestamp (cycle-time breakdown for the pitch).
@@ -219,7 +220,7 @@ Stretch: MQTT publish of rack/robot state (shows IIoT interoperability); Delta H
 - Steps/mm: drive 12.73 (direct drive, Ø80 wheel), Z 1600, Y 80 (see 01 §6). Constants in `lib/rbg3core/src/settings.h`, overridable via `CFG`; wiring constants (dividers, R_sense 0.11 Ω, INA226 shunt, motor directions) in `src/pins.h`. Wheel track 274 mm.
 - Differential kinematics: `DRIVE`/`TURN` → synchronized profiles on L/R. `VEL` → continuous speed with a 300 ms watchdog.
 - Safety: VMOT_SENSE < 9 V → abort all, disable drivers, `EVT ESTOP`, clear the homed flags. **When VMOT returns** the TMC2209s have reset (their logic runs from VS): until reconfigured the MS1/MS2 address straps set the microstepping (addr 0 → 8, 1 → 32, 2 → 64, 3 → 16) and the current falls back to the VREF pot. So the firmware polls `GSTAT.reset` / `IFCNT`, re-sends every register (current, microsteps, StealthChop) to all four drivers and only then accepts `ENABLE 1`. Set all VREF pots to a safe low current at assembly. Limit switches are checked every step-planner tick. All interlocks from §3 are enforced in firmware, not only on the Pi.
-- Homing: seek at 10 mm/s, back off 3 mm, re-seek at 2 mm/s; Y = 0, Z = `z_home` (100, confirm on the robot). If an NC switch still reads pressed after backing off (stuck or broken wire), `FAIL E_LIMIT` instead of driving into the end stop; no switch within the axis travel → `FAIL E_LIMIT`.
+- Homing: seek at 10 mm/s, back off 3 mm, re-seek at 2 mm/s; Y = 0, Z = `z_home` (101: the CAD trigger point, 0.4 mm above the hard stop; confirm on the robot). If an NC switch still reads pressed after backing off (stuck or broken wire), `FAIL E_LIMIT` instead of driving into the end stop; no switch within the axis travel → `FAIL E_LIMIT`.
 - E-stop recovery: VMOT > 10.5 V for 200 ms → re-configure all drivers (verified by IFCNT), retried every 500 ms until they answer, then `EVT ESTOP_CLEAR`.
 - Status LED: blue = idle, green = docked (DOCK_V > 20 V), amber = moving, red = last command failed, red blink = E-stop (plus a short buzzer chirp every 10 s).
 - Bench mode (`CFG bench 1`): lifts the docked interlock for axis testing on the bench.

@@ -1,5 +1,8 @@
 """Dock block (PETG, x2: rack + spare station). Spec: docs/spec/01-mechanical.md §4-5.
 
+Both copies are identical; only the spare-station copy (the robot's home) gets the charging contacts and
+the dock-detect switch.
+
 Bolts to the front face of the station's front base cross member (2020, y = 10..30).
 The robot nose (200 W, z 30..100) is centred by a short V-funnel and stops against
 the stop face at y = DOCK_STOP_Y; the robot tray then overhangs the nose to y = -25.
@@ -10,7 +13,7 @@ Frame: station frame — x = 0 on the bay centerline, y = 0 at the rack face, z 
 from cadgen import build123d as bd
 from cadgen import step, stl
 
-from lib.dims import DOCK_STOP_Y, M3_CLEAR, M5_CLEAR, NOSE_W
+from lib.dims import DOCK_STOP_Y, M2_PILOT_D, M3_CLEAR, M5_CLEAR, NOSE_W
 from lib.prims import box, cyl_x, prism_xy
 
 THROAT = NOSE_W + 2.0          # 202
@@ -33,7 +36,7 @@ RIB_X = (-100.0, -60.0, 60.0, 100.0)
 RIB_T = 6.0
 RIB_H = 40.0
 
-# Charging contacts: brass leaf springs screwed into recesses on the stop face.
+# Charging contacts (spare station only): brass leaf springs screwed into recesses on the stop face.
 CONTACT_X = (-40.0, 40.0)      # GND left, +24 V right (seen from the robot)
 CONTACT_Z = 60.0
 CONTACT_RECESS = (12.0, 30.0, 3.0)   # width, height, depth
@@ -42,7 +45,7 @@ CONTACT_SCREW_DZ = 8.0
 # Dock-detect KW11-3Z: same mounting scheme as the bay shelf.
 SWITCH_SLOT = (-4.0, 4.0, 70.0, 85.0)  # x0, x1, z0, z1
 BRACKET_X = (4.0, 7.0)
-SWITCH_HOLE_D = 1.7            # M2 self-tapping pilot
+SWITCH_HOLE_D = M2_PILOT_D
 SWITCH_HOLE_Z = (69.75, 79.25)
 SWITCH_ADJUST = 2.0
 

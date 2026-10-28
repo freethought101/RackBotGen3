@@ -42,7 +42,8 @@ TEXTS = [
     ("USB END", 181.0, 168.5, 0, S),
 
     # Power inputs.
-    ("VMOT IN", 117.0, 184.5, 0, S),
+    # J1 XT30: pad 1 = GND (x 111.9), pad 2 = VMOT (x 116.9). Polarity marks just above each pad.
+    ("VMOT IN", 117.0, 183.6, 0, S), ("-", 111.9, 185.5, 0, 1.0), ("+", 116.9, 185.5, 0, 1.0),
     ("+5V", 125.0, 187.3, 0, S), ("GND", 130.08, 187.3, 0, S),
     ("+6V", 136.5, 187.3, 0, S), ("GND", 141.58, 187.3, 0, S),
 
@@ -63,11 +64,16 @@ TEXTS = [
     ("LED 5V DI G", 103.9, 138.2, 0, S),
     ("DOCK+ V+ NC", 106.0, 148.25, 0, S),
     ("BUZZER 5V BZ-", 106.1, 158.6, 0, S),
+
+    # Test points TP1-TP7: net name above the power row, left of the UART/EN pads.
+    *[(name, x, 139.4, 0, S) for x, name in zip((129.5, 132.5, 135.5, 138.5), ("VM", "5V", "6V", "3V3"))],
+    ("UART", 159.9, 136.0, 0, S), ("EN", 160.6, 131.0, 0, S), ("GND", 160.3, 140.5, 0, S),
 ]
 
 # Footprints whose reference designator moves to F.Fab: the labels above already name them, and the
 # designators otherwise sit on top of the pin-order rows.
-FAB_REFS = ["J8", "J9", "J10", "J11", "J12", "J13", "J14", "J15", "JP1", "JP2", "JP3", "JP4"]
+FAB_REFS = ["J8", "J9", "J10", "J11", "J12", "J13", "J14", "J15", "JP1", "JP2", "JP3", "JP4",
+            *[f"TP{i}" for i in range(1, 8)]]
 
 
 def ref_to_fab(board, ref):

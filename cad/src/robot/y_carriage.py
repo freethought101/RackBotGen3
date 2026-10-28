@@ -10,16 +10,17 @@ plate's outer face and pinches the belt's inner strand.
 from cadgen import build123d as bd
 from cadgen import step, stl
 
-from lib.dims import M5_CLEAR
+from lib.dims import M2_PILOT_D, M5_CLEAR
 from lib.prims import box, cyl_x
-from lib.robot_dims import (ARM_DY, ARM_X, BELT_DZ, BELT_STRAND_X, FINGER_DZ, FINGER_X, SERVO, SERVO_FACE_DY,
-                            YCARRIAGE_DY, YFRAME_DZ, YPLATE_X, YWHEEL_DY, YWHEEL_DZ)
+from lib.robot_dims import (ARM_DY, ARM_X, BELT_DZ, BELT_STRAND_X, ECC_HOLE_D, FINGER_DZ, FINGER_X, SERVO,
+                            SERVO_FACE_DY, WHEEL_SEAT_D, YCARRIAGE_DY, YFRAME_DZ, YPLATE_X, YWHEEL_DY, YWHEEL_DZ,
+                            YWHEEL_SEAT_X)
 
 LEDGE_X0 = FINGER_X - SERVO["wid"] / 2      # flush with the servo's side, 2.4 mm from the tray lip
 LEDGE_DEPTH = 5.0           # along +y, in front of the servo tabs
 CLAMP_DY = (-80.0, -62.0)   # belt clamp y span relative to the finger pivot (between the wheel axle bolts)
 CLAMP_JAW = 3.0
-M2_PILOT = 1.7              # self-tapping M2 into PETG
+M2_PILOT = M2_PILOT_D       # self-tapping M2 into PETG
 
 
 def ledge_spans(f):
@@ -39,16 +40,18 @@ def y_carriage():
     z_lo = min(z0 for f in FINGER_DZ.values() for z0, _ in ledge_spans(f))
     z_hi = max(z1 for f in FINGER_DZ.values() for _, z1 in ledge_spans(f))
     part += box(*ARM_X, ARM_DY[0], ARM_DY[1], z_lo, max(z_hi, fz1))                 # arm
-    tab_y = SERVO_FACE_DY - 9.5                                                     # front face of the tabs
+    tab_y = SERVO_FACE_DY - SERVO["tab_drop"]                                       # front face of the tabs
     for f in FINGER_DZ.values():
         for z0, z1 in ledge_spans(f):
             part += box(LEDGE_X0, ARM_X[0], tab_y, tab_y + LEDGE_DEPTH, z0, z1)
             part -= bd.Pos(FINGER_X, tab_y - 0.1, (z0 + z1) / 2) * bd.Rot(-90, 0, 0) * bd.Cylinder(
                 M2_PILOT / 2, LEDGE_DEPTH + 0.2, align=(bd.Align.CENTER,) * 2 + (bd.Align.MIN,))
-    # V-wheel axles (M5) through the outer plate, above and below the rail.
+    # V-wheel axles through the outer plate, above and below the rail; eccentric spacers on the lower pair.
+    # Each spacer sits in a shallow recess so the wheel runs on the groove centre.
     for y in YWHEEL_DY:
         for z in YWHEEL_DZ:
-            part -= cyl_x(M5_CLEAR, px0 - 0.1, px1 + 0.1, y, z)
+            part -= cyl_x(WHEEL_SEAT_D, px0 - 0.1, YWHEEL_SEAT_X, y, z)
+            part -= cyl_x(ECC_HOLE_D if z == YWHEEL_DZ[0] else M5_CLEAR, px0 - 0.1, px1 + 0.1, y, z)
     # Belt clamp on the plate's outer face: the inner strand runs through the slot and is pinched by a screw
     # through the jaw (teeth face the jaw's printed GT2 profile).
     sx0, sx1 = BELT_STRAND_X[0]

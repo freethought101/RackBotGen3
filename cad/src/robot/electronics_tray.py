@@ -5,7 +5,7 @@ from cadgen import step, stl
 
 from lib.dims import M3_CLEAR, M3_INSERT_D
 from lib.prims import box, cyl_z
-from lib.robot_dims import DECK_Z, PCB_XY, PCB_Z
+from lib.robot_dims import DECK_Z, PCB_DECK_HOLES, PCB_XY, PCB_Z
 
 T = 3.0
 MARGIN = 4.0
@@ -23,8 +23,8 @@ def electronics_tray():
         for hy in (y + HOLE_INSET, y + 100 - HOLE_INSET):
             part += cyl_z(9.0, hx, hy, z0, PCB_Z)           # 2.5 mm wall around the insert
             part -= cyl_z(M3_INSERT_D, hx, hy, PCB_Z - 5.0, PCB_Z + 0.1)
-    for hx in (x - MARGIN + 6, x + 100 + MARGIN - 6):
-        part -= cyl_z(M3_CLEAR, hx, y + 50, z0 - 0.1, z0 + T + 0.1)               # to the deck
+    for hx, hy in PCB_DECK_HOLES:
+        part -= cyl_z(M3_CLEAR, hx, hy, z0 - 0.1, z0 + T + 0.1)                   # to the deck
     part.label = "electronics_tray"
     return part
 
