@@ -12,7 +12,7 @@ between two 1.5 mm lips.
 from cadgen import build123d as bd
 from cadgen import step, stl
 
-from lib.dims import M3_CLEAR, M3_INSERT_D, M5_CLEAR
+from lib.dims import M3_CLEAR, M3_INSERT_D, SHAFT5_BORE
 from lib.prims import box, cyl_x, cyl_z
 from lib.robot_dims import AXLE_Y, AXLE_Z, WHEEL_D, WHEEL_X
 
@@ -25,7 +25,7 @@ CORE_D = 18.0
 WEB_T = 4.0                       # outboard web (print face)
 SPOKES, SPOKE_W = 5, 6.0          # web cut into spokes between the core and the rim
 WINDOW_R = (CORE_D / 2 + 2.0, RIM_ID / 2 - 2.0)
-BORE_D = M5_CLEAR                 # 5 mm shaft: 5.5 prints ~5.3 (fit test 1)
+BORE_D = SHAFT5_BORE              # 5 mm shaft: 5.3 printed 5.08 (fit test 1), snug
 FLAT_R = 2.2                      # D-flat at 2.0 from the axis (4.5 across) + 0.2 for the print shrink
 SCREW_X = 132.0                   # set screw plane (mid shaft engagement)
 INSERT_DEPTH = 4.5

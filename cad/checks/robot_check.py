@@ -22,14 +22,17 @@ from spare_station import spare_station
 failures = []
 # Designed contacts (label prefixes): shafts in hubs, V-wheel rims in their grooves, the belt in its clamp.
 EXPECTED = [("kfl08", "leadscrew_tr8x2"), ("nema17:z", "coupler"), ("nema17:y", "gt2_pulley_20t"),
-            ("vwheel:z", "mast_2040"), ("vwheel:y", "y_rail_2020"), ("y_carriage", "gt2_belt:inner"),
-            ("leadscrew_tr8x2", "mast_top_plate"), ("coupler", "leadscrew_tr8x2"),
+            ("vwheel:z", "mast_2040"), ("vwheel:y", "y_rail_2020"), ("spacer:", "vwheel"), ("shim:", "vwheel"),
+            ("spacer:", "shim:"),
+            ("kw11:nose", "rack/dock_block"), ("kw11:y_home", "y_carriage"),   # levers pressed when docked / at Y home ("y_carriage", "gt2_belt:inner"), ("belt_clamp", "gt2_belt:inner"),
+            ("leadscrew_tr8x2", "mast_top_plate"), ("coupler", "leadscrew_tr8x2"), ("nut_block_tr8", "leadscrew_tr8x2"),
             ("nema17:drive", "drive_hub"), ("drive_hub", "drive_tire")]   # D-flat on the round shaft model; tire stretch fit
 PRINTED_DENSITY = 1.27e-3 * 0.5          # PETG, ~50 % effective fill
 EXTRUSION_G_PER_MM = {"2020": 0.5, "2040": 0.9}
 VENDOR_G = {"nema17": 280, "mg90s": 14, "wheel": 60, "caster": 35, "kfl08": 45, "vwheel": 12, "leadscrew": 130,
             "coupler": 15, "motion_board": 130, "raspberry_pi_3": 45, "battery_4s1p": 220, "estop_box": 45,
-            "estop_button": 15, "buck": 25, "camera_module_3_wide": 5, "gt2_pulley": 10, "gt2_idler": 8, "gt2_belt": 5}
+            "estop_button": 15, "buck": 25, "camera_module_3_wide": 5, "gt2_pulley": 10, "gt2_idler": 8, "gt2_belt": 5,
+            "kw11": 2, "nut_block": 15, "spacer": 2, "shim": 0.3}
 CADDY_G = 750.0
 BAG = sorted((560.0, 360.0, 230.0))
 GAP = 1.0                                # minimum running clearance between parts that move relative to each other

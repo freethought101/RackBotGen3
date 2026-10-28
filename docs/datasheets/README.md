@@ -49,16 +49,20 @@ Spec values checked against these files: [CROSSCHECK.md](CROSSCHECK.md).
 | P13_arducam-b0310_datasheet.pdf | P13 Arducam B0310 IMX708 120° (a candidate for the wirogix board) | DigiKey mirror |
 | P16_esp32-s3-devkitc-1_v1.1_dimensions.dxf, P16_esp32-s3-devkitc-1_v1.1_pcb.pdf | P16 DevKitC-1 v1.1 outline DXF and PCB layout | dl.espressif.com |
 | P16_esp32-s3-devkitc-1_reference-design/ | P16 DevKitC-1 v1.1 reference design: schematic (.DSN/.pdf), PCB (.pcb/.pdf), Gerbers, BOM, placement | Espressif (downloaded by the team, 25 Oct) |
+| P05_anti-backlash-nut-block_drawing.jpg | P05 Tr8 anti-backlash nut block, OpenBuilds part 1055 drawing (34 × 33 × 12, 2 × M5 20 apart, Tr8 centred in the 12 thickness) | GrabCAD model download (by the team, 27 Oct) |
 | P18_xl4015_xlsemi-rev2.0.pdf | P18 XL4015 datasheet Rev 2.0 (Aug 2023, newer than P18_xl4015.pdf) | XLSEMI (downloaded by the team, 25 Oct) |
 
 3D models are kept separately in [`docs/3d-models/`](../3d-models/):
 - `P05_kfl08.step` (+ `.jpg` preview; Inventor "Mancal Flange oval Ø8", bounding box 46.5 × 27 × 11.35 mm).
 - `P13_camera-module-3-wide.step` (Raspberry Pi RP-008154-DS-1, "simple" Wide model, 30 MB).
+- `P05_anti-backlash-nut-block_openbuilds.step` (GrabCAD "Derlin square plastic screw nut seat T8 2 mm"; 34 × 33 × 12, used in the robot assembly).
 - `P09_mg90s.step` (Printables model 569094; bounding box 22.7 × 33 × 32.4 incl. tabs and horn).
 - From the OpenBuilds STEP Parts Library 1.5 (`*_openbuilds.step`): NEMA17, Xtreme and Delrin mini V-wheel
   (Ø15.23 × 8.8), mini eccentric spacer 6 mm (boss Ø7.11), 6 mm spacer, 8 × 5 × 1 shim, 105ZZ bearing, GT2 20T pulley
   (Ø15 flange, Ø12.2 teeth, 14 wide), smooth idler (OpenBuilds Ø22, not the Lajarus one) and micro limit switch
   (OpenBuilds size, not the KW11-3Z). Generic OpenBuilds designs: the Rajawali3D / Lajarus parts are clones, so check on arrival.
+- `P02_vslot_2020_l0300_openbuilds.step`, `P03_vslot_2040_l0500_openbuilds.step`: V-slot extrusions from step.parts (standard lengths, not our cuts).
+- `stl/`: STL copies of the OpenBuilds models above, for viewing and slicer mock-ups (bought parts: not for the print order).
 
 ## Product pages (no PDF)
 - P31 GL.iNet GL-MT300N-V2 router: specs on [docs.gl-inet.com](https://docs.gl-inet.com/router/en/3/specification/gl-mt300n-v2/) (5 V / 2 A in, < 2.75 W, 2 × 10/100 Ethernet, 58 × 58 × 25 mm).
@@ -70,7 +74,7 @@ Spec values checked against these files: [CROSSCHECK.md](CROSSCHECK.md).
 - P20: 4S 30 A BMS board and pure nickel strip.
 - P19: 2512 R010 shunt resistor.
 - P23: buzzer, WS2812 board (the WS2812B chip sheet is saved), 0805 passives, electrolytics, StepStick sockets and pin headers.
-- P04–P08: V-wheels, T8 lead screw and nut, KFL08, GT2 belt and pulleys, W420 caster.
+- P04–P08: V-wheels, T8 lead screw, KFL08, GT2 belt and pulleys, W420 caster.
 - P02/P03 extrusion, P11 fasteners, P14 microSD, P37 USB cable, P32–P36 filament, ballast, labels and mat.
 
 ## Not found

@@ -10,7 +10,7 @@ The Tokopedia part is 22 shops (it was 33). The first 5 carry most of the order.
 - [ ] P02 2020 V-slot, 6 × 1 m (or per 10 cm cut to the CSV list), ≈ Rp302k
 - [ ] P03 2040 V-slot, 420 mm (per 10 cm, Rp13k), ≈ Rp55k
 - [ ] P05 T8 lead screw, **1 start, lead 2 mm**, per 10 cm: 350 mm, ≈ Rp67k
-- [ ] P05 T8 anti-backlash nut, **lead 2 mm / 1 start** ×1, Rp22k
+- [ ] P05 T8 anti-backlash nut block (OpenBuilds-style, 34 × 33 × 12), **lead 2 mm / 1 start** ×1, Rp22k
 - [ ] P05 KFL08 flange bearing ×1, Rp14k
 - [ ] P05 flexible coupler 5 × 8 mm ×1, Rp15k
 - [ ] P06 GT2 6 mm rubber belt per metre ×1, Rp20k
@@ -20,7 +20,7 @@ The Tokopedia part is 22 shops (it was 33). The first 5 carry most of the order.
 - [ ] P01 NEMA17 JK42HS40-1704 (1.7 A, 40 mm) ×4, Rp673k
 - [ ] P16 ESP32-S3 dev board **N8R2** (N16R8 sold out at Rajacell on 23 Oct; either works; not R8V/R16V) ×1, ≈ Rp112.5k
 - [ ] P12 Raspberry Pi 3 Model B+ ×1, ≈ Rp1.06–1.19M ([Rajacell listing](https://www.tokopedia.com/rajacell/original-raspberry-pi-3-model-b-3-pi-3-b-plus-bcm2837b0-1-4ghz-arm); not team-owned after all). Skip much cheaper listings.
-- [ ] P15 Pi camera FFC cable, **50 cm** variant ×1, Rp10k
+- [ ] P15 Pi camera FFC cable 15-pin, **1 m** ×1, ~Rp15–25k (not the Rajacell listing: it stops at 50 cm)
 - [ ] P08 W420 steel-ball caster ×3, Rp37k. Ask the height; it must be < 27 mm.
 - [ ] P10 micro limit switch, lever, 5 A SPDT 3-pin ×15, ≈ Rp53k
 - [ ] P20 4S 30 A battery protection board (BMS) ×1, Rp27k

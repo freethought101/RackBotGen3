@@ -1,22 +1,94 @@
 # RackBotGen3 — Plan, Budget, Tests & Risks
 
-Status: Draft v0.1.28. Updated **Fri 23 Oct 2026** (parts fixes from the prototype review, §1). Build/test deadline **Tue 10 Nov**. Fly **Thu 12 Nov**. Final **Sat 14 Nov**.
+Status: Draft v0.1.30. Updated **Sun 25 Oct 2026** (budget from the actual cart and quotes, §1). Build/test deadline **Tue 10 Nov**. Fly **Thu 12 Nov**. Final **Sat 14 Nov**.
 
 ---
 
-## 1. Budget (USD, estimates)
+## 1. Budget
+
+### 1.0 Spending and forecast (25 Oct 2026, at Rp 18,000 = 1 USD)
+
+What the project actually costs, from the Tokopedia cart total and the quotes received. §1.1–1.4 below are the
+itemised planning estimates (v0.1.28, at Rp 16,000) that the order was built from; `docs/parts.csv` / Notion keep
+the per-part list.
+
+| | Rp | USD | Status |
+|---|---|---|---|
+| Tokopedia cart: parts (robot, rack, Pi, camera, battery pack, PSU, electronics) | ≈ 5,500k | ≈ 306 | In the cart, not yet paid |
+| Tokopedia cart: shipping to Bali (≈ 30 shops) | ≈ 1,000k | ≈ 56 | Was ≈ Rp 676k to the old Bandung address |
+| Items still to add (`docs/cart-batch-2.md`: corner brackets, inserts, panel lamps, wire, opto board, M3/M2/M4 screws…), incl. shipping | ≈ 630k | ≈ 35 | Priced or estimated |
+| Motion PCB, JLCPCB (5 boards, 2 assembled), FedEx | ≈ 576k | 32 | Ordered and paid (P22) |
+| 3D printing, BeauxButton (all printed parts) | 2,000k | ≈ 111 | Quote; shipping free (orders over Rp 1M) |
+| Ballast and epoxy (dummy drives), tags/labels, table mat | ≈ 290k | ≈ 16 | Estimate |
+| Claude Pro, 1 month | 360k | 20 | Estimate |
+| **Total** | **≈ 10,356k** | **≈ 575** | **≈ 75 over the 500 USD target** |
+
+Not counted: possible import duty on the PCB (≈ +10–13 USD).
+The Delta PLC is not in the budget (loan or sponsor); the ESP32 fallback rack controller is in the cart.
+
+**About the 500 USD.** It is the team's own target, matching the 500 USD grant each Regional Final team receives.
+The Delta Cup 2026 guidebook sets no budget cap and no penalty for spending more; it only asks for a component list
+with estimated costs in the proposal (checked 25 Oct). A clear, itemised budget supports the "technical viability"
+score.
+
+**Why it is over** (the plan had ≈ 20 USD of margin, ≈ 480 USD, before v0.1.27; the main additions since are below. They add up to more than the ≈ 95 USD difference because the weaker rupiah (16,000 → 18,000) and actual prices offset part of them):
+
+1. Raspberry Pi 3B+ bought (+70): the team turned out not to own one (23 Oct).
+2. ESP32 rack controller (+18): a Delta PLC loan looks unlikely, so the rack needs its own controller.
+3. Items the prototype review found missing (+29): spare ESP32 and driver, V-wheel axle bolts, drag chain, crimp tool,
+   wiring extras, tethered power lead.
+4. Shipping to Bali (≈ 56): about 30 small shops, each with its own fee.
+5. Claude Pro, one month (+20).
+
+Savings already taken: no travel router (−40), panel lamps instead of a tower light (−5), local suppliers instead of
+AliExpress (no import tax).
+
+**Savings plan to get under 500 USD** (needs ≈ 75 USD ≈ Rp 1.35M; keeps the Pi and camera):
+
+*Tier 1: no downside (≈ Rp 465k, 26 USD)*
+
+| Cut | Saves |
+|---|---|
+| Remove the gantry plate set from the cart (the carriages are printed, so it is unused) | Rp 180k |
+| Remove the spare 4S BMS (the Langit pack has its own) | ≈ Rp 50k |
+| microSD from a local shop (≈ Rp 100k instead of Rp 217k) | ≈ Rp 115k |
+| Borrow a JST-XH crimp tool from the lab | ≈ Rp 120k |
+
+*Tier 2: small trade-offs (≈ Rp 1.0–1.2M, 55–65 USD)*
+
+| Cut | Saves | Trade-off |
+|---|---|---|
+| Ship to where the robot is built (e.g. Malang), or merge single-item shops into shops already in the cart | ≈ Rp 400–500k | Only if assembly is not in Bali |
+| OV5647 wide-angle camera (Rajacell, Rp 126k) instead of the IMX708 board (Rp 595k) | ≈ Rp 470k | Keeps vision; fixed focus, more distortion; confirm FOV ≥ ~120° (the standard 54° board can't see the approach tag); camera slot needs a re-fit |
+| 3 panel lamps or the WS2812 LEDs instead of 15 lamps (the shop's minimum is 5 per colour) | ≈ Rp 90k | — |
+| Drop the spare ESP32-S3 and the 5th TMC2209 | ≈ Rp 160k | No spare if one fails |
+| Ask BeauxButton to re-quote with the per-part print settings (light parts 3 walls / 10–15 %) | ≈ Rp 200k | Only if the quote assumed 5 walls / 20 % everywhere |
+
+**Recommended:** Tier 1 + shipping + the OV5647 camera → **≈ 498 USD**. If shipping can't change, use the lamps,
+spares and print re-quote instead → **≈ 495–500 USD**. Check first that the gantry set and the second BMS are in the cart.
+
+*Tier 3: if more margin is needed*
+
+| Cut | Saves | Trade-off |
+|---|---|---|
+| Used Pi 3B, or borrow one from the campus lab | ≈ Rp 400k–1.1M | Used-board risk |
+| Cheaper print shop ("its basic", Rp 800/g) | ≈ Rp 200–400k | Only worth it if it also ships free |
+| Count Claude Pro (Rp 360k) as a personal tool, not a project part | Rp 360k | Accounting choice, not money saved |
+| No Pi or camera: line following + laptop dashboard | ≈ Rp 2.0M | Loses machine vision (a Track 1 focus area); new firmware work before 10 Nov |
+
+### 1.1–1.4 Planning estimate by category (v0.1.28, Rp 16,000 = 1 USD)
 
 Prices are typical AliExpress / local-store (Tokopedia) prices and **must be checked when ordering**. AliExpress parcels over USD 3 pay ≈ 30–40 % Indonesian import tax, so local is preferred unless much cheaper (see `docs/sourcing-options.md`).
 The live, per-part order list is the Notion **Parts & Order List** database, mirrored in `docs/parts.csv` (IDs P01…); this section keeps the category totals. Shipping is assumed free or small (AliExpress Choice / local).
 
-### 1.1 Robot — mechanical
+#### 1.1 Robot — mechanical
 
 | Item | Qty | USD |
 |---|---|---|
 | NEMA17 42×40, ≥ 0.4 N·m (Tokopedia) | 4 | 42 |
 | 2020 V-slot 6 × 1 m (4.96 m of cuts + kerf) + 2040 V-slot 0.42 m (robot + rack + spare station), Lajarus Teknik | — | 23 |
 | Mini V-wheels + 4 mini eccentric spacers, 4 plain 6 mm spacers, 10 shims 5 × 8 × 1 | 8 | 10 |
-| Tr8×2 lead screw 350 + anti-backlash nut + coupler + KFL08 flange bearing | 1 | 7 |
+| Tr8×2 lead screw 350 + anti-backlash nut block + coupler + KFL08 flange bearing | 1 | 7 |
 | GT2 belt (Y axis), 20T, idler | set | 3 |
 | Wheels 80 × 24 mm: printed PETG hub + TPU 95A tire (filament in §1.4) | 2 | 0 |
 | Ball casters (2 rear + 1 anti-tip), printed spacers | 3 | 3 |
@@ -26,14 +98,14 @@ The live, per-part order list is the Notion **Parts & Order List** database, mir
 | Cable carrier (drag chain) 1 m, for the Z/Y harness | 1 | 2 |
 | **Subtotal** | | **127** |
 
-### 1.2 Robot — electronics
+#### 1.2 Robot — electronics
 
 | Item | Qty | USD |
 |---|---|---|
 | Raspberry Pi 3 Model B+ (not team-owned after all, Tokopedia) | 1 | 70 |
 | IMX708 120° camera board (Camera Module 3 **Wide** class, Tokopedia) | 1 | 37 |
 | microSD 32 GB A1 | 1 | 8 |
-| CSI flex cable 500 mm | 1 | 1 |
+| CSI flex cable 1 m | 1 | 1 |
 | ESP32-S3-DevKitC-1 (Tokopedia), 1 + 1 spare | 2 | 14 |
 | TMC2209 StepStick (Tokopedia), 4 + 1 spare | 5 | 15 |
 | Buck 5 V/5 A (XY-3606) + 2 × XL4015 CC/CV (charger, 5.8 V servo buck) | 3 | 4 |
@@ -48,7 +120,7 @@ The live, per-part order list is the Notion **Parts & Order List** database, mir
 | JST-XH crimp tool (skip if the team has one) | 1 | 7 |
 | **Subtotal** | | **271** |
 
-### 1.3 Rack & spare station — electrical
+#### 1.3 Rack & spare station — electrical
 
 | Item | Qty | USD |
 |---|---|---|
@@ -62,7 +134,7 @@ The live, per-part order list is the Notion **Parts & Order List** database, mir
 | Tethered power lead, 2 m + XT60 (battery fallback, R7) | 1 | 2 |
 | **Subtotal** | | **79** |
 
-### 1.4 Printing, demo materials & services
+#### 1.4 Printing, demo materials & services
 
 | Item | USD |
 |---|---|
@@ -74,7 +146,7 @@ The live, per-part order list is the Notion **Parts & Order List** database, mir
 | Claude Pro, 1 month (Rp360k) | 23 |
 | **Subtotal** | **100** |
 
-### 1.5 Total
+### 1.5 Total (planning estimate; the forecast is in §1.0)
 
 | | USD |
 |---|---|
@@ -82,7 +154,7 @@ The live, per-part order list is the Notion **Parts & Order List** database, mir
 | Robot electronics | 271 |
 | Rack electrical | 79 (61 with the PLC loan) |
 | Printing, demo & services | 100 |
-| **Total** | **≈ 577** (of 500: **≈ 77 over**; ≈ 559 if the PLC loan comes through) |
+| **Total** | **≈ 577** at Rp 16,000 (of 500: ≈ 77 over). Superseded by the §1.0 forecast: **≈ 575 at Rp 18,000 from the actual cart and quotes** |
 
 **v0.1.28: ≈ 548 → ≈ 577 USD (≈ 77 over).** The prototype review (`docs/review/Corvin-project-review.pdf`, 23 Oct) found missing or short items: a spare ESP32-S3 DevKit (+7) and a 5th TMC2209 (+3, the shopping list already bought 5), M5×30 V-wheel axles + nylocks and the belt-clamp M3 (+2), a drag chain (+2), harness extras (+6), a JST-XH crimper (+7) and a tethered power lead (+2). Not counted yet: import duty on the motion PCB (≈ +10–13), and the print-service quote vs the filament lines below. **v0.1.27: the budget was ≈ 48 USD over** after buying the Raspberry Pi (+70), one month of Claude Pro (+23) and counting the ESP32 rack controller (+18), since PLC access now looks unlikely; dropping the travel router (−40, the Pi is the access point) and replacing the tower light with panel lamps (−5) took back 45. The savings options below recover ≈ 60–90 USD; otherwise the overrun needs the team's approval. Before that, the margin was ≈ 20 USD after the v0.1.12–v0.1.17 move to local (Tokopedia) suppliers, buying the travel router (v0.1.16) and JLCPCB SMD assembly of the motion board (v0.1.20); only the motion PCB (JLCPCB) is imported. **Savings options** (use them if prices come in higher, or a router must be bought):
 wide-angle OV5647 camera instead of the IMX708 board (−29, more distortion) ·

@@ -125,7 +125,7 @@ All numbers live in `cad/src/lib/robot_dims.py`. `cad/checks/robot_check.py` ver
 | Footprint | 300 W (wheels) × 360 L (incl. 60 mm nose); height ≈ 545 to the E-stop on the mast top |
 | Mass | **4.45 kg** without caddies (printed 0.88, purchased 2.22, extrusions + hardware 1.35) — target ≤ 4.7 |
 | CG | empty (2, −235, 152); with 2 caddies at Z max (1, −204, 198) mm |
-| Tip-over | CG ≥ 69 mm behind the drive axle (needs > 6 mm at 0.3 m/s² braking), ≥ 145 mm ahead of the rear casters, ≥ 63 mm sideways |
+| Tip-over | CG ≥ 69 mm behind the drive axle (needs > 6 mm at 0.3 m/s² braking), ≥ 129 mm ahead of the rear casters (moved 16 mm forward in v0.1.30), ≥ 63 mm sideways |
 | Packing | base unit 363 × 298 × 160; mast unit 486 × 343 × 228 **with the Y motor packed separately** (4 × M3; 230 with it fitted) → both fit a 56 × 36 × 23 cm carry-on |
 | Speeds | Drive 150 mm/s cruise, 50 mm/s final approach. Z 15 mm/s. Y 60 mm/s |
 
@@ -144,8 +144,10 @@ All numbers live in `cad/src/lib/robot_dims.py`. `cad/checks/robot_check.py` ver
   shaft shows play after testing, add an outboard bearing. Resolution 3200 µsteps / (π·80) ≈ **12.7 µsteps/mm**.
 - Wheels Ø80 × 24 at x ±(125…149), **printed**: PETG hub on the 5 mm D-shaft (M3 set screw into a heat-set insert,
   onto the flat) + TPU 95A tire stretched over the rim. Wheel fronts at y −95 stay 10 mm short of the dock funnel mouth.
-- Casters: 2 ball casters under the rear cross member (±65, −380); an **anti-tip ball caster under the nose** with a
-  **6.5 mm** gap (3.5 mm above the dock floor plate when docked).
+- Casters: 2 ball casters under the side rails' rear ends (±65, −364) on 22 mm printed spacers (M5 + T-nuts into
+  the rail's bottom slot); an **anti-tip ball caster under the nose** on a 3.5 mm spacer plate, with a **6.5 mm**
+  gap (3.5 mm above the dock floor plate when docked). The bought casters are 20 mm tall (48 × 32 base, holes 40
+  apart); every caster hole is slotted ±2 mm, so other small casters with 38–42 mm hole spacing also fit.
 - **Nose/bumper** (printed, 200 W × 60 L, **z 30–90** so it stays under the tray): tip on the stop at y = −30, tray front
   overhangs 5 mm. 2 copper pad recesses 30 × 20 at x ±40, z 60 (dock contacts); dock-detect KW11 lever at x = 20, on a bracket with slotted M2 holes (±2 mm in y); the free lever reaches
   3 mm past the nose tip, so it is pressed 3 mm when docked and triggers at about 2.
@@ -162,8 +164,10 @@ All numbers live in `cad/src/lib/robot_dims.py`. `cad/checks/robot_check.py` ver
   5 × 8 on the bearing's inner ring → wheel → nylock nut. The plates have a 0.6 mm pad (Z) or 0.4 mm recess (Y)
   around each axle so this 7 mm stack puts every wheel on its groove centre (`WHEEL_STACK` in `robot_dims.py`).
 - Drive: NEMA17 on the deck at **(−51, −265)** in a printed **Z-motor mount** (plate on the shaft face + two walls,
-  M3 + nuts through the deck) + 5→8 coupler z 117–142 + **Tr8×2 × 350 lead screw** z 131–481, anti-backlash nut in a
-  side block at Z+44…64 (clears the coupler at Z min), **KFL08 flange bearing** hanging under the printed
+  M3 + nuts through the deck) + 5→8 coupler z 117–142 + **Tr8×2 × 350 lead screw** z 131–481, **anti-backlash nut block**
+  (OpenBuilds 1055 copy, 34 × 33 × 12, drawing `docs/datasheets/P05_anti-backlash-nut-block_drawing.jpg`) at Z+47…80 on
+  a fin of the Z carriage: 2 × M5 × 20 through the fin into the block's nylock pockets, body end up against a shelf that
+  carries the lift load, 8 mm lip down (clears the coupler), **KFL08 flange bearing** hanging under the printed
   **mast top plate**. 1600 µsteps/mm, 15 mm/s.
 - Lift range (slot B floor) **Z 102–295** (soft limits). **Z home switch** at the bottom: a KW11 on a hanger under
   the nut block's −x side, lever pointing down onto the Z-motor mount plate (top z 112). It triggers at **Z 101**
@@ -222,8 +226,8 @@ All numbers live in `cad/src/lib/robot_dims.py`. `cad/checks/robot_check.py` ver
 ### 6.7 Electronics mounting
 
 - Motion board on the **electronics tray** at x 19–119, y −362…−262 (rear right; Ø9 standoffs with M3 inserts);
-  **Pi 3** on its tray rear left (85 along x, y −343.5…−287.5); **battery box** far rear left, inside 80 × 38.5 × 47.5
-  (4 × 18650 in 2 × 2 along x + BMS on top); **3 module spaces** on the deck under the tray, sized from the
+  **Pi 3** on its tray rear left (85 along x, y −343.5…−287.5); **battery box** far rear left, inside 90 × 40.5 × 57.5
+  (a wrapped 2 × 2 18650 pack with its BMS, plus foam; measure the bought pack); **3 module spaces** on the deck under the tray, sized from the
   Tokopedia listings (measure on arrival): **charger** XL4015 CC/CV 55 × 27 × 15 (no size listed; other sellers'
   figure), **5 V buck** XY-3606 63 × 27 × 13 (listed 63 × 27 × 10; +3 for the DC jack), **6 V (5.8 V) buck**
   a second XL4015 55 × 27 × 15.
@@ -254,7 +258,7 @@ All numbers live in `cad/src/lib/robot_dims.py`. `cad/checks/robot_check.py` ver
 | Nose/bumper | 1 | PETG | + TPU strip |
 | Drive bracket | 2 | PETG | one mirrored |
 | Wheel hub + tire | 2 + 2 | PETG + TPU 95A | Ø80 × 24 assembled; tire printed slowly on a direct-drive extruder (or a local print service) |
-| Caster spacers | 3 | PETG | rear to 42 mm total, front to 23.5 mm (6.5 mm under the nose floor, clears the 3 mm dock plate); size after measuring the bought casters |
+| Caster spacers | 3 | PETG | `caster_spacer.py`: rear 22 mm (×2), front 3.5 mm (×1) for the bought 20 mm casters → 42 / 23.5 mm total; caster holes slotted ±2 mm |
 | Mast collar (socket + flange + rear gusset), mast top plate (tab: 2 × M5 into both front slots; 2 × M3 inserts for the E-stop box) | 1 + 1 | PETG | |
 | Z-motor mount | 1 | PETG | |
 | Z carriage (plate + nut block; V-wheels on axles through the plate) | 1 | PETG | |
@@ -277,7 +281,7 @@ IDs refer to [`docs/parts.csv`](../parts.csv) (supplier, cost and order status a
 | P02 | 2020 V-slot | 6 × 1 m | 4.96 m of cuts + ≈ 3 mm kerf per cut. Rack 2 × 220, 4 × 320, 2 × 180; spare station 2 × 220, 4 × 215, 2 × 180; robot 2 × 300 (side rails), 3 × 110 (cross members), 1 × 285 (Y rail) | Rack and spare-station frames, robot chassis, Y rail |
 | P03 | 2040 V-slot | 1 × 420 | | Z mast |
 | P04 | Mini V-wheel kit | 8 | Mini V-wheel (105zz) for 20xx V-slot; 4 mini eccentric spacers (8 mm hex, 6 mm) + 4 plain 6 mm spacers + 10 shims 5 × 8 × 1 | Z carriage (4, in the mast's side grooves), Y carriage (4, on the Y rail) |
-| P05 | Tr8×2 lead-screw set | 1 | Tr8×2 (2 mm lead) × 350, anti-backlash nut, 5→8 flexible coupler, **KFL08** 2-bolt flange bearing | Z lift (1600 µsteps/mm) |
+| P05 | Tr8×2 lead-screw set | 1 | Tr8×2 (2 mm lead) × 350, anti-backlash nut block (OpenBuilds 1055 copy, 34 × 33 × 12), 5→8 flexible coupler, **KFL08** 2-bolt flange bearing | Z lift (1600 µsteps/mm) |
 | P06 | GT2 belt set | 1 | GT2 6 mm belt (≈ 0.8 m used, buy ≥ 1 m), 20T pulley 5 mm bore, toothless idler 5 mm bore | Y extractor (80 µsteps/mm) |
 | P08 | Ball caster | 3 | Metal ball caster, raised with printed spacers to 42 mm (rear) / 23.5 mm (front) | 2 rear supports, 1 anti-tip under the nose |
 | P09 | MG90S servo | 2 (+1 spare) | 22.8 × 12.2 × 28.5, metal gear, run at 5.8 V | Extractor fingers A/B |
@@ -299,22 +303,22 @@ why §2 gives 130–150 g for the caddy.
 | Part (script) | Qty · material · print | Size · vol. | What it does | Mounts to / fasteners |
 |---|---|---|---|---|
 | Nose / bumper (`nose.py`) | 1 · PETG (+ TPU strip, not modeled) | 200 × 60 × 60 · 160 cm³ | Fits the 202 mm dock throat (±1 mm in X), its tip stops at y = −30. Carries the 2 copper charging pads (x ±40, z 60) and the dock-detect KW11 (lever at x = 20). z 30–90, so it stays under the tray | Front 2020 cross member (y −110…−90) |
-| Deck (`deck.py`) | 1 · PETG · flat | 246 × 300 × 5 · 355 cm³ | Main plate. Carries the mast collar, Z-motor mount, electronics/Pi trays and battery box, and caps the drive brackets. Has a cut-out for the mast. Laser-cut option (undecided): `deck_dxf.py` → `cad/DXF/robot/deck.dxf`, same outline and holes, for 5 mm acrylic | Sits on the 2020 side rails at z 62–67; M3 into the inserts in the drive-bracket webs; trays and battery box M3 + nut through the deck (6 holes) |
-| Drive bracket (`drive_bracket.py`) | 2 (one mirrored) · PETG | 48 × 64 × 48 · 21 cm³ | Holds a drive NEMA17 under the deck, shaft out to the wheel | Motor on the 4 mm outer plate, 4 × M3 × 8; 2 webs to the side rail's outer face (M5 + T-nut, head inserted through the bore before the wheel goes on); M3 × 4 inserts in the web tops for the deck |
+| Deck (`deck.py`) | 1 · PETG · flat | 246 × 300 × 5 · 355 cm³ | Main plate. Carries the mast collar, Z-motor mount, electronics/Pi trays and battery box, and caps the drive brackets. Has a cut-out for the mast. Laser-cut option (undecided): `deck_dxf.py` → `cad/DXF/robot/deck.dxf`, same outline and holes, for 5 mm acrylic | Sits on the 2020 side rails at z 62–67: M5 × 10 + T-nuts into the rail top slots (right rail y −375/−250/−100; left rail only y −225/−100, behind that it is covered by the battery box, Pi tray and Z motor); M3 × 8 into the inserts in the drive-bracket webs; trays and battery box M3 × 12 + nut through the deck (6 holes) |
+| Drive bracket (`drive_bracket.py`) | 2 (one mirrored) · PETG | 48 × 72 × 48 · 29 cm³ | Holds a drive NEMA17 under the deck, shaft out to the wheel | Motor on the 4 mm outer plate, 4 × M3 × 8; 2 webs (14 wide) to the side rail's outer face (M5 + T-nut, head inserted through the Ø10.5 bore inside each web before the wheel goes on); M3 × 4 inserts in the web tops for the deck |
 | Drive hub (`drive_wheel.py`) | 2 · PETG · outboard face down | Ø75 × 24 · 27 cm³ | Wheel hub direct on the 5 mm D-shaft (axle y −135, z 40), bore Ø5.3 (the set screw takes up the play). The blind bore clears the 24 ± 1 mm shaft, so the hub is located by a 2 mm shim against the bracket plate (wheel centre 18 mm from the flange, under the motor's 28 N radial rating at 20 mm) | M3 set screw onto the shaft flat, in a radial M3 × 4 insert; Ø8 rim window for the iron and hex key |
 | Drive tire (`drive_wheel.py`) | 2 · TPU 95A · print slowly, direct drive | Ø80 × 21 · 21 cm³ | Traction, Ø80 × 24 wheel assembled | 0.5 mm undersize on the rim seat, held between two 1.5 mm lips; Ø4 hole lined up with the set-screw window |
 | Mast collar (`mast_collar.py`) | 1 · PETG | 78 × 57 × 93 · 39 cm³ | Locates and braces the foot of the 2040 mast (28 mm deep socket, 0.3 mm per side). The rear gusset takes the forward tilt of the loaded mast in tension | Flange 2 × M5 through the deck into the mast cross member's top slot; 2 × M5 into the mast side slots; gusset 4 × M5 into the mast's back slots (to z 160) with a rib to the deck. Undo these to lift the mast unit out for packing |
 | Mast top plate (`mast_top_plate.py`) | 1 · PETG | 92 × 65 × 36 · 40 cm³ | Caps the mast. Holds the KFL08 bearing (hanging below) for the top of the lead screw, and the robot E-stop box on top | Front tab 2 × M5 + T-nuts into both front slots (no tapping); 2 × M3 inserts for the E-stop box |
-| Z-motor mount (`z_motor_mount.py`) | 1 · PETG | 65 × 40 × 45 · 18 cm³ | Fixes the Z NEMA17 at (−51, −265) in x, y and yaw and stops it lifting; the body rests on the deck | 4 × M3 × 8 into the motor face (5 mm plate); M3 + nuts through the deck at the wall feet |
-| Z carriage (`z_carriage.py`) | 1 · PETG | 132 × 56 × 110 · 111 cm³ | Lift plate riding the mast on 4 mini V-wheels (eccentric spacers on the +x pair, 7.9 mm holes; 0.6 mm spacer pads). Carries the anti-backlash nut on a raised side block (Z+44…64, clears the coupler at Z min) | V-wheel axles along y through the plate; 10 × M5 from behind into the tray's back-plate inserts (the x = 50 column also clamps the rail bracket) |
+| Z-motor mount (`z_motor_mount.py`) | 1 · PETG | 65 × 40 × 45 · 18 cm³ | Fixes the Z NEMA17 at (−51, −265) in x, y and yaw and stops it lifting; the body rests on the deck | 4 × M3 × 8 into the motor face (5 mm plate); M3 × 12 + nuts through the deck at the wall feet; plate corner notched under the lower −x Z-wheel axle head (it passes there at the hard stop) |
+| Z carriage (`z_carriage.py`) | 1 · PETG | 132 × 62 × 110 · 110 cm³ | Lift plate riding the mast on 4 mini V-wheels (eccentric spacers on the +x pair, 7.9 mm holes; 0.6 mm spacer pads). Carries the anti-backlash nut block (OpenBuilds 1055 copy, 34 × 33 × 12) on a fin beside the screw, Z+47…80: 2 × M5 × 20 through the fin into the block's nut pockets, body end up against a shelf that takes the lift load (preload screw reached through a hole in the shelf, screw on the +y side) | V-wheel axles along y through the plate; 10 × M5 from behind into the tray's back-plate inserts (the x = 50 column also clamps the rail bracket) |
 | Tray stack (`tray_stack.py`) | 1 · PETG · standing on its back plate, no support | 155 × 197 × 90 incl. camera mount (tray body 122 wide) · 434 cm³ | Two caddy slots at 45 pitch (B at Z, A at Z + 45). Left wall full height with the camera mount and window; right side open above a 6 mm lip for the fingers. Handle stops at y = −200 with KW11 slot-presence switches behind | 10 × M5 heat-set inserts in the back plate, screws from the Z carriage |
-| Rail bracket (`rail_bracket.py`) | 1 · PETG | 92 × 140 × 90 · 86 cm³ | Hangs the Y rail and Y motor off the lift, so the pull/push loads go into the tray/Z-plate sandwich. Carries the Y NEMA17 (shaft down) behind the rail end | Y motor on the 4 mm motor plate, 4 × M3 × 8 (boss hole Ø23); back plate clamped by the 3 × M5 tray screws at x = 50; strip 2 × M5 into the rail's inner slot |
-| Y idler bracket (`y_idler_bracket.py`) | 1 · PETG | 24 × 15 × 22 · 3 cm³ | Fork holding the GT2 idler at (117, −44) in the belt plane; also the carriage's hard stop at Y ≈ 187 | M5 + T-nut on the rail's outer face, slotted ±3 mm for belt tension; idler on an M5 bolt |
-| Y carriage (`y_carriage.py`) | 1 · PETG | 51 × 84 × 82 · 33 cm³ | Gantry carriage on the Y rail (4 mini V-wheels above and below, captured in z, x and yaw). The arm on the rail's inner side carries both MG90S; the belt clamp grips the inner strand | V-wheel axles along x (eccentric on the lower pair, 7.9 mm holes; 0.4 mm spacer recesses); servo tabs screw to ledges on the arm |
+| Rail bracket (`rail_bracket.py`) | 1 · PETG | 92 × 140 × 90 · 89 cm³ | Hangs the Y rail and Y motor off the lift, so the pull/push loads go into the tray/Z-plate sandwich. Carries the Y NEMA17 (shaft down) behind the rail end | Y motor on the 4 mm motor plate, 4 × M3 × 8 (boss hole Ø23; the plate stops 2 mm inside the motor for the 230 mm bag limit, so the +x holes are 1.7 mm from the edge: no rib, it would block the screws); back plate clamped by the 3 × M5 × 25 tray screws at x = 50; strip 2 × M5 × 16 into the rail's inner slot, heads in 6 mm counterbores (16 mm strip) |
+| Y idler bracket (`y_idler_bracket.py`) | 1 · PETG | 24 × 15 × 22 · 3 cm³ | Fork holding the GT2 idler at (117, −44) in the belt plane; also the carriage's hard stop at Y ≈ 187 | Countersunk M5 × 10 + T-nut on the rail's outer face, flush in the 4 mm plate (a raised head would sit between the arms, in the idler's way), countersunk slot ±3 mm for belt tension; idler on an M5 × 25 + nylock |
+| Y carriage (`y_carriage.py`) | 1 · PETG | 51 × 84 × 82 · 33 cm³ | Gantry carriage on the Y rail (4 mini V-wheels above and below, captured in z, x and yaw). The arm on the rail's inner side carries both MG90S; the belt clamp grips the inner strand | V-wheel axles along x (eccentric on the lower pair, 7.9 mm holes; 0.4 mm spacer recesses); servo tabs screw to ledges on the arm, with 1 mm of washers between (0–2 mm tunes the servo stack ±1 mm) |
 | Finger (`finger.py`) | 2 · PETG or nylon | 10 × 10 × 25 · 2 cm³ | Swings down into the caddy's 12 mm side notch (10 thick → ±1 mm play) to pull, push and hold the caddy on the tray. Pivots at Z + 15 (slot B) and Z + 60 (slot A) | Keyed to the MG90S single-arm horn: 2 × M2 self-tapping at 10 and 14 mm from the axis (drill those horn holes to Ø2), plus the centre screw. Servo stack from the P09 STEP: horn 5.0 tall, tabs 7.9 below the output face |
 | Electronics tray (`electronics_tray.py`) | 1 · PETG | 108 × 108 × 10 · 22 cm³ | Standoffs for the 100 × 100 motion board, rear right (x 19–119, y −362…−262) | Board M3 at 93 × 93 into Ø9 standoffs with inserts; tray on the deck |
-| Pi tray (`pi_tray.py`) | 1 · PETG | 91 × 57 × 10 · 10 cm³ | Standoffs for the Raspberry Pi 3, rear left. Micro-USB/HDMI edge faces +y (the plug lands at x ≈ −112, clear of the Z motor), USB/Ethernet at +x, GPIO edge toward the battery box | Pi on the 58 × 49 hole pattern (M2.5 self-tapping, pilot 2.4); tray on the deck |
-| Battery box (`battery_box.py`) | 1 · PETG | 85 × 44 × 50 · 35 cm³ | Holds the 4 × 18650 pack + BMS low at the far rear left (counterweight). Open top with a strap slot so the pack lifts out for the airport | On the deck; pack held by a strap |
+| Pi tray (`pi_tray.py`) | 1 · PETG | 91 × 57 × 10 · 10 cm³ | Standoffs for the Raspberry Pi 3, rear left. USB/Ethernet at +x, GPIO header toward the Z motor (+y), micro-USB/HDMI/audio edge against the battery box (a relief in the box wall clears the jacks): **powered through GPIO 5 V (pins 2/4, GND 6), not the micro-USB**, which faces the box; the old layout (micro-USB at +y with USB at +x) was a mirror image of a real Pi | Pi on the 58 × 49 hole pattern (M2.5 self-tapping, pilot 2.4); tray on the deck |
+| Battery box (`battery_box.py`) | 1 · PETG | 95 × 46 × 60 · 46 cm³ | Holds the 4S pack (inside 90 × 40.5 × 57.5, foam-padded) + BMS low at the far rear left (counterweight). Open top with a strap slot so the pack lifts out for the airport | On the deck by 2 × M3 × 12 + nuts through a tab on the +x wall (screws outside the pack); pack held by a strap |
 
 ### 9.2 Rack, spare station and caddies (`cad/src/`)
 
@@ -335,6 +339,6 @@ Test prints and check assemblies (not part of the build): `fit_coupons.py` (fit 
 
 ### 9.3 Listed but not modeled yet
 
-- **Caster spacers** (×3, PETG, §7): the assembly models each caster at its total height; the spacers are sized after measuring the bought casters (rear to 42 mm total, front to 23.5 mm: the nose floor is at z 30 and `CASTER_FRONT_GAP` is 6.5 mm, so the ball clears the 3 mm dock floor plate; at 27 mm it would ride the plate and lift the drive wheels).
+- **Caster spacers** (×3, PETG, §7, `caster_spacer.py`): sized for the bought 20 mm casters (rear to 42 mm total, front to 23.5 mm: the nose floor is at z 30 and `CASTER_FRONT_GAP` is 6.5 mm, so the ball clears the 3 mm dock floor plate; at 27 mm it would ride the plate and lift the drive wheels).
 - **Nose TPU strip** (§7): bumper strip on the nose.
 - **Robot E-stop box**: a bought part on the mast top plate; the assembly shows only a 40 mm box stand-in (`lib/robot_build.py`).

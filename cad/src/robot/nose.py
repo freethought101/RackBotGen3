@@ -8,12 +8,12 @@ from cadgen import step, stl
 
 from lib.dims import DOCK_STOP_Y, KW11, M2_PILOT_D, M3_CLEAR, M5_CLEAR
 from lib.prims import box, cyl_x, cyl_z
-from lib.robot_dims import (BASE_FRONT_Y, CASTER_FRONT, CONTACT_X, CONTACT_Z, NOSE_HALF_W,
+from lib.robot_dims import (BASE_FRONT_Y, CASTER, CASTER_FRONT, CONTACT_X, CONTACT_Z, NOSE_HALF_W,
                             NOSE_SWITCH_X, NOSE_Z, RAIL_Z)
 
 WALL = 4.0
 PAD = (30.0, 20.0, 1.0)            # copper pad recess: width, height, depth
-SWITCH_SLOT = (8.0, 15.0)          # lever slot width, height (centre z = 52)
+SWITCH_SLOT = (8.0, 22.0)          # lever slot width, height (centre z = 52): covers the whole lever
 SWITCH_Z = 52.0
 SWITCH_REACH = 3.0                 # free lever tip past the nose tip: pressed 3 mm when docked (triggers at 2)
 SWITCH_ADJUST = 2.0                # +/- slot in y to tune the actuation point
@@ -56,11 +56,17 @@ def nose():
     zc = (RAIL_Z[0] + RAIL_Z[1]) / 2
     for x in (-40.0, 40.0):
         part -= _y_hole(M5_CLEAR, x, zc, y0 - 0.1, y0 + WALL + 0.1)
-    # Anti-tip caster boss on the floor.
+    # Anti-tip caster: the bought caster (40 mm hole pitch, slotted +/-2) hangs under the floor on caster_spacer_front;
+    # M3 nuts inside the nose. The boss keeps the 19 mm pattern of the original small caster as a fallback.
     cx, cy = CASTER_FRONT
     part += cyl_z(30.0, cx, cy, z0, z0 + 6.0)
     for dx in (-9.5, 9.5):
         part -= cyl_z(M3_CLEAR, cx + dx, cy, z0 - 0.1, z0 + 6.1)
+    p, a = CASTER["pitch"] / 2, CASTER["pitch_adj"]
+    for s in (-1, 1):
+        x0, x1 = sorted((cx + s * (p - a), cx + s * (p + a)))
+        part -= box(x0, x1, cy - M3_CLEAR / 2, cy + M3_CLEAR / 2, z0 - 0.1, z0 + WALL + 0.1)
+        part -= cyl_z(M3_CLEAR, x0, cy, z0 - 0.1, z0 + WALL + 0.1) + cyl_z(M3_CLEAR, x1, cy, z0 - 0.1, z0 + WALL + 0.1)
     part.label = "nose"
     return part
 

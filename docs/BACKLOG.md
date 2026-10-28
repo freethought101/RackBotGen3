@@ -40,12 +40,12 @@ Open checks and to-dos collected from the spec, the CAD and PCB work, and review
 - [ ] MG90S dimensions (22.8 × 12.2 × 28.5, shaft 5.9 mm from the end, tab size) vs the y_carriage ledges.
 - [ ] Mini V-wheels / eccentric spacers (modeled Ø15.2 × 8.8, rim 1.6 mm in the groove, spacer Ø10): measure the real wheel and spacer; adjust `ZWHEEL_X` / `YWHEEL_DZ`, and `VWHEEL["w"]` / `WHEEL_STACK` if the wheel width or the spacer + shim height differ (v0.1.23).
 - [ ] Ball caster heights: rear 42 mm (table to rail bottom), front anti-tip 23.5 mm (6.5 mm gap, clears the dock floor plate).
-- [ ] KFL08 (48 × 27, 37 mm pitch), Tr8×2 nut (flange Ø22) and 5→8 coupler (Ø19 × 25) vs `KFL08`, `NUT_BLOCK_DZ`, `COUPLER_Z`.
-- [ ] **Tr8 nut flange hole pattern**: count the flange holes (CAD assumes 3 × M3 on a 16 mm circle; many Tr8 nuts have 4) and measure the circle Ø and the hole Ø. Then update the nut block in `cad/src/robot/z_carriage.py`, possibly with M3 heat-set inserts instead of nuts underneath.
+- [ ] KFL08 (48 × 27, 37 mm pitch) and 5→8 coupler (Ø19 × 25) vs `KFL08`, `COUPLER_Z`.
+- [ ] **Tr8 nut block** (P05, OpenBuilds 1055 copy): check 34 × 33 × 12, the 2 M5 holes 20 apart and 10 from the body end, and the screw centred in the 12 mm thickness, against `NUT_BLOCK` in `robot_dims.py` (the Z carriage fin sits 6 mm from the screw axis). Fit it body end up, preload screw on the +y side under the shelf hole.
 - [ ] E-stop box base: the hole spacing (CAD assumes 2 × M3, 26 mm apart, into inserts in the mast top plate).
 - [ ] VMOT relay (P38): find a place for it on the electronics tray or deck; check that it pulls in at 12 V (empty battery) and stays cool at 16.8 V; check that the E-stop drops VMOT within 50 ms. Release the E-stop 20 times with VMOT loaded: the BMS must not trip on the 120–220 A capacitor inrush (if it does, add an NTC or pre-charge resistor) and the relay contact must not weld. Check that a press shows at once as `sw` bit5 / `EVT ESTOP`.
 - [ ] DevKit plugged-in height (~8.5 mm sockets) clears the RC parts underneath; Y motor clears the motion board components.
-- [ ] Camera Module 3 Wide: works on Pi 3 with libcamera/Picamera2; CSI cable length (≈ 500 mm) and routing on the moving carriage.
+- [ ] Camera Module 3 Wide: works on Pi 3 with libcamera/Picamera2; CSI cable 1 m (route ≈ 530 mm at Z max, v0.1.31); model the route and the drag chain mounts to confirm.
 - [ ] Rack electronics placeholders (Delta PSU, DVP-12SE / ESP32 modules, relay, status lamp box, E-stop) vs real sizes on the DIN rail.
 - [x] Delta 24 V DIN PSU: picked DRL-24V120W1EN (LYTE II, 120 W, universal input) — v0.1.19.
 - [ ] Detail bolt patterns on the robot printed parts once the hardware is in hand (current parts are v0 for fit).

@@ -76,11 +76,23 @@ def wheel_x(x0, x1, y, z, d, label):
     return _tag(w, label, RUBBER)
 
 
-def ball_caster(x, y, z_bottom, height, label):
-    c = cyl_z(25.0, x, y, z_bottom + height - 6.0, z_bottom + height)
-    c += bd.Pos(x, y, z_bottom + 9.5) * bd.Sphere(9.5)
-    c += cyl_z(16.0, x, y, z_bottom + 9.5, z_bottom + height - 6.0)
+def ball_caster(x, y, z_bottom, height, label, long_axis="y", base=(48.0, 32.0), pitch=40.0, plate_t=3.0, ball_d=15.0):
+    """Ball caster (bought: 20 tall, Ø15 ball, 48 x 32 base plate with 2 x Ø4 holes `pitch` apart along its long side)."""
+    bl, bw = base
+    ax, ay = (bw, bl) if long_axis == "y" else (bl, bw)
+    top = z_bottom + height
+    c = box(x - ax / 2, x + ax / 2, y - ay / 2, y + ay / 2, top - plate_t, top)
+    for s in (-1, 1):
+        hx, hy = (x, y + s * pitch / 2) if long_axis == "y" else (x + s * pitch / 2, y)
+        c -= cyl_z(4.2, hx, hy, top - plate_t - 0.1, top + 0.1)
+    c += cyl_z(22.0, x, y, z_bottom + ball_d / 2, top - plate_t)
+    c += bd.Pos(x, y, z_bottom + ball_d / 2) * bd.Sphere(ball_d / 2)
     return _tag(c, label, STEEL)
+
+
+def kw11(x0, x1, y0, y1, z0, z1, label):
+    """KW11-3Z lever microswitch body (envelope; the lever is not modeled)."""
+    return _tag(box(x0, x1, y0, y1, z0, z1), label, BLACK)
 
 
 def kfl08_x(x0, x1, y, z, label):

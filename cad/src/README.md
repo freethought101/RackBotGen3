@@ -19,7 +19,7 @@ Frame for all bay-side parts: x = across the bay (0 = centerline), y = into the 
 | rack.py | STEP/rack.step | Rack assembly: 2020 frame, 4 shelves, caddies, dock, tags, Delta PSU/PLC placeholders | — |
 | spare_station.py | STEP/spare_station.step | Spare station assembly: S1 GOOD / S2 RMA | — |
 
-| robot/*.py | STEP/robot/…, STL/robot/… | 17 printed robot parts: nose, deck, drive_bracket (×2, one mirrored), drive_hub (×2, PETG, outboard face down) + drive_tire (×2, TPU 95A), mast_collar (socket + flange + rear gusset), mast_top_plate (KFL08), z_motor_mount, z_carriage, tray_stack (print on its back plate), rail_bracket, y_idler_bracket, y_carriage (gantry plate, frame, arm, belt clamp), finger (×2, 10 mm), electronics_tray, pi_tray, battery_box | PETG |
+| robot/*.py | STEP/robot/…, STL/robot/… | 19 printed robot parts: nose, caster_spacer_rear (×2) + caster_spacer_front (for the bought 20 mm casters), deck, drive_bracket (×2, one mirrored), drive_hub (×2, PETG, outboard face down) + drive_tire (×2, TPU 95A), mast_collar (socket + flange + rear gusset), mast_top_plate (KFL08), z_motor_mount, z_carriage (nut block on a fin + shelf), tray_stack (print on its back plate), rail_bracket, y_idler_bracket, y_carriage (gantry plate, frame, arm, belt clamp), finger (×2, 10 mm), electronics_tray, pi_tray, battery_box | PETG |
 | robot_assembly.py | STEP/robot_assembly.step | Robot at a travel pose (Z 210, extractor home) | — |
 | robot_docked.py | STEP/robot_docked.step | Rack + robot docked, extracting from bay 2 (Y = Y_PULL = 177, finger B engaged) | — |
 
@@ -36,7 +36,12 @@ Checks: `PYTHONPATH=src python checks/bay_fit_check.py`, `checks/station_check.p
 `checks/robot_check.py` (overlap **and ≥ 1 mm running clearance** for every moving pair over 42 poses incl. intermediate
 Y and the hard stop; docked lift sweep carrying two caddies; full pull/push strokes at every bay and spare slot with
 the caddy moving with the finger, the idle finger parked and the other caddy on the tray; push seats the caddy; camera
-sight lines and FOV; mass/CG/tip-over; packing; print bed — see docs/spec/01 §6.8).
+sight lines and FOV; mass/CG/tip-over; packing; print bed — see docs/spec/01 §6.8), and `checks/fastener_check.py`:
+every screw, nut, T-nut and insert (`lib/robot_fasteners.py`, step.parts models in `cad/vendor/fasteners`) against the
+parts: no fastener hits a part it does not thread into (missing / misplaced / blocked holes), heads and nuts seated,
+thread engagement without bottoming out (T-nut ≥ 3 mm and short of the slot core, inserts, pilots, motor threads), and
+≥ 1 mm from parts moving relative to it over 19 poses. It prints the modeled fastener bill. `robot_assembly.step`
+shows the fasteners.
 
 To verify on real hardware: 3.5" bottom hole positions (`HDD_HOLE_Y`, slotted ±3 mm),
 KW11-3Z switch hole pitch and actuation point (bracket slotted ±2 mm).

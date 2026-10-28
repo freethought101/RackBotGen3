@@ -40,7 +40,10 @@ DRIVE_MOTOR_X = (79.0, 119.0)        # |x| body span, shaft face at 119
 DRIVE_PLATE_X = (119.0, 123.0)       # |x| printed bracket plate between motor face and wheel
 DRIVE_INSERT_X = 105.0               # |x| deck -> drive bracket M3 (inserts in the web tops, clear of the motor)
 DRIVE_INSERT_Y = (AXLE_Y - 27.0, AXLE_Y + 27.0)
-CASTER_REAR = [(-65.0, -380.0), (65.0, -380.0)]   # under the rear cross member
+# Bought ball caster (bustan listing): 20 tall, Ø15 ball, 48 x 32 base, 2 holes Ø4 40 apart. Printed spacers make up
+# the height: 22 mm under each side rail at the rear (caster_spacer_rear), 3.5 mm under the nose (caster_spacer_front).
+CASTER = {"h": 20.0, "base": (48.0, 32.0), "pitch": 40.0, "pitch_adj": 2.0}   # pitch slotted +/-2 for other casters
+CASTER_REAR = [(-65.0, -364.0), (65.0, -364.0)]   # under the side rails; the 52 mm spacer ends at the rail end (y -390)
 CASTER_FRONT = (0.0, -60.0)          # anti-tip caster under the nose, 23.5 mm tall (nose floor z 30 - gap)
 CASTER_FRONT_GAP = 6.5               # 3.5 mm above the dock floor plate (3 mm) when docked
 
@@ -59,9 +62,14 @@ ZPLATE_X = (-70.0, 62.0)             # right edge 1.4 mm clear of the servos at 
 ZPLATE_DZ = (-10.0, 100.0)           # relative to Z
 ZWHEEL_X = 26.0                      # |x| V-wheel centres in the mast side grooves (axles along y)
 ZWHEEL_DZ = (14.0, 92.0)            # lower pair rolls 1.4 mm above the Z motor at Z_MIN (78 mm wheelbase)
-NUT_BLOCK_DZ = (44.0, 64.0)          # anti-backlash nut block; bottom clears the coupler top at Z_MIN
+# Anti-backlash nut block (P05, Lajarus Teknik "T8 Nut Block", a copy of OpenBuilds part 1055; drawing in
+# docs/datasheets/P05_anti-backlash-nut-block_drawing.jpg): l along the screw, h across, t through (screw centred). A 20
+# thick body with 2 x M5 holes (20 apart, 10 from its end face, hex nut pockets), a 5 slit and an 8 lip; the M5
+# preload screw enters the body's end face 10 off the screw axis, in line with one mounting hole.
+NUT_BLOCK = {"l": 33.0, "h": 34.0, "t": 12.0, "pitch": 20.0, "hole_down": 10.0, "preload_dy": 10.0}
+NUT_BLOCK_DZ = (47.0, 80.0)          # body end up against the carriage's shelf (the lift load), lip down
 # Tray -> Z plate: M5 from behind the plate into M5 heat-set inserts in the tray back plate. Columns clear the
-# mast (|x| <= 20), the Z wheels and the nut block (x -64..-38, z 44..64); the x = 50 column also clamps the
+# mast (|x| <= 20), the Z wheels and the nut-block mount (x -63..-41); the x = 50 column also clamps the
 # Y-rail bracket's back plate.
 TRAY_BOLTS = [(-50.0, -5.0), (-50.0, 75.0), (-38.0, -5.0), (-38.0, 75.0),
               (38.0, -5.0), (38.0, 37.0), (38.0, 75.0), (50.0, -5.0), (50.0, 37.0), (50.0, 75.0)]
@@ -98,6 +106,8 @@ VWHEEL = {"d": 15.2, "w": 8.8, "sink": 1.6, "spacer_d": 10.0}   # mini V-wheel; 
 # Axle stack plate -> wheel: 6 mm mini spacer (eccentric 8 mm hex, or plain) + 1 mm 5 x 8 shim on the bearing's
 # inner ring. The plates get a pad or recess around each axle so the wheel sits on its groove centre.
 WHEEL_STACK = 7.0
+ECC_OFFSET = 0.7                     # mini eccentric spacer: bore 0.7 off the boss (OpenBuilds STEP). Its plate hole sits
+# 0.7 off the axle, square to the preload direction, so the wheel is mid-range and turning it moves it +/-0.7
 ECC_HOLE_D = 7.9                     # eccentric boss Ø7.11 (OpenBuilds STEP); ~7 mm holes print ~0.65 under (fit test 1) -> ~7.25
 WHEEL_SEAT_D = 12.0                  # pad / recess diameter around an axle (spacer hex is 9.2 across corners)
 ZWHEEL_SEAT_Y = (MAST_Y[0] + MAST_Y[1]) / 2 + VWHEEL["w"] / 2 + WHEEL_STACK   # -228.6: 0.6 pad on the Z plate
@@ -127,11 +137,14 @@ CAM_BOARD = {"w": 25.0, "h": 23.862, "t": 1.12, "lens_up": 14.4, "holder": 10.8,
 PCB_XY = (19.0, -362.0)              # motion board lower-left corner (100 x 100)
 PCB_Z = DECK_Z[1] + 10.0
 PI_XY = (-123.0, -343.5)             # Pi 3 corner (85 along x, 56 along y), between the battery box and the Z motor
-BATTERY = (-118.0, -38.0, -387.5, -349.0, DECK_Z[1], DECK_Z[1] + 50.0)   # inside: 4 x 18650 2 x 2 along x + BMS on top
+# Inside 90 x 40.5 x 57.5 (v0.1.30, was 80 x 38.5 x 47.5): room for a wrapped 2 x 2 pack (~38.6) with its BMS and foam;
+# measure the bought Langit pack. Front wall ends 0.5 mm short of the Pi tray.
+BATTERY = (-118.0, -28.0, -387.5, -347.0, DECK_Z[1], DECK_Z[1] + 60.0)
 # M3 + nut through the deck for the trays and the battery box (nuts clear the side rails and the rear cross member)
 PCB_DECK_HOLES = ((PCB_XY[0] + 2.0, PCB_XY[1] + 50.0), (PCB_XY[0] + 98.0, PCB_XY[1] + 50.0))
 PI_DECK_HOLES = ((PI_XY[0] + 6.0, PI_XY[1] + 28.0), (PI_XY[0] + 77.0, PI_XY[1] + 28.0))   # outside the tray window
-BATTERY_DECK_HOLES = ((BATTERY[0] + 10.0, BATTERY[3] - 8.0), (BATTERY[1] - 10.0, BATTERY[3] - 8.0))
+BATTERY_DECK_HOLES = ((BATTERY[1] + 7.5, -362.0), (BATTERY[1] + 7.5, -351.0))   # tab on the +x wall, outside the pack;
+# the nuts stay ahead of the rear cross member (y -370)
 ESTOP_XY = (-22.0, -255.0)           # on the mast top plate: highest, easiest point to hit
 BUCKS = {"charger": (-60.0, -205.0), "5v": (4.0, -205.0), "6v": (-28.0, -172.0)}   # (x0, y0) under the tray
 # (x, y, z) envelope per module (P18), from the Tokopedia listings we order from; measure on arrival.

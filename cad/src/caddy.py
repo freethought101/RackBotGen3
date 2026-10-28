@@ -9,7 +9,7 @@ from cadgen import step, stl
 
 from lib.dims import (
     CADDY_BODY_L, CADDY_H, CADDY_HANDLE_L, CADDY_RAIL_H, CADDY_RAIL_W, CADDY_W,
-    HDD_HOLE_SPAN_X, HDD_HOLE_Y, HDD_SCREW_CLEAR, NOTCH_DEPTH, NOTCH_FROM_FRONT, NOTCH_L,
+    HDD_HOLE_SPAN_X, HDD_HOLE_Y, HDD_SCREW_CLEAR, M3_HEAD_CBORE, NOTCH_DEPTH, NOTCH_FROM_FRONT, NOTCH_L,
 )
 from lib.prims import box, cyl_z, prism_xy, prism_yz
 
@@ -18,7 +18,7 @@ REAR_WALL = 2.5            # rear wall (pocket 148.5 long for a 147 mm drive)
 FLOOR = 2.4                # drive floor thickness
 FLOOR_LIFT = 1.0           # floor underside clears the shelf; caddy rides on its side walls and rails
 SCREW_SLOT = 3.0           # +/- slot length in y for the drive screws (hole positions to verify)
-CBORE_D = 6.5              # M3 button-head counterbore under the floor
+CBORE_D = M3_HEAD_CBORE    # M3 / 6-32 button-head counterbore under the floor
 CBORE_DEPTH = 1.2
 LABEL_RECESS = 0.5
 QR_SIZE = 22.0

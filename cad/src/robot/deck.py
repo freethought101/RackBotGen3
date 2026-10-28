@@ -12,7 +12,9 @@ from lib.robot_dims import (BASE_FRONT_Y, BASE_REAR_Y, BATTERY_DECK_HOLES, CROSS
                             DRIVE_INSERT_X, DRIVE_INSERT_Y, MAST_X, MAST_Y, PCB_DECK_HOLES, PI_DECK_HOLES, RAIL_X,
                             SCREW_XY)
 
-RAIL_HOLE_Y = (-375.0, -250.0, -100.0)
+# Deck -> rail top slots (M5 + T-nut). The left rail is covered by the battery box, Pi tray and Z motor behind
+# y -244, so its screws sit ahead of the Z motor.
+RAIL_HOLE_Y = {-1: (-225.0, -100.0), 1: (-375.0, -250.0, -100.0)}
 CABLE_SLOTS = [(-10.0, 10.0, -330.0, -300.0), (-100.0, -85.0, -220.0, -180.0), (85.0, 100.0, -220.0, -180.0)]
 
 
@@ -23,7 +25,7 @@ def deck():
     part = box(-DECK_HALF_W, DECK_HALF_W, BASE_REAR_Y, BASE_FRONT_Y, z0, z1)
     xr = (RAIL_X[0] + RAIL_X[1]) / 2
     for s in (-1, 1):
-        for y in RAIL_HOLE_Y:
+        for y in RAIL_HOLE_Y[s]:
             part -= cyl_z(M5_CLEAR, s * xr, y, z0 - 0.1, z1 + 0.1)              # into rail top slots
         for y in DRIVE_INSERT_Y:
             part -= cyl_z(M3_CLEAR, s * DRIVE_INSERT_X, y, z0 - 0.1, z1 + 0.1)  # drive bracket inserts
