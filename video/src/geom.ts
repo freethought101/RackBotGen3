@@ -1,6 +1,6 @@
 // Frame helpers: CAD (mm, z up) <-> three.js (m, y up), robot model -> world.
 import * as THREE from 'three';
-import {AXLE_Y, SPARE_D} from './constants';
+import {AXLE_Y, SPARE_D, SPARE_X} from './constants';
 import type {WorldState} from './anim';
 
 export type V3 = [number, number, number];
@@ -17,8 +17,8 @@ export function robotToWorld(m: V3, s: Pick<WorldState, 'cx' | 'cy' | 'th'>): V3
   return [s.cx + c * dx - sn * dy, s.cy + sn * dx + c * dy, m[2]];
 }
 
-/** Spare-station local point (CAD mm) -> world CAD mm (station turned 180°, face at y = -SPARE_D). */
-export const spareToWorld = (m: V3): V3 => [-m[0], -SPARE_D - m[1], m[2]];
+/** Spare-station local point (CAD mm) -> world CAD mm (station turned 180°, face at (SPARE_X, -SPARE_D)). */
+export const spareToWorld = (m: V3): V3 => [SPARE_X - m[0], -SPARE_D - m[1], m[2]];
 
 export const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 export const lerp3 = (a: V3, b: V3, t: number): V3 => [lerp(a[0], b[0], t), lerp(a[1], b[1], t), lerp(a[2], b[2], t)];

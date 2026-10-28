@@ -24,7 +24,11 @@ export const FINGER_X = 69.5;
 export const FINGER_DZ = {B: 15, A: 60};
 export const AXLE_Y = -135;
 export const Z_TRAVEL = 210;
-export const SPARE_D = 760; // spare station face at y = -760, facing the rack (spec 00 §5: ~700 mm apart)
+// Spare station = the robot's base (charging dock) down the aisle: face at (SPARE_X, -SPARE_D), facing the rack side (+y), ~3.2 m from the rack.
+// The robot reaches it with a reverse swing out of the dock, one aisle run and a single 90° L turn (anim.ts).
+export const SPARE_X = 2600;
+export const SPARE_D = 1820;
+export const TURN_R = 300; // axle-centre radius of the swing and the L turn
 export const CAM_LENS = {x: -78, y: -115, dz: 15};
 export const TAG_APPROACH = {x: 125, y: 7, z: 230}; // tag centre on the fin plate (lib/tags.py)
 export const RACK_TOP_Z = 360;

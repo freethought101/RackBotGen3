@@ -1,11 +1,11 @@
 // Camera path: a pure function of the frame. Positions are world CAD mm; S4 shots are written in the robot's
 // model frame and mapped through the (fixed) studio pose so they stay locked to the part they explain.
-import {HERO_TH, inOut, stateAt, stepStart} from './anim';
-import {SCENES} from './constants';
+import {HERO_TH, inOut, stateAt, stepStart, TRIPS} from './anim';
+import {SCENES, SPARE_D, SPARE_X} from './constants';
 import {clamp01, lerp, lerp3, robotToWorld, V3} from './geom';
 
 export type Cam = {pos: V3; target: V3; fov: number};
-type Key = {f: number; cam: Cam};
+type Key = {f: number; cam: Cam; follow?: boolean}; // follow: pos/target are offsets from the robot
 
 const DIST = 1.0;
 
@@ -38,6 +38,7 @@ function keys(): Key[] {
   // DIST pulls every shot back along its view line (one knob for overall framing).
   const add = (f: number, pos: V3, target: V3, fov = 30, kp = 0) =>
     k.push({f, cam: pan({pos: lerp3(target, pos, DIST), target, fov}, kp)});
+  const follow = (f: number, pos: V3, target: V3, fov = 30) => k.push({f, cam: {pos, target, fov}, follow: true});
   const [h0, h1] = SCENES.hook;
   add(h0, [-1100, -900, 330], [-300, 40, 230], 30);
   add(h0 + 60, [-1000, -820, 310], [-250, 40, 225], 30);
@@ -55,50 +56,81 @@ function keys(): Key[] {
     add(f + HOW_LEN - 30, c.pos, c.target, c.fov);
   });
   add(SCENES.how[1], HOW_SHOTS[5].pos, HOW_SHOTS[5].target, HOW_SHOTS[5].fov);
-  // S5 the swap
-  const wide: [V3, V3, number, number] = [[1700, -400, 1100], [0, -400, 150], 30, 300];
+  // S5 the swap: the robot lives at its base (the spare station) ~3.2 m down the aisle from the rack. Wide
+  // shots show the whole floor; tracking shots ride along. Trip i = TRIPS[i]: 40 f reverse swing, 124 f aisle +
+  // L turn + approach.
+  const mid: V3 = [SPARE_X / 2, -SPARE_D / 2, 80];
+  // a rack-frame point mirrored into the base's frame (the station faces the rack side, turned 180°)
+  const atBase = (p: V3): V3 => [SPARE_X - p[0], -SPARE_D - p[1], p[2]];
+  const wideA: [V3, V3, number, number] = [[-1500, -3300, 2400], mid, 34, 250];
+  const wideB: [V3, V3, number, number] = [[4700, -200, 2300], mid, 34, 250];
   const rackClose: [V3, V3, number, number] = [[780, -380, 420], [30, -90, 215], 30, 150];
-  const spareClose: [V3, V3, number, number] = [[-750, -420, 420], [-30, -640, 180], 30, 150];
+  const baseClose: [V3, V3, number, number] = [atBase([750, -340, 420]), atBase([30, -120, 180]), 30, 150];
   const s = (i: number) => stepStart(i);
+  const T = TRIPS;
+  // fault on the rack, then over to the robot waiting at its base
   add(s(0) + 0.01, [-760, 160, 330], [0, 70, 215], 28, 80);
   add(s(1) - 2, [-680, 60, 310], [0, 70, 215], 28, 80);
-  add(s(1) + 20, ...wide);
-  add(s(2) - 16, ...wide);
-  add(s(2) + 6, ...spareClose);
-  add(s(3), ...spareClose);
-  add(s(3) + 24, ...wide);
-  add(s(4) - 14, ...wide);
-  add(s(4) + 8, ...rackClose);
-  add(s(6), [740, -360, 420], [30, -90, 215], 30, 260);
-  add(s(6) + 26, [1700, -350, 1100], [0, -420, 150], 30, 260);
-  add(s(7) - 10, [-1650, -460, 1050], [0, -420, 150], 30, 260);
-  add(s(7) + 40, [-1500, -300, 900], [0, -330, 150], 30, 260);
-  add(SCENES.swap[1], [-900, -380, 520], [0, -160, 160], 30, 260);
+  add(s(1) + 0.01, ...baseClose);
+  // Big changes of view are hard cuts (two keys 0.01 f apart) on the robot's motion; the moves in between are
+  // slow drifts, so the camera never whips across the 3 m floor.
+  const cut = (f: number) => f - 0.01;
+  const drift = ([pos, target, fov, kp]: [V3, V3, number, number], d: V3): [V3, V3, number, number] =>
+    [[pos[0] + d[0], pos[1] + d[1], pos[2] + d[2]], target, fov, kp];
+  const chaseA: [V3, V3, number] = [[700, -1250, 650], [-250, 0, 150], 30];
+  const chaseB: [V3, V3, number] = [[-900, 1400, 1300], [-100, -100, 100], 32];
+  // trip 1 → rack: back out in close-up, cut wide to show the route, cut to a chase through the L turn,
+  // then cut in close for the final approach
+  add(cut(T[0] + 14), ...baseClose);
+  add(T[0] + 14, ...wideA);
+  add(cut(T[0] + 84), ...drift(wideA, [450, 250, -150]));
+  follow(T[0] + 84, ...chaseA);
+  follow(cut(T[0] + 148), ...chaseA);
+  add(T[0] + 148, ...rackClose);
+  add(s(5), [740, -360, 420], [30, -90, 215], 30, 260);
+  // trip 2 → base: same pattern from the other side, cutting in close for the final approach
+  add(cut(T[1] + 14), [740, -360, 420], [30, -90, 215], 30, 260);
+  add(T[1] + 14, ...wideB);
+  add(cut(T[1] + 84), ...drift(wideB, [-250, -450, -150]));
+  follow(T[1] + 84, ...chaseB);
+  follow(cut(T[1] + 148), ...chaseB);
+  add(T[1] + 148, ...baseClose);
+  add(s(7), ...baseClose);
+  add(SCENES.swap[1], atBase([-900, -380, 520]), atBase([0, -160, 160]), 30, 260);
   // S6 Delta inside: behind the rack (PSU, PLC, router on the DIN rail), then up to the tower light
   const d0 = SCENES.delta[0];
   add(d0 + 0.01, [-800, 1000, 360], [-40, 170, 110], 30, 140);
   add(d0 + 170, [-550, 900, 450], [-30, 160, 150], 30, 150);
   add(SCENES.delta[1], [500, 1050, 800], [20, 100, 280], 32, 170);
-  // S7 close: a high orbit over the whole arena
+  // S7 close: a high orbit over the robot charging at its base
   const c0 = SCENES.close[0];
-  add(c0 + 0.01, [1800, 450, 1400], [0, -380, 120], 30, 650);
-  add(SCENES.close[1], [1000, -1900, 1500], [0, -380, 120], 30, 650);
+  add(c0 + 0.01, atBase([1800, 450, 1400]), atBase([0, -380, 120]), 30, 650);
+  add(SCENES.close[1], atBase([1000, -1900, 1500]), atBase([0, -380, 120]), 30, 650);
   return k.sort((a, b) => a.f - b.f);
 }
 
 const KEYS = keys();
 
+/** A key's camera at frame f (follow keys ride along with the robot's current position). */
+function camOf(k: Key, f: number): Cam {
+  if (!k.follow) return k.cam;
+  const st = stateAt(f);
+  const o = (p: V3): V3 => [p[0] + st.cx, p[1] + st.cy, p[2]];
+  return {pos: o(k.cam.pos), target: o(k.cam.target), fov: k.cam.fov};
+}
+
 export function cameraAt(f: number): Cam {
-  if (f <= KEYS[0].f) return KEYS[0].cam;
+  if (f <= KEYS[0].f) return camOf(KEYS[0], f);
   for (let i = 1; i < KEYS.length; i++) {
-    const b = KEYS[i];
-    if (f < b.f) {
-      const a = KEYS[i - 1];
+    const b0 = KEYS[i];
+    if (f < b0.f) {
+      const a = {...KEYS[i - 1], cam: camOf(KEYS[i - 1], f)};
+      const b = {...b0, cam: camOf(b0, f)};
       const t = b.f - a.f < 0.1 ? 1 : inOut(clamp01((f - a.f) / (b.f - a.f)));
       return {pos: lerp3(a.cam.pos, b.cam.pos, t), target: lerp3(a.cam.target, b.cam.target, t), fov: lerp(a.cam.fov, b.cam.fov, t)};
     }
   }
-  return KEYS[KEYS.length - 1].cam;
+  return camOf(KEYS[KEYS.length - 1], f);
 }
 
 export {stateAt};
