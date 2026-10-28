@@ -72,20 +72,29 @@ function keys(): Key[] {
   add(s(0) + 0.01, [-760, 160, 330], [0, 70, 215], 28, 80);
   add(s(1) - 2, [-680, 60, 310], [0, 70, 215], 28, 80);
   add(s(1) + 0.01, ...baseClose);
-  add(T[0] + 4, ...baseClose);
-  // trip 1 → rack: establish the floor and the route, then track the robot through the L turn into the dock
-  add(T[0] + 34, ...wideA);
-  add(T[0] + 84, ...wideA);
-  follow(T[0] + 120, [700, -1250, 650], [-250, 0, 150], 30);
-  follow(T[0] + 150, [700, -1250, 650], [-250, 0, 150], 30);
-  add(s(3) + 4, ...rackClose);
+  // Big changes of view are hard cuts (two keys 0.01 f apart) on the robot's motion; the moves in between are
+  // slow drifts, so the camera never whips across the 3 m floor.
+  const cut = (f: number) => f - 0.01;
+  const drift = ([pos, target, fov, kp]: [V3, V3, number, number], d: V3): [V3, V3, number, number] =>
+    [[pos[0] + d[0], pos[1] + d[1], pos[2] + d[2]], target, fov, kp];
+  const chaseA: [V3, V3, number] = [[700, -1250, 650], [-250, 0, 150], 30];
+  const chaseB: [V3, V3, number] = [[-900, 1400, 1300], [-100, -100, 100], 32];
+  // trip 1 → rack: back out in close-up, cut wide to show the route, cut to a chase through the L turn,
+  // then cut in close for the final approach
+  add(cut(T[0] + 14), ...baseClose);
+  add(T[0] + 14, ...wideA);
+  add(cut(T[0] + 84), ...drift(wideA, [450, 250, -150]));
+  follow(T[0] + 84, ...chaseA);
+  follow(cut(T[0] + 148), ...chaseA);
+  add(T[0] + 148, ...rackClose);
   add(s(5), [740, -360, 420], [30, -90, 215], 30, 260);
-  // trip 2 → base: the other wide angle, then a high chase into the base dock
-  add(T[1] + 34, ...wideB);
-  add(T[1] + 80, ...wideB);
-  follow(T[1] + 118, [-900, 1400, 1300], [-100, -100, 100], 32);
-  follow(T[1] + 150, [-900, 1400, 1300], [-100, -100, 100], 32);
-  add(s(6) + 6, ...baseClose);
+  // trip 2 → base: same pattern from the other side, cutting in close for the final approach
+  add(cut(T[1] + 14), [740, -360, 420], [30, -90, 215], 30, 260);
+  add(T[1] + 14, ...wideB);
+  add(cut(T[1] + 84), ...drift(wideB, [-250, -450, -150]));
+  follow(T[1] + 84, ...chaseB);
+  follow(cut(T[1] + 148), ...chaseB);
+  add(T[1] + 148, ...baseClose);
   add(s(7), ...baseClose);
   add(SCENES.swap[1], atBase([-900, -380, 520]), atBase([0, -160, 160]), 30, 260);
   // S6 Delta inside: behind the rack (PSU, PLC, router on the DIN rail), then up to the tower light

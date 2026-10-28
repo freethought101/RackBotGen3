@@ -107,7 +107,7 @@ class Script {
     return this.tracks[c].at(this.t);
   }
   /** Drive a chain of straights and arcs with one speed profile; keys every frame keep the arcs round. */
-  path(dur: number, segs: Seg[], e: Ease = inOut) {
+  path(dur: number, segs: Seg[], e: Ease = smooth) {
     const x0 = this.get('cx');
     const y0 = this.get('cy');
     const th0 = this.get('th');
@@ -230,8 +230,10 @@ function build() {
   // 4) insert the spare: slot A level with bay 2, park B, push with A, park A, re-engage B
   s.ev({kind: 'step', step: 4});
   s.to(16, {Z: zFor('A', H_BAY[1])}).to(8, {fB: 0});
-  s.to(24, {Y: Y_PULL}).to(10, {fA: 0});
+  // hand the caddy to the bay at the end of the push, before the finger swings clear
+  s.to(24, {Y: Y_PULL});
   s.ev({kind: 'caddy', id: 'spare', to: {mode: 'rack', bay: 1}});
+  s.to(10, {fA: 0});
   s.ev({kind: 'bay', bay: 1, state: 'new'}).ev({kind: 'light', light: 'green'});
   s.ev({kind: 'toast', text: 'PLC · Modbus: bay 2 occupied · new ID logged', tone: 'ok'});
   s.to(22, {Y: 0}).to(8, {fB: 1}).wait(6);
@@ -243,8 +245,9 @@ function build() {
   // 6) return the failed drive to RMA (S2) with slot B
   s.ev({kind: 'step', step: 6});
   s.to(18, {Z: zFor('B', H_SPARE[1])});
-  s.to(24, {Y: Y_PULL}).to(10, {fB: 0});
+  s.to(24, {Y: Y_PULL});
   s.ev({kind: 'caddy', id: 'failed', to: {mode: 'spare', slot: 1}});
+  s.to(10, {fB: 0});
   s.to(22, {Y: 0});
   // 7) stay docked at base and charge
   s.ev({kind: 'step', step: 7});

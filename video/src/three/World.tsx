@@ -4,7 +4,7 @@ import {useLayoutEffect, useMemo} from 'react';
 import {staticFile, useCurrentFrame} from 'remotion';
 import * as THREE from 'three';
 import {RoomEnvironment} from 'three/examples/jsm/environments/RoomEnvironment.js';
-import {BayState, CaddyMode, inOut, ROUTES, stateAt, WorldState} from '../anim';
+import {BayState, CaddyMode, ROUTES, smooth, stateAt, WorldState} from '../anim';
 import {cameraAt} from '../camera';
 import {AXLE_Y, BAY_PITCH, CAM_LENS, COLORS, FINGER_DZ, FINGER_X, H_BAY, H_SPARE, SCENES, SPARE_D, SPARE_X, TAG_APPROACH, TOWER, Y_NOTCH_HOME, Y_PULL} from '../constants';
 import {c3, clamp01} from '../geom';
@@ -193,7 +193,7 @@ const RouteLine: React.FC<{frame: number}> = ({frame}) => {
   const r = ROUTES.find((q) => frame >= q.f0 - 40 && frame <= q.f1 + 12);
   if (!r) return null;
   const k = clamp01(Math.min((frame - (r.f0 - 40)) / 12, (r.f1 + 12 - frame) / 12));
-  const i = Math.floor(inOut(clamp01((frame - r.f0) / (r.f1 - r.f0))) * (r.pts.length - 1));
+  const i = Math.floor(smooth(clamp01((frame - r.f0) / (r.f1 - r.f0))) * (r.pts.length - 1));
   const pts = r.pts.slice(i).map(([x, y]) => c3(x, y, 2));
   if (pts.length < 2) return null;
   const end = pts[pts.length - 1];
