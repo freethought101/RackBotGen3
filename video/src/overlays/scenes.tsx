@@ -106,7 +106,7 @@ export const Reveal: React.FC = () => {
         <div style={{position: 'absolute', left: 140, top: 330}}>
           <Kicker text="introducing" at={a + 10} />
           <div style={{height: 26}} />
-          <Words text="RackBot *Gen3*" at={a + 16} size={150} stagger={6} />
+          <Words text="*Corvin*" at={a + 16} size={150} stagger={6} />
           <div style={{height: 18}} />
           <Words text="The autonomous drive hot-swap robot." at={a + 34} size={42} weight={500} font={INTER} stagger={2} style={{color: COLORS.ink}} />
           <div style={{height: 38}} />
@@ -358,7 +358,7 @@ export const Close: React.FC = () => {
       </div>
       <AbsoluteFill style={{opacity: endK, background: COLORS.bg, alignItems: 'center', justifyContent: 'center'}}>
         <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-          <Kicker text="rackbot gen3" at={end + 4} />
+          <Kicker text="corvin" at={end + 4} />
           <div style={{height: 30}} />
           <Words text="Lights-out maintenance." at={end + 8} size={96} style={{justifyContent: 'center'}} />
           <Words text="*One drive at a time.*" at={end + 22} size={96} style={{justifyContent: 'center'}} />
