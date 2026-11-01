@@ -1,0 +1,59 @@
+<section id="data" data-transition="fade" style="background:#05121E;color:#F2F7FB;font-family:'DM Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:24px">
+<p style="font-family:'Hanken Grotesk', Arial, sans-serif;font-size:24px;color:#38D3FF;letter-spacing:2px;text-transform:uppercase;border-bottom:1px solid #1E4258;padding:0 0 12px;font-weight:800">08 · Data, vision &amp; deployment</p>
+<h2 style="font-family:'Hanken Grotesk', Arial, sans-serif;font-size:64px;font-weight:800;line-height:1.1">One Pi runs the whole stack — zero servers to pay for</h2>
+<div style="display:grid;grid-template-columns:repeat(3, 1fr);gap:24px">
+<div style="display:flex;flex-direction:column;gap:12px;background:#0A2133;border:1px solid #1E4258;border-top:4px solid #38D3FF;border-radius:8px;padding:24px">
+<h3 style="font-family:'Hanken Grotesk', Arial, sans-serif;font-size:32px;font-weight:800">Wiring</h3>
+<ul style="font-size:24px;line-height:1.35;color:#C4D6E4">
+<li>Camera (CSI) → Pi</li>
+<li>Steppers + finger servos → ESP32</li>
+<li>ESP32 ↔ Pi (USB) → dashboard (WebSocket)</li>
+</ul>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#0A2133;border:1px solid #1E4258;border-top:4px solid #38D3FF;border-radius:8px;padding:24px">
+<h3 style="font-family:'Hanken Grotesk', Arial, sans-serif;font-size:32px;font-weight:800">Backend</h3>
+<ul style="font-size:24px;line-height:1.35;color:#C4D6E4">
+<li>FastAPI runs on the Pi itself</li>
+<li>State machine writes to SQLite live</li>
+<li>Dashboard reads the same file — no internet needed</li>
+</ul>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#0A2133;border:1px solid #1E4258;border-top:4px solid #38D3FF;border-radius:8px;padding:24px">
+<h3 style="font-family:'Hanken Grotesk', Arial, sans-serif;font-size:32px;font-weight:800">Database</h3>
+<ul style="font-size:24px;line-height:1.35;color:#C4D6E4">
+<li>One SQLite file, 3 tables</li>
+<li>jobs · events · caddies</li>
+<li>A full event's data: well under 1 MB</li>
+</ul>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#0A2133;border:1px solid #1E4258;border-top:4px solid #38D3FF;border-radius:8px;padding:24px">
+<h3 style="font-family:'Hanken Grotesk', Arial, sans-serif;font-size:32px;font-weight:800">Hosting</h3>
+<ul style="font-size:24px;line-height:1.35;color:#C4D6E4">
+<li>Primary: the Pi is the server — $0</li>
+<li>Remote mirror (optional): Render / Cloud Run free tier</li>
+<li>Always-on option: ≈ $5/mo (Railway)</li>
+</ul>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#0A2133;border:1px solid #1E4258;border-top:4px solid #38D3FF;border-radius:8px;padding:24px">
+<h3 style="font-family:'Hanken Grotesk', Arial, sans-serif;font-size:32px;font-weight:800">Vision alignment</h3>
+<ul style="font-size:24px;line-height:1.35;color:#C4D6E4">
+<li>AprilTag pose at ≥ 8 fps</li>
+<li>Bay tag corrects Z lift, ±4 mm</li>
+<li>Caddy tag re-checked before every pull</li>
+</ul>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#0A2133;border:1px solid #1E4258;border-top:4px solid #38D3FF;border-radius:8px;padding:24px">
+<h3 style="font-family:'Hanken Grotesk', Arial, sans-serif;font-size:32px;font-weight:800">Position tracking</h3>
+<ul style="font-size:24px;line-height:1.35;color:#C4D6E4">
+<li>Dead-reckoned from commanded steps</li>
+<li>Open-loop steppers are repeatable</li>
+<li>Each tag sighting clears the drift</li>
+</ul>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:900px;font-size:24px;color:#8EA8BC">Corvin · Delta Cup 2026 · spec v0.1.22</p>
+<div style="position:absolute;left:1092px;bottom:80px;width:300px;height:8px;background:#1E4258;border-radius:4px"></div>
+<div style="position:absolute;left:1092px;bottom:80px;width:150px;height:8px;background:#38D3FF;border-radius:4px"></div>
+<p style="position:absolute;right:128px;bottom:64px;width:320px;text-align:right;font-family:'Hanken Grotesk', Arial, sans-serif;font-size:34px;color:#8EA8BC;font-weight:800">→5:00 · 08/13</p>
+<aside>(35 s) Everything runs on the robot's Raspberry Pi, so we pay nothing for servers. Every job is saved in one small database file, and the dashboard reads the same file. The robot knows its position by counting its motor steps. Each time the camera sees a tag, it corrects any small error.</aside>
+</section>

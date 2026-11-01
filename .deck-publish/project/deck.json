@@ -1,0 +1,62 @@
+{
+  "v": 4,
+  "createdOnFiles": {
+    "v": 1,
+    "at": "2026-10-20T09:00:00Z"
+  },
+  "lists": "css",
+  "title": "Corvin — Senior Referee Review",
+  "cover": "cover",
+  "order": [
+    "cover",
+    "problem",
+    "system",
+    "workflow",
+    "mechanical",
+    "electronics",
+    "software",
+    "data",
+    "manufacturing",
+    "demo",
+    "verification",
+    "plan",
+    "close"
+  ],
+  "sections": {
+    "s1": {
+      "description": "Why an autonomous drive-swap robot, and what it must achieve",
+      "start": "cover"
+    },
+    "s2": {
+      "description": "System architecture and the swap workflow",
+      "start": "system"
+    },
+    "s3": {
+      "description": "Engineering design: mechanical, electronics, software and vision",
+      "start": "mechanical"
+    },
+    "s4": {
+      "description": "How it is manufactured with a printer, a saw and a drill press",
+      "start": "manufacturing"
+    },
+    "s5": {
+      "description": "Simulated prototype demonstration",
+      "start": "demo"
+    },
+    "s6": {
+      "description": "Verification, budget, schedule, risks and summary",
+      "start": "verification"
+    }
+  },
+  "faces": {
+    "dm-sans": {
+      "family": "DM Sans",
+      "href": "https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800&display=swap"
+    },
+    "hanken-grotesk": {
+      "family": "Hanken Grotesk",
+      "href": "https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@500;700;800&display=swap"
+    }
+  },
+  "designSystems": []
+}

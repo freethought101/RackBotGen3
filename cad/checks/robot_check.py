@@ -24,7 +24,8 @@ failures = []
 EXPECTED = [("kfl08", "leadscrew_tr8x2"), ("nema17:z", "coupler"), ("nema17:y", "gt2_pulley_20t"),
             ("vwheel:z", "mast_2040"), ("vwheel:y", "y_rail_2020"), ("spacer:", "vwheel"), ("shim:", "vwheel"),
             ("spacer:", "shim:"),
-            ("kw11:nose", "rack/dock_block"), ("kw11:y_home", "y_carriage"),   # levers pressed when docked / at Y home ("y_carriage", "gt2_belt:inner"), ("belt_clamp", "gt2_belt:inner"),
+            ("kw11:nose", "rack/dock_block"), ("kw11:y_home", "y_carriage"),   # levers pressed when docked / at Y home
+            ("y_carriage", "gt2_belt:inner"), ("belt_clamp", "gt2_belt:inner"),
             ("leadscrew_tr8x2", "mast_top_plate"), ("coupler", "leadscrew_tr8x2"), ("nut_block_tr8", "leadscrew_tr8x2"),
             ("nema17:drive", "drive_hub"), ("drive_hub", "drive_tire")]   # D-flat on the round shaft model; tire stretch fit
 PRINTED_DENSITY = 1.27e-3 * 0.5          # PETG, ~50 % effective fill

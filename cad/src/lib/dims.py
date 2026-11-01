@@ -51,7 +51,8 @@ SHAFT5_BORE = 5.3              # bore on a 5 mm motor shaft (drive hub): printed
 
 # KW11-3Z lever microswitch (P10 drawing): body length, height (pin edge to lever edge), thickness; free lever height
 # above the lever edge; mounting holes +/- hole_dx from the body centre, ~hole_up in from the pin edge (estimated).
-KW11 = {"l": 19.7, "h": 10.6, "t": 6.6, "lever": 7.1, "hole_dx": 4.75, "hole_up": 2.8}   # hole_up from the P10 STEP
+KW11 = {"l": 19.7, "h": 10.6, "t": 6.6, "lever": 7.1, "hole_dx": 4.75, "hole_up": 2.8, "hole_dl": 0.4}   # hole_up, hole_dl
+# (holes 0.4 off the body centre, toward the lever hinge)   # hole_up from the P10 STEP
 # (docs/3d-models/P10_kw11-3z-hinge-lever.step); its short lever rises only 4.3 above the body, not 7.1: measure the
 # bought switches, the trigger points (nose, Z/Y home) are designed for 7.1
 KW11_PRESS = 2.0               # lever travel at which a switch counts as triggered (design value)

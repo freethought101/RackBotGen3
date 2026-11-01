@@ -1,0 +1,23 @@
+<section id="electronics" data-transition="fade" style="background:#05121E;color:#F2F7FB;font-family:'DM Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:24px">
+<img src="/_blob/3b21c155c4f37a41e627201cce11568a" alt="3D render of the RBG3-MOTION board: sockets for four stepper driver modules and the ESP32-S3 DevKit, motor and switch connectors, power input and bulk capacitors" style="position:absolute;left:872px;top:300px;width:920px;height:605px;object-fit:contain;border-radius:12px">
+<p style="font-family:'Hanken Grotesk', Arial, sans-serif;font-size:24px;color:#38D3FF;letter-spacing:2px;text-transform:uppercase;border-bottom:1px solid #1E4258;padding:0 0 12px;font-weight:800">06 · Electronics &amp; power</p>
+<h2 style="font-family:'Hanken Grotesk', Arial, sans-serif;font-size:64px;font-weight:800;line-height:1.1">Our own carrier board, proven modules on it</h2>
+<div style="width:704px;display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;line-height:1.4;color:#C4D6E4"><b style="color:#F2F7FB">RBG3-MOTION</b> · 100 × 100 mm, 2 layers: ESP32-S3 + 4 × TMC2209 on one UART</p>
+<p style="font-size:24px;line-height:1.4;color:#C4D6E4"><b style="color:#F2F7FB">Power</b> · 50.4 Wh pack → 7.5 A fuse → INA226 → bus; TVS on VMOT</p>
+<p style="font-size:24px;line-height:1.4;color:#C4D6E4"><b style="color:#F2F7FB">E-stop</b> · NC button drops a relay that cuts motor power; a cut wire stops it too</p>
+<p style="font-size:24px;line-height:1.4;color:#C4D6E4"><b style="color:#F2F7FB">Charging</b> · 24 V dock → SS54 → CC/CV 16.8 V / 1.5 A</p>
+<p style="font-family:'Hanken Grotesk', Arial, sans-serif;font-size:24px;color:#38D3FF;padding:8px 0 0 0;font-weight:800">SPICE checks (ngspice) · all pass</p>
+<table style="font-size:24px;color:#F2F7FB">
+<tr style="background:#0D2A40"><th style="width:58%;text-align:left">Case</th><th style="width:21%;text-align:right">Sim</th><th style="width:21%;text-align:right">Limit</th></tr>
+<tr><td>Full pack hot-plugged onto VMOT</td><td style="text-align:right">17.6 V</td><td style="text-align:right">&lt; 29 V</td></tr>
+<tr><td>E-stop opens at full current</td><td style="text-align:right">17.4 V</td><td style="text-align:right">&lt; 29 V</td></tr>
+<tr><td>Charger backfeed on dock sense</td><td style="text-align:right">16.2 V</td><td style="text-align:right">&lt; 20 V</td></tr>
+</table>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:900px;font-size:24px;color:#8EA8BC">Corvin · Delta Cup 2026 · spec v0.1.22</p>
+<div style="position:absolute;left:1092px;bottom:80px;width:300px;height:8px;background:#1E4258;border-radius:4px"></div>
+<div style="position:absolute;left:1092px;bottom:80px;width:115px;height:8px;background:#38D3FF;border-radius:4px"></div>
+<p style="position:absolute;right:128px;bottom:64px;width:320px;text-align:right;font-family:'Hanken Grotesk', Arial, sans-serif;font-size:34px;color:#8EA8BC;font-weight:800">→3:50 · 06/13</p>
+<aside>(40 s) We designed our own circuit board. It holds an ESP32 and four motor drivers. A 7.5 amp fuse protects everything after the battery. A sensor measures how much energy each swap uses. The emergency stop cuts the motor power, and a broken wire also stops the motors. We tested three risky cases in simulation, and all of them are safe.</aside>
+</section>

@@ -1,0 +1,65 @@
+<section id="software" data-transition="fade" style="background:#05121E;color:#F2F7FB;font-family:'DM Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:24px">
+<p style="font-family:'Hanken Grotesk', Arial, sans-serif;font-size:24px;color:#38D3FF;letter-spacing:2px;text-transform:uppercase;border-bottom:1px solid #1E4258;padding:0 0 12px;font-weight:800">07 · Software &amp; vision</p>
+<h2 style="font-family:'Hanken Grotesk', Arial, sans-serif;font-size:64px;font-weight:800;line-height:1.1">Every step checks its result before the next</h2>
+<div style="display:flex;flex-direction:row;gap:24px">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#0A2133;border:1px solid #1E4258;border-top:4px solid #38D3FF;border-radius:8px;padding:24px">
+<h3 style="font-family:'Hanken Grotesk', Arial, sans-serif;font-size:32px;font-weight:800">Vision</h3>
+<ul style="font-size:24px;line-height:1.35;color:#C4D6E4">
+<li>AprilTags, 640 × 480 on the Pi 3</li>
+<li>Tag pose steers the approach; funnel takes over under 260 mm</li>
+<li>Bay tag corrects Z, up to 4 mm</li>
+<li>Caddy ID checked before every pull</li>
+</ul>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#0A2133;border:1px solid #1E4258;border-top:4px solid #38D3FF;border-radius:8px;padding:24px">
+<h3 style="font-family:'Hanken Grotesk', Arial, sans-serif;font-size:32px;font-weight:800">Mission</h3>
+<ul style="font-size:24px;line-height:1.35;color:#C4D6E4">
+<li>State machine on the Pi</li>
+<li>Each move verified by a switch or the PLC; 2 retries, then FAULT</li>
+<li>E-stop → re-home → resume or abort</li>
+<li>Every transition time-stamped</li>
+</ul>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#0A2133;border:1px solid #1E4258;border-top:4px solid #38D3FF;border-radius:8px;padding:24px">
+<h3 style="font-family:'Hanken Grotesk', Arial, sans-serif;font-size:32px;font-weight:800">Motion firmware</h3>
+<ul style="font-size:24px;line-height:1.35;color:#C4D6E4">
+<li>ESP32-S3, hardware step generation</li>
+<li>TMC2209 set over UART</li>
+<li>VMOT &lt; 9 V → drivers off, re-init on return</li>
+<li>300 ms watchdog on velocity</li>
+</ul>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#0A2133;border:1px solid #1E4258;border-top:4px solid #38D3FF;border-radius:8px;padding:24px">
+<h3 style="font-family:'Hanken Grotesk', Arial, sans-serif;font-size:32px;font-weight:800">IIoT dashboard</h3>
+<ul style="font-size:24px;line-height:1.35;color:#C4D6E4">
+<li>FastAPI + WebSocket, 5 Hz</li>
+<li>Rack health, jobs, energy, camera</li>
+<li>Delta PLC over Modbus TCP</li>
+<li>Failed bay → job queued automatically</li>
+</ul>
+</div>
+</div>
+<div style="flex:1"></div>
+<div style="display:flex;flex-direction:row;flex-wrap:wrap;align-items:center;gap:10px">
+<p style="font-family:'Hanken Grotesk', Arial, sans-serif;font-size:24px;background:#0D2A40;color:#38D3FF;border-radius:6px;padding:4px 10px;font-weight:800">IDLE_DOCKED</p>
+<p style="font-size:24px;color:#8EA8BC">→</p>
+<p style="font-family:'Hanken Grotesk', Arial, sans-serif;font-size:24px;background:#0D2A40;color:#38D3FF;border-radius:6px;padding:4px 10px;font-weight:800">PICK_GOOD</p>
+<p style="font-size:24px;color:#8EA8BC">→</p>
+<p style="font-family:'Hanken Grotesk', Arial, sans-serif;font-size:24px;background:#0D2A40;color:#38D3FF;border-radius:6px;padding:4px 10px;font-weight:800">TO_RACK</p>
+<p style="font-size:24px;color:#8EA8BC">→</p>
+<p style="font-family:'Hanken Grotesk', Arial, sans-serif;font-size:24px;background:#0D2A40;color:#38D3FF;border-radius:6px;padding:4px 10px;font-weight:800">EXTRACT_FAILED</p>
+<p style="font-size:24px;color:#8EA8BC">→</p>
+<p style="font-family:'Hanken Grotesk', Arial, sans-serif;font-size:24px;background:#0D2A40;color:#38D3FF;border-radius:6px;padding:4px 10px;font-weight:800">INSERT_GOOD</p>
+<p style="font-size:24px;color:#8EA8BC">→</p>
+<p style="font-family:'Hanken Grotesk', Arial, sans-serif;font-size:24px;background:#0D2A40;color:#38D3FF;border-radius:6px;padding:4px 10px;font-weight:800">TO_SPARE_RMA</p>
+<p style="font-size:24px;color:#8EA8BC">→</p>
+<p style="font-family:'Hanken Grotesk', Arial, sans-serif;font-size:24px;background:#0D2A40;color:#38D3FF;border-radius:6px;padding:4px 10px;font-weight:800">PLACE_RMA</p>
+<p style="font-size:24px;color:#8EA8BC">· any state →</p>
+<p style="font-family:'Hanken Grotesk', Arial, sans-serif;font-size:24px;background:#3A1A14;color:#F28A2E;border-radius:6px;padding:4px 10px;font-weight:800">FAULT</p>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:900px;font-size:24px;color:#8EA8BC">Corvin · Delta Cup 2026 · spec v0.1.22</p>
+<div style="position:absolute;left:1092px;bottom:80px;width:300px;height:8px;background:#1E4258;border-radius:4px"></div>
+<div style="position:absolute;left:1092px;bottom:80px;width:132px;height:8px;background:#38D3FF;border-radius:4px"></div>
+<p style="position:absolute;right:128px;bottom:64px;width:320px;text-align:right;font-family:'Hanken Grotesk', Arial, sans-serif;font-size:34px;color:#8EA8BC;font-weight:800">→4:25 · 07/13</p>
+<aside>(35 s) Our software checks every step. After each pull, push or dock, a switch confirms it worked. If not, the robot tries two more times, then stops and shows the reason. When a drive breaks, the dashboard starts a new job by itself. All of this already works in simulation.</aside>
+</section>
