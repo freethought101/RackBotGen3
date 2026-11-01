@@ -1,0 +1,30 @@
+<section id="verification" data-transition="fade" style="background:#05121E;color:#F2F7FB;font-family:'DM Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:24px">
+<p style="font-family:'Hanken Grotesk', Arial, sans-serif;font-size:24px;color:#38D3FF;letter-spacing:2px;text-transform:uppercase;border-bottom:1px solid #1E4258;padding:0 0 12px;font-weight:800">11 · Verification</p>
+<h2 style="font-family:'Hanken Grotesk', Arial, sans-serif;font-size:64px;font-weight:800;line-height:1.1">Checked in CAD and SPICE now, proven on hardware next</h2>
+<div style="display:flex;flex-direction:row;gap:64px">
+<div style="flex:1;display:flex;flex-direction:column;gap:16px">
+<h3 style="font-family:'Hanken Grotesk', Arial, sans-serif;font-size:32px;font-weight:800;color:#38D3FF">Done in design</h3>
+<p style="font-size:24px;line-height:1.4;color:#C4D6E4"><b style="color:#F2F7FB">CAD checks</b> · ≥ 1 mm running clearance over 42 poses; full pull and push strokes at every bay and slot; tip-over, packing, print bed</p>
+<p style="font-size:24px;line-height:1.4;color:#C4D6E4"><b style="color:#F2F7FB">SPICE</b> · hot-plug, E-stop, charger backfeed, ADC ranges</p>
+<p style="font-size:24px;line-height:1.4;color:#C4D6E4"><b style="color:#F2F7FB">Datasheet cross-check</b> · fuse 7.5 A, servo supply 5.8 V, driver UART jumpers</p>
+<p style="font-size:24px;line-height:1.4;color:#C4D6E4"><b style="color:#F2F7FB">Peer reviews</b> · electrical and mechanical findings closed in the spec</p>
+<p style="font-size:24px;line-height:1.4;color:#C4D6E4"><b style="color:#F2F7FB">Unit tests</b> · protocol, Modbus map, fault injection at every mission state</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px">
+<h3 style="font-family:'Hanken Grotesk', Arial, sans-serif;font-size:32px;font-weight:800;color:#F28A2E">Hardware acceptance tests (5 of 14)</h3>
+<table style="font-size:24px;color:#F2F7FB">
+<tr style="background:#0D2A40"><th style="width:32%;text-align:left">Test</th><th style="width:68%;text-align:left">Pass criterion</th></tr>
+<tr><td>T6 Docking</td><td>20/20 from ±50 mm, ±10°; ±2 mm repeatability</td></tr>
+<tr><td>T8 Vision</td><td>≥ 8 fps at 640 × 480 on the Pi 3</td></tr>
+<tr><td>T10 E-stop</td><td>Motion stops &lt; 0.2 s; mission recovers</td></tr>
+<tr><td>T11 Full swap</td><td>≤ 3 min; ≥ 48 of 50 cycles hands-off</td></tr>
+<tr><td>T14 Pack test</td><td>Each bag ≤ 7 kg; reassembly ≤ 20 min</td></tr>
+</table>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:900px;font-size:24px;color:#8EA8BC">Corvin · Delta Cup 2026 · spec v0.1.22</p>
+<div style="position:absolute;left:1092px;bottom:80px;width:300px;height:8px;background:#1E4258;border-radius:4px"></div>
+<div style="position:absolute;left:1092px;bottom:80px;width:248px;height:8px;background:#38D3FF;border-radius:4px"></div>
+<p style="position:absolute;right:128px;bottom:64px;width:320px;text-align:right;font-family:'Hanken Grotesk', Arial, sans-serif;font-size:34px;color:#8EA8BC;font-weight:800">→8:15 · 11/13</p>
+<aside>(30 s) Before we have hardware, we checked the design in three ways. The 3D model checks that no parts hit each other in 42 positions. The circuit simulation checks the power. Software tests check what happens when each step fails. On the real robot, we have 14 tests. The most important one: 50 full swaps, and at least 48 must work with no help.</aside>
+</section>

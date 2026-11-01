@@ -76,7 +76,7 @@ def tray_stack():
     part -= prism_xy_wedge(yf)
     # Slot-presence switch pockets (body in the back plate, lever through the stop).
     sl, sd, st = SW_BODY
-    hx = sl / 2 + SW_FIT
+    hx = sl / 2 + SW_FIT + KW11["hole_dl"]                             # holes are 0.4 off the body centre
     hy = SW_FRONT_Y - sd + SW_HOLE_UP                                   # screw axis y
     for z0, access_up in ((0.0, False), (SLOT_A_DZ, True)):
         zc = z0 + SW_DZ

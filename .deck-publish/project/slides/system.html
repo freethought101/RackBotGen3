@@ -1,0 +1,42 @@
+<section id="system" data-transition="fade" style="background:#05121E;color:#F2F7FB;font-family:'DM Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:24px">
+<p style="font-family:'Hanken Grotesk', Arial, sans-serif;font-size:24px;color:#38D3FF;letter-spacing:2px;text-transform:uppercase;border-bottom:1px solid #1E4258;padding:0 0 12px;font-weight:800">03 · System architecture</p>
+<h2 style="font-family:'Hanken Grotesk', Arial, sans-serif;font-size:64px;font-weight:800;line-height:1.1">PLC for I/O and safety, Pi for planning</h2>
+<div style="position:absolute;left:128px;top:330px;width:560px;display:flex;flex-direction:column;gap:12px;background:#0A2133;border:2px solid #38D3FF;border-radius:12px;padding:24px">
+<h3 style="font-family:'Hanken Grotesk', Arial, sans-serif;font-size:32px;font-weight:800">Robot (mobile)</h3>
+<p style="font-size:24px;line-height:1.4;color:#C4D6E4">Raspberry Pi 3 + 120° camera: vision, mission logic, dashboard</p>
+<p style="font-size:24px;line-height:1.4;color:#C4D6E4">Motion board: ESP32-S3 + 4 × TMC2209, USB serial to the Pi</p>
+<p style="font-size:24px;line-height:1.4;color:#C4D6E4">4 × NEMA17 (drive L/R, Z lift, Y extractor) + 2 servo fingers</p>
+<p style="font-size:24px;line-height:1.4;color:#C4D6E4">4S Li-ion 50 Wh · BMS · fuse · INA226 · E-stop relay</p>
+</div>
+<div style="position:absolute;left:852px;top:300px;width:280px;display:flex;flex-direction:column;gap:4px;background:#0A2133;border:1px solid #1E4258;border-radius:12px;padding:20px">
+<h3 style="font-family:'Hanken Grotesk', Arial, sans-serif;font-size:28px;font-weight:800">Dashboard</h3>
+<p style="font-size:24px;color:#C4D6E4">laptop / phone</p>
+</div>
+<div style="position:absolute;left:852px;top:450px;width:280px;display:flex;flex-direction:column;gap:4px;background:#0A2133;border:1px solid #1E4258;border-radius:12px;padding:20px">
+<h3 style="font-family:'Hanken Grotesk', Arial, sans-serif;font-size:28px;font-weight:800">Travel router</h3>
+<p style="font-size:24px;color:#C4D6E4">Wi-Fi AP, offline</p>
+</div>
+<div style="position:absolute;left:1292px;top:300px;width:500px;display:flex;flex-direction:column;gap:12px;background:#0A2133;border:1px solid #1E4258;border-radius:12px;padding:24px">
+<h3 style="font-family:'Hanken Grotesk', Arial, sans-serif;font-size:32px;font-weight:800">Rack (static)</h3>
+<p style="font-size:24px;line-height:1.4;color:#C4D6E4"><b>Delta DVP-12SE PLC</b>: bay switches, E-stop, tower light, dock relay</p>
+<p style="font-size:24px;line-height:1.4;color:#C4D6E4"><b>Delta 24 V 120 W PSU</b>: rack and dock power</p>
+</div>
+<div style="position:absolute;left:1292px;top:720px;width:500px;display:flex;flex-direction:column;gap:12px;background:#0A2133;border:1px solid #1E4258;border-radius:12px;padding:24px">
+<h3 style="font-family:'Hanken Grotesk', Arial, sans-serif;font-size:32px;font-weight:800">Spare station (home)</h3>
+<p style="font-size:24px;line-height:1.4;color:#C4D6E4">S1 GOOD · S2 RMA · dock contacts + dock switch</p>
+</div>
+<x-connector x1="688" y1="530" x2="852" y2="530" head="both" style="color:#38D3FF;border-width:3px"></x-connector>
+<x-connector x1="992" y1="410" x2="992" y2="450" head="both" style="color:#38D3FF;border-width:3px"></x-connector>
+<x-connector x1="1132" y1="530" x2="1292" y2="530" head="both" style="color:#38D3FF;border-width:3px"></x-connector>
+<x-connector x1="1542" y1="610" x2="1542" y2="720" head="end" style="color:#38D3FF;border-width:3px"></x-connector>
+<x-connector x1="408" y1="750" x2="1292" y2="800" route="vh" head="both" style="color:#F28A2E;border-width:3px;border-style:dashed"></x-connector>
+<p style="position:absolute;left:694px;top:450px;width:156px;font-size:24px;line-height:1.4;text-align:center;color:#38D3FF">Modbus TCP, HTTP</p>
+<p style="position:absolute;left:1140px;top:480px;width:150px;font-size:24px;text-align:center;color:#38D3FF">Ethernet</p>
+<p style="position:absolute;left:1556px;top:630px;width:236px;font-size:24px;line-height:1.3;color:#38D3FF">dock relay + 2 cables</p>
+<p style="position:absolute;left:700px;top:820px;width:560px;font-size:24px;color:#F28A2E">24 V spring contacts: charges at home</p>
+<p style="position:absolute;left:128px;bottom:64px;width:900px;font-size:24px;color:#8EA8BC">Corvin · Delta Cup 2026 · spec v0.1.22</p>
+<div style="position:absolute;left:1092px;bottom:80px;width:300px;height:8px;background:#1E4258;border-radius:4px"></div>
+<div style="position:absolute;left:1092px;bottom:80px;width:55px;height:8px;background:#38D3FF;border-radius:4px"></div>
+<p style="position:absolute;right:128px;bottom:64px;width:320px;text-align:right;font-family:'Hanken Grotesk', Arial, sans-serif;font-size:34px;color:#8EA8BC;font-weight:800">→1:50 · 03/13</p>
+<aside>(45 s) Our system has three parts. The rack is controlled by a Delta PLC. It reads the bay switches, the emergency stop and the warning light, and it turns the charging power on and off. On the robot, a Raspberry Pi is the brain: it runs the camera, the job steps and the dashboard. It talks to the PLC over the local network, with no internet. Our own ESP32 board controls the motors.</aside>
+</section>

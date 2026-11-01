@@ -1,0 +1,30 @@
+<section id="mechanical" data-transition="fade" style="background:#05121E;color:#F2F7FB;font-family:'DM Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:24px">
+<img src="/_blob/898536af7675c77aaa23694381f49384" alt="CAD render of the robot: mast with lead-screw Z lift, belt-driven Y extractor, two-slot tray, direct-drive wheels and the motion board on the base" style="position:absolute;left:832px;top:300px;width:960px;height:620px;object-fit:contain">
+<p style="font-family:'Hanken Grotesk', Arial, sans-serif;font-size:24px;color:#38D3FF;letter-spacing:2px;text-transform:uppercase;border-bottom:1px solid #1E4258;padding:0 0 12px;font-weight:800">05 · Mechanical design</p>
+<h2 style="font-family:'Hanken Grotesk', Arial, sans-serif;font-size:64px;font-weight:800;line-height:1.1">One lift move swaps two caddies</h2>
+<div style="width:672px;display:flex;flex-direction:column;gap:20px">
+<p style="font-size:28px;line-height:1.35;color:#C4D6E4"><b style="color:#F2F7FB">Drive</b> · 2 × NEMA17 direct-drive, Ø80 printed wheels, differential steering</p>
+<p style="font-size:28px;line-height:1.35;color:#C4D6E4"><b style="color:#F2F7FB">Z lift</b> · Tr8×2 lead screw on V-wheels, 100–300 mm</p>
+<p style="font-size:28px;line-height:1.35;color:#C4D6E4"><b style="color:#F2F7FB">Y extractor</b> · GT2 belt, pull at 177 mm, push to 178.5 mm</p>
+<p style="font-size:28px;line-height:1.35;color:#C4D6E4"><b style="color:#F2F7FB">Fingers</b> · a servo swings each finger into the caddy handle notch: no clamping force, nothing passes the rack face</p>
+<p style="font-size:28px;line-height:1.35;color:#C4D6E4"><b style="color:#F2F7FB">Docking</b> · V-funnel and nose switch, ±2 mm X repeatability <span style="color:#F28A2E">(target, T6)</span></p>
+<p style="font-family:'Hanken Grotesk', Arial, sans-serif;font-size:24px;color:#F2F7FB;border-top:1px solid #1E4258;padding:16px 0 0 0;font-weight:800">300 × 360 mm · ≈ 545 mm tall · ≈ 4.5 kg</p>
+</div>
+<p style="position:absolute;left:840px;top:322px;width:300px;font-size:24px;white-space:nowrap;background:#0A2133;border:1px solid #1E4258;border-radius:6px;padding:2px 12px">E-stop → VMOT relay</p>
+<p style="position:absolute;left:840px;top:512px;width:300px;font-size:24px;white-space:nowrap;background:#0A2133;border:1px solid #1E4258;border-radius:6px;padding:2px 12px">Z · Tr8×2 lead screw</p>
+<p style="position:absolute;left:840px;top:860px;width:200px;font-size:24px;white-space:nowrap;background:#0A2133;border:1px solid #1E4258;border-radius:6px;padding:2px 12px">Motion board</p>
+<p style="position:absolute;left:1500px;top:322px;width:292px;font-size:24px;white-space:nowrap;background:#0A2133;border:1px solid #1E4258;border-radius:6px;padding:2px 12px">Tray · 2 slots, 45 mm</p>
+<p style="position:absolute;left:1500px;top:640px;width:292px;font-size:24px;white-space:nowrap;background:#0A2133;border:1px solid #1E4258;border-radius:6px;padding:2px 12px">Y · GT2 belt drive</p>
+<p style="position:absolute;left:1500px;top:870px;width:292px;font-size:24px;white-space:nowrap;background:#0A2133;border:1px solid #1E4258;border-radius:6px;padding:2px 12px">Direct-drive wheel</p>
+<x-connector x1="1140" y1="342" x2="1238" y2="342" head="end" style="color:#38D3FF;border-width:2px"></x-connector>
+<x-connector x1="1140" y1="532" x2="1226" y2="532" head="end" style="color:#38D3FF;border-width:2px"></x-connector>
+<x-connector x1="1040" y1="878" x2="1270" y2="808" head="end" style="color:#38D3FF;border-width:2px"></x-connector>
+<x-connector x1="1580" y1="366" x2="1440" y2="490" head="end" style="color:#38D3FF;border-width:2px"></x-connector>
+<x-connector x1="1560" y1="640" x2="1500" y2="596" head="end" style="color:#38D3FF;border-width:2px"></x-connector>
+<x-connector x1="1560" y1="870" x2="1500" y2="840" head="end" style="color:#38D3FF;border-width:2px"></x-connector>
+<p style="position:absolute;left:128px;bottom:64px;width:900px;font-size:24px;color:#8EA8BC">Corvin · Delta Cup 2026 · spec v0.1.22</p>
+<div style="position:absolute;left:1092px;bottom:80px;width:300px;height:8px;background:#1E4258;border-radius:4px"></div>
+<div style="position:absolute;left:1092px;bottom:80px;width:95px;height:8px;background:#38D3FF;border-radius:4px"></div>
+<p style="position:absolute;right:128px;bottom:64px;width:320px;text-align:right;font-family:'Hanken Grotesk', Arial, sans-serif;font-size:34px;color:#8EA8BC;font-weight:800">→3:10 · 05/13</p>
+<aside>(40 s) Four motors do all the moving: two for the wheels, one to lift up and down, and one to move in and out. To hold a drive, a small servo turns a finger down into a gap in the drive's handle. The same finger pulls and pushes, so we never squeeze the drive. To dock, the camera brings the robot close. Then a V-shaped guide puts it in the exact place, within 2 millimetres.</aside>
+</section>

@@ -1,0 +1,61 @@
+<section id="workflow" data-transition="fade" style="background:#05121E;color:#F2F7FB;font-family:'DM Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:24px">
+<p style="font-family:'Hanken Grotesk', Arial, sans-serif;font-size:24px;color:#38D3FF;letter-spacing:2px;text-transform:uppercase;border-bottom:1px solid #1E4258;padding:0 0 12px;font-weight:800">04 · Swap workflow</p>
+<h2 style="font-family:'Hanken Grotesk', Arial, sans-serif;font-size:64px;font-weight:800;line-height:1.1">One job: spare station → rack → spare station</h2>
+<div style="display:grid;grid-template-columns:repeat(7, 1fr);gap:16px">
+<div style="display:flex;flex-direction:column;gap:8px;background:#0A2133;border:1px solid #1E4258;border-top:4px solid #38D3FF;border-radius:8px;padding:20px">
+<p style="font-family:'Hanken Grotesk', Arial, sans-serif;font-size:32px;color:#38D3FF;font-weight:800">1</p>
+<p style="font-size:24px;font-weight:600">Fault</p>
+<p style="font-size:24px;line-height:1.35;color:#C4D6E4">Dashboard marks bay N failed</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px;background:#0A2133;border:1px solid #1E4258;border-top:4px solid #38D3FF;border-radius:8px;padding:20px">
+<p style="font-family:'Hanken Grotesk', Arial, sans-serif;font-size:32px;color:#38D3FF;font-weight:800">2</p>
+<p style="font-size:24px;font-weight:600">Pick</p>
+<p style="font-size:24px;line-height:1.35;color:#C4D6E4">Slot A pulls the spare from S1</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px;background:#0A2133;border:1px solid #1E4258;border-top:4px solid #38D3FF;border-radius:8px;padding:20px">
+<p style="font-family:'Hanken Grotesk', Arial, sans-serif;font-size:32px;color:#38D3FF;font-weight:800">3</p>
+<p style="font-size:24px;font-weight:600">Drive</p>
+<p style="font-size:24px;line-height:1.35;color:#C4D6E4">Undock, turn 180°, AprilTag approach, funnel dock</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px;background:#0A2133;border:1px solid #1E4258;border-top:4px solid #38D3FF;border-radius:8px;padding:20px">
+<p style="font-family:'Hanken Grotesk', Arial, sans-serif;font-size:32px;color:#38D3FF;font-weight:800">4</p>
+<p style="font-size:24px;font-weight:600">Extract</p>
+<p style="font-size:24px;line-height:1.35;color:#C4D6E4">Caddy ID checked, slot B pulls it</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px;background:#0A2133;border:1px solid #1E4258;border-top:4px solid #38D3FF;border-radius:8px;padding:20px">
+<p style="font-family:'Hanken Grotesk', Arial, sans-serif;font-size:32px;color:#38D3FF;font-weight:800">5</p>
+<p style="font-size:24px;font-weight:600">Insert</p>
+<p style="font-size:24px;line-height:1.35;color:#C4D6E4">Z −45 mm, slot A pushes the spare in</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px;background:#0A2133;border:1px solid #1E4258;border-top:4px solid #38D3FF;border-radius:8px;padding:20px">
+<p style="font-family:'Hanken Grotesk', Arial, sans-serif;font-size:32px;color:#38D3FF;font-weight:800">6</p>
+<p style="font-size:24px;font-weight:600">Return</p>
+<p style="font-size:24px;line-height:1.35;color:#C4D6E4">Dock home, failed caddy into S2</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px;background:#0A2133;border:1px solid #1E4258;border-top:4px solid #38D3FF;border-radius:8px;padding:20px">
+<p style="font-family:'Hanken Grotesk', Arial, sans-serif;font-size:32px;color:#38D3FF;font-weight:800">7</p>
+<p style="font-size:24px;font-weight:600">Charge</p>
+<p style="font-size:24px;line-height:1.35;color:#C4D6E4">PLC enables dock power; job logged</p>
+</div>
+</div>
+<div style="flex:1"></div>
+<div style="display:flex;flex-direction:row;gap:24px">
+<div style="flex:1;display:flex;flex-direction:column;gap:8px;border-left:4px solid #38D3FF;padding:8px 24px">
+<p style="font-family:'Hanken Grotesk', Arial, sans-serif;font-size:72px;font-weight:800;line-height:1.1;color:#38D3FF">2</p>
+<p style="font-size:28px;color:#C4D6E4">drives per job (was 4 with the rack as home)</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px;border-left:4px solid #38D3FF;padding:8px 24px">
+<p style="font-family:'Hanken Grotesk', Arial, sans-serif;font-size:72px;font-weight:800;line-height:1.1;color:#38D3FF">163 → 107 s</p>
+<p style="font-size:28px;color:#C4D6E4">cycle time in the simulator <span style="color:#F28A2E">· SIM</span></p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px;border-left:4px solid #38D3FF;padding:8px 24px">
+<p style="font-family:'Hanken Grotesk', Arial, sans-serif;font-size:72px;font-weight:800;line-height:1.1;color:#38D3FF">45 mm</p>
+<p style="font-size:28px;color:#C4D6E4">tray slot pitch = bay pitch: one visit pulls and inserts</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:900px;font-size:24px;color:#8EA8BC">Corvin · Delta Cup 2026 · spec v0.1.22</p>
+<div style="position:absolute;left:1092px;bottom:80px;width:300px;height:8px;background:#1E4258;border-radius:4px"></div>
+<div style="position:absolute;left:1092px;bottom:80px;width:75px;height:8px;background:#38D3FF;border-radius:4px"></div>
+<p style="position:absolute;right:128px;bottom:64px;width:320px;text-align:right;font-family:'Hanken Grotesk', Arial, sans-serif;font-size:34px;color:#8EA8BC;font-weight:800">→2:30 · 04/13</p>
+<aside>(40 s) One job has seven steps. The robot takes a good drive from its home station and drives to the rack. It checks the broken drive's label and pulls it out. Then it moves down 45 millimetres and pushes the good drive into the same place. It goes home, leaves the broken drive there, and charges. Because the robot has two slots, one trip is enough. In our simulation, one job takes 107 seconds.</aside>
+</section>
