@@ -65,7 +65,8 @@ def z_carriage():
     fx0 = fx1 - FIN_T
     yb = sy - NUT_BLOCK["h"] / 2 - BLOCK_MARGIN                      # back edge
     part += box(fx0, fx1, yb, y0, FIN_Z0, NUT_BLOCK_DZ[1] + SHELF_T)                        # fin
-    part += box(fx0, fx1, FIN_LOW_Y, y0, ZPLATE_DZ[0] + 23.0, FIN_Z0 + 0.1)                 # fin root, down to z 13
+    part += box(fx0, fx1, FIN_LOW_Y, y0, ZPLATE_DZ[0] + 25.0, FIN_Z0 + 0.1)                 # fin root, down to z 15:
+    # 2 mm over the Z-motor screw heads (top z 115) at Z_MIN, still clear at the hard stop
     part += box(fx0, SHELF_X1, yb, y0, NUT_BLOCK_DZ[1], NUT_BLOCK_DZ[1] + SHELF_T)          # shelf over the block
     part -= cyl_z(SHELF_HOLE_D, sx, sy, NUT_BLOCK_DZ[1] - 0.1, NUT_BLOCK_DZ[1] + SHELF_T + 0.1)
     part -= cyl_z(PRELOAD_ACCESS_D, sx, sy + NUT_BLOCK["preload_dy"], NUT_BLOCK_DZ[1] - 0.1,
