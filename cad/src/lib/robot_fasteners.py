@@ -36,7 +36,7 @@ NUT_H = {("hex", 3): 2.4, ("hex", 4): 3.2, ("hex", 5): 4.0, ("nylock", 3): 2.4, 
 NUT_ID = {("hex", 3): "iso4032_hex_nut_m3", ("hex", 4): "iso4032_hex_nut_m4", ("hex", 5): "iso4032_hex_nut_m5",
           ("nylock", 3): "nylon_locknut_m3_simple", ("nylock", 5): "nylon_locknut_m5_simple",
           ("tnut", 5): "extrusion_slot6_drop_in_tnut_m5_simple"}
-INSERT = {3: (4.5, 4.0), 5: (7.0, 8.0)}       # heat-set insert OD, length (assumed; measure the bought ones)
+INSERT = {3: (4.2, 4.0), 5: (7.0, 8.0)}       # heat-set insert OD, length: 3Din M3 x 4, M5 x 8 (P11)
 
 
 @dataclass
