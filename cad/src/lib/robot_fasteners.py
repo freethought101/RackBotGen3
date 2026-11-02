@@ -270,7 +270,7 @@ def lift_joints():
     for dy in (-NUT_BLOCK["pitch"] / 2, NUT_BLOCK["pitch"] / 2):
         J.append(Joint(f"nut_block{dy:+.0f}", "lift", "bh", 5, 20, (fx0, sy + dy, z_carriage.MOUNT_Z), X, "z_carriage",
                        z_carriage.FIN_T, "nylock", through=("nut_block_tr8",),
-                       nut_at=z_carriage.FIN_T + NUT_BLOCK["t"] - 5.0))         # nut at the hex pocket floor (5 deep)
+                       nut_at=z_carriage.FIN_T + sum(z_carriage.NUT_SHIM) / 2 + NUT_BLOCK["t"] - 5.0))   # shim, pocket floor
     hx0 = fx0 - z_carriage.ZSW_HANGER_T
     lever_z = z_carriage.ZSW_MOUNT_TOP - KW11_PRESS + KW11["lever"] - Z_HOME
     yc = sum(z_carriage.ZSW_Y) / 2

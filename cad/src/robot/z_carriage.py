@@ -18,7 +18,10 @@ from lib.robot_dims import (ECC_HOLE_D, ECC_OFFSET, NUT_BLOCK, NUT_BLOCK_DZ, SCR
 # plane), 2 x M5 through the fin into nylon-insert nuts in the block's hex pockets. The block's body end bears on a
 # shelf above it: the carriage hangs on the nut through the shelf, not through the screws. The shelf has an access
 # hole for the preload screw (fit the block with that screw on the +y side, toward the plate).
-FIN_GAP = NUT_BLOCK["t"] / 2               # screw axis -> fin face
+# Adjustable, so the nut lines up with the screw whatever the eccentrics, prints and bought parts add up to (~0.5-1.5 mm):
+# x by 0-1.5 mm of washer shims between fin and block (0.75 nominal), y and z by slotted holes.
+NUT_SHIM = (0.0, 1.5)                     # shim range behind the block
+FIN_GAP = NUT_BLOCK["t"] / 2 + sum(NUT_SHIM) / 2   # screw axis -> fin face (block centred on the screw at 0.75 shim)
 FIN_T = 6.0
 FIN_Z0 = 43.0                             # above the coupler (top z 40 at Z_MIN, 41.4 at the hard stop)
 FIN_LOW_Y = -247.0                        # in front of this the fin runs down to the switch hanger (clear of the coupler)
@@ -29,6 +32,7 @@ PRELOAD_ACCESS_D = 5.5                    # hex key to the M5 preload screw
 BLOCK_MARGIN = 2.0                        # fin/shelf beyond the block's 34 width
 MOUNT_Z = NUT_BLOCK_DZ[1] - NUT_BLOCK["hole_down"]
 MOUNT_SLOT = 0.5                          # +/- in z, so the block can be pushed up against the shelf
+MOUNT_SLOT_Y = 1.5                        # +/- in y (across the screw)
 # Z home switch (KW11-3Z): on a hanger below the fin's -x side, lever pointing down onto the Z-motor mount plate
 # (top at z 112, y -286.7..-246.4). It triggers at Z_HOME (lever pressed KW11_PRESS); slotted +/-1.5 in z to adjust.
 ZSW_MOUNT_TOP = 112.0                     # z_motor_mount plate top (ZMOTOR_Z[1] + ZMOUNT_T)
@@ -68,9 +72,12 @@ def z_carriage():
                   NUT_BLOCK_DZ[1] + SHELF_T + 0.1)
     p = NUT_BLOCK["pitch"] / 2
     for y in (sy - p, sy + p):
-        part -= box(fx0 - 0.1, fx1 + 0.1, y - M5_CLEAR / 2, y + M5_CLEAR / 2, MOUNT_Z - MOUNT_SLOT, MOUNT_Z + MOUNT_SLOT)
-        for dz in (-MOUNT_SLOT, MOUNT_SLOT):
-            part -= cyl_x(M5_CLEAR, fx0 - 0.1, fx1 + 0.1, y, MOUNT_Z + dz)
+        r, sy_, sz_ = M5_CLEAR / 2, MOUNT_SLOT_Y, MOUNT_SLOT                     # rounded-rectangle slot
+        part -= box(fx0 - 0.1, fx1 + 0.1, y - sy_ - r, y + sy_ + r, MOUNT_Z - sz_, MOUNT_Z + sz_)
+        part -= box(fx0 - 0.1, fx1 + 0.1, y - sy_, y + sy_, MOUNT_Z - sz_ - r, MOUNT_Z + sz_ + r)
+        for dy in (-sy_, sy_):
+            for dz in (-sz_, sz_):
+                part -= cyl_x(M5_CLEAR, fx0 - 0.1, fx1 + 0.1, y + dy, MOUNT_Z + dz)
     for x, z in TRAY_BOLTS:
         part -= _y_hole(M5_CLEAR, x, z, y0 - 0.1, y1 + 0.1)
     # Z home switch hanger: plate on the nut block's -x face, switch on its -x face (screws from -x).
