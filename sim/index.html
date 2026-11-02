@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Corvin Swap Simulator</title>
+    <meta name="claude:viewport-fit-sides" content="cover" />
+  </head>
+  <body>
+    <div id="app">
+      <header class="top">
+        <div class="brand">
+          <span class="mark" aria-hidden="true"></span>
+          <div>
+            <h1>Corvin</h1>
+            <p>Autonomous drive hot-swap · live simulation</p>
+          </div>
+        </div>
+        <div class="clock" title="Simulated time since start">
+          <span class="lbl">Sim time</span>
+          <b id="simClock">00:00:00</b>
+        </div>
+        <div class="seg" id="presetSeg" role="group" aria-label="Scene">
+          <button type="button" data-preset="hall" id="presetHall">Data hall</button>
+          <button type="button" data-preset="arena" id="presetArena">Competition arena</button>
+        </div>
+        <div class="seg" id="speedSeg" role="group" aria-label="Simulation speed">
+          <span class="lbl">Speed</span>
+          <button type="button" data-speed="1">1×</button>
+          <button type="button" data-speed="2">2×</button>
+          <button type="button" data-speed="4">4×</button>
+          <button type="button" data-speed="8">8×</button>
+          <button type="button" data-speed="16">16×</button>
+        </div>
+      </header>
+
+      <main class="stage">
+        <section class="view" id="view">
+          <canvas id="gl"></canvas>
+          <div class="scene-note" id="sceneNote"></div>
+          <div class="camseg seg" role="group" aria-label="Camera">
+            <button type="button" data-cam="overview" id="camOverview">Overview</button>
+            <button type="button" data-cam="follow" id="camFollow">Follow robot</button>
+            <button type="button" data-cam="station" id="camStation">Work station</button>
+          </div>
+
+          <figure class="pip" id="pip">
+            <figcaption>
+              <span class="rec" aria-hidden="true"></span>Robot camera · IMX708 120° · 640×480 · tag36h11
+              <button type="button" class="pip-size" id="pipSize" aria-label="Enlarge camera view">⤢</button>
+            </figcaption>
+            <div class="pip-frame">
+              <canvas id="pipGl"></canvas>
+              <canvas id="pipOverlay" width="640" height="480"></canvas>
+              <div class="pip-blocked" id="pipBlocked" hidden>LENS BLOCKED · no tags</div>
+            </div>
+            <div class="pip-hud" id="pipHud"></div>
+          </figure>
+
+          <div class="controls" id="controls">
+            <label class="tog"><input type="checkbox" id="autoMode" checked /> <span>Auto mode</span></label>
+            <label class="tog"><input type="checkbox" id="randomFaults" /> <span>Random failures</span></label>
+            <label class="tog"><input type="checkbox" id="autoRestock" checked /> <span>Auto restock</span></label>
+            <button type="button" id="restock">Restock spare</button>
+            <button type="button" id="blockCam" aria-pressed="false">Block camera</button>
+            <button type="button" id="resume" disabled>Resume</button>
+            <button type="button" id="reset">Reset</button>
+            <button type="button" class="estop" id="estop" aria-pressed="false">E-STOP</button>
+          </div>
+          <div class="loading" id="loading">Loading CAD models…</div>
+        </section>
+
+        <aside class="panel" id="panel">
+          <section class="card mission" aria-labelledby="hMission">
+            <div class="card-h">
+              <h2 id="hMission">Mission</h2>
+              <span class="pill" id="missionPill">IDLE</span>
+            </div>
+            <p class="job-line" id="jobLine">Docked at home, charging. Click a drive to fail it.</p>
+            <p class="step" id="stepLine">—</p>
+            <ol class="stepper" id="stepper"></ol>
+          </section>
+
+          <section class="card" aria-labelledby="hRacks">
+            <div class="card-h">
+              <h2 id="hRacks">Drives</h2>
+              <span class="hint">click a drive to inject a SMART fault</span>
+            </div>
+            <div class="racks" id="racks"></div>
+          </section>
+
+          <section class="card" aria-labelledby="hKpi">
+            <div class="card-h"><h2 id="hKpi">Operations</h2><span class="hint">simulated time</span></div>
+            <div class="kpis" id="kpis"></div>
+          </section>
+
+          <section class="card two" aria-label="Robot and PLC">
+            <div>
+              <div class="card-h"><h2>Robot</h2></div>
+              <div id="robotTel"></div>
+            </div>
+            <div>
+              <div class="card-h"><h2>Rack PLC</h2><span class="hint" id="plcRack"></span></div>
+              <div id="plcIo"></div>
+            </div>
+          </section>
+
+          <section class="card" aria-labelledby="hJobs">
+            <div class="card-h"><h2 id="hJobs">Jobs</h2></div>
+            <div class="tablewrap"><table class="jobs" id="jobs"></table></div>
+          </section>
+
+          <section class="card" aria-labelledby="hLog">
+            <div class="card-h"><h2 id="hLog">Event log</h2></div>
+            <ol class="log" id="log"></ol>
+          </section>
+        </aside>
+      </main>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
