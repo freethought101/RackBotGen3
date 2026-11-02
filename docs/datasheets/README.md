@@ -50,6 +50,7 @@ Spec values checked against these files: [CROSSCHECK.md](CROSSCHECK.md).
 | P16_esp32-s3-devkitc-1_v1.1_dimensions.dxf, P16_esp32-s3-devkitc-1_v1.1_pcb.pdf | P16 DevKitC-1 v1.1 outline DXF and PCB layout | dl.espressif.com |
 | P16_esp32-s3-devkitc-1_reference-design/ | P16 DevKitC-1 v1.1 reference design: schematic (.DSN/.pdf), PCB (.pcb/.pdf), Gerbers, BOM, placement | Espressif (downloaded by the team, 25 Oct) |
 | P05_anti-backlash-nut-block_drawing.jpg | P05 Tr8 anti-backlash nut block, OpenBuilds part 1055 drawing (34 × 33 × 12, 2 × M5 20 apart, Tr8 centred in the 12 thickness) | GrabCAD model download (by the team, 27 Oct) |
+| P11_heat-set-inserts_3din.jpg | P11 heat-set inserts (3Din, Tokopedia): M2 OD 3.2, M2.5 3.5, **M3 4.2**, M4 6, **M5 7.0**; lengths M3 3–8, M5 4–12 | Tokopedia listing image (by the team, 2 Nov) |
 | P18_xl4015_xlsemi-rev2.0.pdf | P18 XL4015 datasheet Rev 2.0 (Aug 2023, newer than P18_xl4015.pdf) | XLSEMI (downloaded by the team, 25 Oct) |
 
 3D models are kept separately in [`docs/3d-models/`](../3d-models/):
