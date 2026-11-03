@@ -25,11 +25,12 @@ checked against the receipt total. Sheets: Summary, Invoices, Items, Rig check (
 - It is generated: edit the data lists in `docs/budget/build_rig_purchases.py`, then rebuild with
   `uvx --with openpyxl python docs/budget/build_rig_purchases.py docs/budget/rig-purchases.xlsx` and read the
   cross-check it prints. Don't hand-edit the xlsx.
-- Receipts live outside the repo (they hold personal data) in `~/Downloads/Corvin invoices/`, named
-  `<date> <seller> <order no>.pdf`; copies go to its `_duplicates/` folder. New receipts arrive loose in `~/Downloads`.
-  AirDrop resends make duplicate files (`marketplace N`, repeated PDFs): compare hashes, count each order once, file
-  the original under that name, and put it in the File column.
-- Keep personal data (names, addresses, phone numbers) out of the workbook.
+- Receipts are in `docs/budget/invoices/` (committed at the owner's request; they show personal data and the repo
+  is public), named `<date> <seller> <order no>.pdf`. The owner's working copy is `~/Downloads/Corvin invoices/`,
+  with copies in its `_duplicates/` folder. New receipts arrive loose in `~/Downloads`. AirDrop resends make
+  duplicate files (`marketplace N`, repeated PDFs): compare hashes, count each order once, file the original under
+  that name in both places, and put it in the File column.
+- Keep personal data (names, addresses, phone numbers) out of the workbook itself.
 - Some entries are not plain Tokopedia receipts:
   - JLCPCB is in USD and is converted at the amount actually paid (rate cell on Invoices).
   - The FedEx import tax is in Rp.

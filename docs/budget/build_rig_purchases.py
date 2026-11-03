@@ -255,8 +255,8 @@ n = len(INV) + 1; t = n + 1
 I.cell(t, 5, "Total").font = BOLD
 for c in range(7, 17):
     I.cell(t, c, f"=SUM({L(c)}2:{L(c)}{n})").number_format = RP; I.cell(t, c).font = BOLD; I.cell(t, c).fill = TFILL
-I.cell(t + 2, 1, "Source: receipts in ~/Downloads/Corvin invoices (File column; blue = typed from the receipt). Batch = the folder they first came in. "
-       "Identical copies (AirDrop resends, 'marketplace' files) are in Corvin invoices/_duplicates and counted once.").font = Font(name=F, italic=True)
+I.cell(t + 2, 1, "Source: receipts in docs/budget/invoices (File column; blue = typed from the receipt). Batch = the folder they first came in. "
+       "Identical copies (AirDrop resends, 'marketplace' files) were left out (counted once).").font = Font(name=F, italic=True)
 I.cell(t + 3, 1, "Effective rate (Rp per USD) for the JLCPCB invoice: Rp579,000 actually paid / USD 31.53 (from the user)").font = BOLD
 I.cell(t + 3, 3, f"={PCB_PAID_RP}/31.53").font = BLUE; I.cell(t + 3, 3).fill = PatternFill("solid", fgColor="FFFF00"); I.cell(t + 3, 3).number_format = "#,##0.00"
 I.cell(t + 4, 1, "JLCPCB invoice 8322107A2026102314246516, 26 Oct 2026: 5 assembled motion boards USD 16.51 + FedEx USD 26.92 - discount USD 11.90 = USD 31.53.").font = Font(name=F, italic=True)
