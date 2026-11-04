@@ -31,7 +31,8 @@ already paid and not repeated here. Prices are estimates; check each one before 
 M5 nylock (11 used) is covered by Saleh's 15.
 
 ## Tools
-- [ ] **HSS drill bits 7.0 and 7.5 mm** (open up tight eccentric-spacer holes, Ø7.9 design, and any other hole that prints small), ≈ Rp20,000
+- [ ] **HSS drill bits 7.2 mm** (open up the eccentric-spacer holes, Ø7.7 design, printed deliberately tight) and a
+  small set 2–6 mm for any other hole that prints small, ≈ Rp20,000
 - Check the team has a soldering iron, solder and a multimeter (the multimeter sets the XL4015s to 16.8 V and 5.8 V).
 
 ## Local shop, Bali
@@ -49,7 +50,6 @@ printing ≈ **Rp3.86 M**, before shipping.
 ## Print order (same shop as fit test 1)
 - Export fresh STLs from the current CAD, not the old `quote.zip`: the Z carriage changed on 2 Nov (adjustable nut
   mount, fin 2 mm higher) and the belt clamp was missing.
-- Add `cad/STL/fit/hole_coupon.stl` to the batch (≈ 1 h). On pickup, check it and caliper the 4 eccentric holes
-  (Z carriage +x pair, Y carriage lower pair) before assembling: 7.1–7.5 as is, 7.5–7.7 tape + CA on the collar,
-  over 7.7 reprint that carriage with `ECC_HOLE_D` ≈ 7.4.
-- If a different shop prints the run, set `ECC_HOLE_D` ≈ 7.4 first: the hole sizes are tuned for this shop's shrink.
+- Holes are biased small (4 Nov, on the shop's advice): eccentric holes Ø7.7 (print ≈ 7.05, under the Ø7.11 boss),
+  opened with a 7.2 mm drill; heat-set insert pilots at the insert OD (M3 4.2, M5 7.0). A hole can be drilled bigger,
+  never smaller.

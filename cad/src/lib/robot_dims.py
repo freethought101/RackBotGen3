@@ -108,7 +108,9 @@ VWHEEL = {"d": 15.2, "w": 8.8, "sink": 1.6, "spacer_d": 10.0}   # mini V-wheel; 
 WHEEL_STACK = 7.0
 ECC_OFFSET = 0.7                     # mini eccentric spacer: bore 0.7 off the boss (OpenBuilds STEP). Its plate hole sits
 # 0.7 off the axle, square to the preload direction, so the wheel is mid-range and turning it moves it +/-0.7
-ECC_HOLE_D = 7.9                     # eccentric boss Ø7.11 (OpenBuilds STEP); ~7 mm holes print ~0.65 under (fit test 1) -> ~7.25
+ECC_HOLE_D = 7.7                     # eccentric boss Ø7.11 (OpenBuilds STEP); ~7 mm holes print ~0.65 under (fit test 1) -> ~7.05:
+# deliberately a little tight, opened with a 7.2 mm drill after printing (print shop, 4 Nov: a hole can be drilled
+# bigger, never smaller)
 WHEEL_SEAT_D = 12.0                  # pad / recess diameter around an axle (spacer hex is 9.2 across corners)
 ZWHEEL_SEAT_Y = (MAST_Y[0] + MAST_Y[1]) / 2 + VWHEEL["w"] / 2 + WHEEL_STACK   # -228.6: 0.6 pad on the Z plate
 YWHEEL_SEAT_X = (YRAIL_X[0] + YRAIL_X[1]) / 2 + VWHEEL["w"] / 2 + WHEEL_STACK  # 105.4: 0.4 recess in the Y plate

@@ -39,8 +39,9 @@ UPRIGHT_Y = (20.0, 135.0)      # upright centers along y
 # Design -> printed: 2.5 -> 2.11, 3.4 -> 3.19, 4.0 -> 3.58, 5.3 -> 5.08, 6.4 -> 5.75. See docs/fit-test-01.md.
 M5_CLEAR = 5.5
 M3_CLEAR = 3.6
-M3_INSERT_D = 4.4              # M3 heat-set insert pilot (3Din M3, OD 4.2): prints ~4.0, 0.2 interference
-M5_INSERT_D = 7.0              # M5 heat-set insert pilot (3Din M5, OD 7.0): prints ~6.35
+M3_INSERT_D = 4.2              # M3 heat-set insert pilot = insert OD (3Din M3, OD 4.2): prints ~3.8; tight is fine
+# for heat-set inserts (print shop, 4 Nov). Pilots are >= 1.1 x the insert length deep, for the displaced plastic
+M5_INSERT_D = 7.0              # M5 heat-set insert pilot = insert OD (3Din M5, OD 7.0): prints ~6.35
 M3_SELF_TAP_D = 2.85           # prints ~2.5
 M2_PILOT_D = 1.95              # M2 self-tapping pilot, prints ~1.6 (not measured, by extrapolation)
 M25_PILOT_D = 2.4              # M2.5 self-tapping pilot (Pi standoffs), prints ~2.05
