@@ -18,6 +18,13 @@ namespace {
 constexpr int kStepPins[AX_COUNT] = {pins::L_STEP, pins::R_STEP, pins::Z_STEP, pins::Y_STEP};
 constexpr int kDirPins[AX_COUNT] = {pins::L_DIR, pins::R_DIR, pins::Z_DIR, pins::Y_DIR};
 constexpr uint8_t kTmcAddr[AX_COUNT] = {0, 1, 2, 3};  // MS1/MS2 straps per socket (02 §2)
+#ifdef RBG3_RIG
+// Table rig: only the Z (U4) and Y (U5) sockets are fitted. An empty socket never answers over UART, so
+// configureDrivers() would always fail and the board would never leave E-stop.
+constexpr bool kDriverFitted[AX_COUNT] = {false, false, true, true};
+#else
+constexpr bool kDriverFitted[AX_COUNT] = {true, true, true, true};
+#endif
 
 class EspHal : public Hal {
  public:
@@ -94,6 +101,7 @@ class EspHal : public Hal {
   bool configureDrivers(const DriverSettings& cfg) override {
     bool ok = true;
     for (int i = 0; i < AX_COUNT; i++) {
+      if (!kDriverFitted[i]) continue;
       TMC2209Stepper& d = *drivers_[i];
       uint8_t before = d.IFCNT();
       d.begin();
@@ -119,7 +127,8 @@ class EspHal : public Hal {
 
   bool driversWereReset() override {
     bool reset = false;
-    for (auto* d : drivers_) reset |= (d->GSTAT() & 0x01) != 0;
+    for (int i = 0; i < AX_COUNT; i++)
+      if (kDriverFitted[i]) reset |= (drivers_[i]->GSTAT() & 0x01) != 0;
     return reset;
   }
 
