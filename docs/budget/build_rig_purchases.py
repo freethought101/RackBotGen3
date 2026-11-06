@@ -45,7 +45,6 @@ INV = [
  ("1-13","Invoice","2026-11-01 Lajarus Teknik 586912365092898239.pdf","2026-11-01","Lajarus Teknik","586912365092898239",119000,33000,-33000,0,8400,1000,1000,1000,130400),
  ("1-14","Invoice","2026-11-01 Rajawali3D 586912453409670591.pdf","2026-11-01","Rajawali3D","586912453409670591",72000,34500,-34500,0,1400,700,1000,1000,76100),
  ("2-01","Invoice 2","2026-11-02 Rajawali3D 586916375205610943.pdf","2026-11-02","Rajawali3D","586916375205610943",199000,34500,-34500,0,0,1500,1000,1000,202500),
- ("2-02","Invoice 2","2026-11-02 Putra jaya autopart 586916367026062783.pdf","2026-11-02","Putra jaya autopart","586916367026062783",33000,24500,-24500,0,3000,400,1000,1000,38400),
  ("2-03","Invoice 2","2026-11-02 CNC STORE BANDUNG 586916406310503871.pdf","2026-11-02","CNC STORE BANDUNG","586916406310503871",20600,18500,-18500,0,1400,300,1000,1000,24300),
  ("2-04","Invoice 2","2026-11-02 art techno new 586916427294410175.pdf","2026-11-02","art techno new","586916427294410175",13500,15000,-15000,0,0,200,1000,1000,15700),
  ("2-05","Invoice 2","2026-11-02 Sunly elektronik store 586916549279188415.pdf","2026-11-02","Sunly elektronik store","586916549279188415",109800,35000,-35000,0,0,900,1000,1000,112700),
@@ -64,6 +63,7 @@ INV = [
  ("4-08","Downloads","2026-11-03 APNcikarang 586945867966285247.pdf","2026-11-03","APNcikarang","586945867966285247",32000,35000,-32000,0,0,500,1000,1000,37500),
  ("5-01","Downloads","2026-10-26 JLCPCB 8322107A2026102314246516.pdf","2026-10-26","JLCPCB","SMT026102361018-Y9",rp(16.51),rp(26.92),0,rp(-11.90),0,0,0,0,rp(31.53)),
  ("5-02","Downloads","2026-11-01 FedEx import tax AWB 879182532980.pdf","2026-11-01","FedEx (import duty + tax)","AWB 879182532980",176849,0,0,0,0,0,0,0,176849),
+ ("5-03","Downloads","2026-11-04 Beaux Button Indonesia QRS1446982643.pdf","2026-11-04","Beaux Button Indonesia (3D print shop)","QRS1446982643",1416800,0,0,0,0,0,0,0,1416800),
  ("6-01","Manual","(no receipt; from the user)","","Anthropic (Claude Pro)","2 months",750000,0,0,0,0,0,0,0,750000),
 ]
 # (invoice, item, qty, unit Rp, pcs per unit, key, use)
@@ -106,7 +106,6 @@ IT = [
  ("2-01","M5 x 12 button head, pack of 10",1,10000,10,"m5x12","Mast collar"),
  ("2-01","M5 T-nut drop-in",90,1100,1,"tnut","Frame, brackets, shelves"),
  ("2-01","M5 x 10 button head, pack of 10",3,10000,10,"m5x10","Deck, shelves, top plate"),
- ("2-02","Relay Bosch 12 V 4-pin + socket",1,33000,1,"relay","VMOT cut from E-stop"),
  ("2-03","XL4015 5 A buck",1,20600,1,"xl4015","5.8 V servo rail"),
  ("2-04","Dupont jumper F-F 30 cm, 40-pin",1,13500,1,"jumpers","Servo extensions"),
  ("2-05","Adaptor 24 V 5 A",1,109800,1,"adapter","Replaces Delta PSU"),
@@ -156,6 +155,7 @@ IT = [
  ("4-08","M2 x 8 pan head, pack of 50",1,7000,50,"m2x8","Servo tabs (machine thread)"),
  ("5-01","Motion board PCBA, 5 boards (rbg3-motion, USD 16.51)",1,rp(16.51),5,"pcb","Motion board; 4 spares"),
  ("5-02","Import duty + taxes on the JLCPCB boards (FedEx, bank transfer)",1,176849,1,"import_tax","PCB import"),
+ ("5-03","3D printing, rig parts (PETG, QRIS payment)",1,1416800,1,"print","Rig printed parts: 3 caddies, 2 bay shelves, no dummies"),
  ("6-01","Claude Pro subscription, 2 months",1,750000,1,"claude","Design, CAD, firmware, docs"),
 ]
 # (key, item, need, unit, note) - rig needs from the CAD fastener model + rig page
@@ -167,7 +167,6 @@ NEED = [
  ("xl4015","XL4015 buck",2,"pcs","16.8 V and 5.8 V"),
  ("xy3606","XY-3606 5 V buck",1,"pcs",""),
  ("estop","E-stop LA38-11ZS",1,"pcs",""),
- ("relay","Relay 12 V + socket",1,"pcs",""),
  ("adapter","Adaptor 24 V 5 A",1,"pcs","Do not feed 24 V straight to the board (18 V TVS)"),
  ("mg90s","MG90S servo",2,"pcs","A spare is recommended"),
  ("kw11","KW11-3Z microswitch",4,"pcs","Z home, Y home, slot A, slot B"),
@@ -218,11 +217,20 @@ NEED = [
  ("ins_m5","M5 x 8 insert",10,"pcs",""),
 ]
 TODO = [
- ("USB-A to right-angle USB-C cable",1,29000,"Laptop to ESP32 (Haiku cart: 88gb)"),
  ("Heat-shrink 2 / 3 / 6 mm + cable ties",1,25000,"Wiring (local shop)"),
- ("Plywood 18 mm 660x300 + 5 mm ~250x300 (cut)",1,130000,"Base board + deck (or laser-cut deck)"),
- ("Steel ballast + epoxy ~1.1 kg",1,50000,"Dummy drives"),
+ ("Laser-cut deck (quoted, not paid yet)",1,75000,"Polaris Laser Bali, cad/DXF/robot/deck.dxf"),
+ ("Steel ballast ~0.9 kg (flat bar / washers) + epoxy",1,50000,"Bolted into the 2 moving caddies, ~450 g each (no dummy drives)"),
  ("Print shipping, Paxel L, Bekasi to Kuta (estimate from the user)",1,157000,"3D-printed parts, 35 x 30 x 25 cm box"),
+ ("Inline fuse holder 5x20 (min. order 3)",3,3000,"3 A fuse after the 16.8 V buck (review 6 Nov). Tokopedia cart: King Wijaya, Denpasar"),
+ ("Glass fuse 5x20 mm 3 A (min. order 10)",10,1940,"For the fuse holder; spares. King Wijaya"),
+ ("DC jack pigtail, female (min. order 3)",3,2910,"24 V adapter plug to the XL4015 input. King Wijaya"),
+ ("Drill bit 2 mm (min. order 3)",3,3880,"Servo horn holes. King Wijaya"),
+ ("HSS drill 7.2 mm (YG1)",1,46391,"Opens the 7.7 eccentric holes (print ~7.05) to 7.2. Podomoro Teknik, Bekasi"),
+ ("Servo extension F-M 50 cm",2,7566,"Fingers ride Y on Z; the F-F jumpers can't extend servo plugs. My Aladin, Bekasi"),
+ ("Spiral wrap 10 mm x 8 m",1,21381,"Moving harness over Z and Y. Life Habits, Denpasar"),
+ ("Perfboard backup kit for the motion board",1,50000,"Only built if the PCB fails bring-up. Tokopedia King Wijaya (Denpasar), "
+  "~Rp45,100: perfboard 9x15, 100 uF/35 V x2, 470 uF/35 V x2, female header 1x40 x3. Local shop: resistors 1k x6, 10k x10, "
+  "100k, 330R x2 (18k replaced by a 110k/20k divider, VMOT_DIVIDER = 6.5) and a male header"),
 ]
 
 wb = Workbook()
@@ -320,7 +328,10 @@ for i, (item, q, u, note) in enumerate(TODO, 2):
 k = len(TODO) + 1
 B.cell(k + 1, 1, "Total still to buy (estimate)").font = BOLD
 B.cell(k + 1, 4, f"=SUM(D2:D{k})").number_format = RP; B.cell(k + 1, 4).font = BOLD; B.cell(k + 1, 4).fill = TFILL
-B.cell(k + 2, 1, "3D printing (estimate, new quote needed)"); B.cell(k + 2, 4, 1100000).font = BLUE; B.cell(k + 2, 4).number_format = RP
+B.cell(k + 2, 1, "3D printing: paid 4 Nov (Invoices 5-03), nothing left to pay")
+B.cell(k + 2, 4, 0).font = BLUE; B.cell(k + 2, 4).number_format = RP
+B.cell(k + 2, 5, "Paid Rp1,416,800 vs the Rp1,380,500 estimate (=(1383-133-88+93)*1100). Shop quote 4 Nov: PETG 1,383 g at Rp1,100/g + PLA 524 g at Rp999/g (Rp2,044,776). Cut to 3 caddies (-133 g), "
+       "2 bay shelves (-88 g), no PLA dummy drives; + z_carriage ~93 g (estimate, missing from the quote). Coupon paid separately")
 B.cell(k + 4, 1, "Estimates from the rig page and docs/rig-order.md; check prices before paying.").font = Font(name=F, italic=True)
 
 # Summary content
@@ -335,11 +346,11 @@ rows = [
  ("Total paid (Rp)", f"=Invoices!O{t}", RP),
  ("  of which folder Invoice + Invoice 2 (Rp)", f'=SUMIFS(Invoices!O2:O{n},Invoices!B2:B{n},"Invoice")+SUMIFS(Invoices!O2:O{n},Invoices!B2:B{n},"Invoice 2")', RP),
  ("  of which folder Invoice 3 (Rp)", f'=SUMIFS(Invoices!O2:O{n},Invoices!B2:B{n},"Invoice 3")', RP),
- ("  of which loose in Downloads (3 Nov + JLCPCB) (Rp)", f'=SUMIFS(Invoices!O2:O{n},Invoices!B2:B{n},"Downloads")', RP),
+ ("  of which loose in Downloads (3-4 Nov, JLCPCB, FedEx, print) (Rp)", f'=SUMIFS(Invoices!O2:O{n},Invoices!B2:B{n},"Downloads")', RP),
  ("  of which entered by hand, no receipt (Rp)", f'=SUMIFS(Invoices!O2:O{n},Invoices!B2:B{n},"Manual")', RP),
  ("", None, None),
  ("Still to buy, estimate (Rp)", f"='Still to buy'!D{k+1}", RP),
- ("3D printing, estimate (Rp)", f"='Still to buy'!D{k+2}", RP),
+ ("3D printing still to pay (paid: Invoices 5-03) (Rp)", f"='Still to buy'!D{k+2}", RP),
  ("Rig total, estimate (Rp)", "=B8+B14+B15", RP),
  ("", None, None),
  ("Rig check: items missing", f"=COUNTIF('Rig check'!F2:F{rc_last},\"MISSING\")", "0"),
@@ -358,7 +369,8 @@ N.column_dimensions["A"].width = 120
 notes = [
  "Notes",
  "1. Duplicates: Invoice/PDF document 10 = 9 (Rajawali3D V-wheels) and 15 = 8 (xyz garage TMC2209). Counted once. Every 'marketplace' file is a copy of a PDF.",
- "2. The rig page said Saleh paid Rp1,857,950 for 20 orders; the receipts for folders Invoice + Invoice 2 add up to Rp1,857,450 (Rp500 less).",
+ "2. The rig page said Saleh paid Rp1,857,950 for 20 orders; the receipts for folders Invoice + Invoice 2 add up to Rp1,857,450 (Rp500 less),",
+ "   before the Bosch relay order was cancelled (note 14).",
  "3. Self-tapping 3.5 mm screws (3Din, 20 x 9.5 + 40 x 6.5): the dummy-drive holes are pilots for M3 self-tappers (design 2.85, prints ~2.5).",
  "   A 3.5 mm screw in a ~2.5 mm hole in a 1.9 mm wall is likely to split the PLA. Either buy M3 self-tappers, or raise M3_SELF_TAP_D",
  "   (cad/src/lib/dims.py) to ~3.3 before printing so it prints ~2.9-3.0 for the 3.5 mm screws.",
@@ -378,6 +390,10 @@ notes = [
  "11. FedEx import duty + taxes on the PCBs (AWB 879182532980, paid 1 Nov 2026 by bank transfer): Rp176,849, no withholding tax.",
  "    Landed cost of the motion boards = JLCPCB total + this bill.",
  "12. Claude Pro, 2 months, Rp750,000: entered by hand from the user (folder 'Manual'), no receipt in Downloads.",
+ "13. 3D printing (4 Nov, QRIS to Beaux Button Indonesia, Bekasi): Rp1,416,800 for the rig parts, cut to 3 caddies and 2 bay shelves,",
+ "    no PLA dummy drives. The hole coupon was paid separately before. Shipping to Bali is on Still to buy.",
+ "14. Bosch 12 V relay (Putra jaya autopart, order 586916367026062783, Rp38,400, 2 Nov) was cancelled and is left out. The E-stop NC",
+ "    contact is wired straight in series with VMOT (under 2 A at 12-16.8 V, wire >= 0.5 mm2). The receipt stays in the invoices folder.",
 ]
 for i, s in enumerate(notes, 1):
     N.cell(i, 1, s).font = BOLD if i == 1 else BLK
