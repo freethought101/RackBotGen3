@@ -42,6 +42,17 @@ checked against the receipt total. Sheets: Summary, Invoices, Items, Rig check (
 - Backlog database: `collection://44e6afc7-147e-44a9-93ea-1e0d068540f1` (live checklist; `docs/BACKLOG.md` is a snapshot).
 - Email draft (PLC loan): page `3f1cbcadc6fd811eac73cf63b7e66265`.
 
+## Hardware checks (required)
+
+Every instruction to check, probe, solder or wire the PCB or harness comes with a marked image and numbered steps:
+- Image: the owner's real photo first (`docs/images/photos/`, new ones arrive in `~/Downloads`), otherwise a 3D render, otherwise a picture of that exact part.
+- Mark on the image what to touch or look at, numbered to match the steps.
+- State the setup first: powered or not (USB, motor supply), what is plugged or unplugged, meter mode, parts to watch out for.
+- Files: real photos go in `docs/images/photos/`, finished instruction images in `docs/images/instructions/`.
+  Names are `<date>_<area>_<subject>.<ext>` in lowercase with hyphens, where area is `pcb`, `wiring` or `mechanical`
+  (photos: `<date>_<part>_<view>.jpg`). The date is when it was taken or made.
+- The repo is public: strip metadata from phone photos before adding them (they carry the GPS location) and crop out the room.
+
 ## Conventions
 - Commit only when asked; work on branch `spec/v0.1`.
 - KiCad re-saves files on open (format only); discard those unless asked.
