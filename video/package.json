@@ -5,7 +5,9 @@
   "scripts": {
     "studio": "remotion studio",
     "render": "remotion render RackBotPitch out/rackbot-pitch.mp4 --codec h264 --crf 18 --gl angle",
-    "still": "remotion still RackBotPitch --gl angle"
+    "still": "remotion still RackBotPitch --gl angle",
+    "render:tech": "remotion render CorvinTech out/corvin-tech.mp4 --codec h264 --crf 18 --gl angle --audio-bitrate 320k",
+    "cues:tech": "tsx src/tech/export-cues.ts"
   },
   "dependencies": {
     "@react-three/drei": "9.122.0",
