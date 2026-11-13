@@ -238,15 +238,17 @@ export const World: React.FC = () => {
   const rack = useModel('rack');
   const spare = useModel('spare');
   const goodCaddies = [useModel('caddy'), useModel('caddy'), useModel('caddy')];
-  const failed = useModel('caddy', COLORS.red);
-  const spareCaddy = useModel('caddy');
+  // one copy of each drive per place (rack, robot, base): handing a shared object between parents in one
+  // commit lets the old parent's unmount detach it from the new one, and the drive vanishes
+  const failed = {rack: useModel('caddy', COLORS.red), robot: useModel('caddy', COLORS.red), spare: useModel('caddy', COLORS.red)};
+  const spareCaddy = {rack: useModel('caddy'), robot: useModel('caddy'), spare: useModel('caddy')};
 
   const studio = frame >= SCENES.reveal[0] && frame < SCENES.how[1];
   const dark = frame < SCENES.reveal[0];
   const showRobot = frame >= SCENES.reveal[0];
   const arena = frame >= SCENES.swap[0]; // the wide rack-to-spare floor
   const failedGlow = s.bays[1] === 'failed' || (s.caddies.failed.mode !== 'rack' && frame < SCENES.delta[0]) ? 0.25 + 0.2 * Math.sin(frame / 5) : 0;
-  setEmissive(failed, failedGlow);
+  Object.values(failed).forEach((o) => setEmissive(o, failedGlow));
   const how = frame - SCENES.how[0];
   const frustum = how > 400 && how < 500 ? clamp01(Math.min((how - 400) / 15, (500 - how) / 15)) : 0;
 
@@ -256,8 +258,8 @@ export const World: React.FC = () => {
 
   const caddyRobot = (
     <>
-      <Caddy obj={spareCaddy} m={s.caddies.spare} s={s} where="robot" />
-      <Caddy obj={failed} m={s.caddies.failed} s={s} where="robot" />
+      <Caddy obj={spareCaddy.robot} m={s.caddies.spare} s={s} where="robot" />
+      <Caddy obj={failed.robot} m={s.caddies.failed} s={s} where="robot" />
     </>
   );
 
@@ -307,16 +309,16 @@ export const World: React.FC = () => {
           <group>
             <Prim object={rack} />
             {[0, 2, 3].map((b, i) => <Prim key={b} object={goodCaddies[i]} position={c3(0, 0, H_BAY[b])} />)}
-            <Caddy obj={failed} m={s.caddies.failed} s={s} where="rack" />
-            <Caddy obj={spareCaddy} m={s.caddies.spare} s={s} where="rack" />
+            <Caddy obj={failed.rack} m={s.caddies.failed} s={s} where="rack" />
+            <Caddy obj={spareCaddy.rack} m={s.caddies.spare} s={s} where="rack" />
             <BayLeds s={s} frame={frame} heights={H_BAY} states={s.bays} />
             <TowerLight s={s} frame={frame} />
             <Tag id={0} at={[TAG_APPROACH.x, TAG_APPROACH.y - 0.2, TAG_APPROACH.z]} size={50} />
           </group>
           <group position={c3(SPARE_X, -SPARE_D, 0)} rotation={[0, Math.PI, 0]}>
             <Prim object={spare} />
-            <Caddy obj={failed} m={s.caddies.failed} s={s} where="spare" />
-            <Caddy obj={spareCaddy} m={s.caddies.spare} s={s} where="spare" />
+            <Caddy obj={failed.spare} m={s.caddies.failed} s={s} where="spare" />
+            <Caddy obj={spareCaddy.spare} m={s.caddies.spare} s={s} where="spare" />
             <Tag id={10} at={[TAG_APPROACH.x, TAG_APPROACH.y - 0.2, TAG_APPROACH.z]} size={50} />
           </group>
         </>

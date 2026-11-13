@@ -96,7 +96,8 @@ function keys(): Key[] {
   follow(cut(T[1] + 148), ...chaseB);
   add(T[1] + 148, ...baseClose);
   add(s(7), ...baseClose);
-  add(SCENES.swap[1], atBase([-900, -380, 520]), atBase([0, -160, 160]), 30, 260);
+  // pull back on the same side (crossing to the far side would fly the camera through the mast)
+  add(SCENES.swap[1], atBase([1050, -700, 620]), atBase([30, -140, 170]), 30, 200);
   // S6 Delta inside: behind the rack (PSU, PLC, router on the DIN rail), then up to the tower light
   const d0 = SCENES.delta[0];
   add(d0 + 0.01, [-800, 1000, 360], [-40, 170, 110], 30, 140);
